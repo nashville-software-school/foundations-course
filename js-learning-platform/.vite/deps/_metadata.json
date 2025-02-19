@@ -2,7 +2,54 @@
   "hash": "0bcbe690",
   "configHash": "87a5acfd",
   "lockfileHash": "6398b31f",
-  "browserHash": "bb37e3a9",
-  "optimized": {},
-  "chunks": {}
+  "browserHash": "b96a48f4",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "9c7c498a",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "9cc7a499",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "a09c379f",
+      "needsInterop": false
+    },
+    "@emotion/react": {
+      "src": "../../node_modules/@emotion/react/dist/emotion-react.browser.esm.js",
+      "file": "@emotion_react.js",
+      "fileHash": "e195c3a0",
+      "needsInterop": false
+    },
+    "@monaco-editor/react": {
+      "src": "../../node_modules/@monaco-editor/react/dist/index.mjs",
+      "file": "@monaco-editor_react.js",
+      "fileHash": "2c8c3869",
+      "needsInterop": false
+    },
+    "marked": {
+      "src": "../../node_modules/marked/lib/marked.esm.js",
+      "file": "marked.js",
+      "fileHash": "31c86b97",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-4HXVQO43": {
+      "file": "chunk-4HXVQO43.js"
+    },
+    "chunk-E3IWAEHM": {
+      "file": "chunk-E3IWAEHM.js"
+    },
+    "chunk-I2LLTMMF": {
+      "file": "chunk-I2LLTMMF.js"
+    }
+  }
 }
