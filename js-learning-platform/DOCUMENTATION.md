@@ -4,206 +4,143 @@
 
 This learning platform is designed to provide an interactive learning experience for JavaScript beginners. It features a side-by-side layout with educational content and a live code editor, allowing students to practice concepts as they learn them.
 
-## System Architecture
-
-### Core Components
-
-1. **Navigation System**
-   - Located in `src/components/Navigation.jsx`
-   - Manages chapter navigation
-   - Displays numbered chapters with active state
-   - Uses React Router for navigation
-
-2. **Content Display**
-   - Located in `src/components/Chapter.jsx`
-   - Renders markdown content
-   - Supports code blocks with syntax highlighting
-   - Uses `marked` library for markdown parsing
-
-3. **Code Editor**
-   - Uses Monaco Editor (same as VS Code)
-   - Supports JavaScript syntax highlighting
-   - Real-time code validation
-   - Configurable options (font size, line numbers, etc.)
-
-4. **Test System**
-   - Integrated with the code editor
-   - Provides immediate feedback
-   - Supports custom test cases
-   - Clear success/failure messaging
-
 ## Adding New Chapters
 
-### 1. Create Chapter Content
+### Chapter File Structure
 
-Create a new chapter by adding an entry to the `chapters` array in `src/context/ChapterContext.jsx`:
+Chapters are stored in the `src/chapters` directory. Each chapter is a separate JavaScript file that exports a chapter object. Here's how to add a new chapter:
 
-```javascript
-const chapters = [
-  {
-    id: 'chapter-slug',
-    title: 'Chapter Title',
-    path: '/chapter-slug'
-  }
-]
-```
-
-### 2. Chapter Content Structure
-
-Each chapter should follow this structure:
+1. Create a new file in `src/chapters` (e.g., `loops.js`):
 
 ```javascript
-const chapterContent = {
-  content: `# Chapter Title
+export const loopsChapter = {
+  id: 'loops',
+  title: 'JavaScript Loops',
+  content: `# JavaScript Loops
 
-Description of the concept being taught.
+Your markdown content here...
 
 ## Exercise
 
-Description of what the student needs to do.
+Your exercise description here...
 
 \`\`\`js
-// Example code if needed
+// Code examples here
 \`\`\`
-
-Try it yourself in the editor!
 `,
   exercise: {
     starterCode: `// Code that appears in editor
 // Include helpful comments
 // Leave space for student's solution`,
     solution: `// The correct solution
-// Used for test validation`
+// Used for test validation`,
+    tests: [
+      {
+        name: "Test Name",
+        test: (code) => {
+          // Test logic here
+          return code.includes('expected solution');
+        },
+        message: "Message shown when test fails"
+      }
+    ]
   }
 }
 ```
 
-### 3. Test Configuration
-
-Tests are configured in the Chapter component. Here's how to add custom tests:
+2. Add the chapter to `src/chapters/index.js`:
 
 ```javascript
-const runTests = () => {
-  // Example test structure
-  const tests = [
-    {
-      name: 'Basic Functionality',
-      test: (code) => {
-        // Test logic here
-        return code.includes('expected solution');
-      },
-      message: 'Success message if test passes'
+import { loopsChapter } from './loops'
+
+export const chapters = [
+  // ... other chapters
+  loopsChapter
+]
+```
+
+### Chapter Object Structure
+
+Each chapter object must have the following properties:
+
+- `id` (string): Unique identifier for the chapter
+- `title` (string): Chapter title shown in navigation
+- `content` (string): Markdown content including explanations and examples
+- `exercise` (object):
+  - `starterCode` (string): Initial code shown in editor
+  - `solution` (string): Correct solution for reference
+  - `tests` (array): Array of test objects
+
+### Test Configuration
+
+Each test object should have:
+
+- `name` (string): Name of the test
+- `test` (function): Function that takes code string and returns boolean
+- `message` (string): Message shown when test fails
+
+Example test configurations:
+
+```javascript
+// Simple string matching
+{
+  name: "Array Creation",
+  test: (code) => code.includes('["Banana", "Orange"]'),
+  message: "Create an array with the specified fruits"
+}
+
+// Function output testing
+{
+  name: "Function Return",
+  test: (code) => {
+    try {
+      const func = new Function(code + '\nreturn sum([1,2,3]);');
+      return func() === 6;
+    } catch (error) {
+      return false;
     }
-  ];
+  },
+  message: "Function should return the sum of array elements"
+}
 
-  // Run all tests
-  const results = tests.every(test => test.test(code));
-  setTestResults({
-    passed: results,
-    message: results
-      ? 'Great job! All tests passed!'
-      : 'Not quite right. Check the requirements and try again.'
-  });
-};
+// Pattern matching
+{
+  name: "Loop Implementation",
+  test: (code) => {
+    return code.includes('for') || code.includes('while');
+  },
+  message: "Use a loop to solve this exercise"
+}
 ```
 
-## Test Types and Examples
+### Content Writing Guidelines
 
-### 1. Simple String Matching
-
-```javascript
-// Test if code contains specific string
-const test = (code) => code.includes('const fruits = ["Banana"');
-```
-
-### 2. Function Output Testing
-
-```javascript
-// Test function output
-const test = (code) => {
-  try {
-    const func = new Function(code + '\nreturn functionName();');
-    const result = func();
-    return result === expectedOutput;
-  } catch (error) {
-    return false;
-  }
-};
-```
-
-### 3. Array Testing
-
-```javascript
-// Test array operations
-const test = (code) => {
-  try {
-    const func = new Function(code + '\nreturn arrayName;');
-    const result = func();
-    return Array.isArray(result) && result.length === expectedLength;
-  } catch (error) {
-    return false;
-  }
-};
-```
-
-### 4. Object Testing
-
-```javascript
-// Test object properties
-const test = (code) => {
-  try {
-    const func = new Function(code + '\nreturn objectName;');
-    const result = func();
-    return result.hasOwnProperty('expectedProperty');
-  } catch (error) {
-    return false;
-  }
-};
-```
-
-## Best Practices
-
-1. **Content Writing**
-   - Use clear, concise language
-   - Include relevant code examples
-   - Break concepts into digestible chunks
-   - Provide context for exercises
+1. **Markdown Content**
+   - Use clear headings with proper hierarchy
+   - Include code examples in markdown blocks
+   - Break concepts into digestible sections
+   - Use lists and emphasis where appropriate
 
 2. **Exercise Design**
-   - Start with simple tasks
-   - Gradually increase complexity
-   - Include helpful comments in starter code
-   - Make success criteria clear
+   - Start with clear objectives
+   - Provide helpful starter code
+   - Include comments to guide students
+   - Make success criteria explicit
 
 3. **Test Writing**
    - Test for specific outcomes
    - Include helpful error messages
    - Consider edge cases
-   - Test both positive and negative scenarios
+   - Test both syntax and logic
 
-4. **Code Editor**
-   - Set appropriate editor options
-   - Include helpful starter code
-   - Use consistent formatting
-   - Add guiding comments
+### Example Chapter Implementation
 
-## Example Chapter Implementation
-
-Here's a complete example of implementing a chapter about array methods:
+Here's a complete example of a chapter about array methods:
 
 ```javascript
-// In ChapterContext.jsx
-const chapters = [
-  // ... other chapters
-  {
-    id: 'array-methods',
-    title: 'Array Methods',
-    path: '/array-methods'
-  }
-];
-
-// In Chapter.jsx
-const arrayMethodsChapter = {
+export const arrayMethodsChapter = {
+  id: 'array-methods',
+  title: 'Array Methods',
   content: `# Array Methods
 
 Arrays in JavaScript come with powerful built-in methods for manipulation and transformation.
@@ -230,96 +167,75 @@ const largeNumbers =
 console.log(largeNumbers);`,
     solution: `const numbers = [3, 7, 1, 9, 4, 6, 2, 8];
 const largeNumbers = numbers.filter(num => num > 5);
-console.log(largeNumbers);`
-  }
-};
-
-// Test implementation
-const runTests = () => {
-  try {
-    // Execute student's code
-    const func = new Function(code + '\nreturn largeNumbers;');
-    const result = func();
-
-    // Test cases
-    const tests = [
+console.log(largeNumbers);`,
+    tests: [
       {
-        name: 'Array Creation',
-        test: () => Array.isArray(result),
-        message: 'Result should be an array'
-      },
-      {
-        name: 'Correct Filtering',
-        test: () => {
-          const expected = [7, 9, 6, 8];
-          return result.length === expected.length &&
-                 result.every(num => num > 5);
+        name: "Filter Implementation",
+        test: (code) => {
+          try {
+            return code.includes('.filter') && code.includes('> 5');
+          } catch (error) {
+            return false;
+          }
         },
-        message: 'Array should only contain numbers greater than 5'
+        message: "Make sure you're using the filter method to keep numbers greater than 5"
       }
-    ];
-
-    // Run all tests
-    const passed = tests.every(t => t.test());
-    setTestResults({
-      passed,
-      message: passed
-        ? 'Great job! You\'ve correctly filtered the array!'
-        : 'Make sure you\'re using filter to keep only numbers greater than 5.'
-    });
-  } catch (error) {
-    setTestResults({
-      passed: false,
-      message: 'There was an error in your code. Check your syntax and try again.'
-    });
+    ]
   }
-};
+}
 ```
 
-## Deployment
+## Best Practices
 
-1. Build the application:
-```bash
-npm run build
-```
+1. **Content Organization**
+   - Keep one chapter per file
+   - Use descriptive file names
+   - Maintain consistent structure
+   - Order chapters logically
 
-2. The built files will be in the `dist` directory
+2. **Testing Strategy**
+   - Write clear test descriptions
+   - Test for understanding, not just syntax
+   - Provide helpful feedback
+   - Consider common mistakes
 
-3. Deploy to your preferred hosting platform
+3. **Code Quality**
+   - Follow JavaScript best practices
+   - Use consistent formatting
+   - Add helpful comments
+   - Handle errors gracefully
 
 ## Troubleshooting
 
 Common issues and solutions:
 
-1. **Monaco Editor Not Loading**
-   - Check that `@monaco-editor/react` is installed
-   - Verify editor container has proper dimensions
-   - Check browser console for errors
+1. **Tests Not Running**
+   - Check test function syntax
+   - Verify code string manipulation
+   - Console.log test results for debugging
+   - Check for runtime errors
 
-2. **Tests Not Running**
-   - Verify code syntax is valid
-   - Check test function implementation
-   - Ensure all required variables are defined
+2. **Content Not Displaying**
+   - Verify markdown syntax
+   - Check chapter object structure
+   - Ensure chapter is exported correctly
+   - Verify chapter is added to index.js
 
-3. **Markdown Not Rendering**
-   - Verify `marked` is installed
-   - Check markdown syntax
-   - Ensure content is properly escaped
-
-4. **Navigation Issues**
-   - Check React Router setup
-   - Verify chapter paths are correct
-   - Check for duplicate routes
+3. **Editor Issues**
+   - Check Monaco Editor configuration
+   - Verify starter code formatting
+   - Ensure proper height/width settings
+   - Check for syntax errors
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+When contributing new chapters:
 
-Remember to:
-- Follow the existing code style
-- Add tests for new features
-- Update documentation
-- Test all changes thoroughly
+1. Follow the file structure
+2. Test thoroughly
+3. Update documentation
+4. Follow coding standards
+5. Add meaningful tests
+6. Include clear instructions
+
+Remember to run the application locally and test all functionality before submitting new chapters.

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react'
+import { chapters, getChapterContent } from '../chapters'
 
 const ChapterContext = createContext()
 
@@ -7,30 +8,22 @@ export function useChapter() {
 }
 
 export function ChapterProvider({ children }) {
-  const [chapters] = useState([
-    {
-      id: 'arrays-intro',
-      title: 'Introduction to Arrays',
-      path: '/arrays-intro'
-    },
-    {
-      id: 'arrays-methods',
-      title: 'Array Methods',
-      path: '/arrays-methods'
-    },
-    {
-      id: 'arrays-iteration',
-      title: 'Array Iteration',
-      path: '/arrays-iteration'
-    }
-  ])
-
   const [currentChapter, setCurrentChapter] = useState(chapters[0])
+  const [chapterContent, setChapterContent] = useState(getChapterContent(chapters[0].id))
+
+  const loadChapter = (chapterId) => {
+    const chapter = chapters.find(c => c.id === chapterId)
+    if (chapter) {
+      setCurrentChapter(chapter)
+      setChapterContent(getChapterContent(chapter.id))
+    }
+  }
 
   const value = {
     chapters,
     currentChapter,
-    setCurrentChapter
+    chapterContent,
+    loadChapter
   }
 
   return (
