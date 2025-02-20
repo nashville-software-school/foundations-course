@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Link, useLocation } from 'react-router-dom'
 import { useChapter } from '../context/ChapterContext'
+import { sections, getSectionById } from '../sections'
 import { css } from '@emotion/react'
 
 const navStyles = css`
@@ -10,6 +11,18 @@ const navStyles = css`
     padding-left: 1rem;
   }
 
+  .section {
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    color: #495057;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: #f8f9fa;
+    border-radius: 6px;
+  }
+
   .chapter-list {
     list-style: none;
     padding: 0;
@@ -17,12 +30,12 @@ const navStyles = css`
   }
 
   .chapter-item {
-    margin: 0.5rem 0;
+    margin: 0.1rem 0;
   }
 
   .chapter-link {
     display: block;
-    padding: 1rem;
+    padding: 0.4rem;
     color: #2c3e50;
     text-decoration: none;
     border-radius: 8px;
@@ -65,28 +78,73 @@ const navStyles = css`
   }
 `
 
+/**
+ * Groups chapters by their section and orders them by previousChapterId
+ * @param {Array} chapters - Array of chapter objects
+ * @returns {Object} Chapters grouped by section
+ */
+const groupChaptersBySection = (chapters) => {
+  // First, group chapters by section
+  const groupedChapters = chapters.reduce((acc, chapter) => {
+    if (!acc[chapter.sectionId]) {
+      acc[chapter.sectionId] = []
+    }
+    acc[chapter.sectionId].push(chapter)
+    return acc
+  }, {})
+
+  // Then order chapters within each section
+  Object.keys(groupedChapters).forEach(sectionId => {
+    const sectionChapters = groupedChapters[sectionId]
+    const orderedChapters = []
+
+    // Find the first chapter (no previousChapterId)
+    let currentChapter = sectionChapters.find(c => !c.previousChapterId)
+
+    while (currentChapter) {
+      orderedChapters.push(currentChapter)
+      currentChapter = sectionChapters.find(c => c.previousChapterId === currentChapter.id)
+    }
+
+    groupedChapters[sectionId] = orderedChapters
+  })
+
+  return groupedChapters
+}
+
 function Navigation() {
   const { chapters } = useChapter()
   const location = useLocation()
+  const groupedChapters = groupChaptersBySection(chapters)
 
   return (
     <nav css={navStyles}>
       <h2>Chapters</h2>
-      <ul className="chapter-list">
-        {chapters.map((chapter, index) => (
-          <li key={chapter.id} className="chapter-item">
-            <Link
-              to={chapter.path}
-              className={`chapter-link ${
-                location.pathname === chapter.path ? 'active' : ''
-              }`}
-            >
-              <span className="chapter-number">{index + 1}</span>
-              {chapter.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {sections.map(section => {
+        const sectionChapters = groupedChapters[section.id] || []
+        if (sectionChapters.length === 0) return null
+
+        return (
+          <div key={section.id} className="section">
+            <h3 className="section-title">{section.title}</h3>
+            <ul className="chapter-list">
+              {sectionChapters.map((chapter, index) => (
+                <li key={chapter.id} className="chapter-item">
+                  <Link
+                    to={chapter.path}
+                    className={`chapter-link ${
+                      location.pathname === chapter.path ? 'active' : ''
+                    }`}
+                  >
+                    <span className="chapter-number">{index + 1}</span>
+                    {chapter.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      })}
     </nav>
   )
 }

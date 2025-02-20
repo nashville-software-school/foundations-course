@@ -2,44 +2,42 @@ export const arrayMethodsChapter = {
   id: 'array-methods',
   title: 'Array Methods',
   path: '/array-methods',
-  content: `Arrays in JavaScript come with powerful built-in methods for manipulation and transformation.
+  sectionId: 'arrays', // Added section ID
+  previousChapterId: 'arrays-intro', // Links to the intro chapter
+  content: `JavaScript provides many built-in methods to work with arrays. These methods help you manipulate and transform array data.
+
+## Common Array Methods
+
+1. push() - Adds elements to the end of an array
+2. pop() - Removes the last element
+3. shift() - Removes the first element
+4. unshift() - Adds elements to the beginning
 
 ## Exercise
 
-Use the \`filter\` method to create a new array containing only numbers greater than 5.
+Use the appropriate array method to add "Grape" to the end of the fruits array.
 
 \`\`\`js
-// Example:
-const numbers = [2, 8, 4, 10, 1, 7];
-const filtered = numbers.filter(num => num > 5);
-// filtered is [8, 10, 7]
+const fruits = ["Apple", "Banana"]
+// Add code to add "Grape" to the end
 \`\`\`
 
-Try it yourself!
+Try it in the editor!
 `,
   exercise: {
-    starterCode: `const numbers = [3, 7, 1, 9, 4, 6, 2, 8];
+    starterCode: `const fruits = ["Apple", "Banana"]
 
-// Use filter to create largeNumbers array
-const largeNumbers =
-
-console.log(largeNumbers);`,
-    solution: `const numbers = [3, 7, 1, 9, 4, 6, 2, 8];
-const largeNumbers = numbers.filter(num => num > 5);
-console.log(largeNumbers);`,
+// Add "Grape" to the end of the array
+`,
+    solution: `const fruits = ["Apple", "Banana"]
+fruits.push("Grape")`,
     tests: [
       {
-        name: "Filter Implementation",
+        name: "Array Push",
         test: (code) => {
-          try {
-            const func = new Function(code + '\nreturn largeNumbers;');
-            const result = func();
-            return Array.isArray(result) && result.length === 4 && code.includes('.filter') && code.includes('> 5');
-          } catch (error) {
-            return false;
-          }
+          return code.includes('push') && code.includes('Grape')
         },
-        message: "Make sure you're using the filter method to keep numbers greater than 5"
+        message: "Make sure to use push() to add 'Grape' to the array"
       }
     ]
   }

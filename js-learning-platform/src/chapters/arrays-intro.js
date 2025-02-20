@@ -2,6 +2,8 @@ export const arrayIntroChapter = {
   id: 'arrays-intro',
   title: 'Introduction to Arrays',
   path: '/arrays-intro',
+  sectionId: 'arrays', // Added section ID
+  previousChapterId: null, // This is the first chapter in the Arrays section
   content: `Arrays are ordered collections of values. They allow you to store multiple items in a single variable.
 
 ## Exercise
