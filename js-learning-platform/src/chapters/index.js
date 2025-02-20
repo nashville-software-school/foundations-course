@@ -6,10 +6,12 @@ import { multilineStringsChapter } from './multiline-strings'
 import { stringMethodsChapter } from './string-methods'
 import { conditionsIntroChapter } from './conditions-intro'
 import { variablesIntroChapter } from './variables-intro'
+import { mathOperationsChapter } from './math-operations'
 
 export const chapters = [
   // Variables and Values section (first section)
   variablesIntroChapter,
+  mathOperationsChapter,
 
   // Strings section
   stringsIntroChapter,

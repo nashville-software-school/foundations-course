@@ -1,12 +1,10 @@
 export const stringInterpolationChapter = {
   id: 'string-interpolation',
-  title: 'Interpolation',
+  title: 'String Values',
   path: '/string-interpolation',
-  sectionId: 'strings',
-  previousChapterId: 'strings-intro', // Comes after strings intro
-  content: `# String Values in Variables
-
-In the previous exercise, you worked with variables that represented numeric values. In this chapter, you are going to work with different kinds of values: strings. A string value is a series of numbers, letters, and symbols surrounded by either a single quote \`'\` or a double quote \`"\`.
+  sectionId: 'variables-and-values',
+  previousChapterId: 'variables-intro', // Comes after strings intro
+  content: `In the previous exercise, you worked with variables that represented numeric values. In this chapter, you are going to work with different kinds of values: strings. A string value is a series of numbers, letters, and symbols surrounded by either a single quote \`'\` or a double quote \`"\`.
 
 You are going to be using double quotes around all of your strings, just so that you can be consistent.
 

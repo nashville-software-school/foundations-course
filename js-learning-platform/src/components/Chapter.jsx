@@ -63,6 +63,7 @@ const chapterStyles = css`
   }
 
   .test-results {
+    position: relative;
     padding: 1.5rem;
     background: white;
     border-radius: 8px;
@@ -70,6 +71,34 @@ const chapterStyles = css`
     min-height: 100px;
     max-height: 200px;
     overflow-y: auto;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: #666;
+      padding: 4px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #333;
+      }
+    }
 
     h3 {
       display: flex;
@@ -129,6 +158,19 @@ function Chapter() {
   const { currentChapter, chapterContent, loadChapter } = useChapter()
   const [code, setCode] = useState('')
   const [testResults, setTestResults] = useState(null)
+  const [showResults, setShowResults] = useState(true)
+
+  // Auto-hide test results after 5 seconds
+  useEffect(() => {
+    let timer
+    if (testResults) {
+      setShowResults(true)
+      timer = setTimeout(() => {
+        setShowResults(false)
+      }, 8000)
+    }
+    return () => clearTimeout(timer)
+  }, [testResults])
 
   useEffect(() => {
     if (chapterId) {
@@ -202,8 +244,15 @@ function Chapter() {
           Run Tests
         </button>
 
-        {testResults && (
-          <div className="test-results">
+        {testResults && showResults && (
+          <div className={`test-results ${!showResults ? 'hidden' : ''}`}>
+            <button
+              className="close-button"
+              onClick={() => setShowResults(false)}
+              aria-label="Close"
+            >
+              ✕
+            </button>
             <h3> {testResults.passed ? '✅ Tests Passed!' : '❌ Tests Failed'} </h3>
             <div
               dangerouslySetInnerHTML={{
