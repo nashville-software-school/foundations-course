@@ -2,9 +2,7 @@ export const arrayMethodsChapter = {
   id: 'array-methods',
   title: 'Array Methods',
   path: '/array-methods',
-  content: `# Array Methods
-
-Arrays in JavaScript come with powerful built-in methods for manipulation and transformation.
+  content: `Arrays in JavaScript come with powerful built-in methods for manipulation and transformation.
 
 ## Exercise
 
