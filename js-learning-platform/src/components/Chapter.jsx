@@ -38,6 +38,12 @@ const chapterStyles = css`
       border-radius: 6px;
       margin: 1.5rem 0;
     }
+
+    ol {
+      list-style-type: decimal;
+      margin-left: 2rem;
+      margin-bottom: 1.5rem;
+    }
   }
 
   .editor-section {
@@ -72,9 +78,27 @@ const chapterStyles = css`
       margin-bottom: 1rem;
     }
 
-    p {
+    p, li {
       color: #2c3e50;
       line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: #2c3e50;
+      margin: 1rem 0 0.5rem;
+    }
+
+    ol, ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    ol {
+      list-style-type: decimal;
+    }
+
+    ul {
+      list-style-type: disc;
     }
   }
 
@@ -180,10 +204,15 @@ function Chapter() {
 
         {testResults && (
           <div className="test-results">
-            <h3>
-              {testResults.passed ? '✅ Tests Passed!' : '❌ Tests Failed'}
-            </h3>
-            <p>{testResults.message}</p>
+            <h3> {testResults.passed ? '✅ Tests Passed!' : '❌ Tests Failed'} </h3>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: marked(testResults.message.split('\n').map(line => line.trim()).join('\n'), {
+                  breaks: true,
+                  gfm: true
+                })
+              }}
+            />
           </div>
         )}
       </section>

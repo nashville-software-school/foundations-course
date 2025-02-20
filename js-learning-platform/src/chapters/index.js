@@ -2,13 +2,19 @@ import { arrayIntroChapter } from './arrays-intro'
 import { arrayMethodsChapter } from './array-methods'
 import { stringsIntroChapter } from './strings-intro'
 import { stringInterpolationChapter } from './string-interpolation'
+import { multilineStringsChapter } from './multiline-strings'
 import { stringMethodsChapter } from './string-methods'
 import { conditionsIntroChapter } from './conditions-intro'
+import { variablesIntroChapter } from './variables-intro'
 
 export const chapters = [
+  // Variables and Values section (first section)
+  variablesIntroChapter,
+
   // Strings section
   stringsIntroChapter,
-  stringInterpolationChapter, // Added new chapter in correct order
+  stringInterpolationChapter,
+  multilineStringsChapter,
   stringMethodsChapter,
 
   // Conditional Logic section

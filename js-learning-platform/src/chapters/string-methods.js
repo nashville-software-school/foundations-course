@@ -1,9 +1,9 @@
 export const stringMethodsChapter = {
   id: 'string-methods',
-  title: 'Methods',
+  title: 'String Methods',
   path: '/string-methods',
   sectionId: 'strings',
-  previousChapterId: 'string-interpolation', // Updated to link to string-interpolation chapter
+  previousChapterId: 'multiline-strings', // Updated to link to multiline-strings chapter
   content: `JavaScript provides many built-in methods to work with strings. These methods help you manipulate and transform text data.
 
 ## Common String Methods

@@ -5,6 +5,11 @@
 
 export const sections = [
   {
+    id: 'variables-and-values',
+    title: 'Variables and Values',
+    description: 'Understanding data storage and manipulation in JavaScript'
+  },
+  {
     id: 'strings',
     title: 'Strings',
     description: 'Working with text in JavaScript'

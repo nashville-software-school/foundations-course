@@ -1,6 +1,6 @@
 export const arrayIntroChapter = {
   id: 'arrays-intro',
-  title: 'Introduction to Arrays',
+  title: 'Introduction',
   path: '/arrays-intro',
   sectionId: 'arrays', // Added section ID
   previousChapterId: null, // This is the first chapter in the Arrays section
