@@ -34,7 +34,9 @@ console.log(largeNumbers);`,
         name: "Filter Implementation",
         test: (code) => {
           try {
-            return code.includes('.filter') && code.includes('> 5');
+            const func = new Function(code + '\nreturn largeNumbers;');
+            const result = func();
+            return Array.isArray(result) && result.length === 4 && code.includes('.filter') && code.includes('> 5');
           } catch (error) {
             return false;
           }

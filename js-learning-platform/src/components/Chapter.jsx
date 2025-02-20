@@ -110,7 +110,7 @@ function Chapter() {
     if (chapterId) {
       loadChapter(chapterId)
     }
-  }, [chapterId, loadChapter])
+  }, [chapterId])
 
   useEffect(() => {
     if (chapterContent?.exercise) {

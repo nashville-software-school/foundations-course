@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout'
 import Chapter from './components/Chapter'
 import { ChapterProvider } from './context/ChapterContext'
@@ -9,8 +9,8 @@ function App() {
     <Router>
       <ChapterProvider>
         <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<Chapter />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Navigate to="/arrays-intro" replace />} />
             <Route path=":chapterId" element={<Chapter />} />
           </Route>
         </Routes>
