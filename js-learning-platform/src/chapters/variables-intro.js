@@ -149,7 +149,8 @@ console.log(yearlyTotal)`,
                     try {
                         const func = new Function(code + '\nreturn yearlyTotal')
                         const result = func()
-                        if (code.includes('let februaryBill') &&
+                        if (result > 0 &&
+                            code.includes('let februaryBill') &&
                             code.includes('let marchBill') &&
                             code.includes('let aprilBill') &&
                             code.includes('let mayBill') &&
@@ -170,15 +171,14 @@ console.log(yearlyTotal)`,
                 },
                 message: `- Make sure to declare variables for all twelve months
                 - Make sure to use the correct variable names (e.g. octoberBill, novemberBill)
-                - Make sure to use the let keyword for each month variable
-                - Make sure you use const for the yearlyTotal variable`
+                - Make sure to use the \`let\` keyword for each month variable
+                - Make sure you use \`const\` for the yearlyTotal variable`
             },
             {
                 name: "Total Calculation",
                 test: (code) => {
                     return code.includes('const') &&
-                        code.includes('yearlyTotal') &&
-                        code.includes('console.log')
+                        code.includes('yearlyTotal')
                 },
                 message: "Make sure to calculate the total using const and output it with console.log"
             }
