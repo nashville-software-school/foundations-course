@@ -120,9 +120,7 @@ let combinedIncome = 0
 let netIncome = 0
 
 // Create the output string using string interpolation
-const output = ""
-
-console.log(output)`,
+const output = ""`,
         solution: `// Your monthly income
 const myIncome = 4388.12
 

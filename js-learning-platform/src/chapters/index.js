@@ -1,9 +1,24 @@
 import { arrayIntroChapter } from './arrays-intro'
-import { arrayMethodsChapter } from './array-methods'
+import { arrayIndicesChapter } from './arrays-indices'
+import { arrayIterationChapter } from './arrays-iteration'
+import { arrayPushChapter } from './arrays-push'
+import { arrayConditionsChapter } from './arrays-conditions'
+import { arrayLengthChapter } from './arrays-length'
+import { arrayPracticeChapter } from './arrays-practice'
+import { arrayConditionsPracticeChapter } from './arrays-conditions-practice'
+import { arrayStringsChapter } from './arrays-strings'
+import { arraySplitJoinChapter } from './arrays-split-join'
+import { arrayReviewChapter } from './arrays-review'
+import { objectsIntroChapter } from './objects-intro'
+import { objectsMultipleChapter } from './objects-multiple'
+import { objectsCollectionsChapter } from './objects-collections'
+import { objectsLibrariesChapter } from "./objects-libraries"
+import { objectsComplexChapter } from './objects-complex'
+import { objectsPropertiesChapter } from './objects-properties'
+import { objectsVotingChapter } from './objects-voting'
 import { stringInterpolationChapter } from './string-interpolation'
 import { multilineStringsChapter } from './multiline-strings'
 import { stringMethodsChapter } from './string-methods'
-import { conditionsIntroChapter } from './conditions-intro'
 import { variablesIntroChapter } from './variables-intro'
 import { mathOperationsChapter } from './math-operations'
 import { booleanLogicChapter } from './boolean-logic'
@@ -21,12 +36,27 @@ export const chapters = [
   evaluationsChapter,
   variablesReviewChapter,
 
-  // Conditional Logic section
-  conditionsIntroChapter,
-
   // Arrays section
   arrayIntroChapter,
-  arrayMethodsChapter
+  arrayIndicesChapter,
+  arrayIterationChapter,
+  arrayPushChapter,
+  arrayConditionsChapter,
+  arrayLengthChapter,
+  arrayPracticeChapter,
+  arrayConditionsPracticeChapter,
+  arrayStringsChapter,
+  arraySplitJoinChapter,
+  arrayReviewChapter,
+
+  // Objects section
+  objectsIntroChapter,
+  objectsMultipleChapter,
+  objectsCollectionsChapter,
+  objectsComplexChapter,
+  objectsLibrariesChapter,
+  objectsPropertiesChapter,
+  objectsVotingChapter,
 ]
 
 /**

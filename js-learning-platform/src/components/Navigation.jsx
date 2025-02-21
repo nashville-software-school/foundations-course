@@ -1,14 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { Link, useLocation } from 'react-router-dom'
 import { useChapter } from '../context/ChapterContext'
-import { sections, getSectionById } from '../sections'
+import { sections } from '../sections'
 import { css } from '@emotion/react'
 
 const navStyles = css`
   h2 {
     color: #2c3e50;
-    margin-bottom: 1.5rem;
-    padding-left: 1rem;
+    margin: 0 0 1.5rem 0;
   }
 
   .section {
@@ -119,7 +118,7 @@ function Navigation() {
 
   return (
     <nav css={navStyles}>
-      <h2>Chapters</h2>
+      <h2>Foundations Course</h2>
       {sections.map(section => {
         const sectionChapters = groupedChapters[section.id] || []
         if (sectionChapters.length === 0) return null
