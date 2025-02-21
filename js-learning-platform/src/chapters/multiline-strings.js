@@ -2,11 +2,9 @@ export const multilineStringsChapter = {
   id: 'multiline-strings',
   title: 'Multi-line Strings',
   path: '/multiline-strings',
-  sectionId: 'strings',
-  previousChapterId: 'string-interpolation', // Comes after string interpolation
-  content: `# Multi-line Strings
-
-So far you have used \`console.log()\` to produce strings of output in the console. Sometimes, developers want their output to be more attractive, especially if the output requires a multi-line format to be more readable.
+  sectionId: 'variables-and-values',
+  previousChapterId: 'math-operations',
+  content: `So far you have used \`console.log()\` to produce strings of output in the console. Sometimes, developers want their output to be more attractive, especially if the output requires a multi-line format to be more readable.
 
 Just a quick example to show you what happens when you tell JavaScript to output a multi-line string. Place the following code in the code editor and click the "run >" button. You will see a red error message in the console.
 

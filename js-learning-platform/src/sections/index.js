@@ -10,11 +10,6 @@ export const sections = [
     description: 'Understanding data storage and manipulation in JavaScript'
   },
   {
-    id: 'strings',
-    title: 'Strings',
-    description: 'Working with text in JavaScript'
-  },
-  {
     id: 'conditional-logic',
     title: 'Conditional Logic',
     description: 'Making decisions in code'

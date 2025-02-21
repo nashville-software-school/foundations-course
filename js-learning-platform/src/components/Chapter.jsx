@@ -39,8 +39,7 @@ const chapterStyles = css`
       margin: 1.5rem 0;
     }
 
-    ol {
-      list-style-type: decimal;
+    ol, ul {
       margin-left: 2rem;
       margin-bottom: 1.5rem;
     }

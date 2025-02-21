@@ -1,23 +1,25 @@
 import { arrayIntroChapter } from './arrays-intro'
 import { arrayMethodsChapter } from './array-methods'
-import { stringsIntroChapter } from './strings-intro'
 import { stringInterpolationChapter } from './string-interpolation'
 import { multilineStringsChapter } from './multiline-strings'
 import { stringMethodsChapter } from './string-methods'
 import { conditionsIntroChapter } from './conditions-intro'
 import { variablesIntroChapter } from './variables-intro'
 import { mathOperationsChapter } from './math-operations'
+import { booleanLogicChapter } from './boolean-logic'
+import { evaluationsChapter } from './evaluations'
+import { variablesReviewChapter } from './variables-review'
 
 export const chapters = [
   // Variables and Values section (first section)
   variablesIntroChapter,
   mathOperationsChapter,
-
-  // Strings section
-  stringsIntroChapter,
   stringInterpolationChapter,
   multilineStringsChapter,
   stringMethodsChapter,
+  booleanLogicChapter,
+  evaluationsChapter,
+  variablesReviewChapter,
 
   // Conditional Logic section
   conditionsIntroChapter,
