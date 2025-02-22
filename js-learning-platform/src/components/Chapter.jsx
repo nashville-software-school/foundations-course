@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useState, useEffect, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useChapter } from '../context/ChapterContext'
 import Editor from '@monaco-editor/react'
 import { marked } from 'marked'
@@ -164,14 +164,58 @@ const chapterStyles = css`
       cursor: not-allowed;
     }
   }
+
+  .button-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .nav-button {
+    padding: 0.75rem 1.5rem;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: #218838;
+    }
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
 `
 
 function Chapter() {
   const { chapterId } = useParams()
-  const { currentChapter, chapterContent, loadChapter } = useChapter()
+  const navigate = useNavigate()
+  const { currentChapter, chapterContent, loadChapter, getPreviousChapter, getNextChapter } = useChapter()
   const [code, setCode] = useState('')
   const [testResults, setTestResults] = useState(null)
   const [showResults, setShowResults] = useState(true)
+
+  const handlePreviousClick = () => {
+    const previousChapter = getPreviousChapter(currentChapter.id)
+    if (previousChapter) {
+      navigate(`/${previousChapter.id}`)
+      loadChapter(previousChapter.id)
+    }
+  }
+
+  const handleNextClick = () => {
+    const nextChapter = getNextChapter(currentChapter.id)
+    if (nextChapter) {
+      navigate(`/${nextChapter.id}`)
+      loadChapter(nextChapter.id)
+    }
+  }
 
   // Configure marked renderer for code blocks
   const renderer = useMemo(() => {
@@ -274,11 +318,19 @@ function Chapter() {
         </div>
 
         <div className="button-container">
-          <button className="nav-button previous-button" onClick={() => {}}>
-            Previous
+          <button
+            className="nav-button previous-button"
+            onClick={handlePreviousClick}
+            disabled={!getPreviousChapter(currentChapter?.id)}
+          >
+            Previous Chapter
           </button>
-          <button className="nav-button next-button" onClick={() => {}}>
-            Next
+          <button
+            className="nav-button next-button"
+            onClick={handleNextClick}
+            disabled={!getNextChapter(currentChapter?.id)}
+          >
+            Next Chapter
           </button>
         </div>
       </section>

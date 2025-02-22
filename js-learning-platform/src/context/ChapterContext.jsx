@@ -12,6 +12,16 @@ export function useChapter() {
 const initialExpandedSections = new Set()
 
 /**
+ * Gets the previous chapter in sequence
+ * @param {string} currentChapterId - The ID of the current chapter
+ * @returns {Object|null} The previous chapter object or null if not found
+ */
+const getPreviousChapter = (currentChapterId) => {
+  const currentChapter = chapters.find(chapter => chapter.id === currentChapterId)
+  return chapters.find(chapter => chapter.id === currentChapter?.previousChapterId)
+}
+
+/**
  * Gets the next chapter in sequence based on previousChapterId links
  * @param {string} currentChapterId - The ID of the current chapter
  * @returns {Object|null} The next chapter object or null if not found
@@ -70,6 +80,7 @@ export function ChapterProvider({ children }) {
     toggleSection,
     isSectionExpanded: (sectionId) => expandedSections.has(sectionId),
     // Helper functions
+    getPreviousChapter,
     getNextChapter,
     getChaptersBySection,
     // Section information
