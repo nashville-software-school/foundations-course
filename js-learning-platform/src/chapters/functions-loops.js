@@ -14,7 +14,7 @@ Functions become even more powerful when we combine them with loops. This lets u
 Here's a simple function that uses a loop to process an array:
 
 \`\`\`js
-function displayAllScores(scores) {
+const displayAllScores = (scores) => {
     for (let i = 0; i < scores.length; i++) {
         console.log("Score " + (i + 1) + ": " + scores[i])
     }
@@ -35,7 +35,7 @@ displayAllScores(gameScores)
 Functions can use loops to calculate results from arrays:
 
 \`\`\`js
-function calculateAverage(numbers) {
+const calculateAverage = (numbers) => {
     let total = 0
 
     for (let i = 0; i < numbers.length; i++) {
@@ -55,7 +55,7 @@ console.log("Average: " + calculateAverage(temperatures))
 We can use functions with loops to find specific values:
 
 \`\`\`js
-function findHighestScore(scores) {
+const findHighestScore = (scores) => {
     let highest = scores[0]    // Start with first score
 
     for (let i = 1; i < scores.length; i++) {
@@ -77,7 +77,7 @@ console.log("Highest score: " + findHighestScore(scores))
 Loops in functions can also process strings character by character:
 
 \`\`\`js
-function countVowels(text) {
+const countVowels = (text) => {
     let vowelCount = 0
     const vowels = ["a", "e", "i", "o", "u"]
 
@@ -99,7 +99,7 @@ console.log(countVowels("JavaScript"))     // Displays: 2
 Functions can use loops to create new arrays:
 
 \`\`\`js
-function doubleAllNumbers(numbers) {
+const doubleAllNumbers = (numbers) => {
     const doubled = []
 
     for (let i = 0; i < numbers.length; i++) {
@@ -123,14 +123,14 @@ console.log(doubleAllNumbers(values))
 
 ## Exercise: Shopping Cart Total
 
-Create a function that calculates the total cost of items in a shopping cart. The function should:
+Create an arrow function that calculates the total cost of items in a shopping cart. The function should:
 1. Take an array of prices
 2. Add them all up
 3. Apply a 10% discount if the total is over $100
 4. Return the final total
 `,
   exercise: {
-    starterCode: `function calculateCartTotal(prices) {
+    starterCode: `const calculateCartTotal = (prices) => {
     // Your code here
     // Remember to:
     // 1. Add up all prices
@@ -141,7 +141,7 @@ Create a function that calculates the total cost of items in a shopping cart. Th
 // Example usage:
 // calculateCartTotal([20, 30, 40])  should return 90
 // calculateCartTotal([50, 60, 70])  should return 162 (180 - 10%)`,
-    solution: `function calculateCartTotal(prices) {
+    solution: `const calculateCartTotal = (prices) => {
     let total = 0
 
     for (let i = 0; i < prices.length; i++) {
@@ -158,12 +158,14 @@ Create a function that calculates the total cost of items in a shopping cart. Th
       {
         name: "Loop Implementation",
         test: (code) => {
-          return code.includes('for') &&
+          return code.includes('const calculateCartTotal = (') &&
+                 code.includes('=>') &&
+                 code.includes('for') &&
                  code.includes('prices.length') &&
                  code.includes('total') &&
                  code.includes('prices[i]')
         },
-        message: "Make sure you're using a loop to add up all prices"
+        message: "Make sure you're using an arrow function with a loop to add up all prices"
       },
       {
         name: "Discount Logic",

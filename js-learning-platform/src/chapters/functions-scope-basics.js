@@ -14,7 +14,7 @@ When we write functions, it's important to understand which variables our code c
 Variables created inside a function can only be used inside that function:
 
 \`\`\`js
-function calculateTotal() {
+const calculateTotal = () => {
     const tax = 0.1          // Local variable
     const price = 50         // Local variable
     const total = price + (price * tax)
@@ -33,7 +33,7 @@ Variables created outside any function can be used anywhere:
 \`\`\`js
 const taxRate = 0.1         // Global variable
 
-function calculateTotal(price) {
+const calculateTotal = (price) => {
     // We can use taxRate here
     const total = price + (price * taxRate)
     return total
@@ -52,12 +52,12 @@ Scope helps us:
 
 \`\`\`js
 // This works fine - each function has its own 'message'
-function sayHello() {
+const sayHello = () => {
     const message = "Hello!"
     console.log(message)
 }
 
-function sayGoodbye() {
+const sayGoodbye = () => {
     const message = "Goodbye!"
     console.log(message)
 }
@@ -76,11 +76,11 @@ sayGoodbye()    // Displays: Goodbye!
 \`\`\`js
 const playerName = "Mario"    // Global
 
-function startGame() {
+const startGame = () => {
     const lives = 3          // Local to startGame
     console.log(playerName + " starts with " + lives + " lives")
 
-    function loseLife() {
+    const loseLife = () => {
         const remaining = lives - 1    // Can see 'lives' from outer function
         console.log(playerName + " has " + remaining + " lives left")
     }
@@ -100,11 +100,11 @@ The code below has some scope problems. Fix them by moving variables to the righ
 `,
   exercise: {
     starterCode: `// This code has scope problems!
-function displayScore() {
+const displayScore = () => {
     console.log("Score: " + score)
 }
 
-function updateScore() {
+const updateScore = () => {
     score = score + 100
 }
 
@@ -114,11 +114,11 @@ updateScore()
 displayScore()`,
     solution: `let score = 0    // Changed to let since we're updating it
 
-function displayScore() {
+const displayScore = () => {
     console.log("Score: " + score)
 }
 
-function updateScore() {
+const updateScore = () => {
     score = score + 100
 }
 
@@ -135,13 +135,13 @@ displayScore()`,
         message: "Make sure score is declared as a global variable using 'let'"
       },
       {
-        name: "Function Structure",
+        name: "Arrow Function Structure",
         test: (code) => {
-          return code.includes('function displayScore') &&
-                 code.includes('function updateScore') &&
+          return code.includes('const displayScore = () =>') &&
+                 code.includes('const updateScore = () =>') &&
                  code.includes('score + 100')
         },
-        message: "Keep the functions but make sure they can access the score variable"
+        message: "Make sure to use arrow function syntax and ensure they can access the score variable"
       }
     ]
   }

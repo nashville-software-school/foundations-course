@@ -15,12 +15,12 @@ Functions can return any type of value:
 
 \`\`\`js
 // Returning a number
-function calculateDiscount(price) {
+const calculateDiscount = (price) => {
     return price * 0.2    // Returns 20% of the price
 }
 
 // Returning a string
-function getGreeting(timeOfDay) {
+const getGreeting = (timeOfDay) => {
     if (timeOfDay === "morning") {
         return "Good morning!"
     } else if (timeOfDay === "afternoon") {
@@ -31,7 +31,7 @@ function getGreeting(timeOfDay) {
 }
 
 // Returning a boolean
-function isOnSale(price) {
+const isOnSale = (price) => {
     return price < 20    // Returns true if price is less than 20
 }
 \`\`\`
@@ -41,7 +41,7 @@ function isOnSale(price) {
 Let's combine what we've learned to build useful functions:
 
 \`\`\`js
-function calculateGrade(score) {
+const calculateGrade = (score) => {
     if (score >= 90) {
         return "A"
     } else if (score >= 80) {
@@ -55,7 +55,7 @@ function calculateGrade(score) {
     }
 }
 
-function isPassing(score) {
+const isPassing = (score) => {
     // Use the previous function's result
     const grade = calculateGrade(score)
     return grade !== "F"    // Returns true for any grade except F
@@ -77,24 +77,24 @@ Return values are great for:
 
 \`\`\`js
 // Calculation example
-function celsiusToFahrenheit(celsius) {
+const celsiusToFahrenheit = (celsius) => {
     return (celsius * 9/5) + 32
 }
 
 // Condition example
-function canRideRollerCoaster(height, age) {
+const canRideRollerCoaster = (height, age) => {
     return height >= 48 && age >= 12
 }
 
 // Text formatting example
-function formatPhoneNumber(number) {
+const formatPhoneNumber = (number) => {
     return "(" + number.slice(0,3) + ") " +
            number.slice(3,6) + "-" +
            number.slice(6)
 }
 
 // Data conversion example
-function letterToNumber(grade) {
+const letterToNumber = (grade) => {
     if (grade === "A") return 4
     if (grade === "B") return 3
     if (grade === "C") return 2
@@ -105,18 +105,18 @@ function letterToNumber(grade) {
 
 ## Exercise: Game Score Calculator
 
-Create a function that calculates a player's final score in a game. The function should:
+Create an arrow function that calculates a player's final score in a game. The function should:
 1. Take base points and bonus multiplier as parameters
 2. Calculate total points (base points × multiplier)
 3. Return "High Score!" if total is 1000 or more, otherwise return "Keep trying!"
 `,
   exercise: {
-    starterCode: `// Create your function here
+    starterCode: `// Create your arrow function here
 // Example: calculateGameScore(500, 2.5) should return "High Score!"
 // because 500 × 2.5 = 1250, which is >= 1000
 
 `,
-    solution: `function calculateGameScore(points, multiplier) {
+    solution: `const calculateGameScore = (points, multiplier) => {
     const total = points * multiplier
     if (total >= 1000) {
         return "High Score!"
@@ -128,7 +128,8 @@ Create a function that calculates a player's final score in a game. The function
       {
         name: "High Score Test",
         test: (code) => {
-          return code.includes('function calculateGameScore') &&
+          return code.includes('const calculateGameScore') &&
+                 code.includes('=>') &&
                  code.includes('points') &&
                  code.includes('multiplier') &&
                  code.includes('* multiplier') &&
@@ -136,7 +137,7 @@ Create a function that calculates a player's final score in a game. The function
                  code.includes('"High Score!"') &&
                  code.includes('"Keep trying!"')
         },
-        message: "Make sure your function calculates the total score and returns the appropriate message"
+        message: "Make sure your arrow function calculates the total score and returns the appropriate message"
       },
       {
         name: "Return Values",

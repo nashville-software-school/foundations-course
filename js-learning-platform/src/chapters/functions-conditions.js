@@ -14,7 +14,7 @@ Functions become more powerful when they can make decisions. By using conditions
 Here's a simple function that makes a decision:
 
 \`\`\`js
-function isItHot(temperature) {
+const isItHot = (temperature) => {
     if (temperature > 85) {
         return "Yes, it's hot!"
     } else {
@@ -31,7 +31,7 @@ console.log(isItHot(75))    // Displays: No, it's not too bad.
 Functions can handle multiple conditions:
 
 \`\`\`js
-function getLetterGrade(score) {
+const getLetterGrade = (score) => {
     if (score >= 90) {
         return "A"
     } else if (score >= 80) {
@@ -55,7 +55,7 @@ console.log(getLetterGrade(45))    // Displays: F
 We can make decisions based on multiple inputs:
 
 \`\`\`js
-function canRideRollerCoaster(height, age) {
+const canRideRollerCoaster = (height, age) => {
     if (height < 48) {
         return "Too short to ride"
     }
@@ -81,7 +81,7 @@ console.log(canRideRollerCoaster(50, 10))    // Too young to ride
 You can use AND (&&) and OR (||) to check multiple conditions:
 
 \`\`\`js
-function isValidPassword(password) {
+const isValidPassword = (password) => {
     if (password.length < 8) {
         return "Password too short"
     }
@@ -113,13 +113,13 @@ console.log(isValidPassword("Zebra8891"))     // Password accepted
 
 ## Exercise: Ticket Price Calculator
 
-Create a function that calculates ticket prices based on:
+Create an arrow function that calculates ticket prices based on:
 - Age (children under 12 and seniors over 65 get 50% off)
 - Day of week (weekends cost $2 more)
 - Base ticket price is $10
 `,
   exercise: {
-    starterCode: `function calculateTicketPrice(age, isWeekend) {
+    starterCode: `const calculateTicketPrice = (age, isWeekend) => {
     // Your code here
     // Return the final ticket price
 }
@@ -128,7 +128,7 @@ Create a function that calculates ticket prices based on:
 // calculateTicketPrice(25, false) should return 10
 // calculateTicketPrice(8, true) should return 6
 // calculateTicketPrice(70, true) should return 6`,
-    solution: `function calculateTicketPrice(age, isWeekend) {
+    solution: `const calculateTicketPrice = (age, isWeekend) => {
     let price = 10
 
     // Add weekend surcharge first
@@ -147,14 +147,15 @@ Create a function that calculates ticket prices based on:
       {
         name: "Regular Adult Weekday",
         test: (code) => {
-          return code.includes('function calculateTicketPrice') &&
+          return code.includes('const calculateTicketPrice = (') &&
+                 code.includes('=>') &&
                  code.includes('price = 10') &&
                  code.includes('isWeekend') &&
                  code.includes('age <') &&
                  code.includes('age >=') &&
                  code.includes('0.5')
         },
-        message: "Make sure your function handles base price, weekend surcharge, and age discounts"
+        message: "Make sure your arrow function handles base price, weekend surcharge, and age discounts"
       },
       {
         name: "Price Calculations",

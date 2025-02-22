@@ -14,7 +14,7 @@ Let's review everything we've learned about functions by seeing how all the conc
 1. **Function Basics**
 \`\`\`js
 // Creating (defining) a function
-function greet(name) {
+const greet = (name) => {
     console.log("Hello, " + name + "!")
 }
 
@@ -25,7 +25,7 @@ greet("Alex")    // Displays: Hello, Alex!
 2. **Parameters and Arguments**
 \`\`\`js
 // Parameters make functions flexible
-function calculateArea(width, height) {
+const calculateArea = (width, height) => {
     return width * height
 }
 
@@ -36,11 +36,11 @@ console.log(calculateArea(10, 20))   // 200
 
 3. **Return Values**
 \`\`\`js
-function isEven(number) {
+const isEven = (number) => {
     return number % 2 === 0
 }
 
-function formatResult(number) {
+const formatResult = (number) => {
     if (isEven(number)) {
         return number + " is even"
     } else {
@@ -56,7 +56,7 @@ console.log(formatResult(7))    // "7 is odd"
 \`\`\`js
 const taxRate = 0.1    // Global scope
 
-function calculateTotal(price) {
+const calculateTotal = (price) => {
     const tax = price * taxRate    // Function scope
     return price + tax
 }
@@ -67,15 +67,15 @@ console.log(calculateTotal(50))    // 55
 
 5. **Functions Working Together**
 \`\`\`js
-function validateInput(text) {
+const validateInput = (text) => {
     return text.length >= 3
 }
 
-function formatInput(text) {
+const formatInput = (text) => {
     return text.trim().toLowerCase()
 }
 
-function processUsername(username) {
+const processUsername = (username) => {
     if (!validateInput(username)) {
         return "Username too short"
     }
@@ -96,17 +96,17 @@ const MIN_AGE = 13
 const MAX_PLAYERS = 4
 
 // Helper function to validate age
-function isValidAge(age) {
+const isValidAge = (age) => {
     return age >= MIN_AGE
 }
 
 // Helper function to check team size
-function hasTeamSpace(currentPlayers) {
+const hasTeamSpace = (currentPlayers) => {
     return currentPlayers < MAX_PLAYERS
 }
 
 // Helper function to create player object
-function createPlayer(name, age, skill) {
+const createPlayer = (name, age, skill) => {
     return {
         name: name,
         age: age,
@@ -116,7 +116,7 @@ function createPlayer(name, age, skill) {
 }
 
 // Main function that uses all the helpers
-function addPlayerToTeam(name, age, skill, currentPlayers) {
+const addPlayerToTeam = (name, age, skill, currentPlayers) => {
     // First check age
     if (!isValidAge(age)) {
         return "Player must be at least " + MIN_AGE + " years old"
@@ -148,40 +148,40 @@ Create a complete quiz system using everything you've learned. You'll need to:
 `,
   exercise: {
     starterCode: `// 1. Function to create a question
-function createQuestion(text, correctAnswer) {
+const createQuestion = (text, correctAnswer) => {
     // Return an object with the question text and correct answer
 }
 
 // 2. Function to check an answer
-function checkAnswer(question, userAnswer) {
+const checkAnswer = (question, userAnswer) => {
     // Return true if the answer is correct, false otherwise
 }
 
 // 3. Function to calculate score
-function calculateScore(totalQuestions, correctAnswers) {
+const calculateScore = (totalQuestions, correctAnswers) => {
     // Return percentage score
 }
 
 // 4. Main function to process a quiz attempt
-function processQuizAttempt(questions, answers) {
+const processQuizAttempt = (questions, answers) => {
     // Use the helper functions to process the quiz and return results
 }`,
-    solution: `function createQuestion(text, correctAnswer) {
+    solution: `const createQuestion = (text, correctAnswer) => {
     return {
         text: text,
         correctAnswer: correctAnswer
     }
 }
 
-function checkAnswer(question, userAnswer) {
+const checkAnswer = (question, userAnswer) => {
     return question.correctAnswer.toLowerCase() === userAnswer.toLowerCase()
 }
 
-function calculateScore(totalQuestions, correctAnswers) {
+const calculateScore = (totalQuestions, correctAnswers) => {
     return (correctAnswers / totalQuestions) * 100
 }
 
-function processQuizAttempt(questions, answers) {
+const processQuizAttempt = (questions, answers) => {
     let correct = 0
 
     for (let i = 0; i < questions.length; i++) {
@@ -198,40 +198,44 @@ function processQuizAttempt(questions, answers) {
       {
         name: "Question Creation",
         test: (code) => {
-          return code.includes('createQuestion') &&
+          return code.includes('const createQuestion = (') &&
+                 code.includes('=>') &&
                  code.includes('return {') &&
                  code.includes('text:') &&
                  code.includes('correctAnswer:')
         },
-        message: "Make sure createQuestion returns an object with text and correctAnswer properties"
+        message: "Make sure createQuestion is an arrow function that returns an object with text and correctAnswer properties"
       },
       {
         name: "Answer Checking",
         test: (code) => {
-          return code.includes('checkAnswer') &&
+          return code.includes('const checkAnswer = (') &&
+                 code.includes('=>') &&
                  code.includes('toLowerCase') &&
                  code.includes('question.correctAnswer')
         },
-        message: "Make sure checkAnswer compares answers case-insensitively"
+        message: "Make sure checkAnswer is an arrow function that compares answers case-insensitively"
       },
       {
         name: "Score Calculation",
         test: (code) => {
-          return code.includes('calculateScore') &&
+          return code.includes('const calculateScore = (') &&
+                 code.includes('=>') &&
                  code.includes('/ totalQuestions') &&
                  code.includes('* 100')
         },
-        message: "Make sure calculateScore returns a percentage"
+        message: "Make sure calculateScore is an arrow function that returns a percentage"
       },
       {
         name: "Quiz Processing",
         test: (code) => {
-          return code.includes('processQuizAttempt') &&
+          return code.includes('const processQuizAttempt = (') &&
+                 code.includes('=>') &&
                  code.includes('for') &&
                  code.includes('questions.length') &&
                  code.includes('correct++')
         },
-        message: "Make sure processQuizAttempt uses all helper functions and returns a complete result"
+        message: "Make sure processQuizAttempt is an arrow function that uses all helper functions and returns a complete result"
       }
     ]
   }

@@ -14,7 +14,7 @@ Parameters are special variables that are local to a function. Let's understand 
 When you create a parameter, it becomes a local variable in your function:
 
 \`\`\`js
-function greet(name) {      // 'name' is a local variable
+const greet = (name) => {      // 'name' is a local variable
     console.log("Hello, " + name)
 }
 
@@ -29,7 +29,7 @@ What happens when a parameter has the same name as a global variable?
 \`\`\`js
 const name = "Global Name"    // Global variable
 
-function greet(name) {        // Parameter
+const greet = (name) => {     // Parameter
     // Inside here, 'name' refers to the parameter
     // not the global variable
     console.log("Hello, " + name)
@@ -46,7 +46,7 @@ Parameters can work with both local and global variables:
 \`\`\`js
 const taxRate = 0.1         // Global variable
 
-function calculateTotal(price) {
+const calculateTotal = (price) => {
     const tax = price * taxRate    // Using parameter with global
     const total = price + tax      // Using parameter with local
     return total
@@ -60,7 +60,7 @@ console.log(calculateTotal(50))    // Displays: 55
 Changes to parameters don't affect the original values:
 
 \`\`\`js
-function doubleNumber(num) {
+const doubleNumber = (num) => {
     num = num * 2              // Only changes the local copy
     console.log("Inside: " + num)
 }
@@ -75,12 +75,12 @@ console.log(myNumber)          // Still displays: 5
 Inner functions can see parameters from outer functions:
 
 \`\`\`js
-function createGame(playerName) {
-    function start() {
+const createGame = (playerName) => {
+    const start = () => {
         console.log(playerName + " is starting the game")
     }
 
-    function end() {
+    const end = () => {
         console.log(playerName + " finished the game")
     }
 
@@ -109,7 +109,7 @@ Create a score keeping system with parameters and scope. You'll need to:
     starterCode: `// Create a global high score
 let highScore = 0
 
-// Create your function here
+// Create your arrow function here
 // It should:
 // 1. Take player name and score as parameters
 // 2. Compare score to high score
@@ -119,7 +119,7 @@ let highScore = 0
 `,
     solution: `let highScore = 0
 
-function checkHighScore(playerName, score) {
+const checkHighScore = (playerName, score) => {
     if (score > highScore) {
         highScore = score
         return playerName + " set a new high score of " + score + "!"
@@ -131,12 +131,13 @@ function checkHighScore(playerName, score) {
       {
         name: "Function Structure",
         test: (code) => {
-          return code.includes('function checkHighScore') &&
+          return code.includes('const checkHighScore = (') &&
+                 code.includes('=>') &&
                  code.includes('playerName') &&
                  code.includes('score') &&
                  code.includes('highScore')
         },
-        message: "Make sure your function takes both playerName and score parameters"
+        message: "Make sure your arrow function takes both playerName and score parameters"
       },
       {
         name: "High Score Logic",

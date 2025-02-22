@@ -30,6 +30,7 @@ import { functionsNamingChapter } from './functions-naming'
 import { functionsParametersChapter } from './functions-parameters'
 import { functionsArgumentsChapter } from './functions-arguments'
 import { functionsMultipleParametersChapter } from './functions-multiple-parameters'
+import { functionsArrowSyntaxChapter } from './functions-arrow-syntax'
 import { functionsReturnIntroChapter } from './functions-return-intro'
 import { functionsReturnWorkingChapter } from './functions-return-working'
 import { functionsReturnPracticeChapter } from './functions-return-practice'
@@ -80,6 +81,7 @@ export const chapters = [
   functionsParametersChapter,
   functionsArgumentsChapter,
   functionsMultipleParametersChapter,
+  functionsArrowSyntaxChapter,
   functionsReturnIntroChapter,
   functionsReturnWorkingChapter,
   functionsReturnPracticeChapter,

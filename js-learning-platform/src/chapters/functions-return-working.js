@@ -14,7 +14,7 @@ Now that we know functions can return values, let's explore the different ways w
 The most common way to use a return value is to store it in a variable:
 
 \`\`\`js
-function calculateArea(width, height) {
+const calculateArea = (width, height) => {
     return width * height
 }
 
@@ -28,7 +28,7 @@ console.log("The room is " + roomArea + " square feet")
 We can use return values directly in calculations:
 
 \`\`\`js
-function getPrice(item) {
+const getPrice = (item) => {
     if (item === "book") {
         return 9.99
     } else if (item === "pen") {
@@ -52,11 +52,11 @@ console.log("Total order: $" + total)
 We can use the return value from one function as an argument for another:
 
 \`\`\`js
-function addTax(price) {
+const addTax = (price) => {
     return price * 1.1    // Adds 10% tax
 }
 
-function formatPrice(price) {
+const formatPrice = (price) => {
     return "$" + price.toFixed(2)   // Adds $ and fixes decimals
 }
 
@@ -75,11 +75,11 @@ console.log(formatPrice(addTax(19.99)))   // Same result!
 Return values work great in if statements:
 
 \`\`\`js
-function isOldEnough(age) {
+const isOldEnough = (age) => {
     return age >= 16
 }
 
-function canDrive(age) {
+const canDrive = (age) => {
     if (isOldEnough(age)) {
         console.log("Yes, you can drive!")
     } else {
@@ -103,7 +103,7 @@ Here's a summary of what you can do with return values:
 
 ## Exercise: Shopping Cart Functions
 
-Create two functions that work together to calculate a shopping total:
+Create two arrow functions that work together to calculate a shopping total:
 1. \`calculateSubtotal\` - takes quantity and price, returns their product
 2. \`calculateTotal\` - takes a subtotal, adds 8% tax, and returns the final amount
 `,
@@ -118,11 +118,11 @@ Create two functions that work together to calculate a shopping total:
 // 1. Calculate subtotal for 3 items at $4.99 each
 // 2. Calculate the final total with tax
 `,
-    solution: `function calculateSubtotal(quantity, price) {
+    solution: `const calculateSubtotal = (quantity, price) => {
     return quantity * price
 }
 
-function calculateTotal(subtotal) {
+const calculateTotal = (subtotal) => {
     return subtotal * 1.08
 }
 
@@ -132,23 +132,25 @@ const finalTotal = calculateTotal(subtotal)`,
       {
         name: "Subtotal Function",
         test: (code) => {
-          return code.includes('function calculateSubtotal') &&
+          return code.includes('const calculateSubtotal') &&
+                 code.includes('=>') &&
                  code.includes('quantity') &&
                  code.includes('price') &&
                  code.includes('return') &&
                  code.includes('*')
         },
-        message: "Make sure calculateSubtotal multiplies quantity and price"
+        message: "Make sure calculateSubtotal is an arrow function that multiplies quantity and price"
       },
       {
         name: "Total Function",
         test: (code) => {
-          return code.includes('function calculateTotal') &&
+          return code.includes('const calculateTotal') &&
+                 code.includes('=>') &&
                  code.includes('subtotal') &&
                  code.includes('return') &&
                  code.includes('1.08')
         },
-        message: "Make sure calculateTotal adds 8% tax to the subtotal"
+        message: "Make sure calculateTotal is an arrow function that adds 8% tax to the subtotal"
       },
       {
         name: "Using Functions",

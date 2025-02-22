@@ -3,7 +3,7 @@ export const functionsReturnIntroChapter = {
   title: 'Introduction to Return Values',
   path: '/functions-return-intro',
   sectionId: 'functions',
-  previousChapterId: 'functions-multiple-parameters',
+  previousChapterId: 'functions-arrow-syntax',
   nextChapterId: 'functions-return-working',
   content: `## Getting Values Back from Functions
 
@@ -17,7 +17,7 @@ Think of a function like a delivery service:
 - The return value is like the finished dish being served
 
 \`\`\`js
-function addFive(number) {
+const addFive = (number) => {
     return number + 5    // Gives back the number plus 5
 }
 
@@ -31,12 +31,12 @@ Let's see the important difference:
 
 \`\`\`js
 // This function just displays a value
-function showDouble(number) {
+const showDouble = (number) => {
     console.log(number * 2)
 }
 
 // This function returns a value
-function getDouble(number) {
+const getDouble = (number) => {
     return number * 2
 }
 
@@ -57,7 +57,7 @@ Return values are useful because we can:
 3. Pass them to other functions
 
 \`\`\`js
-function calculateTax(price) {
+const calculateTax = (price) => {
     return price * 0.1    // Returns 10% of the price
 }
 
@@ -76,7 +76,7 @@ console.log(calculateTax(50))   // Displays: 5
 When a function hits a return statement, it stops running right there:
 
 \`\`\`js
-function checkAge(age) {
+const checkAge = (age) => {
     if (age < 0) {
         return "Invalid age"    // Function stops here if age is negative
     }
@@ -96,27 +96,28 @@ console.log(checkAge(25))    // Displays: Valid age
 
 ## Exercise: Your First Return Value
 
-Create a function called \`makeGreeting\` that takes a name and returns a greeting message. Don't use \`console.log\` - use \`return\` instead!
+Create an arrow function called \`makeGreeting\` that takes a name and returns a greeting message. Don't use \`console.log\` - use \`return\` instead!
 `,
   exercise: {
-    starterCode: `// Create a function that returns "Hello, NAME!"
+    starterCode: `// Create an arrow function that returns "Hello, NAME!"
 // For example: makeGreeting("John") should return "Hello, John!"
 
 `,
-    solution: `function makeGreeting(name) {
+    solution: `const makeGreeting = (name) => {
     return "Hello, " + name + "!"
 }`,
     tests: [
       {
         name: "Function Returns Greeting",
         test: (code) => {
-          return code.includes('function makeGreeting') &&
+          return code.includes('const makeGreeting') &&
+                 code.includes('=>') &&
                  code.includes('return') &&
                  !code.includes('console.log') &&
                  code.includes('"Hello, "') &&
                  code.includes('+ name +')
         },
-        message: "Make sure your function returns a greeting message using return, not console.log"
+        message: "Make sure your arrow function returns a greeting message using return, not console.log"
       }
     ]
   }
