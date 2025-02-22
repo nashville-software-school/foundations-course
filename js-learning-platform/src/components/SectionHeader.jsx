@@ -5,10 +5,10 @@ const sectionHeaderStyles = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.5rem;
+  padding: 0.5rem 0.5rem;
   background: #f8f9fa;
   border-radius: 8px;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
   user-select: none;
@@ -20,7 +20,7 @@ const sectionHeaderStyles = css`
   h2 {
     margin: 0;
     color: #2c3e50;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .expand-icon {
