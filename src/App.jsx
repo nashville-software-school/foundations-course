@@ -6,11 +6,11 @@ import './App.css'
 
 function App() {
   return (
-    <Router>
+    <Router basename="/foundations-course">
       <ChapterProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Navigate to="/arrays-intro" replace />} />
+            <Route index element={<Navigate to="/variables-intro" replace />} />
             <Route path=":chapterId" element={<Chapter />} />
           </Route>
         </Routes>
