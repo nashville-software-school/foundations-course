@@ -201,11 +201,19 @@ function Chapter() {
   const [testResults, setTestResults] = useState(null)
   const [showResults, setShowResults] = useState(true)
 
+  const scrollToTop = () => {
+    const contentContainer = document.querySelector('.content-container')
+    if (contentContainer) {
+      contentContainer.scrollTop = 0
+    }
+  }
+
   const handlePreviousClick = () => {
     const previousChapter = getPreviousChapter(currentChapter.id)
     if (previousChapter) {
       navigate(`/${previousChapter.id}`)
       loadChapter(previousChapter.id)
+      scrollToTop()
     }
   }
 
@@ -214,6 +222,7 @@ function Chapter() {
     if (nextChapter) {
       navigate(`/${nextChapter.id}`)
       loadChapter(nextChapter.id)
+      scrollToTop()
     }
   }
 

@@ -106,29 +106,26 @@ function calculateDiscountedPrice(price) {
       {
         name: "First Function Rename",
         test: (code) => {
-          return code.includes('isGreaterThanHundred') ||
-                 code.includes('checkIfGreaterThanHundred') ||
-                 code.includes('isAboveHundred')
+          return code.toLowerCase().includes('greaterthan') ||
+                 code.toLowerCase().includes('isabove') ||
+                 code.toLowerCase().includes('morethan')
         },
         message: "The first function should have a name that indicates it's checking if a number is greater than 100"
       },
       {
         name: "Second Function Rename",
         test: (code) => {
-          return code.includes('displayWelcomeMessage') ||
-                 code.includes('showWelcomeMessage') ||
-                 code.includes('createWelcomeMessage')
+          return code.toLowerCase().includes('welcome')
         },
         message: "The second function should have a name that indicates it's displaying a welcome message"
       },
       {
         name: "Third Function Rename",
         test: (code) => {
-          return code.includes('calculateDiscountedPrice') ||
-                 code.includes('applyDiscount') ||
-                 code.includes('getDiscountedPrice')
+          return code.toLowerCase().includes('discountprice') ||
+                 code.toLowerCase().includes('calculatediscount')
         },
-        message: "The third function should have a name that indicates it's calculating a discounted price"
+        message: "The third function should have a name that indicates it's calculating a discounted price. Perhaps `calculateDiscount` or `disacountPrice`?"
       }
     ]
   }
