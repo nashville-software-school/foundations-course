@@ -1,10 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { useChapter } from '../context/ChapterContext'
 import Editor from '@monaco-editor/react'
 import { marked } from 'marked'
 import { css } from '@emotion/react'
+import CodeBlock from './CodeBlock'
+import * as ReactDOM from 'react-dom/client'
 
 const chapterStyles = css`
   display: grid;
@@ -159,6 +161,32 @@ function Chapter() {
   const [testResults, setTestResults] = useState(null)
   const [showResults, setShowResults] = useState(true)
 
+  // Configure marked renderer for code blocks
+  const renderer = useMemo(() => {
+    const renderer = new marked.Renderer()
+    renderer.code = (code, language) => {
+      if (language === 'javascript' || language === 'js') {
+        // Create a unique ID for this code block
+        const id = `code-block-${Math.random().toString(36).substr(2, 9)}`
+        // Store the code directly in a data attribute
+        return `<div id="${id}" class="code-block-wrapper">${code}</div>`
+      }
+      // For non-JS code blocks, use pre/code tags
+      return `<pre><code class="language-${language}">${code}</code></pre>`
+    }
+    return renderer
+  }, [])
+
+  // Process content with marked and custom renderer
+  const processedContent = useMemo(() => {
+    if (!chapterContent?.content) return ''
+    return marked(chapterContent.content, {
+      renderer,
+      breaks: true,
+      gfm: true
+    })
+  }, [chapterContent?.content, renderer])
+
   // Auto-hide test results after 5 seconds
   useEffect(() => {
     let timer
@@ -214,8 +242,20 @@ function Chapter() {
       <section className="content-section">
         <h1>{currentChapter?.title}</h1>
         <div
-          dangerouslySetInnerHTML={{
-            __html: marked(chapterContent.content, { breaks: true })
+          dangerouslySetInnerHTML={{ __html: processedContent }}
+          ref={contentRef => {
+            if (contentRef) {
+              // Hydrate code blocks with CodeBlock components
+              contentRef.querySelectorAll('.code-block-wrapper').forEach(block => {
+                if (block.children.length === 0) {
+                  const code = block.textContent || ''
+                  // Clear the text content since we'll render it through Monaco
+                  block.textContent = ''
+                  const root = ReactDOM.createRoot(block)
+                  root.render(<CodeBlock code={code} />)
+                }
+              })
+            }
           }}
         />
       </section>

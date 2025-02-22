@@ -36,7 +36,9 @@ const mainBath =  270
 const guestBath =  100
 const guestBedroom =  415
 
-// To avoid variable making overload, you can do the addition inside the interpolation
+/* To avoid variable making overload,
+   you can do the addition inside the
+   interpolation */
 
 console.log(\`Living room: \${livingRoom}\`)
 console.log(\`Kitchen: \${kitchen}\`)

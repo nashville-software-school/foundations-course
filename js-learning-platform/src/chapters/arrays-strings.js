@@ -34,7 +34,7 @@ if (pineappleBelongsOnPizza && theyWereOnABreak) {
 }
 
 if (pineappleBelongsOnPizza && theOfficeIsFunny) {
-  // Since both of the variables' values are not true, this won't run
+  // This won't run
   console.log("Bad")
 }
 \`\`\`

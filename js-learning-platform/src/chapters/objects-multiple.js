@@ -5,9 +5,7 @@ export const objectsMultipleChapter = {
   sectionId: 'objects',
   previousChapterId: 'objects-intro',
   nextChapterId: 'objects-collections',
-  content: `## Multiple Objects
-
-Since software developers utilize objects to represent real-world things that need to be automated with software, it is critical to know that the properties of the "things" are. Consider an example where a fire chief needs to assign some firefighters to fire stations. What would need to be an object in this scenario.
+  content: `Since software developers utilize objects to represent real-world things that need to be automated with software, it is critical to know that the properties of the "things" are. Consider an example where a fire chief needs to assign some firefighters to fire stations. What would need to be an object in this scenario.
 
 1. An object representing each firefighter
 2. An object representing each fire station
@@ -21,7 +19,7 @@ const fireChief = {
   lastName: "Robinson",
   yearsOfService: 13,
   emtCertification: true,
-  paramediaCertification: true,
+  paramedicCertification: true,
   firefighterCertification: true
 }
 \`\`\`
@@ -34,7 +32,7 @@ const matthew = {
   lastName: "Ingersoll",
   yearsOfService: 4,
   emtCertification: false,
-  paramediaCertification: true,
+  paramedicCertification: true,
   firefighterCertification: true
 }
 
@@ -94,23 +92,16 @@ Both flower objects should have the following keys.
 
 You can decide on the values for each of the properties.`,
   exercise: {
-    starterCode: `const createTulip = () => {
-    // Complete your tulip object here.
-    const tulip = {
+    starterCode: `// Create the properties for a tulip object here.
+const tulip = {
 
-    }
-
-    return tulip
 }
 
-const createRose = () => {
-    // Complete your rose object here.
-    const rose = {
+// Complete the rose object
+const rose = {
 
-    }
-
-    return rose
-}`,
+}
+`,
     solution: `const createTulip = () => {
     const tulip = {
         color: "yellow",
@@ -136,48 +127,35 @@ const createRose = () => {
       {
         name: "Tulip Object Creation",
         test: (code) => {
-          return code.includes('const tulip = {') &&
-                 code.includes('return tulip');
+          const func = new Function(code + '\nreturn {tulip, rose}');
+          const { tulip, rose } = func();
+          return tulip.hasOwnProperty('color') &&
+                  tulip.hasOwnProperty('stemLength') &&
+                  tulip.hasOwnProperty('growingSeason') &&
+                  tulip.hasOwnProperty('thorny') &&
+                  rose.hasOwnProperty('color') &&
+                  rose.hasOwnProperty('stemLength') &&
+                  rose.hasOwnProperty('growingSeason') &&
+                  rose.hasOwnProperty('thorny');
         },
-        message: "Make sure you're creating and returning a tulip object"
-      },
-      {
-        name: "Rose Object Creation",
-        test: (code) => {
-          return code.includes('const rose = {') &&
-                 code.includes('return rose');
-        },
-        message: "Make sure you're creating and returning a rose object"
-      },
-      {
-        name: "Tulip Properties",
-        test: (code) => {
-          return code.includes('color:') &&
-                 code.includes('stemLength:') &&
-                 code.includes('growingSeason:') &&
-                 code.includes('thorny: false');
-        },
-        message: "Make sure your tulip has all required properties with appropriate values"
-      },
-      {
-        name: "Rose Properties",
-        test: (code) => {
-          return code.includes('color:') &&
-                 code.includes('stemLength:') &&
-                 code.includes('growingSeason:') &&
-                 code.includes('thorny: true');
-        },
-        message: "Make sure your rose has all required properties with appropriate values"
+        message: "Make sure you add all required properties to the tulip and rose objects"
       },
       {
         name: "Property Types",
         test: (code) => {
-          const hasStringProps = code.includes('"') || code.includes("'");
-          const hasNumberProp = /stemLength:\s*\d+/.test(code);
-          const hasBooleanProp = /thorny:\s*(true|false)/.test(code);
-          return hasStringProps && hasNumberProp && hasBooleanProp;
+          const func = new Function(code + '\nreturn {tulip, rose}');
+          const { tulip, rose } = func();
+          return typeof tulip.color === 'string' &&
+                  typeof tulip.stemLength === 'number' &&
+                  typeof tulip.growingSeason === 'string' &&
+                  typeof tulip.thorny === 'boolean' &&
+                  typeof rose.color === 'string' &&
+                  typeof rose.stemLength === 'number' &&
+                  typeof rose.growingSeason === 'string' &&
+                  typeof rose.thorny === 'boolean';
         },
-        message: "Make sure you're using the correct data types for each property (strings, numbers, and booleans)"
+        message: `Make sure you're using the correct data types for each property.
+Color should be a string. stemLength should be a number. growingSeason should be a string. thorny should be a boolean.`
       }
     ]
   }
