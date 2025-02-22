@@ -11,18 +11,30 @@ import * as ReactDOM from 'react-dom/client'
 const chapterStyles = css`
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 2rem;
-  padding: 2rem;
+  gap: 1rem;
+  padding: 1rem;
   height: 100%;
   max-height: 100vh;
   overflow: hidden;
 
-  .content-section {
-    overflow-y: auto;
-    padding: 2rem;
-    background: white;
+  .content-container {
+    flex: 1;
+    min-height: 0;
     border-radius: 8px;
+    overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: white;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+
+
+  .content-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: calc(100vh - 4rem);
+
 
     h1 {
       color: #2c3e50;
@@ -240,24 +252,35 @@ function Chapter() {
   return (
     <div css={chapterStyles}>
       <section className="content-section">
-        <h1>{currentChapter?.title}</h1>
-        <div
-          dangerouslySetInnerHTML={{ __html: processedContent }}
-          ref={contentRef => {
-            if (contentRef) {
-              // Hydrate code blocks with CodeBlock components
-              contentRef.querySelectorAll('.code-block-wrapper').forEach(block => {
-                if (block.children.length === 0) {
-                  const code = block.textContent || ''
-                  // Clear the text content since we'll render it through Monaco
-                  block.textContent = ''
-                  const root = ReactDOM.createRoot(block)
-                  root.render(<CodeBlock code={code} />)
-                }
-              })
-            }
-          }}
-        />
+        <div className="content-container">
+          <h1>{currentChapter?.title}</h1>
+          <div
+            dangerouslySetInnerHTML={{ __html: processedContent }}
+            ref={contentRef => {
+              if (contentRef) {
+                // Hydrate code blocks with CodeBlock components
+                contentRef.querySelectorAll('.code-block-wrapper').forEach(block => {
+                  if (block.children.length === 0) {
+                    const code = block.textContent || ''
+                    // Clear the text content since we'll render it through Monaco
+                    block.textContent = ''
+                    const root = ReactDOM.createRoot(block)
+                    root.render(<CodeBlock code={code} />)
+                  }
+                })
+              }
+            }}
+          />
+        </div>
+
+        <div className="button-container">
+          <button className="nav-button previous-button" onClick={() => {}}>
+            Previous
+          </button>
+          <button className="nav-button next-button" onClick={() => {}}>
+            Next
+          </button>
+        </div>
       </section>
 
       <section className="editor-section">
