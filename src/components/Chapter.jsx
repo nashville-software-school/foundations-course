@@ -6,6 +6,7 @@ import Editor from '@monaco-editor/react'
 import { marked } from 'marked'
 import { css } from '@emotion/react'
 import CodeBlock from './CodeBlock'
+import MultiFileEditor from './MultiFileEditor'
 import * as ReactDOM from 'react-dom/client'
 
 const chapterStyles = css`
@@ -28,13 +29,11 @@ const chapterStyles = css`
     overflow-y: auto;
   }
 
-
   .content-section {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     height: calc(100vh - 4rem);
-
 
     h1 {
       color: #2c3e50;
@@ -197,7 +196,7 @@ function Chapter() {
   const { chapterId } = useParams()
   const navigate = useNavigate()
   const { currentChapter, chapterContent, loadChapter, getPreviousChapter, getNextChapter } = useChapter()
-  const [code, setCode] = useState('')
+  const [files, setFiles] = useState({})
   const [testResults, setTestResults] = useState(null)
   const [showResults, setShowResults] = useState(true)
 
@@ -231,12 +230,9 @@ function Chapter() {
     const renderer = new marked.Renderer()
     renderer.code = (code, language) => {
       if (language === 'javascript' || language === 'js') {
-        // Create a unique ID for this code block
         const id = `code-block-${Math.random().toString(36).substr(2, 9)}`
-        // Store the code directly in a data attribute
         return `<div id="${id}" class="code-block-wrapper">${code}</div>`
       }
-      // For non-JS code blocks, use pre/code tags
       return `<pre><code class="language-${language}">${code}</code></pre>`
     }
     return renderer
@@ -252,7 +248,7 @@ function Chapter() {
     })
   }, [chapterContent?.content, renderer])
 
-  // Auto-hide test results after 5 seconds
+  // Auto-hide test results after 8 seconds
   useEffect(() => {
     let timer
     if (testResults) {
@@ -272,19 +268,26 @@ function Chapter() {
 
   useEffect(() => {
     if (chapterContent?.exercise) {
-      setCode(chapterContent.exercise.starterCode)
+      // Handle both single-file and multi-file exercises
+      if (typeof chapterContent.exercise.starterCode === 'string') {
+        // Single file exercise
+        setFiles({ 'index.js': chapterContent.exercise.starterCode })
+      } else {
+        // Multi-file exercise
+        setFiles(chapterContent.exercise.starterCode)
+      }
     }
   }, [chapterContent])
 
-  const handleEditorChange = (value) => {
-    setCode(value)
+  const handleFilesChange = (newFiles) => {
+    setFiles(newFiles)
   }
 
   const runTests = () => {
     if (chapterContent?.exercise?.tests) {
       const results = chapterContent.exercise.tests.map(test => ({
         name: test.name,
-        passed: test.test(code),
+        passed: test.test(files),
         message: test.message
       }))
 
@@ -311,11 +314,9 @@ function Chapter() {
             dangerouslySetInnerHTML={{ __html: processedContent }}
             ref={contentRef => {
               if (contentRef) {
-                // Hydrate code blocks with CodeBlock components
                 contentRef.querySelectorAll('.code-block-wrapper').forEach(block => {
                   if (block.children.length === 0) {
                     const code = block.textContent || ''
-                    // Clear the text content since we'll render it through Monaco
                     block.textContent = ''
                     const root = ReactDOM.createRoot(block)
                     root.render(<CodeBlock code={code} />)
@@ -346,21 +347,36 @@ function Chapter() {
 
       <section className="editor-section">
         <div className="editor-container">
-          <Editor
-            height="100%"
-            defaultLanguage="javascript"
-            theme="vs-light"
-            value={code}
-            onChange={handleEditorChange}
-            options={{
-              minimap: { enabled: false },
-              fontSize: 14,
-              lineNumbers: 'on',
-              scrollBeyondLastLine: false,
-              automaticLayout: true,
-              padding: { top: 16, bottom: 16 }
-            }}
-          />
+          {Object.keys(files).length > 1 ? (
+            <MultiFileEditor
+              files={files}
+              onChange={handleFilesChange}
+              options={{
+                minimap: { enabled: false },
+                fontSize: 14,
+                lineNumbers: 'on',
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                padding: { top: 16, bottom: 16 }
+              }}
+            />
+          ) : (
+            <Editor
+              height="100%"
+              defaultLanguage="javascript"
+              theme="vs-light"
+              value={files['index.js']}
+              onChange={(value) => handleFilesChange({ 'index.js': value })}
+              options={{
+                minimap: { enabled: false },
+                fontSize: 14,
+                lineNumbers: 'on',
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                padding: { top: 16, bottom: 16 }
+              }}
+            />
+          )}
         </div>
 
         <button className="test-button" onClick={runTests}>
@@ -376,7 +392,7 @@ function Chapter() {
             >
               ✕
             </button>
-            <h3> {testResults.passed ? '✅ Tests Passed!' : '❌ Tests Failed'} </h3>
+            <h3>{testResults.passed ? '✅ Tests Passed!' : '❌ Tests Failed'}</h3>
             <div
               dangerouslySetInnerHTML={{
                 __html: marked(testResults.message.split('\n').map(line => line.trim()).join('\n'), {

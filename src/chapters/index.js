@@ -40,6 +40,7 @@ import { functionsConditionsChapter } from './functions-conditions'
 import { functionsLoopsChapter } from './functions-loops'
 import { functionsCallingFunctionsChapter } from './functions-calling-functions'
 import { functionsReviewChapter } from './functions-review'
+import { modulesChapters } from './modules'
 
 export const chapters = [
   // Variables and Values section (first section)
@@ -90,7 +91,10 @@ export const chapters = [
   functionsConditionsChapter,
   functionsLoopsChapter,
   functionsCallingFunctionsChapter,
-  functionsReviewChapter
+  functionsReviewChapter,
+
+  // Modules section
+  ...modulesChapters
 ]
 
 /**
