@@ -4,6 +4,7 @@ export const evaluationsChapter = {
   path: '/evaluations',
   sectionId: 'variables-and-values',
   previousChapterId: 'boolean-logic',
+  nextChapterId: 'variables-review',
   content: `In this part of the course, you will be practicing using the greater than \`>\` operator, the greater than or equal to \`>=\` operator, the less than \`<\` operator, the \`&&\` operator to test for more than one condition, and writing more than one condition using the \`else if\` combination of keywords.
 
 ## The Big Party

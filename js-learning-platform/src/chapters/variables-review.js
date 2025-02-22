@@ -4,6 +4,7 @@ export const variablesReviewChapter = {
   path: '/variables-review',
   sectionId: 'variables-and-values',
   previousChapterId: 'evaluations',
+  nextChapterId: 'array-intro',
   content: `You are going to have to come up with your own variable names and values in this review. You will likely need to go back to previous exercises to review the concepts and look at the code that you have already written. That is highly encouraged, because that's what professional software developers do. No experienced developer will tell you that all of the information is memorized. They review their previous code all the time in order to apply it in new situations.
 
 You will be using the following concepts in this exercise:

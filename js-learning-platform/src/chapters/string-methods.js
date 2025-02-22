@@ -4,6 +4,7 @@ export const stringMethodsChapter = {
   path: '/string-methods',
   sectionId: 'variables-and-values',
   previousChapterId: 'multiline-strings',
+  nextChapterId: 'boolean-logic',
   content: `JavaScript provides many powerful built-in methods to work with strings. These methods help you manipulate and transform text data in various ways. Let's explore the most commonly used string methods with practical examples.
 
 ## Length Property

@@ -4,6 +4,7 @@ export const booleanLogicChapter = {
   path: '/boolean-logic',
   sectionId: 'variables-and-values',
   previousChapterId: 'string-methods',
+  nextChapterId: 'evaluations',
   content: `You're sick.
 
 You had to call in and tell your team that you need to spend the day at home, and in all likelihood, go to the clinic and see if it is a serious condition. You have vague symptoms, but until you know what the condition is, you won't know how to take care of yourself.

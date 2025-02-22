@@ -3,7 +3,8 @@ export const mathOperationsChapter = {
     title: "\"Scary\" Math Operations",
     path: "/math-operations",
     sectionId: "variables-and-values",
-    previousChapterId: "string-interpolation",
+    previousChapterId: "variables-intro",
+    nextChapterId: "string-interpolation",
     content: `We know. Math scares some people. Some people break out in hives just at the mention of math. It's ok. We're not going to be doing any advanced math. Just simple addition, subtraction, multiplication and division.
 
 No calculus.
