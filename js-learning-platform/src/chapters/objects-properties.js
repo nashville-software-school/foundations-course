@@ -1,13 +1,11 @@
 export const objectsPropertiesChapter = {
   id: 'objects-properties',
-  title: 'Adding Properties After Creation',
+  title: 'Adding Properties',
   path: '/objects-properties',
   sectionId: 'objects',
   previousChapterId: 'objects-libraries',
   nextChapterId: 'objects-voting',
-  content: `## Adding New Properties After Creation
-
-Just because you create an object that has 4 properties on it, it doesn't mean that the object will always have 4 properties on it. You can create more properties on it any time you wish. You just need to use dot \`.\` notation and assign a value.
+  content: `Just because you create an object that has 4 properties on it, it doesn't mean that the object will always have 4 properties on it. You can create more properties on it any time you wish. You just need to use dot \`.\` notation and assign a value.
 
 Here's an example where a flute object is initially created with no owner, but after it is purchased, an owner is added.
 

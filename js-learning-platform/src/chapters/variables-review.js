@@ -1,6 +1,6 @@
 export const variablesReviewChapter = {
   id: 'variables-review',
-  title: 'Review of Variables',
+  title: 'Section Project',
   path: '/variables-review',
   sectionId: 'variables-and-values',
   previousChapterId: 'evaluations',
