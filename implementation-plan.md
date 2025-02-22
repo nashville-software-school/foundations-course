@@ -1,46 +1,110 @@
-# Code Block Syntax Highlighting Implementation Plan
+# Collapsible Sections Implementation Plan
 
 ## Overview
-Add syntax highlighting to JavaScript code blocks in chapter content by leveraging the existing Monaco Editor integration.
+Add collapsible functionality to sections in the learning platform to improve navigation and reduce scrolling.
 
-## Current State
-- Code blocks rendered with marked.js as basic `<pre>` tags
-- Monaco Editor already used for interactive code section
-- Basic CSS styling applied to code blocks
+## Technical Implementation
+
+### 1. State Management (ChapterContext.jsx)
+
+```javascript
+// Add new state for tracking expanded sections
+const [expandedSections, setExpandedSections] = useState(new Set())
+
+// Add toggle function
+const toggleSection = (sectionId) => {
+  setExpandedSections(prev => {
+    const newSet = new Set(prev)
+    if (newSet.has(sectionId)) {
+      newSet.delete(sectionId)
+    } else {
+      newSet.add(sectionId)
+    }
+    return newSet
+  })
+}
+```
+
+### 2. New Components
+
+#### Create SectionHeader Component
+```javascript
+function SectionHeader({ section, isExpanded, onToggle }) {
+  return (
+    <div
+      className="section-header"
+      onClick={onToggle}
+    >
+      <h2>{section.title}</h2>
+      <span className={`expand-icon ${isExpanded ? 'expanded' : ''}`}>
+        {isExpanded ? '▼' : '▶'}
+      </span>
+    </div>
+  )
+}
+```
+
+### 3. CSS Updates
+
+Add styles for:
+- Section headers with hover states
+- Expand/collapse icons
+- Smooth transitions for content visibility
+- Visual indicators for interactive elements
+
+### 4. Component Updates
+
+#### Layout Component
+- Group chapters by section
+- Implement collapsible behavior
+- Add transition animations
+
+#### Chapter Component
+- Update to work within collapsible sections
+- Maintain current functionality for content display
+- Ensure proper spacing within sections
 
 ## Implementation Steps
 
-1. Create CodeBlock Component
-- New component to wrap Monaco Editor
-- Read-only configuration
-- Consistent styling with content
-- Automatic height adjustment
+1. Update ChapterContext
+   - Add expandedSections state
+   - Add toggle functionality
+   - Update provider value
 
-2. Update Marked Configuration
-- Custom renderer for JavaScript code blocks
-- Integration with CodeBlock component
-- Preserve other markdown rendering
+2. Create SectionHeader Component
+   - Build basic structure
+   - Add click handling
+   - Style for visual appeal
 
-3. Technical Implementation
-- Create src/components/CodeBlock.jsx
-- Modify Chapter.jsx to use custom renderer
-- Update content processing logic
-- Add necessary styling
+3. Update Layout
+   - Group chapters by section
+   - Implement collapsible behavior
+   - Add transitions
 
-4. Testing
-- Verify syntax highlighting works
-- Test different code block sizes
-- Check mobile responsiveness
-- Validate performance with multiple blocks
+4. Style Updates
+   - Add necessary CSS
+   - Ensure responsive design
+   - Test across different screen sizes
+
+5. Testing
+   - Verify collapse/expand functionality
+   - Check transitions
+   - Test navigation between sections
+   - Ensure proper state management
 
 ## Success Criteria
-- JavaScript code blocks display with proper syntax highlighting
-- Consistent appearance across chapters
-- Maintains current responsive design
-- No performance degradation
+
+- Sections can be collapsed/expanded
+- Smooth transitions between states
+- Clear visual indicators
+- Maintains all existing functionality
+- Improves navigation experience
 
 ## Next Steps
-1. Switch to code mode to implement the solution
-2. Create CodeBlock component
-3. Update Chapter component
-4. Test and verify implementation
+
+After approval of this plan:
+1. Switch to Code mode for implementation
+2. Start with state management updates
+3. Proceed with component creation
+4. Add styling and animations
+5. Test thoroughly

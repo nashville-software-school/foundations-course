@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useChapter } from '../context/ChapterContext'
 import { sections } from '../sections'
 import { css } from '@emotion/react'
+import SectionHeader from './SectionHeader'
 
 const navStyles = css`
   h2 {
@@ -14,17 +15,22 @@ const navStyles = css`
     margin-bottom: 0.5rem;
   }
 
-  .section-title {
-    color: #495057;
-    font-size: 1.1rem;
-    font-weight: 600;
-    background: #f8f9fa;
-    border-radius: 6px;
+  .section-content {
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+
+    &.collapsed {
+      max-height: 0;
+    }
+
+    &.expanded {
+      max-height: 1000px; /* Adjust based on your needs */
+    }
   }
 
   .chapter-list {
     list-style: none;
-    padding: 0;
+    padding: 0.5rem 0 0;
     margin: 0;
   }
 
@@ -112,7 +118,7 @@ const groupChaptersBySection = (chapters) => {
 }
 
 function Navigation() {
-  const { chapters } = useChapter()
+  const { chapters, isSectionExpanded, toggleSection } = useChapter()
   const location = useLocation()
   const groupedChapters = groupChaptersBySection(chapters)
 
@@ -123,24 +129,32 @@ function Navigation() {
         const sectionChapters = groupedChapters[section.id] || []
         if (sectionChapters.length === 0) return null
 
+        const isExpanded = isSectionExpanded(section.id)
+
         return (
           <div key={section.id} className="section">
-            <h3 className="section-title">{section.title}</h3>
-            <ul className="chapter-list">
-              {sectionChapters.map((chapter, index) => (
-                <li key={chapter.id} className="chapter-item">
-                  <Link
-                    to={chapter.path}
-                    className={`chapter-link ${
-                      location.pathname === chapter.path ? 'active' : ''
-                    }`}
-                  >
-                    <span className="chapter-number">{index + 1}</span>
-                    {chapter.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <SectionHeader
+              section={section}
+              isExpanded={isExpanded}
+              onToggle={() => toggleSection(section.id)}
+            />
+            <div className={`section-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
+              <ul className="chapter-list">
+                {sectionChapters.map((chapter, index) => (
+                  <li key={chapter.id} className="chapter-item">
+                    <Link
+                      to={chapter.path}
+                      className={`chapter-link ${
+                        location.pathname === chapter.path ? 'active' : ''
+                      }`}
+                    >
+                      <span className="chapter-number">{index + 1}</span>
+                      {chapter.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         )
       })}

@@ -8,6 +8,9 @@ export function useChapter() {
   return useContext(ChapterContext)
 }
 
+// Track which sections are expanded
+const initialExpandedSections = new Set()
+
 /**
  * Gets the next chapter in sequence based on previousChapterId links
  * @param {string} currentChapterId - The ID of the current chapter
@@ -29,13 +32,32 @@ const getChaptersBySection = (sectionId) => {
 export function ChapterProvider({ children }) {
   const [currentChapter, setCurrentChapter] = useState(chapters[0])
   const [chapterContent, setChapterContent] = useState(getChapterContent(chapters[0].id))
+  const [expandedSections, setExpandedSections] = useState(initialExpandedSections)
 
   const loadChapter = (chapterId) => {
     const chapter = chapters.find(c => c.id === chapterId)
     if (chapter) {
       setCurrentChapter(chapter)
       setChapterContent(getChapterContent(chapter.id))
+      // Auto-expand the section containing the loaded chapter
+      setExpandedSections(prev => {
+        const newSet = new Set(prev)
+        newSet.add(chapter.sectionId)
+        return newSet
+      })
     }
+  }
+
+  const toggleSection = (sectionId) => {
+    setExpandedSections(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(sectionId)) {
+        newSet.delete(sectionId)
+      } else {
+        newSet.add(sectionId)
+      }
+      return newSet
+    })
   }
 
   const value = {
@@ -43,7 +65,11 @@ export function ChapterProvider({ children }) {
     currentChapter,
     chapterContent,
     loadChapter,
-    // New helper functions
+    // Section management
+    expandedSections,
+    toggleSection,
+    isSectionExpanded: (sectionId) => expandedSections.has(sectionId),
+    // Helper functions
     getNextChapter,
     getChaptersBySection,
     // Section information
