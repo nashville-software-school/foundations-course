@@ -24,6 +24,21 @@ import { mathOperationsChapter } from './math-operations'
 import { booleanLogicChapter } from './boolean-logic'
 import { evaluationsChapter } from './evaluations'
 import { variablesReviewChapter } from './variables-review'
+import { functionsIntroChapter } from './functions-intro'
+import { functionsDefiningInvokingChapter } from './functions-defining-invoking'
+import { functionsNamingChapter } from './functions-naming'
+import { functionsParametersChapter } from './functions-parameters'
+import { functionsArgumentsChapter } from './functions-arguments'
+import { functionsMultipleParametersChapter } from './functions-multiple-parameters'
+import { functionsReturnIntroChapter } from './functions-return-intro'
+import { functionsReturnWorkingChapter } from './functions-return-working'
+import { functionsReturnPracticeChapter } from './functions-return-practice'
+import { functionsScopeBasicsChapter } from './functions-scope-basics'
+import { functionsScopeParametersChapter } from './functions-scope-parameters'
+import { functionsConditionsChapter } from './functions-conditions'
+import { functionsLoopsChapter } from './functions-loops'
+import { functionsCallingFunctionsChapter } from './functions-calling-functions'
+import { functionsReviewChapter } from './functions-review'
 
 export const chapters = [
   // Variables and Values section (first section)
@@ -57,6 +72,23 @@ export const chapters = [
   objectsLibrariesChapter,
   objectsPropertiesChapter,
   objectsVotingChapter,
+
+  // Functions section
+  functionsIntroChapter,
+  functionsDefiningInvokingChapter,
+  functionsNamingChapter,
+  functionsParametersChapter,
+  functionsArgumentsChapter,
+  functionsMultipleParametersChapter,
+  functionsReturnIntroChapter,
+  functionsReturnWorkingChapter,
+  functionsReturnPracticeChapter,
+  functionsScopeBasicsChapter,
+  functionsScopeParametersChapter,
+  functionsConditionsChapter,
+  functionsLoopsChapter,
+  functionsCallingFunctionsChapter,
+  functionsReviewChapter
 ]
 
 /**
