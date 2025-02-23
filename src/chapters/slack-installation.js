@@ -6,29 +6,13 @@ export const slackInstallationChapter = {
     previousChapterId: 'visual-studio-code',
     content: `Slack is a messaging app for teams that will be your primary communication tool throughout your learning journey. It's where you'll interact with instructors, fellow students, and get important announcements.
 
+> 🧨 You will be sent an invitation link to join the NSS Slack organization approximately 4 weeks before your cohort starts
+
 ## Installation Steps
 
-1. Visit [Slack's download page](https://slack.com/downloads)
+1. Visit <a href="https://slack.com/downloads" target="_blank">Slack's download website</a>
 
-2. Download the appropriate version for your operating system:
-    * Windows: Click the Windows download button
-    * macOS: Click the macOS download button
-    * Linux: Choose your Linux distribution
-
-3. Install Slack:
-    * Windows:
-        * Run the downloaded installer
-        * Follow the installation wizard
-        * Allow the installation to complete
-
-    * macOS:
-        * Open the downloaded .dmg file
-        * Drag Slack to your Applications folder
-        * Launch Slack from your Applications folder
-
-    * Linux:
-        * Follow the installation instructions for your distribution
-        * Most distributions will handle the installation automatically
+2. Download the appropriate version for your operating system, and run the installer
 
 4. First-Time Setup:
     * Launch Slack

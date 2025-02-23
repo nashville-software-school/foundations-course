@@ -1,16 +1,22 @@
 export const githubAccountChapter = {
     id: 'github-account',
-    title: 'Github Account',
+    title: 'Git & Github',
     path: '/github-account',
     sectionId: 'getting-started',
-    previousChapterId: null, // First chapter in Getting Started section
-    content: `GitHub is a platform where developers store and manage their code. Having a professional GitHub account is crucial for your career as a software developer.
+    previousChapterId: null,
+    content: `# Git
+
+Git is a version control system that allows you to track changes in your codebase. It's an essential tool for software developers to collaborate, manage code, and track project history. You will be using it throughout your learning journey, and your future career.
+
+Visit the <a href="https://git-scm.com/downloads" target="_blank">downloads page</a> to install Git on your machine.
+
+# Github
+
+GitHub is a platform where developers store and manage their code. Having a professional GitHub account is crucial for your career as a software developer.
 
 ## Steps to Create Your Account
 
-1. Visit [GitHub's signup page](https://github.com/signup)
-
-2. Choose a **professional username**:
+1. Think of a **professional username** to use for Github:
     * Use your real name or a variation of it (e.g., jsmith, john-smith)
     * Avoid usernames that sound unprofessional or juvenile
     * Keep it simple and memorable
@@ -19,6 +25,7 @@ export const githubAccountChapter = {
         * john-smith
         * jsmith-dev
         * johnsmith-dev
+2. Visit <a href="https://github.com/signup" target="_blank">GitHub's signup page</a> to create your account.
 
 3. Use a professional email address:
     * Preferably use a personal email rather than a work or school email

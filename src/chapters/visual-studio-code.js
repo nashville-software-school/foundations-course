@@ -8,12 +8,9 @@ export const visualStudioCodeChapter = {
 
 ## Installation Steps
 
-1. Visit [Visual Studio Code's website](https://code.visualstudio.com/)
+1. Visit <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code's website</a>
 
-2. Download the appropriate version for your operating system:
-    * Windows: Click the Windows download button
-    * macOS: Click the macOS download button
-    * Linux: Choose the appropriate Linux distribution package
+2. Download the appropriate version for your operating system
 
 3. Install VS Code:
     * Windows:

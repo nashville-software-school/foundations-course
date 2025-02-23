@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useChapter } from '../context/ChapterContext'
+import { useLearnerProgress } from '../context/LearnerProgressContext'
 import Editor from '@monaco-editor/react'
 import { marked } from 'marked'
 import { css } from '@emotion/react'
@@ -194,6 +195,7 @@ function Chapter() {
   const { chapterId } = useParams()
   const navigate = useNavigate()
   const { currentChapter, chapterContent, loadChapter, getPreviousChapter, getNextChapter } = useChapter()
+  const { trackAttempt, trackCompletion } = useLearnerProgress()
   const [files, setFiles] = useState({})
   const [testResults, setTestResults] = useState(null)
   const [showResults, setShowResults] = useState(true)
@@ -293,13 +295,29 @@ function Chapter() {
 
   const runTests = () => {
     if (chapterContent?.exercise?.tests) {
-      const results = chapterContent.exercise.tests.map(test => ({
-        name: test.name,
-        passed: test.test(files),
-        message: test.message
-      }))
+      // Track attempt before running tests
+      trackAttempt(chapterId)
+
+      const results = chapterContent.exercise.tests.map(test => {
+        // For single-file exercises, pass just the code
+        // For multi-file exercises, pass all files
+        const isMultiFile = typeof chapterContent.exercise.starterCode === 'object'
+        const testArg = isMultiFile ? files : files['index.js']
+
+        return {
+          name: test.name,
+          passed: test.test(testArg),
+          message: test.message
+        }
+      })
 
       const allPassed = results.every(result => result.passed)
+
+      // Track completion if all tests passed
+      if (allPassed) {
+        trackCompletion(chapterId)
+      }
+
       setTestResults({
         passed: allPassed,
         message: allPassed
@@ -357,9 +375,6 @@ function Chapter() {
 
       {
         chapterContent.exercise &&
-
-
-
         <section className="editor-section">
           <div className="editor-container">
             {Object.keys(files).length > 1 ? (
