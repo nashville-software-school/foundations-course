@@ -196,7 +196,7 @@ const groupChaptersBySection = (chapters) => {
 
 function Navigation() {
   const { chapters, isSectionExpanded, toggleSection } = useChapter()
-  const { getExerciseProgress } = useLearnerProgress()
+  const { getExerciseProgress, trackCompletion } = useLearnerProgress()
   const location = useLocation()
   const groupedChapters = groupChaptersBySection(chapters)
 
@@ -269,10 +269,33 @@ function Navigation() {
                       >
                         <span className="chapter-number">{index + 1}</span>
                         <span className="chapter-title">{chapter.title}</span>
-                        {status !== 'not-started' && (
+                        {status !== 'not-started' ? (
                           <span className="status-icon">
                             {status === 'completed' ? '✓' : '●'}
                           </span>
+                        ) : chapter.exercise === null && (
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault()
+                              trackCompletion(chapter.id)
+                            }}
+                            css={css`
+                              background: #e9ecef;
+                              border: 1px solid #dee2e6;
+                              border-radius: 4px;
+                              padding: 2px 8px;
+                              font-size: 0.8rem;
+                              cursor: pointer;
+                              color: #495057;
+                              transition: all 0.2s ease;
+                              &:hover {
+                                background: #dee2e6;
+                                border-color: #ced4da;
+                              }
+                            `}
+                          >
+                            Done
+                          </button>
                         )}
                       </Link>
                     </li>

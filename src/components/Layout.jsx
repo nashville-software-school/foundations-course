@@ -11,7 +11,7 @@ const layoutStyles = css`
   overflow: hidden;
 
   .nav-sidebar {
-    background: #f8f9fa;
+    background: #f6f8fa;
     border-right: 1px solid #e9ecef;
     height: 100vh;
     overflow-y: auto;
@@ -21,7 +21,7 @@ const layoutStyles = css`
   .main-content {
     height: 100vh;
     overflow: hidden;
-    background: #f1f3f5;
+    background: #f9f5ee;
   }
 `
 
