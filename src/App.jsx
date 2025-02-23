@@ -10,7 +10,7 @@ function App() {
       <ChapterProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Navigate to="/variables-intro" replace />} />
+            <Route index element={<Navigate to="/github-account" replace />} />
             <Route path=":chapterId" element={<Chapter />} />
           </Route>
         </Routes>

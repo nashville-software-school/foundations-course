@@ -1,3 +1,7 @@
+import { githubAccountChapter } from './github-account'
+import { anthropicAccountChapter } from './anthropic-account'
+import { visualStudioCodeChapter } from './visual-studio-code'
+import { slackInstallationChapter } from './slack-installation'
 import { arrayIntroChapter } from './arrays-intro'
 import { arrayIndicesChapter } from './arrays-indices'
 import { arrayIterationChapter } from './arrays-iteration'
@@ -43,6 +47,12 @@ import { functionsReviewChapter } from './functions-review'
 import { modulesChapters } from './modules'
 
 export const chapters = [
+  // Getting Started section
+  githubAccountChapter,
+  anthropicAccountChapter,
+  visualStudioCodeChapter,
+  slackInstallationChapter,
+
   // Variables and Values section (first section)
   variablesIntroChapter,
   mathOperationsChapter,

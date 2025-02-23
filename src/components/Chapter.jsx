@@ -150,7 +150,6 @@ const chapterStyles = css`
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 1rem;
     font-weight: 500;
     transition: background-color 0.2s;
 
@@ -177,7 +176,6 @@ const chapterStyles = css`
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 1rem;
     font-weight: 500;
     transition: background-color 0.2s;
 
@@ -316,7 +314,9 @@ function Chapter() {
   }
 
   return (
-    <div css={chapterStyles}>
+    <div css={chapterStyles} style={{
+      gridTemplateColumns: chapterContent.exercise ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)',
+    }}>
       <section className="content-section">
         <div className="content-container">
           <h1>{currentChapter?.title}</h1>
@@ -355,65 +355,71 @@ function Chapter() {
         </div>
       </section>
 
-      <section className="editor-section">
-        <div className="editor-container">
-          {Object.keys(files).length > 1 ? (
-            <MultiFileEditor
-              files={files}
-              onChange={handleFilesChange}
-              options={{
-                minimap: { enabled: false },
-                fontSize: 14,
-                lineNumbers: 'on',
-                scrollBeyondLastLine: false,
-                automaticLayout: true,
-                padding: { top: 16, bottom: 16 }
-              }}
-            />
-          ) : (
-            <Editor
-              height="100%"
-              defaultLanguage="javascript"
-              theme="vs-light"
-              value={files['index.js']}
-              onChange={(value) => handleFilesChange({ 'index.js': value })}
-              options={{
-                minimap: { enabled: false },
-                fontSize: 14,
-                lineNumbers: 'on',
-                scrollBeyondLastLine: false,
-                automaticLayout: true,
-                padding: { top: 16, bottom: 16 }
-              }}
-            />
-          )}
-        </div>
+      {
+        chapterContent.exercise &&
 
-        <button className="test-button" onClick={runTests}>
-          Run Tests
-        </button>
 
-        {testResults && showResults && (
-          <div className={`test-results ${!showResults ? 'hidden' : ''}`}>
-            <button
-              className="close-button"
-              onClick={() => setShowResults(false)}
-              aria-label="Close"
-            >
-              ✕
-            </button>
-            <h3>{testResults.passed ? '✅ Tests Passed!' : '❌ Tests Failed'}</h3>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: marked(testResults.message.split('\n').map(line => line.trim()).join('\n'), {
-                  breaks: true,
-                  gfm: true
-                })
-              }}
-            />
+
+        <section className="editor-section">
+          <div className="editor-container">
+            {Object.keys(files).length > 1 ? (
+              <MultiFileEditor
+                files={files}
+                onChange={handleFilesChange}
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  lineNumbers: 'on',
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                  padding: { top: 16, bottom: 16 }
+                }}
+              />
+            ) : (
+              <Editor
+                height="100%"
+                defaultLanguage="javascript"
+                theme="vs-light"
+                value={files['index.js']}
+                onChange={(value) => handleFilesChange({ 'index.js': value })}
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  lineNumbers: 'on',
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                  padding: { top: 16, bottom: 16 }
+                }}
+              />
+            )}
           </div>
-        )}
-      </section>
+
+          <button className="test-button" onClick={runTests}>
+            Run Tests
+          </button>
+
+          {testResults && showResults && (
+            <div className={`test-results ${!showResults ? 'hidden' : ''}`}>
+              <button
+                className="close-button"
+                onClick={() => setShowResults(false)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+              <h3>{testResults.passed ? '✅ Tests Passed!' : '❌ Tests Failed'}</h3>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: marked(testResults.message.split('\n').map(line => line.trim()).join('\n'), {
+                    breaks: true,
+                    gfm: true
+                  })
+                }}
+              />
+            </div>
+          )}
+        </section>
+      }
     </div>
   )
 }

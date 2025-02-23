@@ -20,7 +20,7 @@ const sectionHeaderStyles = css`
   h2 {
     margin: 0;
     color: #2c3e50;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .expand-icon {
