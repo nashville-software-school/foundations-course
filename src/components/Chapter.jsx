@@ -280,7 +280,17 @@ function Chapter() {
   }, [chapterContent])
 
   const handleFilesChange = (newFiles) => {
-    setFiles(newFiles)
+    // Only update the files that exist in the current chapter's starter code
+    const validFiles = {}
+    const starterCode = chapterContent?.exercise?.starterCode || {}
+    const starterCodeFiles = typeof starterCode === 'string' ? ['index.js'] : Object.keys(starterCode)
+
+    Object.keys(newFiles).forEach(filename => {
+      if (starterCodeFiles.includes(filename)) {
+        validFiles[filename] = newFiles[filename]
+      }
+    })
+    setFiles(validFiles)
   }
 
   const runTests = () => {
