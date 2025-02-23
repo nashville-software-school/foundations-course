@@ -195,7 +195,7 @@ function Chapter() {
   const { chapterId } = useParams()
   const navigate = useNavigate()
   const { currentChapter, chapterContent, loadChapter, getPreviousChapter, getNextChapter } = useChapter()
-  const { trackAttempt, trackCompletion } = useLearnerProgress()
+  const { trackAttempt, trackCompletion, getExerciseProgress } = useLearnerProgress()
   const [files, setFiles] = useState({})
   const [testResults, setTestResults] = useState(null)
   const [showResults, setShowResults] = useState(true)
@@ -268,16 +268,27 @@ function Chapter() {
 
   useEffect(() => {
     if (chapterContent?.exercise) {
-      // Handle both single-file and multi-file exercises
-      if (typeof chapterContent.exercise.starterCode === 'string') {
-        // Single file exercise
-        setFiles({ 'index.js': chapterContent.exercise.starterCode })
+      const progress = getExerciseProgress(chapterId)
+
+      if (progress.completed && progress.completedCode) {
+        // Load completed code if it exists
+        if (progress.completedCode.files) {
+          setFiles(progress.completedCode.files)
+        } else if (progress.completedCode.code) {
+          setFiles({ 'index.js': progress.completedCode.code })
+        }
       } else {
-        // Multi-file exercise
-        setFiles(chapterContent.exercise.starterCode)
+        // Load starter code if no completed code exists
+        if (typeof chapterContent.exercise.starterCode === 'string') {
+          // Single file exercise
+          setFiles({ 'index.js': chapterContent.exercise.starterCode })
+        } else {
+          // Multi-file exercise
+          setFiles(chapterContent.exercise.starterCode)
+        }
       }
     }
-  }, [chapterContent])
+  }, [chapterContent, chapterId])
 
   const handleFilesChange = (newFiles) => {
     // Only update the files that exist in the current chapter's starter code
@@ -315,7 +326,10 @@ function Chapter() {
 
       // Track completion if all tests passed
       if (allPassed) {
-        trackCompletion(chapterId)
+        const completedCode = typeof chapterContent.exercise.starterCode === 'object'
+          ? { files } // Multi-file exercise
+          : { code: files['index.js'] } // Single-file exercise
+        trackCompletion(chapterId, completedCode)
       }
 
       setTestResults({

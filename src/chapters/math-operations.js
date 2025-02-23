@@ -102,17 +102,17 @@ Our combined monthly income is xxx. Our net monthly income is xxx.
 \`\`\``,
     exercise: {
         starterCode: `// Your monthly income
-const myIncome = 4388.12
+const myIncome = 4388
 
 // Your husband's monthly income
-const spouseIncome = 3512.98
+const spouseIncome = 3512
 
 // Monthly bills
-const internetBill = 158.99
-const waterBill = 68.33
-const electricBill = 129.03
-const fuelExpenses = 295.68
-const foodExpenses = 503.12
+const internetBill = 158
+const waterBill = 68
+const electricBill = 129
+const fuelExpenses = 295
+const foodExpenses = 503
 
 // Calculate combined income
 let combinedIncome = 0
@@ -123,17 +123,17 @@ let netIncome = 0
 // Create the output string using string interpolation
 const output = ""`,
         solution: `// Your monthly income
-const myIncome = 4388.12
+const myIncome = 4388
 
 // Your husband's monthly income
-const spouseIncome = 3512.98
+const spouseIncome = 3512
 
 // Monthly bills
-const internetBill = 158.99
-const waterBill = 68.33
-const electricBill = 129.03
-const fuelExpenses = 295.68
-const foodExpenses = 503.12
+const internetBill = 158
+const waterBill = 68
+const electricBill = 129
+const fuelExpenses = 295
+const foodExpenses = 503
 
 // Calculate combined income
 let combinedIncome = myIncome + spouseIncome
@@ -148,48 +148,45 @@ netIncome -= foodExpenses
 
 // Create the output string using string interpolation
 const output = \`Our combined monthly income is \${combinedIncome}. Our net monthly income is \${netIncome}.\`
-
-console.log(output)`,
+`,
         tests: [
             {
                 name: "Combined Income Calculation",
                 test: (code) => {
                     try {
-                        let myIncome, spouseIncome, combinedIncome;
-                        eval(code);
-                        return combinedIncome === 7901.10;
+                        const result = new Function(code + '\nreturn combinedIncome')();
+
+                        return result === 7900;
                     } catch (error) {
                         return false;
                     }
                 },
-                message: "The combined income should be $7901.10 (myIncome + spouseIncome)"
+                message: "The combined income should be $7900 (myIncome + spouseIncome)"
             },
             {
                 name: "Net Income Calculation",
                 test: (code) => {
                     try {
-                        let myIncome, spouseIncome, internetBill, waterBill, electricBill, fuelExpenses, foodExpenses, netIncome;
-                        eval(code);
-                        return Math.abs(netIncome - 6745.95) < 0.01; // Using small delta for floating point comparison
+                        const result = new Function(code + '\nreturn netIncome')();
+                        return result === 6747
                     } catch (error) {
                         return false;
                     }
                 },
-                message: "The net income should be $6745.95 (combined income minus all expenses)"
+                message: "The net income should be $6747 (combined income minus all expenses)"
             },
             {
                 name: "String Interpolation",
                 test: (code) => {
                     try {
-                        let output;
-                        eval(code);
-                        return output.includes('${') && output.startsWith('`') && output.endsWith('`') &&
-                               output.includes('combined monthly income') && output.includes('net monthly income');
+                        const result = new Function(code + '\nreturn output')();
+                        const expectedOutput = "Our combined monthly income is 7900. Our net monthly income is 6747.";
+                        return result === expectedOutput;
                     } catch (error) {
                         return false;
                     }
                 },
-                message: "Make sure to use string interpolation (backticks and ${}) to create the output string"
+                message: "Make sure to use string interpolation (backticks and ${}) to have the correct numbers in the output string"
             }
         ]
     }

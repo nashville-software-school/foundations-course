@@ -42,13 +42,14 @@ export const LearnerProgressProvider = ({ children }) => {
         })
     }
 
-    const trackCompletion = (exerciseId) => {
+    const trackCompletion = (exerciseId, code = null) => {
         setProgress(prev => {
             const exercise = prev.exercises[exerciseId] || {
                 attempts: 0,
                 completed: false,
                 firstAttempt: null,
-                lastAttempt: null
+                lastAttempt: null,
+                completedCode: null
             }
 
             return {
@@ -59,7 +60,8 @@ export const LearnerProgressProvider = ({ children }) => {
                         ...exercise,
                         completed: true,
                         completedAt: new Date().toISOString(),
-                        lastAttempt: new Date().toISOString()
+                        lastAttempt: new Date().toISOString(),
+                        completedCode: code
                     }
                 },
                 lastUpdated: new Date().toISOString()
