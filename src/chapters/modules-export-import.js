@@ -93,8 +93,11 @@ Create simple functions that decorate text with emojis. Split the code into two 
 // 1. addStar(text) - Adds ⭐ before the text
 // 2. addHeart(text) - Adds ❤️ before the text`,
       'main.js': `// Import the decorator functions
-// Use them to create two decorated messages
-// Print the messages to the console`
+// Use them to put the correct message into the variables below
+
+const starMessage =
+const lovedMessage =
+`
     },
     solution: {
       'decorators.js': `export function addStar(text) {
@@ -103,28 +106,38 @@ Create simple functions that decorate text with emojis. Split the code into two 
 
 export function addHeart(text) {
     return "❤️ " + text
-}`,
+}
+`,
       'main.js': `import { addStar, addHeart } from './decorators.js'
 
-const message1 = addStar("Great job!")
-const message2 = addHeart("Thank you!")
-
-console.log(message1)
-console.log(message2)`
+const starMessage = addStar("Great job!")
+const lovedMessage = addHeart("Thank you!")
+`
     },
     tests: [
       {
         name: "Decorator Exports",
         test: (files) => {
           return files['decorators.js'].includes('export function addStar') &&
+                 files['decorators.js'].includes('export function addHeart') &&
+                 files['decorators.js'].includes('return') &&
                  files['decorators.js'].includes('export function addHeart')
         },
         message: "Make sure to export both decorator functions."
       },
       {
+        name: "String Returns",
+        test: (files) => {
+          return files['decorators.js'].includes('return "⭐ ') &&
+                 files['decorators.js'].includes('return "❤️ ')
+        },
+        message: "Make sure to return the modified string from each function."
+      },
+      {
         name: "Main Imports",
         test: (files) => {
           return files['main.js'].includes('import {') &&
+                 files['main.js'].includes('decorator.js') &&
                  files['main.js'].includes('addStar') &&
                  files['main.js'].includes('addHeart')
         },
@@ -133,9 +146,11 @@ console.log(message2)`
       {
         name: "Using Decorators",
         test: (files) => {
-          return files['main.js'].includes('addStar(') &&
-                 files['main.js'].includes('addHeart(') &&
-                 files['main.js'].includes('console.log')
+          const start = files['main.js'].indexOf('const star')
+          const codeToTest1 = files['decorators.js'].replace(/export/g, '')
+          const codeToTest2 = files['main.js'].slice(start)
+          const {starMessage, lovedMessage} = new Function(codeToTest1 + codeToTest2 + '\n return { starMessage, lovedMessage }')()
+          return starMessage?.includes('⭐') && lovedMessage?.includes('❤️') && starMessage?.length > 2 && lovedMessage?.length > 2
         },
         message: "Create and print two decorated messages."
       }
