@@ -10,50 +10,86 @@ export const AuthCallback = () => {
 
     useEffect(() => {
         const handleAuth = async () => {
+            console.log('Auth callback triggered');
             const params = new URLSearchParams(location.search)
             const code = params.get('code')
+            const state = params.get('state')
+            const storedState = sessionStorage.getItem('oauth_state')
+
+            // Clear stored state
+            sessionStorage.removeItem('oauth_state')
 
             if (!code) {
                 setError('No code received from Github')
                 return
             }
 
-            try {
-                // Use a reliable CORS proxy service
-                const proxyUrl = 'https://api.allorigins.win/raw?url='
-                const tokenUrl = 'https://github.com/login/oauth/access_token'
-                const encodedUrl = encodeURIComponent(tokenUrl)
+            // Verify state parameter if it exists
+            if (state && storedState && state !== storedState) {
+                console.error('State parameter mismatch', { received: state, stored: storedState });
+                setError('Invalid state parameter - possible security issue')
+                return
+            }
 
-                // Exchange code for token using Github's token endpoint
-                const tokenResponse = await fetch(`${proxyUrl}${encodedUrl}`, {
+            try {
+                console.log('Starting OAuth token exchange with code');
+
+                // In dev mode, we get the base from vite.config.js
+                // In production, we need to handle the base path '/foundations-course/'
+                const base = import.meta.env.BASE_URL || '/foundations-course/';
+
+                // Remove trailing slash if present for consistency
+                const basePath = base.endsWith('/') ? base.slice(0, -1) : base;
+
+                // Determine which endpoint to use based on environment
+                const tokenEndpoint = import.meta.env.DEV
+                    ? '/oauth/github/token'  // Development endpoint (Vite plugin)
+                    : '/oauth/github/token'  // Production endpoint (to be configured)
+
+                console.log(`Using token endpoint: ${tokenEndpoint}`);
+                console.log(`Redirect URI: ${window.location.origin}${basePath}/auth`);
+
+                // Exchange code for token
+                const tokenResponse = await fetch(tokenEndpoint, {
                     method: 'POST',
                     headers: {
-                        'Accept': 'application/json',
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        client_id: import.meta.env.VITE_OAUTH_CLIENT_ID,
-                        client_secret: import.meta.env.VITE_OAUTH_CLIENT_SECRET,
                         code: code,
-                        redirect_uri: `${window.location.origin}/foundations-course/auth`
+                        // Use the full origin + base path for the redirect URI
+                        redirect_uri: `${window.location.origin}${basePath}/auth`
                     })
                 })
 
+                console.log('Token response status:', tokenResponse.status);
+
                 if (!tokenResponse.ok) {
-                    throw new Error('Failed to exchange code for token')
+                    const errorText = await tokenResponse.text();
+                    console.error('Token exchange error response:', errorText);
+                    throw new Error(`Failed to exchange code for token: ${tokenResponse.status} ${errorText}`);
                 }
 
                 const data = await tokenResponse.json()
+                console.log('Token exchange response received');
 
                 if (data.error) {
                     throw new Error(data.error_description || data.error)
                 }
 
+                if (!data.access_token) {
+                    console.error('Missing access token in response', data);
+                    throw new Error('No access token received from GitHub');
+                }
+
                 // Store the token
                 localStorage.setItem('github_token', data.access_token)
+                console.log('Access token stored successfully');
 
                 // Fetch user data
                 await fetchUserData(data.access_token)
+                console.log('User data fetched successfully');
 
                 // Redirect to the page they were trying to access, or home
                 const intendedPath = sessionStorage.getItem('intendedPath')
@@ -79,7 +115,7 @@ export const AuthCallback = () => {
         )
     }
 
-    return <div>Completing authentication...</div>
+    return <div>Completing GitHub authentication...</div>
 }
 
 export default AuthCallback
