@@ -7,12 +7,12 @@ import './App.css'
 
 function App() {
   return (
-    <Router basename="/foundations-course">
+    <Router basename="/">
       <LearnerProgressProvider>
         <ChapterProvider>
           <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Navigate to="/github-account" replace />} />
+            <Route path="foundations-course" element={<Layout />}>
+              <Route index element={<Navigate to="github-account" replace />} />
               <Route path=":chapterId" element={<Chapter />} />
             </Route>
           </Routes>

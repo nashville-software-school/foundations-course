@@ -210,7 +210,7 @@ function Chapter() {
   const handlePreviousClick = () => {
     const previousChapter = getPreviousChapter(currentChapter.id)
     if (previousChapter) {
-      navigate(`/${previousChapter.id}`)
+      navigate(`${previousChapter.path}`)
       loadChapter(previousChapter.id)
       scrollToTop()
     }
@@ -219,7 +219,7 @@ function Chapter() {
   const handleNextClick = () => {
     const nextChapter = getNextChapter(currentChapter.id)
     if (nextChapter) {
-      navigate(`/${nextChapter.id}`)
+      navigate(`${nextChapter.path}`)
       loadChapter(nextChapter.id)
       scrollToTop()
     }
