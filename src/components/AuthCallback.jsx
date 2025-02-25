@@ -41,10 +41,16 @@ export const AuthCallback = () => {
                 // Remove trailing slash if present for consistency
                 const basePath = base.endsWith('/') ? base.slice(0, -1) : base;
 
-                // Determine which endpoint to use based on environment
-                const tokenEndpoint = import.meta.env.DEV
-                    ? '/oauth/github/token'  // Development endpoint (Vite plugin)
-                    : '/oauth/github/token'  // Production endpoint (to be configured)
+                // Get the proxy domain from environment variables
+                const proxyDomain = import.meta.env.VITE_PROXY_DOMAIN;
+
+                if (!proxyDomain) {
+                    console.error('Missing VITE_PROXY_DOMAIN environment variable');
+                    throw new Error('OAuth configuration error. Please contact support.');
+                }
+
+                // Construct the token endpoint URL
+                const tokenEndpoint = `${proxyDomain}/oauth/github/token`;
 
                 console.log(`Using token endpoint: ${tokenEndpoint}`);
                 console.log(`Redirect URI: ${window.location.origin}${basePath}/auth`);

@@ -1,6 +1,5 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
-import githubOAuthPlugin from './vite-plugin-github-oauth'
 
 export default defineConfig(({ mode }) => {
   // Load env variables based on mode for server access
@@ -9,13 +8,13 @@ export default defineConfig(({ mode }) => {
 
   console.log('OAuth env variables loaded:', {
     clientId: env.VITE_OAUTH_CLIENT_ID ? 'Present' : 'Missing',
-    clientSecret: env.VITE_OAUTH_CLIENT_SECRET ? 'Present' : 'Missing'
+    proxyDomain: env.VITE_PROXY_DOMAIN ? 'Present' : 'Missing'
   });
 
-  // Make sure we have the OAuth credentials in the environment
-  if (!env.VITE_OAUTH_CLIENT_ID || !env.VITE_OAUTH_CLIENT_SECRET) {
-    console.warn('WARNING: Missing OAuth environment variables. OAuth authentication may not work properly.');
-    console.warn('Make sure you have VITE_OAUTH_CLIENT_ID and VITE_OAUTH_CLIENT_SECRET in your .env.local file');
+  // Make sure we have the required environment variables
+  if (!env.VITE_OAUTH_CLIENT_ID || !env.VITE_PROXY_DOMAIN) {
+    console.warn('WARNING: Missing environment variables. OAuth authentication may not work properly.');
+    console.warn('Make sure you have VITE_OAUTH_CLIENT_ID and VITE_PROXY_DOMAIN in your .env.local file');
   }
 
   return {
@@ -26,17 +25,13 @@ export default defineConfig(({ mode }) => {
         babel: {
           plugins: ['@emotion/babel-plugin']
         }
-      }),
-      // Pass the loaded env variables directly to the plugin
-      githubOAuthPlugin({
-        clientId: env.VITE_OAUTH_CLIENT_ID,
-        clientSecret: env.VITE_OAUTH_CLIENT_SECRET
       })
+      // GitHub OAuth plugin has been removed
     ],
     // Make env variables available to client-side code
     define: {
       'process.env.VITE_OAUTH_CLIENT_ID': JSON.stringify(env.VITE_OAUTH_CLIENT_ID),
-      'process.env.VITE_OAUTH_CLIENT_SECRET': JSON.stringify(env.VITE_OAUTH_CLIENT_SECRET)
+      'process.env.VITE_PROXY_DOMAIN': JSON.stringify(env.VITE_PROXY_DOMAIN)
     },
     // Environment Variables:
     // Vite automatically loads env files in the following order:

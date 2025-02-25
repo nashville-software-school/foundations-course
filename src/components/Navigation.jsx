@@ -147,10 +147,9 @@ const navStyles = css`
   }
 
   .section-progress {
-    margin: 1rem 0.5rem;
-    padding: 1rem;
+    padding: 0.2rem 0.4rem 0.75rem 0.4rem;
     background: #f8f9fa;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     border: 1px solid #dee2e6;
 
     .progress-text {

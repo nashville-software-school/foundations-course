@@ -8,7 +8,6 @@ const sectionHeaderStyles = css`
   padding: 0.5rem 0.5rem;
   background: #f8f9fa;
   border-radius: 8px;
-  margin-bottom: 0.5rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
   user-select: none;
