@@ -46,14 +46,21 @@ import { functionsCallingFunctionsChapter } from './functions-calling-functions'
 import { functionsReviewChapter } from './functions-review'
 import { modulesChapters } from './modules'
 
-export const chapters = [
-  // Getting Started section
+// Helper function to add requiresAuth flag based on section
+const addAuthRequirement = (chapter) => ({
+  ...chapter,
+  requiresAuth: ['arrays', 'objects', 'functions', 'modules'].includes(chapter.sectionId)
+})
+
+// Apply requiresAuth to all chapters
+const gettingStartedChapters = [
   githubAccountChapter,
   anthropicAccountChapter,
   visualStudioCodeChapter,
-  slackInstallationChapter,
+  slackInstallationChapter
+].map(addAuthRequirement)
 
-  // Variables and Values section (first section)
+const variablesChapters = [
   variablesIntroChapter,
   mathOperationsChapter,
   stringInterpolationChapter,
@@ -61,9 +68,10 @@ export const chapters = [
   stringMethodsChapter,
   booleanLogicChapter,
   evaluationsChapter,
-  variablesReviewChapter,
+  variablesReviewChapter
+].map(addAuthRequirement)
 
-  // Arrays section
+const arrayChapters = [
   arrayIntroChapter,
   arrayIndicesChapter,
   arrayIterationChapter,
@@ -74,18 +82,20 @@ export const chapters = [
   arrayConditionsPracticeChapter,
   arrayStringsChapter,
   arraySplitJoinChapter,
-  arrayReviewChapter,
+  arrayReviewChapter
+].map(addAuthRequirement)
 
-  // Objects section
+const objectChapters = [
   objectsIntroChapter,
   objectsMultipleChapter,
   objectsCollectionsChapter,
   objectsComplexChapter,
   objectsLibrariesChapter,
   objectsPropertiesChapter,
-  objectsVotingChapter,
+  objectsVotingChapter
+].map(addAuthRequirement)
 
-  // Functions section
+const functionChapters = [
   functionsIntroChapter,
   functionsDefiningInvokingChapter,
   functionsNamingChapter,
@@ -101,10 +111,19 @@ export const chapters = [
   functionsConditionsChapter,
   functionsLoopsChapter,
   functionsCallingFunctionsChapter,
-  functionsReviewChapter,
+  functionsReviewChapter
+].map(addAuthRequirement)
 
-  // Modules section
-  ...modulesChapters
+// Apply requiresAuth to modules chapters
+const protectedModulesChapters = modulesChapters.map(addAuthRequirement)
+
+export const chapters = [
+  ...gettingStartedChapters,
+  ...variablesChapters,
+  ...arrayChapters,
+  ...objectChapters,
+  ...functionChapters,
+  ...protectedModulesChapters
 ]
 
 /**

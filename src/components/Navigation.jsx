@@ -2,14 +2,22 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useChapter } from '../context/ChapterContext'
 import { useLearnerProgress } from '../context/LearnerProgressContext'
+import { useAuth } from '../context/AuthContext'
 import { sections } from '../sections'
 import { css } from '@emotion/react'
 import SectionHeader from './SectionHeader'
+import AuthButton from './AuthButton'
 
 const navStyles = css`
   h2 {
     color: #2c3e50;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 1rem 0;
+  }
+
+  .auth-container {
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
   }
 
   .section {
@@ -95,6 +103,16 @@ const navStyles = css`
         color: #007bff;
       }
     }
+
+    &.protected {
+      opacity: 0.7;
+
+      .lock-icon {
+        color: #6c757d;
+        margin-left: 0.5rem;
+        font-size: 0.9rem;
+      }
+    }
   }
 
   .chapter-number {
@@ -165,6 +183,12 @@ const navStyles = css`
   }
 `
 
+const LockIcon = () => (
+  <span className="lock-icon" role="img" aria-label="Protected content">
+    🔒
+  </span>
+)
+
 const groupChaptersBySection = (chapters) => {
   // First, group chapters by section
   const groupedChapters = chapters.reduce((acc, chapter) => {
@@ -197,6 +221,7 @@ const groupChaptersBySection = (chapters) => {
 function Navigation() {
   const { chapters, isSectionExpanded, toggleSection } = useChapter()
   const { getExerciseProgress, trackCompletion } = useLearnerProgress()
+  const { isAuthenticated } = useAuth()
   const location = useLocation()
   const groupedChapters = groupChaptersBySection(chapters)
 
@@ -227,6 +252,9 @@ function Navigation() {
   return (
     <nav css={navStyles}>
       <h2>Foundations Course</h2>
+      <div className="auth-container">
+        <AuthButton />
+      </div>
       {sections.map(section => {
         const sectionChapters = groupedChapters[section.id] || []
         if (sectionChapters.length === 0) return null
@@ -241,7 +269,6 @@ function Navigation() {
               isExpanded={isExpanded}
               onToggle={() => toggleSection(section.id)}
             />
-
 
             <div className={`section-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
               <div className="section-progress">
@@ -259,21 +286,23 @@ function Navigation() {
               <ul className="chapter-list">
                 {sectionChapters.map((chapter, index) => {
                   const status = getChapterStatus(chapter.id)
+                  const isProtected = chapter.requiresAuth && !isAuthenticated
                   return (
                     <li key={chapter.id} className="chapter-item">
                       <Link
-                        to={chapter.path}
+                        to={isProtected ? '/login' : chapter.path}
                         className={`chapter-link ${status} ${
                           location.pathname === chapter.path ? 'active' : ''
-                        }`}
+                        } ${isProtected ? 'protected' : ''}`}
                       >
                         <span className="chapter-number">{index + 1}</span>
                         <span className="chapter-title">{chapter.title}</span>
-                        {status !== 'not-started' ? (
+                        {isProtected && <LockIcon />}
+                        {!isProtected && status !== 'not-started' ? (
                           <span className="status-icon">
                             {status === 'completed' ? '✓' : '●'}
                           </span>
-                        ) : chapter.exercise === null && (
+                        ) : (!isProtected && chapter.exercise === null && (
                           <button
                             onClick={(e) => {
                               e.preventDefault()
@@ -296,7 +325,7 @@ function Navigation() {
                           >
                             Done
                           </button>
-                        )}
+                        ))}
                       </Link>
                     </li>
                   )

@@ -3,11 +3,13 @@ import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useChapter } from '../context/ChapterContext'
 import { useLearnerProgress } from '../context/LearnerProgressContext'
+import { useAuth } from '../context/AuthContext'
 import Editor from '@monaco-editor/react'
 import { marked } from 'marked'
 import { css } from '@emotion/react'
 import CodeBlock from './CodeBlock'
 import MultiFileEditor from './MultiFileEditor'
+import ProtectedRoute from './ProtectedRoute'
 import * as ReactDOM from 'react-dom/client'
 
 const chapterStyles = css`
@@ -191,39 +193,12 @@ const chapterStyles = css`
   }
 `
 
-function Chapter() {
+const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, getPreviousChapter, getNextChapter }) => {
   const { chapterId } = useParams()
-  const navigate = useNavigate()
-  const { currentChapter, chapterContent, loadChapter, getPreviousChapter, getNextChapter } = useChapter()
   const { trackAttempt, trackCompletion, getExerciseProgress } = useLearnerProgress()
   const [files, setFiles] = useState({})
   const [testResults, setTestResults] = useState(null)
   const [showResults, setShowResults] = useState(true)
-
-  const scrollToTop = () => {
-    const contentContainer = document.querySelector('.content-container')
-    if (contentContainer) {
-      contentContainer.scrollTop = 0
-    }
-  }
-
-  const handlePreviousClick = () => {
-    const previousChapter = getPreviousChapter(currentChapter.id)
-    if (previousChapter) {
-      navigate(`/${previousChapter.id}`)
-      loadChapter(previousChapter.id)
-      scrollToTop()
-    }
-  }
-
-  const handleNextClick = () => {
-    const nextChapter = getNextChapter(currentChapter.id)
-    if (nextChapter) {
-      navigate(`/${nextChapter.id}`)
-      loadChapter(nextChapter.id)
-      scrollToTop()
-    }
-  }
 
   // Configure marked renderer for code blocks
   const renderer = useMemo(() => {
@@ -259,12 +234,6 @@ function Chapter() {
     }
     return () => clearTimeout(timer)
   }, [testResults])
-
-  useEffect(() => {
-    if (chapterId) {
-      loadChapter(chapterId)
-    }
-  }, [chapterId])
 
   useEffect(() => {
     if (chapterContent?.exercise) {
@@ -341,10 +310,6 @@ function Chapter() {
     }
   }
 
-  if (!chapterContent) {
-    return <div>Loading...</div>
-  }
-
   return (
     <div css={chapterStyles} style={{
       gridTemplateColumns: chapterContent.exercise ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)',
@@ -372,14 +337,14 @@ function Chapter() {
         <div className="button-container">
           <button
             className="nav-button previous-button"
-            onClick={handlePreviousClick}
+            onClick={onPrevious}
             disabled={!getPreviousChapter(currentChapter?.id)}
           >
             Previous Chapter
           </button>
           <button
             className="nav-button next-button"
-            onClick={handleNextClick}
+            onClick={onNext}
             disabled={!getNextChapter(currentChapter?.id)}
           >
             Next Chapter
@@ -450,6 +415,75 @@ function Chapter() {
         </section>
       }
     </div>
+  )
+}
+
+function Chapter() {
+  const { chapterId } = useParams()
+  const navigate = useNavigate()
+  const { currentChapter, chapterContent, loadChapter, getPreviousChapter, getNextChapter } = useChapter()
+
+  const scrollToTop = () => {
+    const contentContainer = document.querySelector('.content-container')
+    if (contentContainer) {
+      contentContainer.scrollTop = 0
+    }
+  }
+
+  const handlePreviousClick = () => {
+    const previousChapter = getPreviousChapter(currentChapter.id)
+    if (previousChapter) {
+      navigate(`/${previousChapter.id}`)
+      loadChapter(previousChapter.id)
+      scrollToTop()
+    }
+  }
+
+  const handleNextClick = () => {
+    const nextChapter = getNextChapter(currentChapter.id)
+    if (nextChapter) {
+      navigate(`/${nextChapter.id}`)
+      loadChapter(nextChapter.id)
+      scrollToTop()
+    }
+  }
+
+  useEffect(() => {
+    if (chapterId) {
+      loadChapter(chapterId)
+    }
+  }, [chapterId])
+
+  if (!chapterContent) {
+    return <div>Loading...</div>
+  }
+
+  // If the chapter requires authentication, wrap it in ProtectedRoute
+  if (currentChapter?.requiresAuth) {
+    return (
+      <ProtectedRoute>
+        <ChapterContent
+          currentChapter={currentChapter}
+          chapterContent={chapterContent}
+          onPrevious={handlePreviousClick}
+          onNext={handleNextClick}
+          getPreviousChapter={getPreviousChapter}
+          getNextChapter={getNextChapter}
+        />
+      </ProtectedRoute>
+    )
+  }
+
+  // Otherwise, render normally
+  return (
+    <ChapterContent
+      currentChapter={currentChapter}
+      chapterContent={chapterContent}
+      onPrevious={handlePreviousClick}
+      onNext={handleNextClick}
+      getPreviousChapter={getPreviousChapter}
+      getNextChapter={getNextChapter}
+    />
   )
 }
 
