@@ -3,7 +3,6 @@ import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useChapter } from '../context/ChapterContext'
 import { useLearnerProgress } from '../context/LearnerProgressContext'
-import { useAuth } from '../context/AuthContext'
 import Editor from '@monaco-editor/react'
 import { marked } from 'marked'
 import { css } from '@emotion/react'
@@ -13,10 +12,10 @@ import ProtectedRoute from './ProtectedRoute'
 import * as ReactDOM from 'react-dom/client'
 
 const chapterStyles = css`
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  display: flex;
+  flex-direction: row;
   gap: 1rem;
-  padding: 1rem;
+  padding: 0.5rem 1rem 0 1rem;
   height: 100%;
   max-height: 100vh;
   overflow: hidden;
