@@ -1,7 +1,6 @@
 export const arrayIterationChapter = {
   id: 'arrays-iteration',
   title: 'Array Iteration',
-  path: '/arrays-iteration',
   sectionId: 'arrays',
   previousChapterId: 'arrays-indices',
   nextChapterId: 'arrays-push',

@@ -1,7 +1,6 @@
 export const objectsVotingChapter = {
   id: 'objects-voting',
   title: 'Section Project',
-  path: '/objects-voting',
   sectionId: 'objects',
   previousChapterId: 'objects-properties',
   nextChapterId: null,

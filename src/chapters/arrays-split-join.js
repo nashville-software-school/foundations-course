@@ -1,7 +1,6 @@
 export const arraySplitJoinChapter = {
   id: 'arrays-split-join',
   title: 'Strings and Arrays Conversion',
-  path: '/arrays-split-join',
   sectionId: 'arrays',
   previousChapterId: 'arrays-strings',
   nextChapterId: 'arrays-review',

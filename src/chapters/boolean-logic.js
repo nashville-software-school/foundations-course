@@ -1,7 +1,6 @@
 export const booleanLogicChapter = {
   id: 'boolean-logic',
   title: 'Conditional Logic',
-  path: '/boolean-logic',
   sectionId: 'variables-and-values',
   previousChapterId: 'string-methods',
   nextChapterId: 'evaluations',

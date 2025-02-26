@@ -1,7 +1,6 @@
 export const functionsScopeParametersChapter = {
   id: 'functions-scope-parameters',
   title: 'Parameters and Scope',
-  path: '/functions-scope-parameters',
   sectionId: 'functions',
   previousChapterId: 'functions-scope-basics',
   nextChapterId: 'functions-conditions',

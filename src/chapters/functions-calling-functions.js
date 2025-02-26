@@ -1,7 +1,6 @@
 export const functionsCallingFunctionsChapter = {
   id: 'functions-calling-functions',
   title: 'Functions Calling Functions',
-  path: '/functions-calling-functions',
   sectionId: 'functions',
   previousChapterId: 'functions-loops',
   nextChapterId: 'functions-review',

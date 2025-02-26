@@ -1,7 +1,6 @@
 export const functionsMultipleParametersChapter = {
   id: 'functions-multiple-parameters',
   title: 'Multiple Parameters',
-  path: '/functions-multiple-parameters',
   sectionId: 'functions',
   previousChapterId: 'functions-arguments',
   nextChapterId: 'functions-return-intro',

@@ -33,6 +33,16 @@ export const sections = [
     id: 'modules',
     title: 'Modules',
     description: 'Building maintainable applications by organizing code across multiple files'
+  },
+  {
+    id: 'leonids-toys',
+    title: 'Leonid\'s Toys',
+    description: 'TBD'
+  },
+  {
+    id: 'daily-notes',
+    title: 'Daily Notes',
+    description: 'TBD'
   }
 ]
 

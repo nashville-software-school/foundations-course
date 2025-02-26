@@ -1,7 +1,6 @@
 export const modulesSingleResponsibilityChapter = {
   id: 'modules-single-responsibility',
   title: 'Single Responsibility',
-  path: '/modules-single-responsibility',
   sectionId: 'modules',
   previousChapterId: 'modules-export-import',
   nextChapterId: 'modules-multiple-exports',

@@ -1,7 +1,6 @@
 export const arrayConditionsChapter = {
   id: 'arrays-conditions',
   title: 'Arrays with Conditions',
-  path: '/arrays-conditions',
   sectionId: 'arrays',
   previousChapterId: 'arrays-push',
   nextChapterId: 'arrays-length',

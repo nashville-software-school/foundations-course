@@ -1,7 +1,6 @@
 export const functionsParametersChapter = {
   id: 'functions-parameters',
   title: 'Introducing Parameters',
-  path: '/functions-parameters',
   sectionId: 'functions',
   previousChapterId: 'functions-naming',
   nextChapterId: 'functions-arguments',

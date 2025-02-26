@@ -1,7 +1,6 @@
 export const arrayReviewChapter = {
   id: 'arrays-review',
   title: 'Section Project',
-  path: '/arrays-review',
   sectionId: 'arrays',
   previousChapterId: 'arrays-split-join',
   nextChapterId: null,

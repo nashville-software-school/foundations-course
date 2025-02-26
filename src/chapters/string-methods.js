@@ -1,7 +1,6 @@
 export const stringMethodsChapter = {
   id: 'string-methods',
   title: 'String Methods',
-  path: '/string-methods',
   sectionId: 'variables-and-values',
   previousChapterId: 'multiline-strings',
   nextChapterId: 'boolean-logic',

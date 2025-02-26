@@ -45,6 +45,7 @@ import { functionsLoopsChapter } from './functions-loops'
 import { functionsCallingFunctionsChapter } from './functions-calling-functions'
 import { functionsReviewChapter } from './functions-review'
 import { modulesChapters } from './modules'
+import { projectChapters } from './projects'
 
 // Helper function to add requiresAuth flag based on section
 const addAuthRequirement = (chapter) => ({
@@ -117,13 +118,16 @@ const functionChapters = [
 // Apply requiresAuth to modules chapters
 const protectedModulesChapters = modulesChapters.map(addAuthRequirement)
 
+const projectModulesChapters = projectChapters.map(addAuthRequirement)
+
 export const chapters = [
   ...gettingStartedChapters,
   ...variablesChapters,
   ...arrayChapters,
   ...objectChapters,
   ...functionChapters,
-  ...protectedModulesChapters
+  ...protectedModulesChapters,
+  ...projectModulesChapters
 ]
 
 /**

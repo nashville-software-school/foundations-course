@@ -1,7 +1,6 @@
 export const objectsComplexChapter = {
   id: 'objects-complex',
   title: 'Complex Objects',
-  path: '/objects-complex',
   sectionId: 'objects',
   previousChapterId: 'objects-collections',
   nextChapterId: 'objects-libraries',

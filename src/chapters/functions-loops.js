@@ -1,7 +1,6 @@
 export const functionsLoopsChapter = {
   id: 'functions-loops',
   title: 'Functions with Loops',
-  path: '/functions-loops',
   sectionId: 'functions',
   previousChapterId: 'functions-conditions',
   nextChapterId: 'functions-calling-functions',

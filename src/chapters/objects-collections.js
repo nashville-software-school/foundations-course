@@ -1,7 +1,6 @@
 export const objectsCollectionsChapter = {
   id: 'objects-collections',
   title: 'Object Collections',
-  path: '/objects-collections',
   sectionId: 'objects',
   previousChapterId: 'objects-multiple',
   nextChapterId: 'objects-complex',

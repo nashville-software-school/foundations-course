@@ -1,7 +1,6 @@
 export const functionsScopeBasicsChapter = {
   id: 'functions-scope-basics',
   title: 'Understanding Scope Basics',
-  path: '/functions-scope-basics',
   sectionId: 'functions',
   previousChapterId: 'functions-return-practice',
   nextChapterId: 'functions-scope-parameters',

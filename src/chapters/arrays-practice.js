@@ -1,7 +1,6 @@
 export const arrayPracticeChapter = {
   id: 'arrays-practice',
   title: 'Array Practice',
-  path: '/arrays-practice',
   sectionId: 'arrays',
   previousChapterId: 'arrays-length',
   nextChapterId: 'arrays-conditions-practice',
