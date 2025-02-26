@@ -1,7 +1,6 @@
 export const evaluationsChapter = {
   id: 'evaluations',
   title: 'Less Than, More Than',
-  path: '/evaluations',
   sectionId: 'variables-and-values',
   previousChapterId: 'boolean-logic',
   nextChapterId: 'variables-review',
