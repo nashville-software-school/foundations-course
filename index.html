@@ -2,12 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JavaScript Learning Platform</title>
+    <!-- Handle SPA routing for GitHub Pages -->
+    <script type="text/javascript">
+      // Check if we have a redirect route stored from 404.html
+      (function() {
+        var redirect = sessionStorage.getItem('redirect');
+        if (redirect) {
+          // Clear the redirect storage
+          sessionStorage.removeItem('redirect');
+
+          // Ensure we're in the correct basename
+          var basePath = '/foundations-course';
+          if (window.location.pathname.indexOf(basePath) === 0) {
+            // Use history API to navigate to the correct route without a page reload
+            var targetPath = basePath + redirect;
+            console.log('Redirecting to', targetPath);
+
+            // Add the route to the history
+            window.history.replaceState(null, null, targetPath);
+          }
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="./src/main.jsx"></script>
   </body>
 </html>

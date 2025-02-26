@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Foundations Course - Redirecting</title>
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // MIT License
+      // https://github.com/rafgraph/spa-github-pages
+      // This script handles routing for SPAs on GitHub Pages
+
+      var pathSegmentsToKeep = 1; // Keep /foundations-course/ but remove anything after
+
+      var l = window.location;
+      var origin = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '');
+      var path = l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/';
+      var search = l.search ? l.search : '';
+      var hash = l.hash ? l.hash : '';
+
+      // Store the full path (with segments to remove) in sessionStorage
+      var route = '/' + l.pathname.split('/').slice(1 + pathSegmentsToKeep).join('/') + search + hash;
+      sessionStorage.setItem('redirect', route);
+
+      // Redirect to the main route and let the React app handle the inner route
+      window.location.href = origin + path;
+    </script>
+  </head>
+  <body>
+    Redirecting...
+  </body>
+</html>
