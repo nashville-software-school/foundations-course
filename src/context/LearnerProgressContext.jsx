@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { chapters } from '../chapters'
 
 const LearnerProgressContext = createContext()
 
@@ -78,11 +79,41 @@ export const LearnerProgressProvider = ({ children }) => {
         }
     }
 
+    // Calculate global progress excluding "Getting Started" section
+    const getGlobalProgress = () => {
+        // Filter out chapters from "Getting Started" section
+        const relevantChapters = chapters.filter(chapter =>
+            chapter.sectionId !== 'getting-started'
+        )
+
+        const totalChapters = relevantChapters.length
+        const completedChapters = relevantChapters.filter(chapter =>
+            progress.exercises[chapter.id]?.completed
+        ).length
+
+        // Calculate percentage
+        const percentage = totalChapters > 0
+            ? Math.round((completedChapters / totalChapters) * 100)
+            : 0
+
+        // Determine level (0-4 for the 5 stars)
+        // Each level represents 20% of progress
+        const level = Math.min(Math.floor(percentage / 20), 4)
+
+        return {
+            totalChapters,
+            completedChapters,
+            percentage,
+            level
+        }
+    }
+
     const value = {
         progress,
         trackAttempt,
         trackCompletion,
-        getExerciseProgress
+        getExerciseProgress,
+        getGlobalProgress
     }
 
     return (

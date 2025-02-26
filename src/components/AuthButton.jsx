@@ -45,26 +45,11 @@ export const AuthButton = () => {
     const { isAuthenticated, user, login, logout } = useAuth()
 
     if (isAuthenticated && user) {
-        return (
-            <div css={styles.container}>
-                <img
-                    src={user.avatar_url}
-                    alt={`${user.login}'s avatar`}
-                    css={styles.avatar}
-                />
-                <button css={styles.button} onClick={logout}>
-                    Sign Out
-                </button>
-            </div>
-        )
+        return ( <button css={styles.button} onClick={logout}> Sign Out </button> )
     }
 
     return (
-        <button css={styles.button} onClick={login}>
-            <GithubIcon />
-            Sign in with Github
-        </button>
-    )
+        <button css={styles.button} onClick={login}> <GithubIcon /> Sign In </button> )
 }
 
 export default AuthButton

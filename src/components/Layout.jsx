@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Outlet } from 'react-router-dom'
 import Navigation from './Navigation'
+import GlobalProgressBar from './GlobalProgressBar'
 import { css } from '@emotion/react'
 
 const layoutStyles = css`
@@ -13,15 +14,18 @@ const layoutStyles = css`
   .top-area {
     display: flex;
     flex-direction: row;
-    height: 95%;
+    height: 92%;
   }
 
-  .bottom-area {
-    height: 5%;
-    background: #343a40;
+  .footer-container {
+    min-height: 8%;
+    background:rgb(70, 87, 103);
     color: #fff;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .nav-sidebar {
@@ -29,7 +33,7 @@ const layoutStyles = css`
     flex-basis: 20%;
     border-right: 1px solid #e9ecef;
     overflow-y: auto;
-    padding: 2rem 1rem;
+    padding: 0 1rem 2rem 1rem;
   }
 
   .main-content {
@@ -51,10 +55,8 @@ function Layout() {
           <Outlet />
         </main>
       </div>
-      <div className="bottom-area">
-        <footer>
-          <p>&copy; 2021</p>
-        </footer>
+      <div className="footer-container">
+        <GlobalProgressBar />
       </div>
     </div>
   )

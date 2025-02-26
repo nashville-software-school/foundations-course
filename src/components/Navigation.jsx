@@ -17,7 +17,6 @@ const navStyles = css`
   .auth-container {
     margin-bottom: 1.5rem;
     padding: 0.5rem;
-    border-bottom: 1px solid #dee2e6;
   }
 
   .section {
@@ -250,9 +249,17 @@ function Navigation() {
 
   return (
     <nav css={navStyles}>
-      <h2>Foundations Course</h2>
-      <div className="auth-container">
-        <AuthButton />
+      <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid #e9ecef',
+        }}>
+        <h2>Foundations</h2>
+        <div className="auth-container">
+          <AuthButton />
+        </div>
+
       </div>
       {sections.map(section => {
         const sectionChapters = groupedChapters[section.id] || []
