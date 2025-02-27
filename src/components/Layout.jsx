@@ -14,14 +14,14 @@ const layoutStyles = css`
   .top-area {
     display: flex;
     flex-direction: row;
-    height: 92%;
+    height: 93%;
   }
 
   .footer-container {
-    min-height: 8%;
+    min-height: 7%;
     background:rgb(70, 87, 103);
     color: #fff;
-    padding: 0.5rem 1rem;
+    padding: 0 1rem;
     text-align: center;
     display: flex;
     flex-direction: column;
