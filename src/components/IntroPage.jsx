@@ -102,7 +102,7 @@ function IntroPage() {
   return (
     <div css={introPageStyles}>
       <div className="intro-header">
-        <h1 className="intro-title">Welcome to the Foundations Course</h1>
+        <h1 className="intro-title">Nashville Software School Foundations Course</h1>
         <p className="intro-subtitle">Your journey to becoming a software developer starts here</p>
       </div>
 
