@@ -9,6 +9,7 @@ export const LearnerProgressProvider = ({ children }) => {
         const stored = localStorage.getItem('learnerProgress')
         return stored ? JSON.parse(stored) : {
             exercises: {},
+            hasSeenIntro: false,  // Track whether user has seen intro page
             lastUpdated: new Date().toISOString()
         }
     })
@@ -108,12 +109,22 @@ export const LearnerProgressProvider = ({ children }) => {
         }
     }
 
+    // Function to mark the intro page as seen
+    const markIntroAsSeen = () => {
+        setProgress(prev => ({
+            ...prev,
+            hasSeenIntro: true,
+            lastUpdated: new Date().toISOString()
+        }))
+    }
+
     const value = {
         progress,
         trackAttempt,
         trackCompletion,
         getExerciseProgress,
-        getGlobalProgress
+        getGlobalProgress,
+        markIntroAsSeen
     }
 
     return (
