@@ -6,17 +6,11 @@ import { useAuth } from '../context/AuthContext'
 import { sections } from '../sections'
 import { css } from '@emotion/react'
 import SectionHeader from './SectionHeader'
-import AuthButton from './AuthButton'
 
 const navStyles = css`
   h2 {
     color: #2c3e50;
     margin: 0 0 1rem 0;
-  }
-
-  .auth-container {
-    margin-bottom: 1.5rem;
-    padding: 0.5rem;
   }
 
   .section {
@@ -249,18 +243,6 @@ function Navigation() {
 
   return (
     <nav css={navStyles}>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderBottom: '1px solid #e9ecef',
-        }}>
-        <h2>Foundations</h2>
-        <div className="auth-container">
-          <AuthButton />
-        </div>
-
-      </div>
       {sections.map(section => {
         const sectionChapters = groupedChapters[section.id] || []
         if (sectionChapters.length === 0) return null

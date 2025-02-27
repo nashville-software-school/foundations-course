@@ -2,6 +2,7 @@
 import { Outlet } from 'react-router-dom'
 import Navigation from './Navigation'
 import GlobalProgressBar from './GlobalProgressBar'
+import AuthButton from './AuthButton' // New import
 import { css } from '@emotion/react'
 
 const layoutStyles = css`
@@ -11,15 +12,31 @@ const layoutStyles = css`
   padding: 0;
   height: 100vh;
 
-  .top-area {
+  .top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    height: 2.2rem;
+    background-color:rgb(46, 64, 97);
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .app-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color:rgb(170, 212, 255);
+  }
+
+  .content-area {
     display: flex;
     flex-direction: row;
-    height: 93%;
+    height: calc(93% - 50px); /* Adjusted for top navbar */
   }
 
   .footer-container {
     min-height: 7%;
-    background:rgb(70, 87, 103);
+    background:rgb(46, 64, 97);
     color: #fff;
     padding: 0 1rem;
     text-align: center;
@@ -47,7 +64,15 @@ const layoutStyles = css`
 function Layout() {
   return (
     <div css={layoutStyles}>
-      <div className="top-area">
+      <header className="top-navbar">
+        <div className="app-name">
+          Nashville Software School: Foundations Course
+        </div>
+        <div className="auth-container">
+          <AuthButton />
+        </div>
+      </header>
+      <div className="content-area">
         <nav className="nav-sidebar">
           <Navigation />
         </nav>
