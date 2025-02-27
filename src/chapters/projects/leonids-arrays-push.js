@@ -1,5 +1,5 @@
-export const leonidsArrayPush = {
-  id: "leonids-array-push",
+export const leonidsArraysPush = {
+  id: "leonids-arrays-push",
   title: "New Toys",
   sectionId: "leonids",
   previousChapterId: "leonids-iteration",
