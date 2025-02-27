@@ -432,7 +432,13 @@ function Chapter() {
   const handlePreviousClick = () => {
     const previousChapter = getPreviousChapter(currentChapter.id)
     if (previousChapter) {
-      navigate(`/${previousChapter.id}`)
+      // Check if we have the hasSeenIntro parameter in the URL
+      const searchParams = new URLSearchParams(window.location.search);
+      const hasSeenIntro = searchParams.get('hasSeenIntro') === 'true';
+
+      // Preserve the parameter when navigating
+      const url = hasSeenIntro ? `/${previousChapter.id}?hasSeenIntro=true` : `/${previousChapter.id}`;
+      navigate(url);
       loadChapter(previousChapter.id)
       scrollToTop()
     }
@@ -441,7 +447,13 @@ function Chapter() {
   const handleNextClick = () => {
     const nextChapter = getNextChapter(currentChapter.id)
     if (nextChapter) {
-      navigate(`/${nextChapter.id}`)
+      // Check if we have the hasSeenIntro parameter in the URL
+      const searchParams = new URLSearchParams(window.location.search);
+      const hasSeenIntro = searchParams.get('hasSeenIntro') === 'true';
+
+      // Preserve the parameter when navigating
+      const url = hasSeenIntro ? `/${nextChapter.id}?hasSeenIntro=true` : `/${nextChapter.id}`;
+      navigate(url);
       loadChapter(nextChapter.id)
       scrollToTop()
     }
