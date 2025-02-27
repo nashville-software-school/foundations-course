@@ -4,7 +4,7 @@ import { arrayChapters } from "./arrays";
 import { objectChapters } from "./objects";
 import { functionChapters } from "./functions";
 import { modulesChapters } from "./modules";
-import { projectChapters } from "./projects";
+import { projectChapters, leonidsChapters } from "./projects";
 
 // Helper function to add requiresAuth flag based on section
 const addAuthRequirement = (chapter) => ({
@@ -24,6 +24,7 @@ const protectedFunctionChapters = functionChapters.map(addAuthRequirement);
 const protectedModulesChapters = modulesChapters.map(addAuthRequirement);
 
 const projectModulesChapters = projectChapters.map(addAuthRequirement);
+const protectedLeonidsChapters = leonidsChapters.map(addAuthRequirement);
 
 export const chapters = [
   ...protectedGettingStartedChapters,
@@ -32,6 +33,8 @@ export const chapters = [
   ...protectedObjectChapters,
   ...protectedFunctionChapters,
   ...protectedModulesChapters,
+  ...projectModulesChapters,
+  ...protectedLeonidsChapters,
 ];
 
 /**

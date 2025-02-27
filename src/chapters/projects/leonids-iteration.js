@@ -3,7 +3,7 @@ export const leonidsIteration = {
   title: "Displaying Toy Properties",
   sectionId: "leonids",
   previousChapterId: "leonids-arrays",
-  nextChapterId: "leonids-array-push",
+  nextChapterId: "leonids-arrays-push",
   content: `
   # Display Toy Properties
 

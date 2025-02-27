@@ -2,7 +2,7 @@ export const leonidsStringInterpolation = {
   id: "leonids-string-interpolation",
   title: "Toy Catalog",
   sectionId: "leonids",
-  previousChapterId: "leonids-array-push",
+  previousChapterId: "leonids-arrays-push",
   nextChapterId: "leonids-iteration-update",
   content: `
 # Displaying the Toy Catalog
