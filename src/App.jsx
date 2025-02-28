@@ -25,13 +25,11 @@ function IntroRedirect() {
   const hasSeenIntroCookie = Cookies.get('hasSeenIntro') === 'true';
 
   // If any of them is true, consider the intro as seen
-  const hasSeenIntro = hasSeenIntroContext || hasSeenIntroCookie
-
   console.log('IntroRedirect - hasSeenIntro from context:', hasSeenIntroContext);
   console.log('IntroRedirect - hasSeenIntro from cookie:', hasSeenIntroCookie);
 
   // For demonstration purposes, if we have the URL parameter, pass it along to maintain state
-  if (!hasSeenIntro) {
+  if (!hasSeenIntroCookie || !hasSeenIntroParam) {
     console.log('Redirecting to intro page');
     return <Navigate to="/intro" replace />;
   }
