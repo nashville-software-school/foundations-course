@@ -96,28 +96,6 @@ function IntroPage() {
           <p className="intro-subtitle">Your journey to becoming a software developer starts here</p>
         </div>
 
-        <div className="content-card animate-item" style={{ animationDelay: '0.5s' }}>
-          <div className="intro-content">
-              The Foundations Course is designed to help you build a solid foundation in fundamental programming
-              concepts, algorithmic thinking, data types, and functional programming. Through comprehensive explanations, helpful examples, and hands-on exercises, you'll develop the skills needed to begin your software development career.
-          </div>
-        </div>
-
-        <div className="video-container animate-item" style={{ animationDelay: '0.7s' }}>
-          {!videoPlaying && (
-            <div className="video-overlay" onClick={handlePlayVideo}>
-              <div className="play-button">
-                <div className="play-button-triangle"></div>
-              </div>
-            </div>
-          )}
-          <iframe
-            src={`https://www.youtube.com/embed/dQw4w9WgXcQ${videoPlaying ? '?autoplay=1' : ''}`}
-            title="Course Introduction Video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
 
         <div className="features-container">
           <div className="features-list animate-item" style={{ animationDelay: '0.9s' }}>
@@ -145,6 +123,23 @@ function IntroPage() {
               delay={0.3}
             />
           </div>
+        </div>
+
+
+        <div className="video-container animate-item" style={{ animationDelay: '0.7s' }}>
+          {!videoPlaying && (
+            <div className="video-overlay" onClick={handlePlayVideo}>
+              <div className="play-button">
+                <div className="play-button-triangle"></div>
+              </div>
+            </div>
+          )}
+          <iframe
+            src={`https://www.youtube.com/embed/dQw4w9WgXcQ${videoPlaying ? '?autoplay=1' : ''}`}
+            title="Course Introduction Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
         </div>
 
         <button

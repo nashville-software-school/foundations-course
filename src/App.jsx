@@ -23,16 +23,12 @@ function IntroRedirect() {
   // Check all possible storage locations
   const hasSeenIntroContext = progress.hasSeenIntro;
   const hasSeenIntroCookie = Cookies.get('hasSeenIntro') === 'true';
-  const hasSeenIntroLocalStorage = localStorage.getItem('hasSeenIntro') === 'true';
 
   // If any of them is true, consider the intro as seen
-  const hasSeenIntro = hasSeenIntroContext || hasSeenIntroCookie || hasSeenIntroLocalStorage || hasSeenIntroParam;
+  const hasSeenIntro = hasSeenIntroContext || hasSeenIntroCookie
 
   console.log('IntroRedirect - hasSeenIntro from context:', hasSeenIntroContext);
   console.log('IntroRedirect - hasSeenIntro from cookie:', hasSeenIntroCookie);
-  console.log('IntroRedirect - hasSeenIntro from localStorage:', hasSeenIntroLocalStorage);
-  console.log('IntroRedirect - hasSeenIntro from URL param:', hasSeenIntroParam);
-  console.log('IntroRedirect - combined hasSeenIntro:', hasSeenIntro);
 
   // For demonstration purposes, if we have the URL parameter, pass it along to maintain state
   if (!hasSeenIntro) {
