@@ -1,150 +1,160 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLearnerProgress } from '../context/LearnerProgressContext'
+import { FaCode, FaBookOpen, FaChartLine } from 'react-icons/fa'
+import './IntroPage.css'
 
-const introPageStyles = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 2rem;
-  background-color: #f9f5ee;
-  text-align: center;
+// Feature component with CSS animations
+function FeatureItem({ icon, title, description, delay, child }) {
+  const ref = useRef(null)
+  const [isVisible, setIsVisible] = useState(false)
 
-  .intro-header {
-    margin-bottom: 2rem;
-  }
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.2 }
+    )
 
-  .intro-title {
-    font-size: 2.5rem;
-    color: rgb(46, 64, 97);
-    margin-bottom: 1rem;
-  }
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
 
-  .intro-subtitle {
-    font-size: 1.2rem;
-    color: #666;
-  }
+    return () => {
+      if (ref.current) {
+        observer.disconnect()
+      }
+    }
+  }, [])
 
-  .intro-content {
-    max-width: 800px;
-    margin: 2rem 0;
-    line-height: 1.6;
-    color: #333;
-  }
-
-  .video-container {
-    width: 100%;
-    max-width: 800px;
-    margin: 2rem 0;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .video-container iframe {
-    width: 100%;
-    aspect-ratio: 16/9;
-    border: none;
-  }
-
-  .features-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-    margin: 2rem 0;
-  }
-
-  .feature-item {
-    flex-basis: 250px;
-    padding: 1.5rem;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-
-  .feature-title {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: rgb(46, 64, 97);
-  }
-
-  .start-learning-button {
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    font-weight: bold;
-    background-color: rgb(46, 64, 97);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 2rem;
-  }
-
-  .start-learning-button:hover {
-    background-color: rgb(70, 90, 126);
-  }
-`
+  return (
+    <div
+      ref={ref}
+      className={`feature-item ${isVisible ? 'animate-in' : 'hidden'}`}
+      style={{ animationDelay: `${delay}s` }}
+    >
+      <div className="feature-icon">
+        {icon}
+      </div>
+      <h3 className="feature-title">{title}</h3>
+      <p>{description}</p>
+      <div>{child}</div>
+    </div>
+  )
+}
 
 function IntroPage() {
   const navigate = useNavigate()
   const { markIntroAsSeen } = useLearnerProgress()
+  const [videoPlaying, setVideoPlaying] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  // Set loaded state after component mounts to trigger animations
+  useEffect(() => {
+    setIsLoaded(true)
+  }, [])
 
   const handleStartLearning = () => {
-    markIntroAsSeen()
-    navigate('/github-account')
+    console.log('Start Learning button clicked');
+
+    // Set the flag directly in localStorage
+    try {
+      localStorage.setItem('hasSeenIntro', 'true');
+      console.log('hasSeenIntro flag set directly in localStorage');
+    } catch (error) {
+      console.error('Error setting localStorage:', error);
+    }
+
+    // Also update the context state
+    markIntroAsSeen();
+    console.log('After markIntroAsSeen call');
+
+    // Add a URL parameter to indicate the user has seen the intro
+    navigate('/github-account?hasSeenIntro=true');
+  }
+
+  const handlePlayVideo = () => {
+    setVideoPlaying(true)
   }
 
   return (
-    <div css={introPageStyles}>
-      <div className="intro-header">
-        <h1 className="intro-title">Nashville Software School Foundations Course</h1>
-        <p className="intro-subtitle">Your journey to becoming a software developer starts here</p>
-      </div>
+    <div className="intro-page">
+      <div className="floating-element float-1">{'{ }'}</div>
+      <div className="floating-element float-2">{'function()'}</div>
+      <div className="floating-element float-3">{'const'}</div>
+      <div className="floating-element float-4">{'return'}</div>
+      <div className="floating-element float-5">{'Set()'}</div>
+      <div className="floating-element float-6">{'Map()'}</div>
 
-      <div className="intro-content">
-        <p>
-          The Foundations Course is designed to help you build a solid foundation in programming
-          concepts and JavaScript fundamentals. Through interactive lessons and hands-on exercises,
-          you'll develop the skills needed to begin your software development career.
-        </p>
-      </div>
-
-      <div className="video-container">
-        {/* Replace with your actual video embed code */}
-        <iframe
-          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-          title="Course Introduction Video"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
-      </div>
-
-      <div className="features-list">
-        <div className="feature-item">
-          <h3 className="feature-title">Interactive Learning</h3>
-          <p>Practice coding directly in your browser with our built-in code editor</p>
+      <div className={`content-container ${isLoaded ? 'animate-in' : ''}`}>
+        <div className="intro-header animate-item" style={{ animationDelay: '0.3s' }}>
+          <h1 className="intro-title">Nashville Software School Foundations Course</h1>
+          <p className="intro-subtitle">Your journey to becoming a software developer starts here</p>
         </div>
-        <div className="feature-item">
-          <h3 className="feature-title">Structured Curriculum</h3>
-          <p>Progress through carefully designed sections and chapters</p>
-        </div>
-        <div className="feature-item">
-          <h3 className="feature-title">Track Your Progress</h3>
-          <p>See your advancement through the course with our progress tracking system</p>
-        </div>
-      </div>
 
-      <button
-        className="start-learning-button"
-        onClick={handleStartLearning}
-      >
-        Start Learning!
-      </button>
+        <div className="content-card animate-item" style={{ animationDelay: '0.5s' }}>
+          <div className="intro-content">
+              The Foundations Course is designed to help you build a solid foundation in fundamental programming
+              concepts, algorithmic thinking, data types, and functional programming. Through comprehensive explanations, helpful examples, and hands-on exercises, you'll develop the skills needed to begin your software development career.
+          </div>
+        </div>
+
+        <div className="video-container animate-item" style={{ animationDelay: '0.7s' }}>
+          {!videoPlaying && (
+            <div className="video-overlay" onClick={handlePlayVideo}>
+              <div className="play-button">
+                <div className="play-button-triangle"></div>
+              </div>
+            </div>
+          )}
+          <iframe
+            src={`https://www.youtube.com/embed/dQw4w9WgXcQ${videoPlaying ? '?autoplay=1' : ''}`}
+            title="Course Introduction Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+
+        <div className="features-container">
+          <div className="features-list animate-item" style={{ animationDelay: '0.9s' }}>
+            <FeatureItem
+              icon={<FaCode />}
+              title="Interactive Learning"
+              description="Practice coding directly in your browser with our built-in code editor"
+              delay={0.1}
+            />
+            <FeatureItem
+              icon={<FaBookOpen />}
+              title="Structured Curriculum"
+              description="Progress through carefully designed sections and chapters"
+              delay={0.2}
+            />
+            <FeatureItem
+              icon={<FaChartLine />}
+              title="Track Your Progress"
+              description="See your advancement through the course with our progress tracking system"
+              child={<div className="progress-bar-container">
+                <div className="progress-bar">
+                  <div className="progress-bar-fill"></div>
+                </div>
+              </div>}
+              delay={0.3}
+            />
+          </div>
+        </div>
+
+        <button
+          className="start-learning-button animate-item"
+          onClick={handleStartLearning}
+          style={{ animationDelay: '1.2s' }}
+        >
+          Start Learning!
+        </button>
+      </div>
     </div>
   )
 }

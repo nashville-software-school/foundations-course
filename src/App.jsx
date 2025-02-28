@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
 import Chapter from './components/Chapter'
 import Login from './components/Login'
@@ -8,17 +8,41 @@ import { ChapterProvider } from './context/ChapterContext'
 import { LearnerProgressProvider } from './context/LearnerProgressContext'
 import { AuthProvider } from './context/AuthContext'
 import { useLearnerProgress } from './context/LearnerProgressContext'
+import Cookies from 'js-cookie'
 import './App.css'
 
 // Component to handle redirect logic based on whether user has seen intro
 function IntroRedirect() {
   const { progress } = useLearnerProgress();
+  const location = useLocation();
 
-  if (!progress.hasSeenIntro) {
+  // Check URL parameter
+  const searchParams = new URLSearchParams(location.search);
+  const hasSeenIntroParam = searchParams.get('hasSeenIntro') === 'true';
+
+  // Check all possible storage locations
+  const hasSeenIntroContext = progress.hasSeenIntro;
+  const hasSeenIntroCookie = Cookies.get('hasSeenIntro') === 'true';
+  const hasSeenIntroLocalStorage = localStorage.getItem('hasSeenIntro') === 'true';
+
+  // If any of them is true, consider the intro as seen
+  const hasSeenIntro = hasSeenIntroContext || hasSeenIntroCookie || hasSeenIntroLocalStorage || hasSeenIntroParam;
+
+  console.log('IntroRedirect - hasSeenIntro from context:', hasSeenIntroContext);
+  console.log('IntroRedirect - hasSeenIntro from cookie:', hasSeenIntroCookie);
+  console.log('IntroRedirect - hasSeenIntro from localStorage:', hasSeenIntroLocalStorage);
+  console.log('IntroRedirect - hasSeenIntro from URL param:', hasSeenIntroParam);
+  console.log('IntroRedirect - combined hasSeenIntro:', hasSeenIntro);
+
+  // For demonstration purposes, if we have the URL parameter, pass it along to maintain state
+  if (!hasSeenIntro) {
+    console.log('Redirecting to intro page');
     return <Navigate to="/intro" replace />;
   }
 
-  return <Navigate to="/github-account" replace />;
+  console.log('Redirecting to main content');
+  // Preserve the URL parameter when redirecting
+  return <Navigate to={hasSeenIntroParam ? "/github-account?hasSeenIntro=true" : "/github-account"} replace />;
 }
 
 function App() {
