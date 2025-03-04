@@ -56,14 +56,14 @@ Try it in the editor!
 `,
   exercise: {
     starterCode: `// Monthly income
-const myIncome = 5478.84
-const spouseIncome = 4028.37
+const myIncome = 5478
+const spouseIncome = 4028
 
 // Monthly expenses
-const phoneBill = 254.91
-const mortgage = 2161.12
-const carInsurance = 205.31
-const healthInsurance = 508.18
+const phoneBill = 254
+const mortgage = 2161
+const carInsurance = 205
+const healthInsurance = 508
 
 // Create a multi-line string that shows:
 // 1. Combined monthly income
@@ -72,14 +72,14 @@ const healthInsurance = 508.18
 
 const statement = ""  // Use backticks and calculations here`,
     solution: `// Monthly income
-const myIncome = 5478.84
-const spouseIncome = 4028.37
+const myIncome = 5478
+const spouseIncome = 4028
 
 // Monthly expenses
-const phoneBill = 254.91
-const mortgage = 2161.12
-const carInsurance = 205.31
-const healthInsurance = 508.18
+const phoneBill = 254
+const mortgage = 2161
+const carInsurance = 205
+const healthInsurance = 508
 
 const statement = \`Our combined monthly income is \${myIncome + spouseIncome}.
 Our total monthly expenses are \${phoneBill + mortgage + carInsurance + healthInsurance}.
@@ -97,8 +97,10 @@ Our net monthly income is \${(myIncome + spouseIncome) - (phoneBill + mortgage +
       {
         name: "Calculations",
         test: (code) => {
-          return code.includes('myIncome + spouseIncome') &&
-                 code.includes('phoneBill + mortgage + carInsurance + healthInsurance')
+          const func = new Function(code + '; return statement')();
+          return func.includes('Our combined monthly income is 9506.') &&
+                  func.includes('Our total monthly expenses are 3128.') &&
+                  func.includes('Our net monthly income is 6378.');
         },
         message: "Make sure to calculate total income and expenses correctly"
       }
