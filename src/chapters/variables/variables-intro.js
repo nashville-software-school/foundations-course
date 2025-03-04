@@ -177,10 +177,11 @@ console.log(yearlyTotal)`,
             {
                 name: "Total Calculation",
                 test: (code) => {
-                    return code.includes('const') &&
-                        code.includes('yearlyTotal')
+                    const func = new Function(code + '\nreturn {januaryBill, februaryBill, marchBill, aprilBill, mayBill, juneBill, julyBill, augustBill, septemberBill, octoberBill, novemberBill, decemberBill, yearlyTotal}')
+                    const result = func()
+                    return yearlyTotal === januaryBill + februaryBill + marchBill + aprilBill + mayBill + juneBill + julyBill + augustBill + septemberBill + octoberBill + novemberBill + decemberBill
                 },
-                message: "Make sure to calculate the total using const and output it with console.log"
+                message: "Make sure you add up all the months to get the yearly total"
             }
         ]
     }

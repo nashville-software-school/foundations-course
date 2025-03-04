@@ -139,8 +139,9 @@ Photos will be stored in a plum colored Photo Album`;
         name: "Storage Type Selection",
         test: (code) => {
           try {
-            let photoStorage, totalPhotos;
-            eval(code);
+            const func = new Function(code + ' return photoStorage;');
+            const result = func()
+            if (result === undefined) return false;
             return photoStorage === "Photo Album" && // For 124 photos, should be Photo Album
                    code.includes('if') &&
                    code.includes('else') &&
@@ -156,10 +157,10 @@ Photos will be stored in a plum colored Photo Album`;
         name: "Album Color Selection",
         test: (code) => {
           try {
-            let albumColor, femalePhotos, malePhotos;
-            eval(code);
-            return albumColor === "plum" && // For more female photos
-                   code.includes('femalePhotos > malePhotos');
+            const func = new Function(code + ' return albumColor;');
+            const result = func()
+            if (result === undefined) return false;
+            return albumColor === "plum"
           } catch (error) {
             return false;
           }
@@ -170,8 +171,9 @@ Photos will be stored in a plum colored Photo Album`;
         name: "Output Format",
         test: (code) => {
           try {
-            let output;
-            eval(code);
+            const func = new Function(code + ' return output;');
+            const output = func();
+            if (output === undefined) return false;
             return output.includes('124 total photos') &&
                    output.includes('72 photos of women') &&
                    output.includes('52 photos of men') &&
