@@ -33,6 +33,11 @@ export const sections = [
     id: 'modules',
     title: 'Modules',
     description: 'Building maintainable applications by organizing code across multiple files'
+  },
+  {
+    id: 'workshops',
+    title: 'Workshops',
+    description: 'Various workshops as supplemental course content.'
   }
 ]
 
