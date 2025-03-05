@@ -90,7 +90,7 @@ function IntroPage() {
       <div className="floating-element float-5">{'Set()'}</div>
       <div className="floating-element float-6">{'Map()'}</div>
 
-      <div className={`content-container ${isLoaded ? 'animate-in' : ''}`}>
+      <div className={`intro-content-container ${isLoaded ? 'animate-in' : ''}`}>
         <div className="intro-header animate-item" style={{ animationDelay: '0.3s' }}>
           <h1 className="intro-title">Nashville Software School Foundations Course</h1>
           <p className="intro-subtitle">Your journey to becoming a software developer starts here</p>
