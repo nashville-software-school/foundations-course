@@ -37,7 +37,8 @@ export const sections = [
   {
     id: 'workshops',
     title: 'Workshops',
-    description: 'Various workshops as supplemental course content.'
+    description: 'Various workshops as supplemental course content.',
+    optional: true,
   }
 ]
 
