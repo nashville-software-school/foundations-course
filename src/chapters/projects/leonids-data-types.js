@@ -61,22 +61,24 @@ const accountIsActive = true
 
 Leonid wants to keep track of his toys. The function createToy is already provided, 
 but it's up to you to call the function with the correct data types for each slot.
-The vakue are up to you as long as they have the correct data type!
+The values are up to you as long as they have the correct data type!
 
 Instructions:
 
 - Call createToy with appropriate values.
 - Ensure each argument matches the correct data type.
-    name, category, ageRecommendation, isBatteryOperated, features
+- Toy dimensions should are specified as numbers with width & height 
+    name, category, ageRecommendation, isBatteryOperated, features, dimensions
 - Your solution should pass the provided test cases.`,
   exercise: {
-    starterCode: `function createToy(name, category, ageRecommendation, isBatteryOperated, features) {
+    starterCode: `function createToy(name, category, ageRecommendation, isBatteryOperated, features, dimensions) {
     return {
         name,
         category,
         ageRecommendation,
         isBatteryOperated,
-        features
+        features,
+        dimensions
     };
 }
 
@@ -151,6 +153,22 @@ const myToy = createToy( /* Fill in the arguments correctly */ );`,
           }
         },
         message: "What data type should store multiple features?",
+      },
+      {
+        name: "Test Features",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return myToy;");
+            const toy = func();
+            return (
+              typeof toy.dimensions === "object" && toy.dimensions !== null &&
+              typeof toy.dimensions.height === "number" &&
+                        typeof toy.dimensions.width === "number");
+          } catch {
+            return false;
+          }
+        },
+        message: "What data type should represent the toy’s dimensions? What data type should dimensions height and width be?",
       },
     ],
   },
