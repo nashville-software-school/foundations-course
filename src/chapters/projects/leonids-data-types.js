@@ -59,17 +59,98 @@ const accountIsActive = true
 
 ## Practice: Toy Data Types
 
-Think about what kind of data that Leonid would need to store about his toys. For example, the name of the toy. What data type would that be?
+Leonid wants to keep track of his toys. The function createToy is already provided, 
+but it's up to you to call the function with the correct data types for each slot.
+The vakue are up to you as long as they have the correct data type!
 
-Write down some other properties of toys that he would need to keep track of, and the data type for each. When you're done, talk with your teammates, or talk to a member of your coaching team to review your ideas.`,
+Instructions:
+
+- Call createToy with appropriate values.
+- Ensure each argument matches the correct data type.
+    name, category, ageRecommendation, isBatteryOperated, features
+- Your solution should pass the provided test cases.`,
   exercise: {
-    starterCode: ``,
+    starterCode: `function createToy(name, category, ageRecommendation, isBatteryOperated, features) {
+    return {
+        name,
+        category,
+        ageRecommendation,
+        isBatteryOperated,
+        features
+    };
+}
+
+// TODO: Call createToy with the correct data types
+const myToy = createToy( /* Fill in the arguments correctly */ );`,
     solution: ``,
     tests: [
       {
-        name: "<< Title >>",
-        test: (code) => true,
-        message: "",
+        name: "Test Name",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return myToy;");
+            const toy = func();
+            return typeof toy.name === "string";
+          } catch {
+            return false;
+          }
+        },
+        message: "What data should represent a toy name?",
+      },
+      {
+        name: "Test Category",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return myToy;");
+            const toy = func();
+            return typeof toy.category === "string";
+          } catch {
+            return false;
+          }
+        },
+        message: "What data should represent a toy category?",
+      },
+      {
+        name: "Test Age Recommendation",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return myToy;");
+            const toy = func();
+            return typeof toy.ageRecommendation === "number";
+          } catch {
+            return false;
+          }
+        },
+        message: "What data type should store the recommended age?",
+      },
+      {
+        name: "Test Battery Operated",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return myToy;");
+            const toy = func();
+            return typeof toy.isBatteryOperated === "boolean";
+          } catch {
+            return false;
+          }
+        },
+        message: "How do we represent a yes/no property?",
+      },
+      {
+        name: "Test Features",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return myToy;");
+            const toy = func();
+            return (
+              Array.isArray(toy.features) &&
+              toy.features.every((f) => typeof f === "string")
+            );
+          } catch {
+            return false;
+          }
+        },
+        message: "What data type should store multiple features?",
       },
     ],
   },
