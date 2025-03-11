@@ -19,6 +19,8 @@ const chapterStyles = css`
   height: 100%;
   max-height: 100vh;
   overflow: hidden;
+  width: 100%;
+  transition: all 0.3s ease;
 
   .content-container {
     flex: 1;
@@ -36,6 +38,8 @@ const chapterStyles = css`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    min-width: 0;
+    transition: all 0.3s ease;
 
     h1 {
       color: #2c3e50;
@@ -65,6 +69,8 @@ const chapterStyles = css`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    min-width: 0;
+    transition: all 0.3s ease;
   }
 
   .editor-container {
@@ -319,6 +325,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
 return (
   <div css={chapterStyles} style={{
     gridTemplateColumns: chapterContent.exercise ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)',
+    width: '100%',
   }}>
     <section className="content-section">
       <div className="content-container">

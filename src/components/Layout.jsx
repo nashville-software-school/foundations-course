@@ -34,6 +34,9 @@ const layoutStyles = css`
     display: flex;
     flex-direction: row;
     height: calc(93% - 50px); /* Adjusted for top navbar */
+    transition: all 0.3s ease;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .footer-container {
@@ -58,13 +61,13 @@ const layoutStyles = css`
   }
 
   .nav-sidebar.expanded {
-    flex-basis: 20%;
+    flex: 0 0 20%;
     min-width: 200px;
     transition: all 0.3s ease;
   }
 
   .nav-sidebar.collapsed {
-    flex-basis: 40px;
+    flex: 0 0 40px;
     min-width: 40px;
     max-width: 40px;
     overflow: hidden;
@@ -85,8 +88,12 @@ const layoutStyles = css`
   .main-content {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     background: #f9f5ee;
     padding: 0 0 0.5rem 0;
+    transition: all 0.3s ease;
+    width: 0; /* This forces the element to shrink when needed */
+    min-width: 0; /* This allows the element to be smaller than its content */
   }
 `
 
