@@ -300,121 +300,129 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
         trackCompletion(chapterId, completedCode)
       }
 
-      setTestResults({
+      const fullMessage = results.reduce((messages, currentResult) => {
+        messages.push(currentResult.passed ? `${currentResult.name} passed!` : currentResult.message)
+        return messages
+      }, []).join('\n * ')
+
+      const testResults = {
         passed: allPassed,
         message: allPassed
           ? 'Great job! All tests passed!'
-          : results.find(r => !r.passed)?.message || 'Some tests failed. Try again!'
-      })
+          : `* ${fullMessage}` || 'Some tests failed. Try again!'
     }
+    debugger
+
+    setTestResults(testResults)
   }
+}
 
-  return (
-    <div css={chapterStyles} style={{
-      gridTemplateColumns: chapterContent.exercise ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)',
-    }}>
-      <section className="content-section">
-        <div className="content-container">
-          <h1>{currentChapter?.title}</h1>
-          <div
-            dangerouslySetInnerHTML={{ __html: processedContent }}
-            ref={contentRef => {
-              if (contentRef) {
-                contentRef.querySelectorAll('.code-block-wrapper').forEach(block => {
-                  if (block.children.length === 0) {
-                    const code = block.textContent || ''
-                    block.textContent = ''
-                    const root = ReactDOM.createRoot(block)
-                    root.render(<CodeBlock code={code} />)
-                  }
-                })
-              }
-            }}
-          />
-        </div>
+return (
+  <div css={chapterStyles} style={{
+    gridTemplateColumns: chapterContent.exercise ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)',
+  }}>
+    <section className="content-section">
+      <div className="content-container">
+        <h1>{currentChapter?.title}</h1>
+        <div
+          dangerouslySetInnerHTML={{ __html: processedContent }}
+          ref={contentRef => {
+            if (contentRef) {
+              contentRef.querySelectorAll('.code-block-wrapper').forEach(block => {
+                if (block.children.length === 0) {
+                  const code = block.textContent || ''
+                  block.textContent = ''
+                  const root = ReactDOM.createRoot(block)
+                  root.render(<CodeBlock code={code} />)
+                }
+              })
+            }
+          }}
+        />
+      </div>
 
-        <div className="button-container">
-          <button
-            className="nav-button previous-button"
-            onClick={onPrevious}
-            disabled={!getPreviousChapter(currentChapter?.id)}
-          >
-            Previous Chapter
-          </button>
-          <button
-            className="nav-button next-button"
-            onClick={onNext}
-            disabled={!getNextChapter(currentChapter?.id)}
-          >
-            Next Chapter
-          </button>
-        </div>
-      </section>
+      <div className="button-container">
+        <button
+          className="nav-button previous-button"
+          onClick={onPrevious}
+          disabled={!getPreviousChapter(currentChapter?.id)}
+        >
+          Previous Chapter
+        </button>
+        <button
+          className="nav-button next-button"
+          onClick={onNext}
+          disabled={!getNextChapter(currentChapter?.id)}
+        >
+          Next Chapter
+        </button>
+      </div>
+    </section>
 
-      {
-        chapterContent.exercise &&
-        <section className="editor-section">
-          <div className="editor-container">
-            {Object.keys(files).length > 1 ? (
-              <MultiFileEditor
-                files={files}
-                onChange={handleFilesChange}
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14,
-                  lineNumbers: 'on',
-                  scrollBeyondLastLine: false,
-                  automaticLayout: true,
-                  padding: { top: 16, bottom: 16 }
-                }}
-              />
-            ) : (
-              <Editor
-                height="100%"
-                defaultLanguage="javascript"
-                theme="vs-light"
-                value={files['index.js']}
-                onChange={(value) => handleFilesChange({ 'index.js': value })}
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14,
-                  lineNumbers: 'on',
-                  scrollBeyondLastLine: false,
-                  automaticLayout: true,
-                  padding: { top: 16, bottom: 16 }
-                }}
-              />
-            )}
-          </div>
-
-          <button className="test-button" onClick={runTests}>
-            Run Tests
-          </button>
-
-          {testResults && showResults && (
-            <div className={`test-results ${!showResults ? 'hidden' : ''}`}>
-              <button
-                className="close-button"
-                onClick={() => setShowResults(false)}
-                aria-label="Close"
-              >
-                ✕
-              </button>
-              <h3>{testResults.passed ? '✅ Tests Passed!' : '❌ Tests Failed'}</h3>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: marked(testResults.message.split('\n').map(line => line.trim()).join('\n'), {
-                    breaks: true,
-                    gfm: true
-                  })
-                }}
-              />
-            </div>
+    {
+      chapterContent.exercise &&
+      <section className="editor-section">
+        <div className="editor-container">
+          {Object.keys(files).length > 1 ? (
+            <MultiFileEditor
+              files={files}
+              onChange={handleFilesChange}
+              options={{
+                minimap: { enabled: false },
+                fontSize: 14,
+                lineNumbers: 'on',
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                padding: { top: 16, bottom: 16 }
+              }}
+            />
+          ) : (
+            <Editor
+              height="100%"
+              defaultLanguage="javascript"
+              theme="vs-light"
+              value={files['index.js']}
+              onChange={(value) => handleFilesChange({ 'index.js': value })}
+              options={{
+                minimap: { enabled: false },
+                fontSize: 14,
+                lineNumbers: 'on',
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                padding: { top: 16, bottom: 16 }
+              }}
+            />
           )}
-        </section>
-      }
-    </div>
-  )
+        </div>
+
+        <button className="test-button" onClick={runTests}>
+          Run Tests
+        </button>
+
+        {testResults && showResults && (
+          <div className={`test-results ${!showResults ? 'hidden' : ''}`}>
+            <button
+              className="close-button"
+              onClick={() => setShowResults(false)}
+              aria-label="Close"
+            >
+              ✕
+            </button>
+            <h3>{testResults.passed ? '✅ Tests Passed!' : '❌ Tests Failed'}</h3>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: marked(testResults.message.split('\n').map(line => line.trim()).join('\n'), {
+                  breaks: true,
+                  gfm: true
+                })
+              }}
+            />
+          </div>
+        )}
+      </section>
+    }
+  </div>
+)
 }
 
 function Chapter() {
