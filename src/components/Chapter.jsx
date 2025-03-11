@@ -301,17 +301,16 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       }
 
       const fullMessage = results.reduce((messages, currentResult) => {
-        messages.push(currentResult.passed ? `${currentResult.name} passed!` : currentResult.message)
+        messages.push(currentResult.passed ? `* <span style="color: green;">${currentResult.name} passed!</span>` : `* ${currentResult.message}`)
         return messages
-      }, []).join('\n * ')
+      }, []).join('\n')
 
       const testResults = {
         passed: allPassed,
         message: allPassed
           ? 'Great job! All tests passed!'
-          : `* ${fullMessage}` || 'Some tests failed. Try again!'
+          : fullMessage || 'Some tests failed. Try again!'
     }
-    debugger
 
     setTestResults(testResults)
   }
@@ -408,7 +407,7 @@ return (
             >
               ✕
             </button>
-            <h3>{testResults.passed ? '✅ Tests Passed!' : '❌ Tests Failed'}</h3>
+            <h3>{testResults.passed ? '✅ Tests Passed!' : '❌ Some Tests Failed'}</h3>
             <div
               dangerouslySetInnerHTML={{
                 __html: marked(testResults.message.split('\n').map(line => line.trim()).join('\n'), {

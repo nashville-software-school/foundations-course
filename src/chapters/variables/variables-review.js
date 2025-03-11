@@ -53,7 +53,7 @@ When your logic is done, you need to check if it is correct.
 
 ### Expected Output
 
-Our test will assume that there are 124 photos, and will have a majority of pictures of women.
+Our test will assume that there are 124 photos, and will have a majority of pictures of women. Use \`console.log()\` - with a string temple - to output the following string:
 
 \`\`\`html
 There are xxx total photos
@@ -80,8 +80,11 @@ let albumColor = ""
 // Determine album color based on gender comparison
 
 
-// Create the output string using string interpolation
-const output = ""
+// Create the expected output string using string interpolation
+const output = \`\`
+
+// Log your output
+console.log()
 `,
     solution: `// Initialize variables for photo counts
 let photoStorage = "Envelopes"
@@ -121,16 +124,16 @@ console.log(output)`,
         name: "Total Photos Calculation",
         test: (code) => {
           try {
-            const func = new Function(code + ' return output;');
+            const func = new Function(code + '; return output')
             const result = func()
-            if (result === undefined) return false;
+            if (result === undefined) return false
             const expectedOutput = `There are 124 total photos
 There are 72 photos of women
 There are 52 photos of men
-Photos will be stored in a plum colored Photo Album`;
-            return result === expectedOutput;
+Photos will be stored in a plum colored Photo Album`
+            return result === expectedOutput
           } catch (error) {
-            return false;
+            return false
           }
         },
         message: "Make sure to calculate the total photos by adding femalePhotos and malePhotos"
@@ -139,16 +142,16 @@ Photos will be stored in a plum colored Photo Album`;
         name: "Storage Type Selection",
         test: (code) => {
           try {
-            const func = new Function(code + ' return photoStorage;');
+            const func = new Function(code + '; return photoStorage')
             const result = func()
-            if (result === undefined) return false;
-            return photoStorage === "Photo Album" && // For 124 photos, should be Photo Album
+            if (result === undefined) return false
+            return result === "Photo Album" &&
                    code.includes('if') &&
                    code.includes('else') &&
                    code.includes('110') &&
-                   code.includes('50');
+                   code.includes('50')
           } catch (error) {
-            return false;
+            return false
           }
         },
         message: "Use if/else statements to determine storage type based on total photos (>110 for album, >=50 for shoe box)"
@@ -157,32 +160,15 @@ Photos will be stored in a plum colored Photo Album`;
         name: "Album Color Selection",
         test: (code) => {
           try {
-            const func = new Function(code + ' return albumColor;');
+            const func = new Function(code + '; return albumColor;')
             const result = func()
-            if (result === undefined) return false;
-            return albumColor === "plum"
+            if (result === undefined) return false
+            return result === "plum"
           } catch (error) {
-            return false;
+            return false
           }
         },
         message: "Determine album color based on comparing femalePhotos and malePhotos"
-      },
-      {
-        name: "Output Format",
-        test: (code) => {
-          try {
-            const func = new Function(code + ' return output;');
-            const output = func();
-            if (output === undefined) return false;
-            return output.includes('124 total photos') &&
-                   output.includes('72 photos of women') &&
-                   output.includes('52 photos of men') &&
-                   output.includes('plum colored Photo Album');
-          } catch (error) {
-            return false;
-          }
-        },
-        message: "Create the output string using string interpolation with the correct format and values"
       }
     ]
   }
