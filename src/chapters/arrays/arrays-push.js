@@ -87,19 +87,25 @@ for (const chunk of clay) {
 console.log(toFireInKiln)`,
     tests: [
       {
-        name: "For..of Loop",
-        test: (code) => code.includes('for (const') && code.includes(' of clay)'),
-        message: "Make sure you're using a for..of loop to iterate the clay array"
+        name: "Four items added to kiln array",
+        test: (code) => {
+          const kilnArray = new Function(`${code}; return toFireInKiln;`)()
+          return kilnArray.length === 4
+        },
+        message: "Make sure you're using a for..of loop to iterate the clay array so that 4 coffee mugs are created"
+      },
+      {
+        name: "Kiln array contains only coffee mugs",
+        test: (code) => {
+          const kilnArray = new Function(`${code}; return toFireInKiln;`)()
+          return kilnArray.every(mug => mug === "coffee mug")
+        },
+        message: "The kiln array should only contain string values of 'coffee mug'"
       },
       {
         name: "Array Push",
         test: (code) => code.includes('toFireInKiln.push('),
         message: "Make sure to use the push() method to add mugs to the toFireInKiln array"
-      },
-      {
-        name: "Coffee Mugs",
-        test: (code) => code.includes('coffee mug'),
-        message: "Make sure you're creating coffee mugs from the clay"
       }
     ]
   }
