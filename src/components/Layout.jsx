@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
+import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import Navigation from './Navigation'
 import GlobalProgressBar from './GlobalProgressBar'
-import AuthButton from './AuthButton' // New import
+import AuthButton from './AuthButton'
+import NavigationToggle from './NavigationToggle'
 import { css } from '@emotion/react'
 
 const layoutStyles = css`
@@ -32,6 +34,9 @@ const layoutStyles = css`
     display: flex;
     flex-direction: row;
     height: calc(93% - 50px); /* Adjusted for top navbar */
+    transition: all 0.3s ease;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .footer-container {
@@ -47,21 +52,69 @@ const layoutStyles = css`
 
   .nav-sidebar {
     background: #f6f8fa;
-    flex-basis: 20%;
     border-right: 1px solid #e9ecef;
     overflow-y: auto;
+    position: relative;
+    transition: all 0.3s ease;
+    min-width: 0;
+    z-index: 100;
+  }
+
+  .nav-sidebar.expanded {
+    flex: 0 0 20%;
+    min-width: 200px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-sidebar.collapsed {
+    flex: 0 0 40px;
+    min-width: 40px;
+    max-width: 40px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .nav-content {
     padding: 0 1rem 2rem 1rem;
+    width: 100%;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-sidebar.collapsed .nav-content {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .main-content {
-    flex-basis: 80%;
+    flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     background: #f9f5ee;
     padding: 0 0 0.5rem 0;
+    transition: all 0.3s ease;
+    width: 0; /* This forces the element to shrink when needed */
+    min-width: 0; /* This allows the element to be smaller than its content */
   }
 `
 
 function Layout() {
+  const [isNavExpanded, setIsNavExpanded] = useState(true);
+
+  // Load saved state from localStorage on component mount
+  useEffect(() => {
+    const savedState = localStorage.getItem('navExpanded');
+    if (savedState !== null) {
+      setIsNavExpanded(savedState === 'true');
+    }
+  }, []);
+
+  // Toggle navigation state and save to localStorage
+  const toggleNavigation = () => {
+    const newState = !isNavExpanded;
+    setIsNavExpanded(newState);
+    localStorage.setItem('navExpanded', newState.toString());
+  };
+
   return (
     <div css={layoutStyles}>
       <header className="top-navbar">
@@ -73,8 +126,14 @@ function Layout() {
         </div>
       </header>
       <div className="content-area">
-        <nav className="nav-sidebar">
-          <Navigation />
+        <nav className={`nav-sidebar ${isNavExpanded ? 'expanded' : 'collapsed'}`}>
+            <NavigationToggle
+              isExpanded={isNavExpanded}
+              onToggle={toggleNavigation}
+            />
+          <div className="nav-content">
+            <Navigation />
+          </div>
         </nav>
         <main className="main-content">
           <Outlet />

@@ -31,8 +31,6 @@ export const LearnerProgressProvider = ({ children }) => {
 
     // Persist to localStorage and cookies whenever progress changes
     useEffect(() => {
-        console.log('Saving progress data:', progress);
-
         // Save to localStorage
         localStorage.setItem('learnerProgress', JSON.stringify(progress));
 
@@ -45,7 +43,7 @@ export const LearnerProgressProvider = ({ children }) => {
         // Verify what was saved
         const savedData = localStorage.getItem('learnerProgress');
         const cookieValue = Cookies.get('hasSeenIntro');
-        console.log('Verified localStorage data:', savedData);
+        console.log('Verified localStorage data:', savedData.length);
         console.log('Verified cookie value:', cookieValue);
     }, [progress])
 
