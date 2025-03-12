@@ -94,7 +94,10 @@ export const AuthCallback = () => {
                 console.log('Access token stored successfully');
 
                 // Fetch user data
-                await fetchUserData(data.access_token)
+                const fetchSuccess = await fetchUserData(data.access_token)
+                if (!fetchSuccess) {
+                    throw new Error('Failed to fetch user data with the provided token')
+                }
                 console.log('User data fetched successfully');
 
                 // Redirect to the page they were trying to access, or home

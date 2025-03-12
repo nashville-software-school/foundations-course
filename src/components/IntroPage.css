@@ -119,7 +119,6 @@
 }
 
 .progress-bar-container {
-    margin-top: 2rem;
     width: 100%;
     background-color: var(--background-dark);
     border-radius: 8px;
