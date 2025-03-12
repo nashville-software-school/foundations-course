@@ -37,7 +37,7 @@ Put that code into the code editor and run it to see the output.
 
 In this exercise, you will write code to calculate your average monthly grocery expenses. So far, you have collected five months' worth of expenses.`,
   exercise: {
-    starterCode: `const monthlyExpenses = [ 201.43, 189.22, 132.09, 238.85, 195.41 ]
+    starterCode: `const monthlyExpenses = [ 201, 189, 132, 238, 195 ]
 let totalExpense = 0
 
 for (const xxx of xxx) {
@@ -47,9 +47,9 @@ for (const xxx of xxx) {
 // Calculate your average monthly food costs
 const averageExpense =
 
-// Make sure you use backticks for multi-line string output
-console.log()`,
-    solution: `const monthlyExpenses = [ 201.43, 189.22, 132.09, 238.85, 195.41 ]
+// Replace the --- with the correct, interpolated values
+console.log(\`My total expenses are --- and my average monthly expenses are ---\`)`,
+    solution: `const monthlyExpenses = [ 201, 189, 132, 238, 195 ]
 let totalExpense = 0
 
 for (const expense of monthlyExpenses) {
@@ -69,21 +69,39 @@ So far this year, I have spent \${totalExpense.toFixed(0)} dollars on groceries.
       },
       {
         name: "Total Calculation",
-        test: (code) => code.includes('totalExpense += '),
+        test: (code) => {
+          try {
+            const total = new Function(`${code}; return totalExpense;`)()
+            return total === 955
+          }
+          catch (e) {
+            return false
+          }
+        },
         message: "Make sure you're adding each expense to the total"
       },
       {
         name: "Average Calculation",
-        test: (code) => code.includes('totalExpense / monthlyExpenses.length'),
+        test: (code) => {
+          try {
+            const average = new Function(`${code}; return averageExpense;`)()
+            return average === 191
+          }
+          catch (e) {
+            return false
+          }
+        },
         message: "Make sure you're calculating the average using the array length"
       },
       {
         name: "Output Format",
         test: (code) => {
-          return code.includes('`On average, I spend') &&
-                 code.includes('dollars on groceries per month') &&
-                 code.includes('So far this year, I have spent') &&
-                 code.includes('dollars on groceries');
+          try {
+            return code.includes('`My total expenses are ${totalExpense} and my average monthly expenses are ${averageExpense}`');
+          }
+          catch (e) {
+            return false
+          }
         },
         message: "Make sure your output matches the required format"
       }

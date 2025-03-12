@@ -9,7 +9,14 @@ export const arrayPracticeChapter = {
 
 In this exercise, you will be doing what you did in the last one, but you will need to write more code yourself. You can even open up the last exercise in another browser window so that you can easily look at that code, and write code here.
 
+Use the following variable names and values:
+* \`weeklyMiles\` - An array of miles traveled each week
+* \`totalMiles\` - A variable to store the total miles
+* \`averageMiles\` - A variable to store the average miles
+
 ### Sample Output
+
+Use those variables to display this output using a multi-line template string:
 
 \`\`\`html
 I average xxx miles each week.
@@ -54,38 +61,48 @@ I have driven a total of \${totalMiles} miles.\`)`,
       {
         name: "Array Creation",
         test: (code) => {
-          // Check if array has at least 5 numeric values
-          const arrayMatch = code.match(/weeklyMiles\s*=\s*\[(.*?)\]/);
-          if (!arrayMatch) return false;
-          const values = arrayMatch[1].split(',').map(v => v.trim()).filter(v => !isNaN(v));
-          return values.length >= 5;
+          const weeklyMiles = new Function(`${code}; return weeklyMiles`)()
+          return Array.isArray(weeklyMiles) && weeklyMiles.length > 0
         },
-        message: "Make sure to create an array with at least 5 numeric values for weekly miles"
+        message: "Make sure define the `weeklyMiles` array and add some sample miles"
       },
       {
         name: "Total Variable",
-        test: (code) => code.includes('let totalMiles = 0') || code.includes('let totalMiles=0'),
-        message: "Make sure to declare a totalMiles variable initialized to 0"
-      },
-      {
-        name: "For..of Loop",
-        test: (code) => code.includes('for (const') && code.includes(' of weeklyMiles)'),
-        message: "Make sure you're using a for..of loop to iterate the weeklyMiles array"
-      },
-      {
-        name: "Average Calculation",
-        test: (code) => code.includes('totalMiles / weeklyMiles.length'),
-        message: "Make sure you're calculating the average using the array length"
-      },
-      {
-        name: "Output Format",
         test: (code) => {
-          return code.includes('I average') &&
-                 code.includes('miles each week') &&
-                 code.includes('I have driven a total of') &&
-                 code.includes('miles');
+          try {
+            const {totalMiles, weeklyMiles } = new Function(`${code}; return {totalMiles, weeklyMiles}`)()
+            return totalMiles === weeklyMiles.reduce((a, b) => a + b, 0)
+          }
+          catch (e) {
+            return false
+          }
         },
-        message: "Make sure your output matches the required format"
+        message: "Make sure to declare a totalMiles variable and add each weekly mileage to it"
+      },
+      {
+        name: "Average Miles",
+        test: (code) => {
+          try {
+            const { averageMiles, totalMiles, weeklyMiles } = new Function(`${code}; return {averageMiles, totalMiles, weeklyMiles}`)()
+            return averageMiles === totalMiles / weeklyMiles.length
+          }
+          catch (e) {
+            return false
+          }
+        },
+        message: "Make sure to calculate the average miles using the total miles and the array length"
+      },
+      {
+        name: "Output Message",
+        test: (code) => {
+          try {
+            return code.includes('`I average ${averageMiles} miles each week.\nI have driven a total of ${totalMiles} miles.`')
+          }
+          catch (e) {
+            return false
+          }
+        },
+        message: "Make sure to use a multi-line template string to output the average and total miles"
       }
     ]
   }
