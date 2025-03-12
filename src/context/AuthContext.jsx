@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 
 const AuthContext = createContext()
 
@@ -7,20 +7,8 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
-    // Check token and fetch user data on mount
-    useEffect(() => {
-        console.log('AuthProvider initialized, checking for existing token');
-        const token = localStorage.getItem('github_token')
-        if (token) {
-            console.log('Found existing token, fetching user data');
-            fetchUserData(token)
-        } else {
-            console.log('No token found, user is not authenticated');
-            setLoading(false)
-        }
-    }, [])
-
-    const fetchUserData = async (token) => {
+    // Define fetchUserData with useCallback to avoid recreation on each render
+    const fetchUserData = useCallback(async (token) => {
         try {
             console.log('Fetching user data from GitHub API');
             const response = await fetch('https://api.github.com/user', {
@@ -34,22 +22,40 @@ export const AuthProvider = ({ children }) => {
                 console.log('User data fetched successfully:', userData.login);
                 setUser(userData)
                 setIsAuthenticated(true)
+                // Ensure token is saved in localStorage (in case it was passed directly)
+                localStorage.setItem('github_token', token)
+                return true
             } else {
                 console.error('Failed to fetch user data:', response.status, response.statusText);
                 // Token invalid or expired
                 localStorage.removeItem('github_token')
                 setUser(null)
                 setIsAuthenticated(false)
+                return false
             }
         } catch (error) {
             console.error('Error fetching user data:', error)
             localStorage.removeItem('github_token')
             setUser(null)
             setIsAuthenticated(false)
+            return false
         } finally {
             setLoading(false)
         }
-    }
+    }, [])
+
+    // Check token and fetch user data on mount
+    useEffect(() => {
+        console.log('AuthProvider initialized, checking for existing token');
+        const token = localStorage.getItem('github_token')
+        if (token) {
+            console.log('Found existing token, fetching user data');
+            fetchUserData(token)
+        } else {
+            console.log('No token found, user is not authenticated');
+            setLoading(false)
+        }
+    }, [fetchUserData])
 
     const login = () => {
         console.log('Initiating GitHub OAuth login flow');

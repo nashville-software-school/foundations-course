@@ -138,8 +138,7 @@ if (iWokeUpEarly === true) {
         name: "Boolean Variable Declaration",
         test: (code) => {
           try {
-            let iWokeUpEarly;
-            eval(code);
+            const iWokeUpEarly = new Function(code + '\n return iWokeUpEarly')()
             return typeof iWokeUpEarly === 'boolean' && iWokeUpEarly === false;
           } catch (error) {
             return false;

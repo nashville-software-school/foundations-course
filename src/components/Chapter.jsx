@@ -19,6 +19,8 @@ const chapterStyles = css`
   height: 100%;
   max-height: 100vh;
   overflow: hidden;
+  width: 100%;
+  transition: all 0.3s ease;
 
   .content-container {
     flex: 1;
@@ -36,6 +38,8 @@ const chapterStyles = css`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    min-width: 0;
+    transition: all 0.3s ease;
 
     h1 {
       color: #2c3e50;
@@ -65,6 +69,8 @@ const chapterStyles = css`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    min-width: 0;
+    transition: all 0.3s ease;
   }
 
   .editor-container {
@@ -145,9 +151,15 @@ const chapterStyles = css`
     }
   }
 
+  .button-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
   .test-button {
-    padding: 0.75rem 1.5rem;
-    background: #007bff;
+    padding: 0.75rem 3.5rem;
+    background:rgb(30, 0, 255);
     color: white;
     border: none;
     border-radius: 6px;
@@ -162,6 +174,84 @@ const chapterStyles = css`
     &:disabled {
       background: #ccc;
       cursor: not-allowed;
+    }
+  }
+
+  .run-code-button {
+    padding: 0.75rem 3.5rem;
+    background:rgb(190, 140, 33);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: #5a6268;
+    }
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
+
+  .console-output {
+    position: relative;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 100px;
+    max-height: 200px;
+    overflow-y: auto;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    font-family: monospace;
+    white-space: pre-wrap;
+
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: #666;
+      padding: 4px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #333;
+      }
+    }
+
+    h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      color: #2c3e50;
+    }
+
+    pre {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      color: #333;
+      font-size: 14px;
+      line-height: 1.5;
     }
   }
 
@@ -198,6 +288,8 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
   const [files, setFiles] = useState({})
   const [testResults, setTestResults] = useState(null)
   const [showResults, setShowResults] = useState(true)
+  const [consoleOutput, setConsoleOutput] = useState(null)
+  const [showConsoleOutput, setShowConsoleOutput] = useState(true)
 
   // Configure marked renderer for code blocks
   const renderer = useMemo(() => {
@@ -233,6 +325,17 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
     }
     return () => clearTimeout(timer)
   }, [testResults])
+
+  // Auto-hide console output after 8 seconds
+  useEffect(() => {
+    let timer
+      setShowConsoleOutput(true)
+      timer = setTimeout(() => {
+        setShowConsoleOutput(false)
+        setConsoleOutput(null)
+      }, 8000)
+    return () => clearTimeout(timer)
+  }, [consoleOutput])
 
   useEffect(() => {
     if (chapterContent?.exercise) {
@@ -272,6 +375,44 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
     setFiles(validFiles)
   }
 
+  const runCode = () => {
+    // Store original console.log
+    const originalConsoleLog = console.log;
+
+    // Captured output
+    let output = [];
+
+    // Override console.log
+    console.log = (...args) => {
+      output.push(args.join(' '));
+      originalConsoleLog(...args);
+    };
+
+    try {
+      // For single-file exercises
+      if (Object.keys(files).length === 1) {
+        // Execute the code
+        new Function(files['index.js'])();
+      } else {
+        // For multi-file exercises, we'd need a more complex approach
+        // This is a simplified version
+        const combinedCode = Object.values(files).join('\n');
+        new Function(combinedCode)();
+      }
+    } catch (error) {
+      output.push(`Error: ${error.message}`);
+    } finally {
+      // Restore original console.log
+      console.log = originalConsoleLog;
+    }
+
+    // Update state with captured output
+    if (output.length === 0) {
+      output.push("No console.log output");
+    }
+    setConsoleOutput(output.join('\n'));
+  };
+
   const runTests = () => {
     if (chapterContent?.exercise?.tests) {
       // Track attempt before running tests
@@ -300,18 +441,26 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
         trackCompletion(chapterId, completedCode)
       }
 
-      setTestResults({
+      const fullMessage = results.reduce((messages, currentResult) => {
+        messages.push(currentResult.passed ? `* <span style="color: green;">${currentResult.name} passed!</span>` : `* ${currentResult.message}`)
+        return messages
+      }, []).join('\n')
+
+      const testResults = {
         passed: allPassed,
         message: allPassed
           ? 'Great job! All tests passed!'
-          : results.find(r => !r.passed)?.message || 'Some tests failed. Try again!'
-      })
+          : fullMessage || 'Some tests failed. Try again!'
+      }
+
+      setTestResults(testResults)
     }
   }
 
   return (
     <div css={chapterStyles} style={{
       gridTemplateColumns: chapterContent.exercise ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)',
+      width: '100%',
     }}>
       <section className="content-section">
         <div className="content-container">
@@ -387,9 +536,19 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
             )}
           </div>
 
-          <button className="test-button" onClick={runTests}>
-            Run Tests
-          </button>
+          {consoleOutput && showConsoleOutput && (
+            <div className={`console-output ${!showConsoleOutput ? 'hidden' : ''}`}>
+              <button
+                className="close-button"
+                onClick={() => setShowConsoleOutput(false)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+              <h3>📋 Console Output</h3>
+              <pre>{consoleOutput}</pre>
+            </div>
+          )}
 
           {testResults && showResults && (
             <div className={`test-results ${!showResults ? 'hidden' : ''}`}>
@@ -400,7 +559,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
               >
                 ✕
               </button>
-              <h3>{testResults.passed ? '✅ Tests Passed!' : '❌ Tests Failed'}</h3>
+              <h3>{testResults.passed ? '✅ Tests Passed!' : '❌ Some Tests Failed'}</h3>
               <div
                 dangerouslySetInnerHTML={{
                   __html: marked(testResults.message.split('\n').map(line => line.trim()).join('\n'), {
@@ -411,6 +570,17 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
               />
             </div>
           )}
+
+          <div className="button-row">
+            <button className="run-code-button" onClick={runCode}>
+              Run Code
+            </button>
+            <button className="test-button" onClick={runTests}>
+              Run Tests
+            </button>
+          </div>
+
+
         </section>
       }
     </div>
