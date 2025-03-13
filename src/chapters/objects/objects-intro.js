@@ -84,29 +84,56 @@ const student = {
 }`,
     tests: [
       {
-        name: "Object Creation",
-        test: (code) => code.includes('{') && code.includes('}'),
-        message: "Make sure you're creating an object with curly braces"
+        name: "Name Property Exists",
+        test: (code) => {
+          try {
+            const student = new Function(`${code}; return student`)();
+            return student.hasOwnProperty('name') && typeof student.name === 'string';
+          }
+          catch (e) {
+            return false;
+          }
+        },
+        message: "The name property does not exist on the student object, or it is not a string."
       },
       {
-        name: "Name Property",
-        test: (code) => code.includes('name:') && code.includes('"Jeremy Landy"'),
-        message: "Make sure you have a name property with the correct value"
+        name: "Location Property Exists",
+        test: (code) => {
+          try {
+            const student = new Function(`${code}; return student`)();
+            return student.hasOwnProperty('location') && typeof student.location === 'string';
+          }
+          catch (e) {
+            return false;
+          }
+        },
+        message: "The location property does not exist on the student object, or it is not a string."
       },
       {
-        name: "Location Property",
-        test: (code) => code.includes('location:') && code.includes('"Phoenix, AR"'),
-        message: "Make sure you have a location property with the correct value"
+        name: "Gender Property Exists",
+        test: (code) => {
+          try {
+            const student = new Function(`${code}; return student`)();
+            return student.hasOwnProperty("gender") && typeof student.gender === "string";
+          }
+          catch (e) {
+            return false;
+          }
+        },
+        message: "The gender property does not exist on the student object, or it is not a string."
       },
       {
-        name: "Gender Property",
-        test: (code) => code.includes('gender:') && code.includes('"male"'),
-        message: "Make sure you have a gender property with the correct value"
-      },
-      {
-        name: "Age Property",
-        test: (code) => code.includes('age:') && code.includes('31'),
-        message: "Make sure you have an age property with the correct value"
+        name: "Age Property Exists",
+        test: (code) => {
+          try {
+            const student = new Function(`${code}; return student`)();
+            return student.hasOwnProperty("age") && typeof student.age === "number";
+          }
+          catch (e) {
+            return false;
+          }
+        },
+        message: "The age property does not exist on the student object, or it is not a number."
       }
     ]
   }
