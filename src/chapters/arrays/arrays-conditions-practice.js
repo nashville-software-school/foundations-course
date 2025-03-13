@@ -43,14 +43,15 @@ There is an array already in the code editor of your tracked hours of sleep. You
 
 ##### Example Output
 
-This is just an example. Your output will have different numbers.
+🧨 This is just an example. **Your output will have different (fewer) numbers.**
 
 \`\`\`html
-I was grumpy on 14 days.
-I was happy on 22 days.
+I was grumpy on 87 days.
+I was happy on 62 days.
 \`\`\``,
   exercise: {
-    starterCode: `const hours = [ 6, 9, 7, 8, 6, 6, 8, 5, 9, 8, 7, 6, 7, 7, 8, 6, 9 ]
+    starterCode: `// Don't add or remove anything from this array
+const hours = [ 6, 9, 7, 8, 6, 6, 8, 5, 9, 8, 7, 6, 7, 7, 8, 6, 9 ]
 const grumpyHours = []
 const happyHours = []`,
     solution: `const hours = [ 6, 9, 7, 8, 6, 6, 8, 5, 9, 8, 7, 6, 7, 7, 8, 6, 9 ]
@@ -75,32 +76,32 @@ I was happy on \${happyHours.length} days.\`)`,
         message: "Make sure you're using a for..of loop to iterate the hours array"
       },
       {
-        name: "Conditional Logic",
+        name: "Array contains 17 items",
         test: (code) => {
-          return code.includes('if (') &&
-                 code.includes('< 7') &&
-                 code.includes('else');
+          try {
+            const grumpyArray = new Function(`${code}; return grumpyHours;`)()
+            const happyArray = new Function(`${code}; return happyHours;`)()
+            return grumpyArray.length === 6 && happyArray.length === 11
+          }
+          catch (e) {
+            return false
+          }
         },
-        message: "Make sure you have the correct if/else condition checking for less than 7 hours of sleep"
+        message: "Make sure you're adding the correct number of hours to the grumpyHours and happyHours arrays"
       },
       {
-        name: "Array Push",
+        name: "Arrays contain correct values",
         test: (code) => {
-          return code.includes('grumpyHours.push(') &&
-                 code.includes('happyHours.push(');
+          try {
+            const grumpyArray = new Function(`${code}; return grumpyHours;`)()
+            const happyArray = new Function(`${code}; return happyHours;`)()
+            return grumpyArray.length > 0 && happyArray.length > 0 && grumpyArray.every(hours => hours < 7) && happyArray.every(hours => hours >= 7)
+          }
+          catch (e) {
+            return false
+          }
         },
-        message: "Make sure you're pushing hours to both the grumpyHours and happyHours arrays"
-      },
-      {
-        name: "Output Format",
-        test: (code) => {
-          return code.includes('grumpyHours.length') &&
-                 code.includes('happyHours.length') &&
-                 code.includes('I was grumpy on') &&
-                 code.includes('I was happy on') &&
-                 code.includes('days');
-        },
-        message: "Make sure your output shows the count of days for both moods in the correct format"
+        message: "Make sure the grumpyHours array only contains hours less than 7 and the happyHours array only contains hours greater than or equal to 7"
       }
     ]
   }

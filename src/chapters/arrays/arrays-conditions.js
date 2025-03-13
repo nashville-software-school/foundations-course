@@ -65,7 +65,10 @@ for (const ingredient of rawIngredients) {
     Write your if/else code here. In each block use .push() to insert
     the correct item into the finishedFood array.
   */
-}`,
+}
+
+console.log()
+`,
     solution: `const rawIngredients = [ "beef patty", "egg", "potato", "egg", "potato", "beef patty", "beef patty", "potato" ]
 const finishedFood = []
 
@@ -79,7 +82,10 @@ for (const ingredient of rawIngredients) {
   else if (ingredient === "potato") {
     finishedFood.push("fries")
   }
-}`,
+}
+
+console.log(finishedFood)
+`,
     tests: [
       {
         name: "For..of Loop",
@@ -98,13 +104,21 @@ for (const ingredient of rawIngredients) {
         message: "Make sure you have all the required if/else conditions for each ingredient type"
       },
       {
-        name: "Food Transformation",
+        name: "Array contains 8 items",
         test: (code) => {
-          return code.includes('push("biscuit")') &&
-                 code.includes('push("burger")') &&
-                 code.includes('push("fries")');
+          const foodArray = new Function(`${code}; return finishedFood;`)()
+          return foodArray.length === 8
         },
-        message: "Make sure you're transforming each ingredient into the correct food item"
+        message: "Make sure you're adding the correct number of food items to the finishedFood array"
+      },
+      {
+        name: "Array contains only food items",
+        test: (code) => {
+          const foodArray = new Function(`${code}; return finishedFood;`)()
+          const containsCorrectFoods = foodArray.length === 8 && foodArray.every(food => food === "biscuit" || food === "burger" || food === "fries")
+          return containsCorrectFoods
+        },
+        message: "The finishedFood array should only contain 'biscuit', 'burger', or 'fries'"
       }
     ]
   }

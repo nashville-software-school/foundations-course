@@ -97,19 +97,19 @@ lions and tigers and bears, oh my
 You could also wrap the strings in HTML elements.
 
 \`\`\`js
-const employees = [ "Mary Bulshear", "Kelley Avignon", "Brian Wellington", "Cherie Midreaux" ]
-const listItems = employees.join("</li><li>")
+const employees = \[ "Mary Bulshear", "Kelley Avignon", "Brian Wellington", "Cherie Midreaux" \]
+const listItems = employees.join("&lt;/li&gt;&lt;li&gt;")
 
-console.log(\`<li>\${listItems}</li>\`)
+console.log(\`&lt;li&gt;\${listItems}&lt;/li&gt;\`)
 \`\`\`
 
 That would generate the following HTML string.
 
 \`\`\`
-<li>Mary Bulshear</li>
-<li>Kelley Avignon</li>
-<li>Brian Wellington</li>
-<li>Cherie Midreaux</li>
+&lt;li&gt;Mary Bulshear&lt;/li&gt;
+&lt;li&gt;Kelley Avignon&lt;/li&gt;
+&lt;li&gt;Brian Wellington&lt;/li&gt;
+&lt;li&gt;Cherie Midreaux&lt;/li&gt;
 \`\`\`
 
 ## Exercise: Split Personalities
@@ -121,9 +121,28 @@ They sent them all in one large string, with each disorder separated by the foll
     starterCode: `// The string containing all personality disorders
 const disorders = "Depression|$|Bipolar|$|Manic|$|Anxiety|$|Anorexia|$|Posttraumtic Stress|$|Seasonal Affective|$|Bulimia"
 
-// Add your code here to:
-// 1. Split the string into an array
-// 2. Join the array back into a string with HTML tags`,
+/*
+ Step 1. Split the string into an array
+*/
+const disorderArray
+
+
+/*
+ Step 2. Create a string from the array with a div element as the delimiter
+         </div><div>
+*/
+const htmlString
+
+
+/*
+ Step 3. Create a string with the opening and closing <div> tags surrounding it
+*/
+const output = \`\`
+
+
+// Display the output
+console.log(output)
+`,
     solution: `const disorders = "Depression|$|Bipolar|$|Manic|$|Anxiety|$|Anorexia|$|Posttraumtic Stress|$|Seasonal Affective|$|Bulimia"
 
 // Split the string into an array
@@ -133,28 +152,51 @@ const disorderArray = disorders.split("|$|")
 const htmlString = disorderArray.join("</div><div>")
 
 // Add the opening and closing div tags
-console.log(\`<div>\${htmlString}</div>\`)`,
+const output = \`<div>\${htmlString}</div>\`
+
+// Display the output
+console.log(output)
+`,
     tests: [
       {
-        name: "String Split",
-        test: (code) => code.includes('.split("|$|")'),
-        message: "Make sure you're splitting the string using the correct delimiter |$|"
-      },
-      {
-        name: "Array Join",
-        test: (code) => code.includes('.join("</div><div>")'),
-        message: "Make sure you're joining the array with closing and opening div tags"
-      },
-      {
-        name: "HTML Output",
+        name: "Disorder array created",
         test: (code) => {
-          return code.includes('<div>') &&
-                 code.includes('</div>') &&
-                 code.includes('${') &&
-                 code.includes('}');
+          try {
+            const disorderArray = new Function(`${code}; return disorderArray`)()
+            return Array.isArray(disorderArray) && disorderArray.length === 8
+          }
+          catch (e) {
+            return false
+          }
         },
-        message: "Make sure you're wrapping the final string in div tags using template literals"
-      }
+        message: "Make sure you're splitting the string into an array"
+      },
+      {
+        name: "HTML string created",
+        test: (code) => {
+          try {
+            const htmlString = new Function(`${code}; return htmlString`)()
+            return htmlString === "Depression</div><div>Bipolar</div><div>Manic</div><div>Anxiety</div><div>Anorexia</div><div>Posttraumtic Stress</div><div>Seasonal Affective</div><div>Bulimia"
+          }
+          catch (e) {
+            return false
+          }
+        },
+        message: "Make sure you're joining the array back into a string with HTML div tags"
+      },
+      {
+        name: "Correct output",
+        test: (code) => {
+          try {
+            const output = new Function(`${code}; return output`)()
+            return output === "<div>Depression</div><div>Bipolar</div><div>Manic</div><div>Anxiety</div><div>Anorexia</div><div>Posttraumtic Stress</div><div>Seasonal Affective</div><div>Bulimia</div>"
+          }
+          catch (e) {
+            return false
+          }
+        },
+        message: "Make sure you're adding the opening and closing div tags for the output"
+      },
     ]
   }
 }

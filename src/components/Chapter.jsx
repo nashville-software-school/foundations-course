@@ -124,7 +124,7 @@ const chapterStyles = css`
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
 
     p, li {
@@ -199,7 +199,7 @@ const chapterStyles = css`
 
   .console-output {
     position: relative;
-    padding: 1.5rem;
+    padding: 1rem;
     background: #f8f9fa;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -407,8 +407,13 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
     }
 
     // Update state with captured output
-    if (output.length === 0) {
-      output.push("No console.log output");
+    if (output.length === 0 || output.join('').trim() === '') {
+      output.push(`No console.log output
+
+* Did you forget to add console.log statements?
+* Does the variable you're logging have a value?
+* Are you trying to log an array that's empty?
+`)
     }
     setConsoleOutput(output.join('\n'));
   };

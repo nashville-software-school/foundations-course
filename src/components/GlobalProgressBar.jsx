@@ -76,6 +76,13 @@ const globalProgressStyles = css`
     transition: color 0.3s ease;
   }
 
+  .star--large {
+    width: 32px;
+    height: 32px;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
   .star-label.active {
     color:rgb(243, 248, 109);
     font-weight: 500;
@@ -92,7 +99,7 @@ function GlobalProgressBar() {
   // Determine if a star should be filled or gold
   const getStarStatus = (starIndex) => {
     if (level > starIndex) {
-      return 'filled'
+      return 'filled '
     } else if (level === starIndex && percentage === 100) {
       return 'gold'
     }

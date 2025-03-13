@@ -7,6 +7,15 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
+    // State for dialog visibility
+    const [showNameDialog, setShowNameDialog] = useState(false)
+
+    useEffect(() => {
+        if (user && "name" in user && user.name === null) {
+            setShowNameDialog(true)
+        }
+    }, [user])
+
     // Define fetchUserData with useCallback to avoid recreation on each render
     const fetchUserData = useCallback(async (token) => {
         try {
@@ -106,6 +115,65 @@ export const AuthProvider = ({ children }) => {
             logout,
             fetchUserData
         }}>
+            {showNameDialog && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000
+                }}>
+                    <div style={{
+                        backgroundColor: 'white',
+                        padding: '20px',
+                        borderRadius: '5px',
+                        maxWidth: '500px',
+                        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)'
+                    }}>
+                        <h3 style={{ marginTop: 0 }}>GitHub Profile Incomplete</h3>
+                        <p>
+                            Your GitHub profile is missing a name. Please update your profile with your full name. When you're done, click the button below to refresh your profile.
+                        </p>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+                            <button
+                                onClick={() => {
+                                    setShowNameDialog(false)
+                                    fetchUserData(localStorage.getItem('github_token'))
+                                }}
+                                style={{
+                                    padding: '8px 16px',
+                                    backgroundColor: '#f1f1f1',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Verify and Refresh
+                            </button>
+                            <a
+                                href="https://github.com/settings/profile"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    padding: '8px 16px',
+                                    backgroundColor: '#2ea44f',
+                                    color: 'white',
+                                    textDecoration: 'none',
+                                    borderRadius: '4px',
+                                    display: 'inline-block'
+                                }}
+                            >
+                                Update GitHub Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            )}
             {children}
         </AuthContext.Provider>
     )
