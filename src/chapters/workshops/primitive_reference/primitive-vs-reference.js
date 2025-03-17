@@ -42,8 +42,8 @@ Each stop on our journey includes **hands-on code, discussions, and quiz challen
 ### 🛑 **Quiz Break #1**
 <a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Data Types Quiz</a>
 
-⚠️ **Note:** In this workshop, \`console.log\` will show as **alerts** 🚨 due to a custom-built interpreter.
-It’s not a full JS environment, so some behaviors may be different. Just stick to the exercises here! ✅
+⚠️ **Note:** When you click 'Run Tests' in this workshop, \`console.log\` will show as **alerts** 🚨 due to a custom-built interpreter.
+It’s not a full JS environment, some behaviors may be different. Use this code space only for the provided exercises, not for experimenting with random JS code!
 ### **🛠️ Run Code Snippet One:**
 
 ✅ **Discussion:** *Why does \`planet2\` still say "Mars" after \`planet1\` changes?*
