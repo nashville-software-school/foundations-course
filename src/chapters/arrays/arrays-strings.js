@@ -108,78 +108,105 @@ Unhappy customers: \${unhappyCustomers}
 
 ## Exercise: How Do You Take Your Coffee?
 
-There is an array in the code editor of different coffee roasts around the world that you enjoy. Depending on the roast, you prepare the coffee differently. If it is a light roast, you drink it black. If it is a medium roast, you put cream in it. If it is a dark roast, you put cream and sugar in it.
+There is an array in the code editor of different coffee roasts around the world that you enjoy. Depending on the roast, you prepare the coffee differently.
 
-Your job is to iterate the \`coffees\` array and output the following sentences for each coffee. Replace the \`xxx\` placeholder with the full name of the coffee.
+* If it is a light roast, you drink it black.
+* If it is a medium roast, you put cream in it.
+* If it is a toasty, or dark, roast you put cream and sugar in it.
 
-For light roast, output \`"I'll have the xxx and drink it black"\`
-For medium roast, output \`"I'll have the xxx and add cream only"\`
-For dark roast, output \`"I'll have the xxx and add cream and sugar"\``,
+Your job is to iterate the \`coffees\` array and output the following sentences for each coffee. Replace the \`00\` placeholder with the full name of the coffee.
+
+\`I need 00 orders of the light coffee with nothing in them\`
+\`I need 00 orders of the medium coffee with cream in them\`
+\`I need 00 orders of the toasty and dark coffees with cream and sugar in them\`
+`,
   exercise: {
     starterCode: `const coffees = [
-    "light colombian roast", "hawaiian dark roast", "guatemalan blend medium roast",
-    "dark madagascar blend", "jamaican dark blue", "jamaican medium roast",
-    "salvador robusto light"
+    "light colombian roast", "ethiopian toasty bean",
+    "hawaiian dark roast", "guatemalan blend medium roast",
+    "dark madagascar blend", "jamaican dark blue",
+    "jamaican medium roast", "salvador robusto light",
+    "vietnamese toasty blend", "peruvian light roast"
 ]
 
-let output = ""
+// Provide the correct default value for these variables
+let light
+let medium
+let toastyDark
+
+
 
 for (const coffee of coffees) {
-    // Add your code here
+  // Add your logic here
 }
 
+// Use a multi-line template string to generate the expected results
+let output = \`\`
+
+// Log your output to the console
 console.log(output)`,
     solution: `const coffees = [
-    "light colombian roast", "hawaiian dark roast", "guatemalan blend medium roast",
-    "dark madagascar blend", "jamaican dark blue", "jamaican medium roast",
-    "salvador robusto light"
+    "light colombian roast", "ethiopian toasty bean",
+    "hawaiian dark roast", "guatemalan blend medium roast",
+    "dark madagascar blend", "jamaican dark blue",
+    "jamaican medium roast", "salvador robusto light",
+    "vietnamese toasty blend", "peruvian light roast"
 ]
 
-let output = ""
+// Provide the correct default value for these variables
+let light = 0
+let medium = 0
+let toastyDark = 0
 
 for (const coffee of coffees) {
     if (coffee.includes("light")) {
-        output += \`I'll have the \${coffee} and drink it black\`
+        light++
     }
     else if (coffee.includes("medium")) {
-        output += \`I'll have the \${coffee} and add cream only\`
+        medium++
     }
-    else if (coffee.includes("dark")) {
-        output += \`I'll have the \${coffee} and add cream and sugar\`
+    else if (coffee.includes("dark") || coffee.includes("toasty")) {
+        toastyDark++
     }
-    output += "\\n"
 }
 
-console.log(output)`,
+// Use a multi-line template string to generate the expected results
+let output = \`I need \${light} orders of the light coffee with nothing in them
+I need \${medium} orders of the medium coffee with cream in them
+I need \${toastyDark} orders of the medium-dark and dark coffees with cream and sugar in them
+\`
+
+// Log your output to the console
+console.log(output)
+`,
     tests: [
       {
-        name: "For..of Loop",
-        test: (code) => code.includes('for (const') && code.includes(' of coffees)'),
-        message: "Make sure you're using a for..of loop to iterate the coffees array"
+        name: "Correct count of each roast type",
+        test: (code) => {
+          const { light, medium, toastyDark } = new Function(`${code}; return { light, medium, toastyDark }`)()
+          return light === 3 && medium === 2 && toastyDark === 5
+        },
+        message: "Make sure you're incrementing the correct variable for each roast"
+      },
+      {
+        name: "Output is correct",
+        test: (code) => {
+          const output = new Function(`${code}; return output`)()
+          return output.includes("I need 3 orders of the light coffee with nothing in them") &&
+                 output.includes("I need 2 orders of the medium coffee with cream in them") &&
+                 output.includes("I need 5 orders of the toasty and dark coffees with cream and sugar")
+        },
+        message: "Make sure you're outputting the correct number of each roast type"
       },
       {
         name: "String.includes() Usage",
         test: (code) => {
           return code.includes('.includes("light")') &&
                  code.includes('.includes("medium")') &&
+                 code.includes('.includes("toasty")') &&
                  code.includes('.includes("dark")');
         },
         message: "Make sure you're using String.includes() to check for each roast type"
-      },
-      {
-        name: "Output String Building",
-        test: (code) => {
-          return code.includes('output += `I\'ll have the ${coffee}') &&
-                 code.includes('drink it black') &&
-                 code.includes('add cream only') &&
-                 code.includes('add cream and sugar');
-        },
-        message: "Make sure you're building the output string with the correct messages for each roast type"
-      },
-      {
-        name: "New Line Characters",
-        test: (code) => code.includes('output += "\\n"') || code.includes("output += '\\n'"),
-        message: "Make sure to add a new line character after each coffee order"
       }
     ]
   }

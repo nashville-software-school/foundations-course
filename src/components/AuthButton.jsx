@@ -23,6 +23,7 @@ const styles = {
         display: flex;
         align-items: center;
         gap: 1rem;
+        margin-right: 1rem;
     `,
     avatar: css`
         width: 24px;
@@ -45,11 +46,24 @@ export const AuthButton = () => {
     const { isAuthenticated, user, login, logout } = useAuth()
 
     if (isAuthenticated && user) {
-        return ( <button css={styles.button} onClick={logout}> Sign Out </button> )
+        return (
+            <div style={{
+                fontSize: '0.9rem',
+                color: 'snow',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center'
+            }}>
+                <div css={styles.container}>
+                    Welcome {user?.name}
+                </div>
+                <button css={styles.button} onClick={logout}> Sign Out </button>
+            </div>
+        )
     }
 
     return (
-        <button css={styles.button} onClick={login}> <GithubIcon /> Sign In </button> )
+        <button css={styles.button} onClick={login}> <GithubIcon /> Sign In </button>)
 }
 
 export default AuthButton

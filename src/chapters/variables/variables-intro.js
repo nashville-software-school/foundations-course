@@ -109,7 +109,7 @@ Create variables for each month's electric bill and calculate the yearly total.
 `,
     exercise: {
         starterCode: `// January's electric bill
-let januaryBill = 145.32
+let januaryBill = 145
 
 // Create variables for the remaining months.
 // Give them any value you want.
@@ -119,20 +119,23 @@ let januaryBill = 145.32
 // Then calculate the total yearly charges by
 // declaring a constant variable named "yearlyTotal"
 // that is the sum of all twelve months.
+
+
+console.log(yearlyTotal)
 `,
         solution: `// Monthly electric bills
-let januaryBill = 145.32
-let februaryBill = 155.89
-let marchBill = 132.45
-let aprilBill = 98.76
-let mayBill = 87.65
-let juneBill = 203.55
-let julyBill = 187.34
-let augustBill = 198.65
-let septemberBill = 143.21
-let octoberBill = 112.87
-let novemberBill = 128.98
-let decemberBill = 159.43
+let januaryBill = 145
+let februaryBill = 155
+let marchBill = 132
+let aprilBill = 98
+let mayBill = 87
+let juneBill = 203
+let julyBill = 187
+let augustBill = 198
+let septemberBill = 143
+let octoberBill = 112
+let novemberBill = 128
+let decemberBill = 159
 
 const yearlyTotal = januaryBill + februaryBill + marchBill +
                     aprilBill + mayBill + juneBill +
@@ -146,7 +149,7 @@ console.log(yearlyTotal)`,
                 test: (code) => {
 
                     try {
-                        const func = new Function(code + '\nreturn yearlyTotal')
+                        const func = new Function(code + '; return yearlyTotal;')
                         const result = func()
                         if (result > 0 &&
                             code.includes('let februaryBill') &&
@@ -168,7 +171,7 @@ console.log(yearlyTotal)`,
                     }
 
                 },
-                message: `- Make sure to declare variables for all twelve months
+                message: `Make sure to declare variables for all twelve months
                 - Make sure to use the correct variable names (e.g. octoberBill, novemberBill)
                 - Make sure to use the \`let\` keyword for each month variable
                 - Make sure you use \`const\` for the yearlyTotal variable`
@@ -176,10 +179,16 @@ console.log(yearlyTotal)`,
             {
                 name: "Total Calculation",
                 test: (code) => {
-                    return code.includes('const') &&
-                        code.includes('yearlyTotal')
+                    try {
+                        const {januaryBill, februaryBill, marchBill, aprilBill, mayBill, juneBill, julyBill, augustBill, septemberBill, octoberBill, novemberBill, decemberBill, yearlyTotal} = new Function(code + '; return {januaryBill, februaryBill, marchBill, aprilBill, mayBill, juneBill, julyBill, augustBill, septemberBill, octoberBill, novemberBill, decemberBill, yearlyTotal}')()
+                        return yearlyTotal === januaryBill + februaryBill + marchBill + aprilBill + mayBill + juneBill + julyBill + augustBill + septemberBill + octoberBill + novemberBill + decemberBill
+
+                    }
+                    catch (error) {
+                        return false
+                    }
                 },
-                message: "Make sure to calculate the total using const and output it with console.log"
+                message: "Make sure you add up all the months to get the yearly total"
             }
         ]
     }

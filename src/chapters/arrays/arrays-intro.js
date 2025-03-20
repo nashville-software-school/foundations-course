@@ -51,12 +51,27 @@ const blueFruit = "Blueberry"
 
 // Your code here
 const fruits = []
+
+console.log(fruits)
 `,
-    solution: `const fruits = ["Banana", "Orange", "Apple", "Watermelon", "Blueberry"]`,
+    solution: `const fruits = ["Banana", "Orange", "Apple", "Watermelon", "Blueberry"]
+console.log(fruits)`,
     tests: [
       {
         name: "Array Creation",
-        test: (code) => code.includes('["Banana", "Orange", "Apple", "Watermelon", "Blueberry"]'),
+        test: (code) => {
+          try {
+            const fruitsArray = new Function(code + `;return fruits`)()
+            return fruitsArray.length === 5 &&
+              fruitsArray[0] === "Banana" &&
+              fruitsArray[1] === "Orange" &&
+              fruitsArray[2] === "Apple" &&
+              fruitsArray[3] === "Watermelon" &&
+              fruitsArray[4] === "Blueberry"
+          } catch (error) {
+            return false
+          }
+        },
         message: "Make sure you've included all fruits in the array in the correct order"
       }
     ]

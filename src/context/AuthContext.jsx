@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 
 const AuthContext = createContext()
 
@@ -7,20 +7,17 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
-    // Check token and fetch user data on mount
-    useEffect(() => {
-        console.log('AuthProvider initialized, checking for existing token');
-        const token = localStorage.getItem('github_token')
-        if (token) {
-            console.log('Found existing token, fetching user data');
-            fetchUserData(token)
-        } else {
-            console.log('No token found, user is not authenticated');
-            setLoading(false)
-        }
-    }, [])
+    // State for dialog visibility
+    const [showNameDialog, setShowNameDialog] = useState(false)
 
-    const fetchUserData = async (token) => {
+    useEffect(() => {
+        if (user && "name" in user && user.name === null) {
+            setShowNameDialog(true)
+        }
+    }, [user])
+
+    // Define fetchUserData with useCallback to avoid recreation on each render
+    const fetchUserData = useCallback(async (token) => {
         try {
             console.log('Fetching user data from GitHub API');
             const response = await fetch('https://api.github.com/user', {
@@ -34,22 +31,40 @@ export const AuthProvider = ({ children }) => {
                 console.log('User data fetched successfully:', userData.login);
                 setUser(userData)
                 setIsAuthenticated(true)
+                // Ensure token is saved in localStorage (in case it was passed directly)
+                localStorage.setItem('github_token', token)
+                return true
             } else {
                 console.error('Failed to fetch user data:', response.status, response.statusText);
                 // Token invalid or expired
                 localStorage.removeItem('github_token')
                 setUser(null)
                 setIsAuthenticated(false)
+                return false
             }
         } catch (error) {
             console.error('Error fetching user data:', error)
             localStorage.removeItem('github_token')
             setUser(null)
             setIsAuthenticated(false)
+            return false
         } finally {
             setLoading(false)
         }
-    }
+    }, [])
+
+    // Check token and fetch user data on mount
+    useEffect(() => {
+        console.log('AuthProvider initialized, checking for existing token');
+        const token = localStorage.getItem('github_token')
+        if (token) {
+            console.log('Found existing token, fetching user data');
+            fetchUserData(token)
+        } else {
+            console.log('No token found, user is not authenticated');
+            setLoading(false)
+        }
+    }, [fetchUserData])
 
     const login = () => {
         console.log('Initiating GitHub OAuth login flow');
@@ -100,6 +115,65 @@ export const AuthProvider = ({ children }) => {
             logout,
             fetchUserData
         }}>
+            {showNameDialog && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000
+                }}>
+                    <div style={{
+                        backgroundColor: 'white',
+                        padding: '20px',
+                        borderRadius: '5px',
+                        maxWidth: '500px',
+                        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)'
+                    }}>
+                        <h3 style={{ marginTop: 0 }}>GitHub Profile Incomplete</h3>
+                        <p>
+                            Your GitHub profile is missing a name. Please update your profile with your full name. When you're done, click the button below to refresh your profile.
+                        </p>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+                            <button
+                                onClick={() => {
+                                    setShowNameDialog(false)
+                                    fetchUserData(localStorage.getItem('github_token'))
+                                }}
+                                style={{
+                                    padding: '8px 16px',
+                                    backgroundColor: '#f1f1f1',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Verify and Refresh
+                            </button>
+                            <a
+                                href="https://github.com/settings/profile"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    padding: '8px 16px',
+                                    backgroundColor: '#2ea44f',
+                                    color: 'white',
+                                    textDecoration: 'none',
+                                    borderRadius: '4px',
+                                    display: 'inline-block'
+                                }}
+                            >
+                                Update GitHub Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            )}
             {children}
         </AuthContext.Provider>
     )

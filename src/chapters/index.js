@@ -1,10 +1,11 @@
-import { gettingStartedChapters } from "./getting-started";
-import { variablesChapters } from "./variables";
-import { arrayChapters } from "./arrays";
-import { objectChapters } from "./objects";
-import { functionChapters } from "./functions";
-import { modulesChapters } from "./modules";
 import { projectChapters, leonidsChapters } from "./projects";
+import { gettingStartedChapters } from './getting-started'
+import { variablesChapters } from './variables'
+import { arrayChapters } from './arrays'
+import { objectChapters } from './objects'
+import { functionChapters } from './functions'
+import { modulesChapters } from './modules'
+import { workshopChapters } from './workshops'
 
 // Helper function to add requiresAuth flag based on section
 const addAuthRequirement = (chapter) => ({
@@ -15,16 +16,17 @@ const addAuthRequirement = (chapter) => ({
 });
 
 // Apply requiresAuth to all chapters
-const protectedGettingStartedChapters =
-  gettingStartedChapters.map(addAuthRequirement);
-const protectedVariablesChapters = variablesChapters.map(addAuthRequirement);
-const protectedArrayChapters = arrayChapters.map(addAuthRequirement);
-const protectedObjectChapters = objectChapters.map(addAuthRequirement);
-const protectedFunctionChapters = functionChapters.map(addAuthRequirement);
-const protectedModulesChapters = modulesChapters.map(addAuthRequirement);
 
 const projectModulesChapters = projectChapters.map(addAuthRequirement);
 const protectedLeonidsChapters = leonidsChapters.map(addAuthRequirement);
+
+const protectedGettingStartedChapters = gettingStartedChapters.map(addAuthRequirement)
+const protectedVariablesChapters = variablesChapters.map(addAuthRequirement)
+const protectedArrayChapters = arrayChapters.map(addAuthRequirement)
+const protectedObjectChapters = objectChapters.map(addAuthRequirement)
+const protectedFunctionChapters = functionChapters.map(addAuthRequirement)
+const protectedModulesChapters = modulesChapters.map(addAuthRequirement)
+const protectedWorkshopChapters = workshopChapters.map(addAuthRequirement)
 
 export const chapters = [
   ...protectedGettingStartedChapters,
@@ -35,7 +37,8 @@ export const chapters = [
   ...protectedModulesChapters,
   ...projectModulesChapters,
   ...protectedLeonidsChapters,
-];
+  ...protectedWorkshopChapters
+]
 
 /**
  * Helper function to get chapter by ID

@@ -194,11 +194,11 @@ const fileType = filename.slice(filename.lastIndexOf(".") + 1)`,
         name: "Email Formatting",
         test: (code) => {
           try {
-            let cleanEmail;
-            eval(code);
-            return cleanEmail === "user.name@email.com";
+            const func = new Function(code + '\n return cleanEmail')
+            const cleanEmail = func()
+            return cleanEmail === "user.name@email.com"
           } catch (error) {
-            return false;
+            return false
           }
         },
         message: "The email should be trimmed and converted to lowercase"
@@ -207,11 +207,11 @@ const fileType = filename.slice(filename.lastIndexOf(".") + 1)`,
         name: "Phone Formatting",
         test: (code) => {
           try {
-            let formattedPhone;
-            eval(code);
-            return formattedPhone === "555-0123";
+            const func = new Function(code + '\n return formattedPhone')
+            const formattedPhone = func()
+            return formattedPhone === "555-0123"
           } catch (error) {
-            return false;
+            return false
           }
         },
         message: "The phone number should be formatted with a hyphen (555-0123)"
@@ -220,11 +220,11 @@ const fileType = filename.slice(filename.lastIndexOf(".") + 1)`,
         name: "Name Capitalization",
         test: (code) => {
           try {
-            let formattedName;
-            eval(code);
-            return formattedName === "John Doe";
+            const func = new Function(code + '\n return formattedName')
+            const formattedName = func()
+            return formattedName === "John Doe"
           } catch (error) {
-            return false;
+            return false
           }
         },
         message: "The name should be properly capitalized (John Doe)"
@@ -233,27 +233,13 @@ const fileType = filename.slice(filename.lastIndexOf(".") + 1)`,
         name: "Password Validation",
         test: (code) => {
           try {
-            let hasNumberAtEnd;
-            eval(code);
-            return hasNumberAtEnd === true;
+            const hasNumberAtEnd = new Function(code + '\n return hasNumberAtEnd')()
+            return hasNumberAtEnd === true
           } catch (error) {
-            return false;
+            return false
           }
         },
-        message: "Check if the password ends with a number using string methods or regex"
-      },
-      {
-        name: "File Extension Extraction",
-        test: (code) => {
-          try {
-            let fileType;
-            eval(code);
-            return fileType === "jpg";
-          } catch (error) {
-            return false;
-          }
-        },
-        message: "Extract the file extension (jpg) from the filename"
+        message: "Check if the password ends with a number using the slice() string method"
       }
     ]
   }

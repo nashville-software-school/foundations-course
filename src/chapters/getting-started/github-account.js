@@ -24,6 +24,7 @@ GitHub is a platform where developers store and manage their code. Having a prof
         * john-smith
         * jsmith-dev
         * johnsmith-dev
+
 2. Visit <a href="https://github.com/signup" target="_blank">GitHub's signup page</a> to create your account.
 
 3. Use a professional email address:
@@ -39,19 +40,12 @@ GitHub is a platform where developers store and manage their code. Having a prof
     * Complete any verification steps GitHub requires
     * This might include solving a puzzle or verifying your email
 
-6. Set up your profile:
+6. Visit your <a href="https://github.com/settings/profile" target="_blank">Github profile</a> to customize it:
     * Add a professional photo
     * Include your full name
     * Write a brief bio describing your professional interests
     * Add your location
-    * Consider adding your LinkedIn profile
-
-## Best Practices
-
-* Keep your profile professional and active
-* Start following relevant organizations and developers
-* Begin contributing to open-source projects when you're ready
-* Use your GitHub account to showcase your work and learning progress
+    * Consider adding your LinkedIn profile, or any other professional social media accounts
 
 Remember, your GitHub profile often serves as a portfolio and can be viewed by potential employers. Keep it professional and maintain it regularly.`,
     exercise: null

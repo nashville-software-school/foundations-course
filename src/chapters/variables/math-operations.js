@@ -154,7 +154,6 @@ const output = \`Our combined monthly income is \${combinedIncome}. Our net mont
                 test: (code) => {
                     try {
                         const result = new Function(code + '\nreturn combinedIncome')();
-
                         return result === 7900;
                     } catch (error) {
                         return false;

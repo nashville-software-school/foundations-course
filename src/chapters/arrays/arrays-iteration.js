@@ -107,13 +107,18 @@ for (const topic of topics) {
       {
         name: "Array Creation",
         test: (code) => {
-          const hasAllTopics = [
-            "Variables", "Loops", "Arrays", "Functions",
-            "Objects", "Modules", "Events"
-          ].every(topic => code.includes(topic));
-          return hasAllTopics;
+          const topicsArray = new Function(code + `;return topics`)();
+          return topicsArray.length === 7 &&
+            topicsArray[0] === "Variables" &&
+            topicsArray[1] === "Loops" &&
+            topicsArray[2] === "Arrays" &&
+            topicsArray[3] === "Functions" &&
+            topicsArray[4] === "Objects" &&
+            topicsArray[5] === "Modules" &&
+            topicsArray[6] === "Events"
         },
-        message: "Make sure you've included all the topics in the array"
+        message: `Make sure you've included all the topics in the array
+* Make sure the topics are in the correct order`
       },
       {
         name: "For..of Loop",

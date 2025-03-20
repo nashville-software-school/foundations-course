@@ -16,7 +16,16 @@ const navStyles = css`
   .section {
     margin-bottom: 0.5rem;
   }
-
+  .section-optional::before {
+    content: "Optional Section";
+    float: right;
+    color: #ccc;
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    margin: 0 0 20px 0;
+  }
   .section-content {
     overflow: hidden;
     transition: max-height 0.3s ease-in-out;
@@ -251,7 +260,7 @@ function Navigation() {
         const progress = calculateSectionProgress(sectionChapters)
 
         return (
-          <div key={section.id} className="section">
+          <div key={section.id} className={`section ${section.optional ? 'section-optional':''}`}>
             <SectionHeader
               section={section}
               isExpanded={isExpanded}

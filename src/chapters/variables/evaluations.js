@@ -57,7 +57,7 @@ console.log(\`I need to buy the following supplies
 \`)
 \`\`\`
 
-Copy and paste all of that code in the code editor and click the "run >" button. See if the ouput is what you would expect. Since the current value of \`attendees\` is 32, then it meets both of the conditions in the \`else if\` code block. 32 is less than 50, and it is also greater than 25.
+Since the current value of \`attendees\` is 32, then it meets both of the conditions in the \`else if\` code block. 32 is less than 50, and it is also greater than 25.
 
 Now change the value of the \`attendees\` variable to make the other conditions true and verify the output works as intended.
 
@@ -80,7 +80,10 @@ What you wear to work today will depend on the weather forecast. Here are all th
 * If the temperature is less than 50 degrees, and 35 degrees or more, you will wear a jacket, pants, and sneakers.
 * If the temperature is less than 35 degrees, you will wear a jacket, pants, and boots.
 
-Try it in the editor!`,
+Practice your boolean logic in the editor.
+
+You will need more than one \`else if\` condition to write this code. You will also need to use the \`>=\` and \`<\` operators to check the temperature. You will also need to use the \`&&\` operator to check for multiple conditions in a single \`if\` statement.`
+,
   exercise: {
     starterCode: `let torsoClothing = ""
 let legClothing = ""
@@ -88,17 +91,17 @@ let footWear = ""
 
 const temperature = 48
 
+/*
+   The first condition is already written for you.
+   Add your \`else if\` and \`else\` conditions below this one.
+*/
 if (temperature >= 95) {
     // Add your code here
 }
 
-// Add more conditions here
 
-console.log(\`This is what I'm wearing today:
-\${torsoClothing} on my torso
-\${legClothing} on my legs
-\${footWear} on my feet
-\`)`,
+`
+,
     solution: `let torsoClothing = ""
 let legClothing = ""
 let footWear = ""
@@ -138,11 +141,17 @@ console.log(\`This is what I'm wearing today:
 \`)`,
     tests: [
       {
+        name: "Multiple Conditions",
+        test: (code) => {
+          return code.includes('&&');
+        },
+        message: "Make sure to use the && for multiple conditions in a single if statement"
+      },
+      {
         name: "Correct Clothing for 48 Degrees",
         test: (code) => {
           try {
-            let torsoClothing, legClothing, footWear, temperature;
-            eval(code);
+            const { torsoClothing, legClothing, footWear } = new Function(code + "\n return { torsoClothing, legClothing, footWear}")();
             return torsoClothing === "Jacket" &&
                    legClothing === "Pants" &&
                    footWear === "Sneakers";
@@ -158,38 +167,9 @@ console.log(\`This is what I'm wearing today:
           return code.includes('if') &&
                  code.includes('else if') &&
                  code.includes('>=') &&
-                 code.includes('<') &&
-                 code.includes('&&');
+                 code.includes('<') ;
         },
-        message: "Make sure to use if/else if statements with proper comparison operators (>=, <) and && for multiple conditions"
-      },
-      {
-        name: "String Interpolation",
-        test: (code) => {
-          return code.includes('${torsoClothing}') &&
-                 code.includes('${legClothing}') &&
-                 code.includes('${footWear}') &&
-                 code.includes('`');
-        },
-        message: "Use string interpolation with backticks (`) and ${} to create the output message"
-      },
-      {
-        name: "Output Format",
-        test: (code) => {
-          try {
-            let consoleOutput = '';
-            const originalLog = console.log;
-            console.log = (msg) => { consoleOutput = msg; };
-            eval(code);
-            console.log = originalLog;
-            return consoleOutput.includes("on my torso") &&
-                   consoleOutput.includes("on my legs") &&
-                   consoleOutput.includes("on my feet");
-          } catch (error) {
-            return false;
-          }
-        },
-        message: "Make sure your output includes 'on my torso', 'on my legs', and 'on my feet'"
+        message: "Make sure to use if/else if statements with proper comparison operators (>=, <)"
       }
     ]
   }
