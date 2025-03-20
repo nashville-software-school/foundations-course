@@ -38,12 +38,14 @@ export const sections = [
   {
     id: "leonids",
     title: "Leonid's Toys",
+    optional: true,
     description:
       "Practice Javascript concepts by manipulating the inventory for Leonid's Toy Shoppe",
-  },
+    },
   {
     id: "daily-notes",
     title: "Daily Notes",
+    optional: true,
     description: "Practice Javascript by building a note taking application",
   },
   {
