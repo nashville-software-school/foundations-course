@@ -89,7 +89,7 @@ It’s not a full JS environment, some behaviors may be different. Use this code
 
 🚀 Houston, systems are nominal. ✅
 
-✅ **Discussion:** *Why does \`deepClone.abilities.laser\` remain \`false\` this time?*
+✅ **Discussion:** *Why does \`alien2.abilities.laser\` remain \`false\` this time?*
 
 ### 🛑 **Quiz #4**
 <a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Deep Copy Quiz</a>
@@ -174,9 +174,10 @@ It’s not a full JS environment, some behaviors may be different. Use this code
  **************************************************
  **************************************************
  */
-// let deepClone = structuredClone(alien1));
+// let alien1 = { species: "Zorgon", abilities: { laser: true } };
+// let alien2 = structuredClone(alien1);
 // alien1.abilities.laser = true;
-// console.log(deepClone.abilities.laser); // What will show?
+// console.log(alien2.abilities.laser); // What will show?
 /*
  **************************************************
  *             Code Snippet Five                  *
@@ -184,7 +185,7 @@ It’s not a full JS environment, some behaviors may be different. Use this code
  **************************************************
  */
 // let result1 = "2" + "2"
-// console.log(result1)); // What will show?
+// console.log(result1); // What will show?
 /*
  **************************************************
  *             Code Snippet Six                   *
