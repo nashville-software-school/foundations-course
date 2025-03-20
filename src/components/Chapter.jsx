@@ -580,9 +580,10 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
             <button className="run-code-button" onClick={runCode}>
               Run Code
             </button>
+            {chapterContent?.exercise?.tests.length > 0 &&
             <button className="test-button" onClick={runTests}>
               Run Tests
-            </button>
+            </button>}
           </div>
 
 
