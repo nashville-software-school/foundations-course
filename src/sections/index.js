@@ -49,6 +49,11 @@ export const sections = [
     description: "Practice Javascript by building a note taking application",
   },
   {
+    id: "assessment",
+    title: "Self-Assessment",
+    description: "TBD",
+  },
+  {
     id: 'workshops',
     title: 'Workshops',
     description: 'Various workshops as supplemental course content.',
