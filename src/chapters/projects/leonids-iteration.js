@@ -5,8 +5,6 @@ export const leonidsIteration = {
   previousChapterId: "leonids-arrays",
   nextChapterId: "leonids-arrays-push",
   content: `
-  # Display Toy Properties
-
 ## Learning Objectives
 
 * You should be able to demonstrate how to display a properties's value on an object.
@@ -108,23 +106,93 @@ for (const phone of phones) {
 ![](images/display-phone-prices-interpolation.gif)
 
 ## Practice: Display Property of All Toys
+## 📝 Instructions
 
-You get to pick one of the properties that you would like to display for all three of your toys in your array. Write a \`for..of\` loop that will iterate your array and use \`console.log()\` to display that property of each toy.
+Leonid has an array of toy objects. Your task is to:
 
-For example, if you have a \`name\` property on each toy, try accessing that property with dot notation inside the \`for..of\` loop and you should see output like this.
+1. Define a variable named \`toyInventory\`  
+2. Assign it to an array of exactly **three toy objects**, each with:
+   - \`name\` (string)
+   - \`priceInDollars\` (number)
 
+3. Use a \`for...of\` loop to print **just the name** of each toy using \`console.log()\`  
+4. Use the **exact toy names** below, in this order:
 
-![](images/display-all-toy-names.gif)
+Wooden Train
+Stuffed Rabbit
+Painted Kite
   `,
   exercise: {
     starterCode: ``,
     solution: ``,
     tests: [
-      {
-        name: "<< Title >>",
-        test: (code) => true,
-        message: "",
-      },
+        {
+          name: "Defines toyInventory as an array",
+          test: (code) => {
+            try {
+              const func = new Function(code + "\n return Array.isArray(toyInventory);");
+              return func();
+            } catch {
+              return false;
+            }
+          },
+          message: "You should define a toyInventory array"
+        },
+        {
+          name: "Array has three toys with correct names",
+          test: (code) => {
+            try {
+              const func = new Function(code + "\n return toyInventory.map(t => t.name);");
+              const names = func();
+              return Array.isArray(names) &&
+                     names.length === 3 &&
+                     names[0] === "Wooden Train" &&
+                     names[1] === "Stuffed Rabbit" &&
+                     names[2] === "Painted Kite";
+            } catch {
+              return false;
+            }
+          },
+          message: "toyInventory should contain the 3 specific toys in the correct order"
+        },
+        {
+          name: "Uses for...of loop",
+          test: (code) => {
+            return /\bfor\s*\(\s*(?:const|let|var)\s+\w+\s+of\s+toyInventory\s*\)/.test(code);
+          },
+          message: "You should use a for...of loop to iterate through toyInventory"
+        },
+        {
+          name: "Accesses and logs toy.name in loop",
+          test: (code) => {
+            return /console\.log\s*\(\s*\w+\.name\s*\)/.test(code);
+          },
+          message: "Inside the loop, you should access and log the 'name' property"
+        },
+        {
+          name: "Logs all three toy names in correct order",
+          test: (code) => {
+            try {
+              const logs = [];
+              const mockConsole = {
+                log: (...args) => {
+                  logs.push(args.join(" "))
+                },
+              };
+
+              const func = new Function("console", code + "\nreturn logs;");
+
+              const result = func(mockConsole);
+              console.table("dsdsdsdsdsds",result)
+              return result.join('\n').includes("Wooden Train") &&
+                      result.join('\n').includes("Stuffed Rabbit") &&
+                      result.join('\n').includes("Painted Kite");
+            } catch {
+              return false;
+            }
+          },
+          message: "Your code should log all three toy names in the correct order"
+        }
     ],
   },
 };
