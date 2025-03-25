@@ -5,8 +5,6 @@ export const leonidsObjects = {
   previousChapterId: "leonids-data-structures",
   nextChapterId: "leonids-arrays",
   content: `
-  # Toy Objects
-
 In this chapter, you will be using the object data structure that you learned about in Chapter 2 to represent some toys in code.
 
 ## Learning Objectives
@@ -14,66 +12,114 @@ In this chapter, you will be using the object data structure that you learned ab
 * You should be able to demonstrate that you can create objects with the correct syntax.
 * You should be able to explain that variables are labels that refer to values, not the value itself.
 
-## Setup
+## Practice: Define Toy Objects Using Descriptive Properties
 
-Run these commands to have a file in which you can write your code.
+## Define **three toy objects**:
 
-\`\`\`sh
-mkdir ~/workspace/toy-objects
-cd ~/workspace/toy-objects
-touch leonids-toys.js
-\`\`\`
+- Assign each object to a descriptive variable name  
+- Use full, meaningful property names  
+- Each object must have the **same set of six required properties**  
+- At least **one property in each toy must be set to \`null\`**
 
-Then open that directory in Visual Studio Code with the following command.
+### 🧸 Required Properties (for every toy)
 
-\`\`\`sh
-code .
-\`\`\`
+| Property Name         | Type     | Description                                      |
+|-----------------------|----------|--------------------------------------------------|
+| \`name\`                | string   | The name of the toy                             |
+| \`manufacturer\`        | string   | Who made the toy                                |
+| \`priceInDollars\`      | number   | The price of the toy in U.S. dollars            |
+| \`inStock\`             | boolean  | Whether the toy is currently in stock           |
+| \`recommendedAgeRange\`| string   | The appropriate age group for the toy           |
+| \`weightInGrams\`       | number   | The weight of the toy in grams                  |
 
-And open the \`leonids-toys.js\` file and follow the directions.
+👉 If any value is missing, use \`null\` — not \`""\`, \`0\`, or \`undefined\`.
 
-## Directions
+### 🧸 Toy Object Variables
 
-In the last chapter, you wrote down all of the properties of a toy that Leonid would need to track for his shoppe. Now you need to create some JavaScript objects to represent a couple of toys.
+You must create three separate toy objects using these variable names:
 
-Define three toys of your choosing. Assign each one to a different variable name. Make your key names as descriptive as possible. Do not abbreviate or use shortcuts. For example, if you chose \`manufacturer\` as a property of a toy, do not shorten it to \`mfr\`.
-
-For reference, here's the phone objects that were examples in the last chapter.
-
-\`\`\`js
-const iPhone = {
-    id: 1,
-    name: "iPhone",
-    maker: "Apple",
-    operatingSystem: "iOS",
-    price: 900,
-    weight: 1.2
-}
-
-const galaxy = {
-    id: 2,
-    name: "Galaxy",
-    maker: "Samsung",
-    operatingSystem: "Android",
-    price: 600,
-    weight: 1.4
-}
-\`\`\`
-
-
-When you have defined three toy objects, review with a teammate or a member of your instructional team. When describing your object, also be as descriptive as possible and mention the data types.
-
-> "The iPhone object has a string maker property, a string operating system property, an integer price property, and a float weight property."
+1. \`woodenTrain\`  
+2. \`stuffedRabbit\`  
+3. \`kite\`
   `,
   exercise: {
     starterCode: ``,
     solution: ``,
     tests: [
       {
-        name: "<< Title >>",
-        test: (code) => true,
-        message: "",
+        name: "Defines woodenTrain as an object",
+        test: (code) => {
+          try {
+            const func = new Function(code + `\n return woodenTrain;`);
+            const toy = func();
+            console.log("toy",toy)
+            return typeof toy === "object" && toy !== null;
+          } catch {
+            return false;
+          }
+        },
+        message: "woodenTrain should be a non-null object"
       },
+      {
+        name: "Defines stuffedRabbit as an object",
+        test: (code) => {
+          try {
+            const func = new Function(code + `\n return stuffedRabbit;`);
+            const toy = func();
+            return typeof toy === "object" && toy !== null;
+          } catch {
+            return false;
+          }
+        },
+        message: "stuffedRabbit should be a non-null object"
+      },
+      {
+        name: "Defines kite as an object",
+        test: (code) => {
+          try {
+            const func = new Function(code + `\n return kite;`);
+            const toy = func();
+            return typeof toy === "object" && toy !== null;
+          } catch {
+            return false;
+          }
+        },
+        message: "kite should be a non-null object"
+      },
+      {
+        name: "Each toy has 6 required properties",
+        test: (code) => {
+          try {
+            const func = new Function(code + `\n return [woodenTrain, stuffedRabbit, kite];`);
+            const toys = func();
+            return toys.every(toy => {
+              const keys = Object.keys(toy);
+              return keys.includes("name") &&
+                     keys.includes("manufacturer") &&
+                     keys.includes("priceInDollars") &&
+                     keys.includes("inStock") &&
+                     keys.includes("recommendedAgeRange") &&
+                     keys.includes("weightInGrams");
+            });
+          } catch {
+            return false;
+          }
+        },
+        message: "Each toy should include all six required properties"
+      },
+      {
+        name: "Each toy has at least one null property",
+        test: (code) => {
+          try {
+            const func = new Function(code + `\n return [woodenTrain, stuffedRabbit, kite];`);
+            const toys = func();
+            return toys.every(toy => Object.values(toy).some(v => v === null));
+          } catch {
+            return false;
+          }
+        },
+        message: "Each toy should have at least one property set to null"
+      }
     ],
   },
 };

@@ -6,9 +6,7 @@ export const firstAssessmentId = {
     nextChapterId: null,
     content: `## What You Need to Do
 
-Open the \`main.js\` file in VS Code.
-
-In there, you will see some starter code that...
+You see the starter code in the editor already has some functionality:
 
 1. Defines an array of flowers, filled with 9 objects.
 1. Several functions, in which you will write your code, with the requirements written above each one.
@@ -39,40 +37,27 @@ In the next function named \`flowersAsHTML\`, you will write logic produces one,
 
 ## Testing Your Code
 
-When you believe you have code that works, go back to your terminal and type \`node test.js\`.
+When you believe you have code that works, click the "Run Tests" button
 
 ### All Tests Pass
 
 If your code works you should see the following output.
 
 \`\`\`sh
-*********************************
-****   ALL TESTS SUCCEEDED   ****
-*********************************
-
-Congratulations on writing valid code for your first
-self-assessment project.
+✅ Tests Passed!
+Great job! All tests passed!
 \`\`\`
 
 
 ### Errors in Your Logic or Syntax
 
-If your code does not work, you will see a message that your code failed, with a brief message about why and possibly some helpful tips on how to fix it.
+If your code does not work, you will see a message that your code failed, with a brief message about why and possibly some helpful tips on how to fix it. 
+You can debug the code by adding console.log statements and clicking 'Run Code' button.
 
 \`\`\`sh
-*************************
-****   TEST FAILED   ****
-*************************
+❌ Some Tests Failed
 
-The test code expected that 6 flowers should be
-be the array of inexpensive flowers.
-
-There were 0 items in the array.
-
-Make sure that you have an \`if\` condition that
-is checking the price property of each flower, and
-that only flowers whose price is < 2.00 are being
-added.
+- The inexpensiveFlowers function did not return an array.Did you modify code that you should not have?
 \`\`\`
 
 ## Reviewing Your Code

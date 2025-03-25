@@ -5,8 +5,6 @@ export const leonidsDataStructures = {
   previousChapterId: "leonids-data-types",
   nextChapterId: "leonids-objects",
   content: `
-  # Data Structures
-
 Data structures are also types in a software language, and therefore can be referred to as _structural types_, that are more complex than their more primitive cousins that you learned about in the previous chapter. There are two common data structures that you will be using in the course.
 
 ## Learning Objectives
@@ -86,16 +84,119 @@ Because of this, you are going to add an \`id\` property to every single object 
 
 Eventually, you won't even need to do it. It will be handled for you. You just need to get used to the fact that everything will have that property.
 
+## Practice: Leonid’s Toy Inventory
+
+Write a function called \`findToyById(toys, id)\` that:
+
+- Takes an **array** of toy objects (\`toys\`)
+
+Each toy has:
+
+- \`id\`: a **unique identifier** (number)  
+- \`name\`: the name of the toy (string)  
+- \`maker\`: who crafted it (string — usually just “Leonid” for now)
+
+The function should:
+
+- Return the **toy object** that matches the given \`id\`  
+- If no toy is found, return \`null\`
   `,
   exercise: {
-    starterCode: ``,
+    starterCode: `
+    const inventory = [
+  { id: 101, name: "Hand-Carved Wooden Train", maker: "Leonid" },
+  { id: 102, name: "Painted Rocking Horse", maker: "Leonid" },
+  { id: 103, name: "Stuffed Bear with Bow Tie", maker: "Leonid" },
+  { id: 104, name: "Miniature Sailboat", maker: "Leonid" },
+  { id: 105, name: "Patchwork Doll", maker: "Leonid" },
+  { id: 106, name: "Wooden Puzzle Box", maker: "Leonid" },
+  { id: 107, name: "Knitted Sock Monkey", maker: "Leonid" },
+  { id: 108, name: "Spinning Top", maker: "Leonid" },
+  { id: 109, name: "Tiny Puppet Theater", maker: "Leonid" },
+  { id: 110, name: "Hand-Painted Marbles", maker: "Leonid" },
+  { id: 111, name: "Fabric Kite with Tail", maker: "Leonid" },
+  { id: 112, name: "Wool-Stuffed Bunny", maker: "Leonid" },
+  { id: 113, name: "Wooden Xylophone", maker: "Leonid" },
+  { id: 114, name: "Tin Wind-Up Robot", maker: "Leonid" },
+  { id: 115, name: "Miniature Toy Chest", maker: "Leonid" }
+];
+
+function findToyById(toys, id) {
+  // Your code here
+}`,
     solution: ``,
     tests: [
       {
-        name: "<< Title >>",
-        test: (code) => true,
-        message: "",
+        name: "Finds toy with id 101",
+        test: (code) => {
+          try {
+            const func = new Function(code + `\n return findToyById([{ id: 101, name: 'Hand-Carved Wooden Train', maker: 'Leonid' }], 101);`);
+            const toy = func();
+            return toy.name === "Hand-Carved Wooden Train";
+          } catch {
+            return false;
+          }
+        },
+        message: "Should return the toy with id 101"
       },
+      {
+        name: "Returns null for nonexistent id",
+        test: (code) => {
+          try {
+            const func = new Function(code + `\n return findToyById([{ id: 101, name: 'Hand-Carved Wooden Train', maker: 'Leonid' }], 999);`);
+            const toy = func();
+            return toy === null;
+          } catch {
+            return false;
+          }
+        },
+        message: "Should return null when id is not found"
+      },
+      {
+        name: "Finds toy with id 110",
+        test: (code) => {
+          try {
+            const func = new Function(code + `\n return findToyById([
+              { id: 110, name: 'Hand-Painted Marbles', maker: 'Leonid' },
+              { id: 111, name: 'Fabric Kite with Tail', maker: 'Leonid' }
+            ], 110);`);
+            const toy = func();
+            return toy.name === "Hand-Painted Marbles";
+          } catch {
+            return false;
+          }
+        },
+        message: "Should return the toy with id 110"
+      },
+      {
+        name: "Returns correct object type",
+        test: (code) => {
+          try {
+            const func = new Function(code + `\n return findToyById([{ id: 105, name: 'Patchwork Doll', maker: 'Leonid' }], 105);`);
+            const toy = func();
+            return typeof toy === "object" && toy !== null;
+          } catch {
+            return false;
+          }
+        },
+        message: "Should return a non-null object"
+      },
+      {
+        name: "Does not return incorrect toy",
+        test: (code) => {
+          try {
+            const func = new Function(code + `\n return findToyById([
+              { id: 115, name: 'Miniature Toy Chest', maker: 'Leonid' },
+              { id: 114, name: 'Tin Wind-Up Robot', maker: 'Leonid' }
+            ], 115);`);
+            const toy = func();
+            return toy.name !== "Tin Wind-Up Robot";
+          } catch {
+            return false;
+          }
+        },
+        message: "Should not return a different toy with a wrong id"
+      }
     ],
   },
 };

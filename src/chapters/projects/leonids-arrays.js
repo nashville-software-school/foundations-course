@@ -5,8 +5,6 @@ export const leonidsArrays = {
   previousChapterId: "leonids-objects",
   nextChapterId: "leonids-iteration",
   content: `
-# Toy Collection
-
 In this chapter, you will build an array filled with objects. Each item in the array will be one of your toys.
 
 ## Learning Objectives
@@ -80,49 +78,91 @@ One thing you might do as a beginner is forget to put a comma between the two ob
 
 ## Practice: Array of Toy Objects
 
-Open your \`leonids-toys.js\` file again in Visual Studio Code, and re-write it so that the toy objects you created are all contained within a single array. Make sure you assign the array to a variable named \`toys\`.
-
-After you rewrite the code, put \`console.log(toys)\` at the end of the code.
-
-\`\`\`js
-const toys = [
-    // Add your objects here
-]
-
-console.log(toys)
-\`\`\`
-
-To see if you got the syntax correct, open your terminal and navigate to the directory where your code file is located.
-
-\`\`\`sh
-cd ~/workspace/toy-objects
-\`\`\`
-
-Then run the following command to see the fruits of your labor.
-
-\`\`\`sh
-node leonids-toys.js
-\`\`\`
-
-If your syntax is correct, you should see your array of objects immediately displayed in the terminal.
-
-![](./images/good-array-of-toys.gif)
-
-If you syntax is incorrect, you will see a lot of gibberish that won't make much, if any, sense. If this happens, check your syntax again, but if you can't make it work, talk to a teammate or an mentor.
-
-![](./images/bad-array-of-toys.gif)
+In this exercise, you’ll define an array that contains 
+**three toy objects**, each using full and descriptive property names.
 
 
+## 📝 Instructions
+
+- Define a constant variable named \`toyInventory\`
+- It should be assigned to an array that contains **three toy objects**
+- Each toy object should have the following **required properties**:
+  - \`name\` (string)
+  - \`manufacturer\` (string)
+  - \`priceInDollars\` (number)
+- **Do not** assign each toy object to a separate variable — define them directly in the array
+- You may add more properties if you like, but at least one object must include a \`null\` value for one of its properties
   `,
   exercise: {
     starterCode: ``,
     solution: ``,
     tests: [
       {
-        name: "<< Title >>",
-        test: (code) => true,
-        message: "",
+        name: "Defines toyInventory as an array",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return Array.isArray(toyInventory);");
+            return func();
+          } catch {
+            return false;
+          }
+        },
+        message: "toyInventory should be an array"
       },
+      {
+        name: "toyInventory contains three objects",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return toyInventory.length === 3 && toyInventory.every(t => typeof t === 'object' && t !== null);");
+            return func();
+          } catch {
+            return false;
+          }
+        },
+        message: "toyInventory should contain three non-null objects"
+      },
+      {
+        name: "Each object has required properties",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return toyInventory.every(t => 'name' in t && 'manufacturer' in t && 'priceInDollars' in t);");
+            return func();
+          } catch {
+            return false;
+          }
+        },
+        message: "Each object should have name, manufacturer, and priceInDollars properties"
+      },
+      {
+        name: "At least one object has a null value",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return toyInventory.some(t => Object.values(t).includes(null));");
+            return func();
+          } catch {
+            return false;
+          }
+        },
+        message: "At least one toy should have a property set to null"
+      },
+      {
+        name: "Only toyInventory is declared",
+        test: (code) => {
+          try {
+            // Match all variable declarations: const, let, or var
+            const matches = [...code.matchAll(/\b(?:const|let|var)\s+([a-zA-Z_$][\w$]*)/g)];
+      
+            const declaredVariables = matches.map(m => m[1]);
+      
+            // Only one declared variable: toyInventory
+            return declaredVariables.length === 1 && declaredVariables[0] === "toyInventory";
+          } catch {
+            return false;
+          }
+        },
+        message: "Only the toyInventory array should be declared—no extra object variables"
+      }
+      
     ],
   },
 };
