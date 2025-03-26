@@ -4,8 +4,7 @@ export const listOfTopicsId = {
     sectionId: "daily-notes",
     previousChapterId: "list-of-notes",
     nextChapterId: "average-topics-per-note",
-    content: `# Listing Only The Topics
-
+    content: `
 Now that you have listed all of the notes, you need to list all of the topics that have been used to describe the notes.
 
 ## Instructions

@@ -4,9 +4,7 @@ export const projectRequirementsAndAlgorithmId = {
   sectionId: "daily-notes",
   previousChapterId: null,
   nextChapterId: 'note-objects-and-array',
-  content: `# Daily Notes Project
-
-## Algorithm
+  content: `## Algorithm
 
 The most important part of this project is that you write your algorithms out in comments before you code. Starting this practice right now will have a significantly positive impact on your ability to understand what code you need to write.
 
@@ -59,29 +57,116 @@ Why do developers do this? The two main reasons are...
 
 Since you are a beginner, you **must** start with algorithm development with comments before you write code.
 
-## Setup
+## Practice: Define a Notes Array with Structured Objects
 
-\`\`\`sh
-cd
-cd workspace
-mkdir daily-notes
-cd daily-notes
-touch main.js
-code .
-\`\`\`
+Create an array called \`notes\` that holds several note objects, each with specific properties.
 
-## Instructions
+## 📝 Instructions
 
-Copy the algorithm provided above into your \`main.js\` and see if you can write the code for both operations. Add a few notes to the array.`,
+1. Define a variable named \`notes\` and assign it an empty array.
+Each note object should include the following properties:
+
+| Property | Type             | Example                        |
+|----------|------------------|--------------------------------|
+| \`id\`     | number           | \`1\`                            |
+| \`text\`   | string           | \`"Meeting with Leonid"\`        |
+| \`author\` | string           | \`"Andrea"\`                     |
+| \`date\`   | string (ISO date)| \`"2025-03-25"\`                 |
+| \`topics\` | array of strings | \`["inventory", "pricing"]\`     |
+
+
+#### Example Object
+\`\`\`{
+  id: 1,
+  text: "Discussed pricing strategy",
+  author: "Andrea",
+  date: "2025-03-25",
+  topics: ["pricing", "marketing"]
+}
+`,
   exercise: {
     starterCode: ``,
-    solution: ``,
+    solution: `const notes = [];
+notes.push({
+  id: 1,
+  text: "Discussed pricing strategy with Leonid.",
+  author: "Andrea",
+  date: "2025-03-25",
+  topics: ["pricing", "marketing"]
+});
+notes.push({
+  id: 2,
+  text: "Inventory review and shelf restocking.",
+  author: "Leonid",
+  date: "2025-03-24",
+  topics: ["inventory", "stocking"]
+});
+notes.push({
+  id: 3,
+  text: "Scheduled next team meeting.",
+  author: "Andrea",
+  date: "2025-03-23",
+  topics: ["meetings", "planning"]
+});`,
     tests: [
       {
-        name: "<< Title >>",
-        test: (code) => true,
-        message: "",
+        name: "Defines notes as an array",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return Array.isArray(notes);");
+            return func();
+          } catch {
+            return false;
+          }
+        },
+        message: "You must define a variable named `notes` as an array"
       },
+      {
+        name: "Includes at least three note objects",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return notes;");
+            const result = func();
+            return Array.isArray(result) && result.length >= 3;
+          } catch {
+            return false;
+          }
+        },
+        message: "The notes array should contain at least three objects"
+      },
+      {
+        name: "Each note has the correct properties and types",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return notes;");
+            const result = func();
+            return result.every(note =>
+              typeof note.id === "number" &&
+              typeof note.text === "string" &&
+              typeof note.author === "string" &&
+              typeof note.date === "string" &&
+              Array.isArray(note.topics) &&
+              note.topics.every(topic => typeof topic === "string")
+            );
+          } catch {
+            return false;
+          }
+        },
+        message: "Each note must have id, text, author, date, and topics (an array of strings)"
+      },
+      {
+        name: "Each note has at least one topic",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return notes;");
+            const result = func();
+            return result.every(note => Array.isArray(note.topics) && note.topics.length > 0);
+          } catch {
+            return false;
+          }
+        },
+        message: "Each note must include at least one topic"
+      }
     ],
   },
 };
