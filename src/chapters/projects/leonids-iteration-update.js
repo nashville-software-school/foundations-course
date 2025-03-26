@@ -5,8 +5,6 @@ export const leonidsIterationUpdate = {
   previousChapterId: "leonids-string-interpolation",
   nextChapterId: "leonids-conditionals",
   content: `
-# Performing Logic in Loops
-
 In the last chapter, you used string interpolation to output a more human-readable string based on the less human-readable JavaScript object properties. You used a \`for..of\` loop to step through an array and perform the same operation on every item in the array.
 
 In this chapter, you will do one more operation before you output the string representation of your toys.
@@ -26,6 +24,24 @@ Rather than going and modifying every phone in your inventory _(yeah, I know you
 Since your output is done in a loop, and logic done in a loops is run for every item in the loop, you can write the following code.
 
 \`\`\`js
+const phones = [
+    {
+        id: 1,
+        name: "iPhone",
+        maker: "Apple, Inc.",
+        operatingSystem: "iOS",
+        price: 900,
+        weight: 1.2
+    },
+    {
+        id: 2,
+        name: "Galaxy",
+        maker: "Samsung",
+        operatingSystem: "Android",
+        price: 600,
+        weight: 1.4
+    }
+]
 // Step through the array of phones
 for (const phone of phones) {
     // Add 0.4 grams to the weight of each phone
@@ -36,35 +52,83 @@ for (const phone of phones) {
 }
 \`\`\`
 
-![](./images/adding-weight-to-phones.gif)
-
+> **ℹ️ Info:** Go ahead and copy the code above into the code editor and click "Run Code" it. 
+ 
 Yep. We see it, too. There's tons of extra numbers in the decimal places for some of those numbers. Don't worry. You didn't do anything wrong. Your computer isn't broken.
 
 It's just an issue with how floats work with JavaScript. You can dig into that later in your career. Just ignore it for now.
 
 ## Practice: Increasing Leonid's Prices
 
-Using the strategy above, modify the current \`for..of\` loop that displays the toy catalog and increase the price of each toy before it is printed for the terminal-based catalog.
+Leonid has decided to increase prices by 5%. Your task is to:
 
-He wants the price of every toy to be increased by 5%.
-
-For example, here is the current example output for the catalog.
-
-![](./images/toy-catalog.gif)
-
-Here's the output if every toy's price is increased by 5%.
-
-![](./images/increased-toy-prices.gif)
-  `,
+1. Use the provided \`toyCatalog\` array  
+2. Define an empty \`displayCatalog\` array  
+3. Use a \`for...of\` loop to:
+   - Access each toy’s properties using **dot notation**
+   - Increase its \`priceInDollars\` by 5%
+   - Format a string using **template literals** like this:
+   Toy: Wooden Train | Price: $31.50 | Color: Red
+4. Push each formatted string into \`displayCatalog\`
+   `,
   exercise: {
-    starterCode: ``,
-    solution: ``,
+    starterCode: `const toyCatalog = [
+  { name: "Wooden Train", priceInDollars: 30, color: "Red" },
+  { name: "Stuffed Rabbit", priceInDollars: 25, color: "Gray" },
+  { name: "Painted Kite", priceInDollars: 20, color: "Blue" }
+];`,
+    solution: `let displayCatalog = [];
+  for (const toy of toyCatalog) {
+  const increasedPrice = (toy.priceInDollars * 1.05).toFixed(2);
+  const line = \`Toy: \${toy.name} | Price: \$\${increasedPrice} | Color: \${toy.color}\`;
+  displayCatalog.push(line);
+}`,
     tests: [
       {
-        name: "<< Title >>",
-        test: (code) => true,
-        message: "",
+        name: "Defines toyCatalog with original prices",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return toyCatalog;");
+            const toys = func();
+            return toys[0].priceInDollars === 30 &&
+                   toys[1].priceInDollars === 25 &&
+                   toys[2].priceInDollars === 20;
+          } catch {
+            return false;
+          }
+        },
+        message: "toyCatalog must contain the original prices before any increase"
       },
+      {
+        name: "Uses for...of loop over toyCatalog",
+        test: (code) => {
+          return /\bfor\s*\(\s*const\s+\w+\s+of\s+toyCatalog\s*\)/.test(code);
+        },
+        message: "You should use a for...of loop to iterate over toyCatalog"
+      },
+      {
+        name: "Uses .toFixed(2) to format prices",
+        test: (code) => {
+          return /\.toFixed\s*\(\s*2\s*\)/.test(code);
+        },
+        message: "You should use .toFixed(2) to format the price"
+      },
+      {
+        name: "Pushes increased-price strings into displayCatalog",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return displayCatalog;");
+            const result = func();
+            return Array.isArray(result) &&
+                   result[0] === "Toy: Wooden Train | Price: $31.50 | Color: Red" &&
+                   result[1] === "Toy: Stuffed Rabbit | Price: $26.25 | Color: Gray" &&
+                   result[2] === "Toy: Painted Kite | Price: $21.00 | Color: Blue";
+          } catch {
+            return false;
+          }
+        },
+        message: "displayCatalog should include correctly formatted strings with increased prices"
+      }
     ],
   },
 };

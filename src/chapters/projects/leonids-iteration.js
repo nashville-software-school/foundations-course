@@ -74,6 +74,8 @@ for (const phone of phones) {
 }
 \`\`\`
 
+> **ℹ️ Info:** Go ahead and copy the code snippets to the editor and click "Run Code" to see what happens.
+
 What will be displayed in the console? The entire array? No, it won't. This \`for\` loop iterates the array, which is a fancy word for "access the first item in the array, then the next, then the next until there are no more items to access".
 
 In this loop, the individual objects will now be stored in the variable \`phone\`. Each time. Here you see the power of variables. That's the definition of variable. Something whose value _varies_.

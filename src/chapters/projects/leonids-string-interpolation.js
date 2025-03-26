@@ -5,8 +5,6 @@ export const leonidsStringInterpolation = {
   previousChapterId: "leonids-arrays-push",
   nextChapterId: "leonids-iteration-update",
   content: `
-# Displaying the Toy Catalog
-
 ## String Interpolation
 
 A quick reminder about string interpolation if you saw it in the pre-work. Otherwise, this is an introduction to string interpolation.
@@ -23,6 +21,7 @@ const interpolatedString = \`\${name} is \${age} years old\`
 console.log(interpolatedString)
 \`\`\`
 
+> **ℹ️ Info:** Go ahead and copy the code above into the code editor and click "Run Code" it. 
 
 Note that the string is built with the backtick character. That's not a single quote at the beginning and end of the string. You can find the backtick character above the TAB key on your keyboard.
 
@@ -59,26 +58,89 @@ for (const phone of phones) {
 }
 \`\`\`
 
+## Practice: Iterate Leonid's Toy Catalog
 
-## Iterate Leonid's Toy Catalog
+Leonid wants his catalog to look clean and professional. You’ve been asked to:
 
-Your job is to display a simple catalog for Leonid's toys. Use string interpolation, dot notation to access object properties and your \`for..of\` loop to display it.
+1. Define a variable called \`toyCatalog\` as an array
+2. Add **exactly three objects** to it, each with these properties:
+   - \`name\` (string)
+   - \`priceInDollars\` (number)
+   - \`color\` (string)
+3. Define a new array named \`displayCatalog\`
+4. Use a \`for...of\` loop to build a string for each toy with this exact format:
+    \`Toy: <name> | Price: $<priceInDollars> | Color: <color>\`
+5. Push each formatted string into the \`displayCatalog\` array.
 
-At this point, we're going to assume that you have properties like \`name\`, \`price\`, and \`color\`. Using those as an example, when you run \`node leonids-toys.js\` in the terminal, you could display this.
+### 🎯 Use these exact toys (in this order):
 
-![](./images/toy-catalog.gif)
-
-You may have different properties, so use whatever properties you have to build a sample string to be used in the bare bones, terminal-based catalog.
+\`\`\`js
+{ name: "Wooden Train", priceInDollars: 30, color: "Red" }
+{ name: "Stuffed Rabbit", priceInDollars: 25, color: "Gray" }
+{ name: "Painted Kite", priceInDollars: 20, color: "Blue" }
+\`\`\`
   `,
   exercise: {
     starterCode: ``,
-    solution: ``,
+    solution: `const toyCatalog = [
+  { name: "Wooden Train", priceInDollars: 30, color: "Red" },
+  { name: "Stuffed Rabbit", priceInDollars: 25, color: "Gray" },
+  { name: "Painted Kite", priceInDollars: 20, color: "Blue" }
+];
+const displayCatalog = [];
+for (const toy of toyCatalog) {
+  const line = \`Toy: \${toy.name} | Price: \$\${toy.priceInDollars} | Color: \${toy.color}\`;
+  displayCatalog.push(line);
+}`,
     tests: [
       {
-        name: "<< Title >>",
-        test: (code) => true,
-        message: "",
+        name: "Defines toyCatalog with three objects",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return toyCatalog;");
+            const result = func();
+            return Array.isArray(result) &&
+                   result.length === 3 &&
+                   result[0].name === "Wooden Train" &&
+                   result[1].name === "Stuffed Rabbit" &&
+                   result[2].name === "Painted Kite";
+          } catch {
+            return false;
+          }
+        },
+        message: "toyCatalog must contain the three specific toy objects"
       },
+      {
+        name: "Uses for...of loop over toyCatalog",
+        test: (code) => {
+          return /\bfor\s*\(\s*const\s+\w+\s+of\s+toyCatalog\s*\)/.test(code);
+        },
+        message: "You should use a for...of loop to iterate over toyCatalog"
+      },
+      {
+        name: "Pushes formatted strings into displayCatalog",
+        test: (code) => {
+          try {
+            const func = new Function(code + "\n return displayCatalog;");
+            const result = func();
+            return Array.isArray(result) &&
+                   result.length === 3 &&
+                   result[0] === "Toy: Wooden Train | Price: $30 | Color: Red" &&
+                   result[1] === "Toy: Stuffed Rabbit | Price: $25 | Color: Gray" &&
+                   result[2] === "Toy: Painted Kite | Price: $20 | Color: Blue";
+          } catch {
+            return false;
+          }
+        },
+        message: "displayCatalog should contain correctly formatted catalog entries"
+      },
+      {
+        name: "Uses template literals and dot notation",
+        test: (code) => {
+          return /`\s*Toy:\s*\$\{.*\.name\}\s*\|\s*Price:\s*\$\$\{.*\.priceInDollars\}\s*\|\s*Color:\s*\$\{.*\.color\}\s*`/.test(code);
+        },
+        message: "You should use string interpolation and dot notation to access and format each toy's info"
+      }
     ],
   },
 };
