@@ -4,59 +4,113 @@ export const htmlNoteArticlesId = {
     sectionId: "daily-notes",
     previousChapterId: "list-of-notes-by-topic",
     nextChapterId: "note-topics-subsection",
-    content: `# Note Articles
-
+    content: `
 In preparation for when you are going to be contructing HTML representations of your data to be displayed in a web browser, you are going to be constructing some strings in this chapter that contain the \`<article>\` element, with the text from each note contained _(interpolated)_ inside it.
 
-## Instructions
+# 📰Practice: Display Notes as HTML Articles
 
-Start with a new output section using the following code at the bottom of your file.
+You’ve listed topics and filtered notes. Now Leonid wants to wrap each note’s text in an HTML \`<article>\` element. It’s not going on the web — just good practice!
 
-\`\`\`
-console.log("***  Note Articles  ***")
-\`\`\`
+1. Start by printing this header: \`console.log("***  Note Articles  ***");\`
+2. Use a for...of loop to go through the notes array.
+3. In each loop, use console.log() to print the text of the note wrapped in an HTML-style article tag, like this:
+\`<article>Note text here</article>\`
 
-Then iterate the notes array again. On each iteration, use \`console.log()\` to display the text of each note, but surrounded by an article HTML element. Refer back to the previous projects to review how to build a string template and interpolate JavaScript variables inside it.
-
-\`\`\`
-<article>Always work on a branch and submit a PR, even if I'm working on my own project.</article>
-\`\`\`
-
-### Run Your Code
-
-In your terminal, run your code with the following command.
-
-\`\`\`
-node main.js
-\`\`\`
-
-When you run the code, it should output similar to the following example.
-
-\`\`\`
-***  Note Articles  ***
-<article>Always work on a branch and submit a PR, even if I'm working on my own project.</article>
-<article>I have found that slowing down and thinking about the problem, and writing out the comments makes it vastly easier to write code.</article>
-<article>Review all my old code before asking for help or looking at hints.</article>
-\`\`\`
-
-## Hint
-
-Remember, use all the other resources at your disposal before looking at hints. Start thinking like a professional now and become an efficient learner, not a lazy one.
-
-<details>
-    <summary>String templates</summary>
-
-Sorry, no hint on this one. Refer back to chapters 8 and 9 in the Foundations Review work.
-</details>`,
+`,
     exercise: {
-      starterCode: ``,
-      solution: ``,
+      starterCode: `const notes = [
+  {
+    id: 1,
+    topics: ["strategy", "github"],
+    text: "Always work on a branch and submit a PR, even if I'm working on my own project.",
+    author: "Red Tilson",
+    date: "2020-11-25"
+  },
+  {
+    id: 2,
+    topics: ["thinking", "help"],
+    text: "I have found that slowing down and thinking about the problem, and writing out the comments makes it vastly easier to write code.",
+    author: "Gib Jeffries",
+    date: "2021-01-18"
+  },
+  {
+    id: 3,
+    topics: ["strategy", "professional", "help"],
+    text: "Review all my old code before asking for help or looking at hints.",
+    author: "Samantha Maas",
+    date: "2020-11-09"
+  }
+];`,
+      solution: `const notes = [
+  {
+    id: 1,
+    topics: ["strategy", "github"],
+    text: "Always work on a branch and submit a PR, even if I'm working on my own project.",
+    author: "Red Tilson",
+    date: "2020-11-25"
+  },
+  {
+    id: 2,
+    topics: ["thinking", "help"],
+    text: "I have found that slowing down and thinking about the problem, and writing out the comments makes it vastly easier to write code.",
+    author: "Gib Jeffries",
+    date: "2021-01-18"
+  },
+  {
+    id: 3,
+    topics: ["strategy", "professional", "help"],
+    text: "Review all my old code before asking for help or looking at hints.",
+    author: "Samantha Maas",
+    date: "2020-11-09"
+  }
+];
+      console.log("***  Note Articles  ***");
+
+for (const note of notes) {
+  console.log(\`<article>\${note.text}</article>\`);
+}`,
       tests: [
         {
-          name: "<< Title >>",
-          test: (code) => true,
-          message: "",
+          name: "Logs the header",
+          test: (code) => {
+            const logs = [];
+            const mockConsole = { log: (msg) => logs.push(msg) };
+      
+            const func = new Function("console", code);
+            func(mockConsole);
+      
+            return logs[0] === "***  Note Articles  ***";
+          },
+          message: "You should log the header: ***  Note Articles  ***"
         },
+        {
+          name: "Logs each note wrapped in <article>",
+          test: (code) => {
+            const logs = [];
+            const mockConsole = { log: (msg) => logs.push(msg) };
+            const func = new Function( "console", code);
+            func(mockConsole);
+            const expected = ["<article>Always work on a branch and submit a PR, even if I'm working on my own project.</article>",
+            "<article>I have found that slowing down and thinking about the problem, and writing out the comments makes it vastly easier to write code.</article>",
+            "<article>Review all my old code before asking for help or looking at hints.</article>"]
+            return logs.slice(1).join("|") === expected.join("|");
+          },
+          message: "Each note should be printed as <article>Note Text</article>"
+        },
+        {
+          name: "Uses for...of loop",
+          test: (code) => {
+            return /\bfor\s*\(\s*const\s+\w+\s+of\s+notes\s*\)/.test(code);
+          },
+          message: "Use a for...of loop to iterate through notes"
+        },
+        {
+          name: "Uses template literals and string interpolation",
+          test: (code) => {
+            return /`<article>\$\{.*\.text\}<\/article>`/.test(code);
+          },
+          message: "Use a template literal to wrap note.text in <article> tags"
+        }
       ],
     },
   };
