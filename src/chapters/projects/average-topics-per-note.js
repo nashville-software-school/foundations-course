@@ -4,65 +4,165 @@ export const averageTopicsPerNoteId = {
     sectionId: "daily-notes",
     previousChapterId: "list-of-topics",
     nextChapterId: "list-of-notes-by-topic",
-    content: `# Average Number of Topics
+    content: `## Practice: Calculate average
 
-## Instructions
+Calculate and display the **average number of topics** used across all notes.
 
-Add a new section of output where you can see, on average, how many topics the author are applying to each post.
+You already have a \`notes\` array where each note has a \`topics\` array. 
+Your task is to:
 
-Start with \`console.log("*** Average Topics Per Note ***")\` and display the average numbers of topics used on all posts.
+1. Count the **total number of topics** across all notes
+2. Count the **number of notes**
+3. Calculate the **average topics per note**
+4. Use \`console.log()\` to print the results
 
-
-### Run Your Code
-
-In your terminal, run your code with the following command.
-
-\`\`\`
-node main.js
-\`\`\`
-
-When you run the code, it should display something like the following.
-
-\`\`\`
+### ✅ Your output should start with this line:
 *** Average Topics Per Note ***
-2.0
-\`\`\`
 
-## Hint
+Then log the **average as a number**, rounded to one decimal place (e.g., \`2.0\` or \`2.3\`).
+## 💡 Example Output
+*** Average Topics Per Note *** 2.0
 
-Remember, use all the other resources at your disposal before looking at hints. Start thinking like a professional now and become an efficient learner, not a lazy one.
+`,
+    exercise: {
+      starterCode: `const notes = [
+  {
+    id: 1,
+    text: "Discussed pricing strategy with Leonid.",
+    author: "Andrea",
+    date: "2025-03-25",
+    topics: ["pricing", "marketing"]
+  },
+  {
+    id: 2,
+    text: "Inventory review and shelf restocking.",
+    author: "Leonid",
+    date: "2025-03-24",
+    topics: ["inventory", "stocking"]
+  },
+  {
+    id: 3,
+    text: "Scheduled next team meeting.",
+    author: "Andrea",
+    date: "2025-03-23",
+    topics: ["meetings", "planning"]
+  },
+  {
+    id: 4,
+    text: "Review all my old code before asking for help or looking at hints.",
+    author: "Samantha Maas",
+    date: "2020-11-09",
+    topics: ["strategy", "professional", "help"]
+  },
+  {
+    id: 5,
+    text: "I have found that slowing down and thinking about the problem, and writing out the comments makes it vastly easier to write code.",
+    author: "Gib Jeffries",
+    date: "2021-01-18",
+    topics: ["thinking"]
+  },
+  {
+    id: 6,
+    text: "Need to have all my code backed up to Github by the end of the week.",
+    author: "Rebecca Parker",
+    date: "2021-02-25",
+    topics: ["reminder", "github"]
+  }
+];`,
+      solution: `const notes = [
+  {
+    id: 1,
+    text: "Discussed pricing strategy with Leonid.",
+    author: "Andrea",
+    date: "2025-03-25",
+    topics: ["pricing", "marketing"]
+  },
+  {
+    id: 2,
+    text: "Inventory review and shelf restocking.",
+    author: "Leonid",
+    date: "2025-03-24",
+    topics: ["inventory", "stocking"]
+  },
+  {
+    id: 3,
+    text: "Scheduled next team meeting.",
+    author: "Andrea",
+    date: "2025-03-23",
+    topics: ["meetings", "planning"]
+  },
+  {
+    id: 4,
+    text: "Review all my old code before asking for help or looking at hints.",
+    author: "Samantha Maas",
+    date: "2020-11-09",
+    topics: ["strategy", "professional", "help"]
+  },
+  {
+    id: 5,
+    text: "I have found that slowing down and thinking about the problem, and writing out the comments makes it vastly easier to write code.",
+    author: "Gib Jeffries",
+    date: "2021-01-18",
+    topics: ["thinking"]
+  },
+  {
+    id: 6,
+    text: "Need to have all my code backed up to Github by the end of the week.",
+    author: "Rebecca Parker",
+    date: "2021-02-25",
+    topics: ["reminder", "github"]
+  }
+];
+console.log("*** Average Topics Per Note ***");
 
-<details>
-    <summary>Nested For Loop</summary>
+let totalTopics = 0;
 
-\`\`\`
-// Need to count up all the topics, so start at 0
-const totalTopics = 0
-
-// Iterate all of the notes
 for (const note of notes) {
-    /*
-        Increase the value of \`totalTopics\` by the number
-        of topics on this note
-    */
-    totalTopics = totalTopics +
+  totalTopics += note.topics.length;
 }
 
-// Calculate the overall average
-
-
-// Output the average to the terminal
-\`\`\`
-</details>`,
-    exercise: {
-      starterCode: ``,
-      solution: ``,
+const average = (totalTopics / notes.length).toFixed(1);
+console.log(average);`,
       tests: [
         {
-          name: "<< Title >>",
-          test: (code) => true,
-          message: "",
+          name: "Prints the correct header line",
+          test: (code) => {
+            const logs = [];
+            const mockConsole = { log: (msg) => logs.push(msg) };
+      
+            try {
+              const func = new Function( "console", code);
+              func(mockConsole);
+              return logs[0] === "*** Average Topics Per Note ***";
+            } catch {
+              return false;
+            }
+          },
+          message: "You should start with console.log(\"*** Average Topics Per Note ***\")"
         },
+        {
+          name: "Calculates and logs the correct average",
+          test: (code) => {
+            const logs = [];
+            const mockConsole = { log: (msg) => logs.push(msg) };
+      
+            try {
+              const func = new Function("console", code);
+              func(mockConsole);
+              return logs.includes("2.0");
+            } catch {
+              return false;
+            }
+          },
+          message: "You must calculate and display the correct average number of topics per note"
+        },
+        {
+          name: "Uses .toFixed(1)",
+          test: (code) => {
+            return /\.toFixed\s*\(\s*1\s*\)/.test(code);
+          },
+          message: "You should use .toFixed(1) to round the average to one decimal place"
+        }
       ],
     },
   };
