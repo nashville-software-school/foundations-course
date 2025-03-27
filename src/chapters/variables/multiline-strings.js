@@ -1,7 +1,6 @@
 export const multilineStringsChapter = {
   id: 'multiline-strings',
   title: 'Multi-line Strings',
-  path: '/multiline-strings',
   sectionId: 'variables-and-values',
   previousChapterId: 'string-interpolation',
   nextChapterId: 'string-methods',

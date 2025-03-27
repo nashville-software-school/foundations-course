@@ -1,7 +1,6 @@
 export const anthropicAccountChapter = {
     id: 'anthropic-account',
     title: 'Anthropic Account',
-    path: '/anthropic-account',
     sectionId: 'getting-started',
     previousChapterId: 'github-account',
     content: `Claude is an AI assistant created by Anthropic that can help you learn programming concepts and debug code. Having access to Claude can significantly enhance your learning experience.

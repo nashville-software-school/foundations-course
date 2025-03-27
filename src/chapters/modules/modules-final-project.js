@@ -1,7 +1,6 @@
 export const modulesFinalProjectChapter = {
   id: 'modules-final-project',
   title: 'Final Project: Emoji Sticker Maker',
-  path: '/modules-final-project',
   sectionId: 'modules',
   previousChapterId: 'modules-best-practices',
   nextChapterId: null,

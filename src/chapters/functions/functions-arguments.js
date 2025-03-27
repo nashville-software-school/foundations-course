@@ -1,7 +1,6 @@
 export const functionsArgumentsChapter = {
   id: 'functions-arguments',
   title: 'Using Arguments',
-  path: '/functions-arguments',
   sectionId: 'functions',
   previousChapterId: 'functions-parameters',
   nextChapterId: 'functions-multiple-parameters',

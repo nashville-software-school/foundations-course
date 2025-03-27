@@ -1,7 +1,6 @@
 export const arrayConditionsPracticeChapter = {
   id: 'arrays-conditions-practice',
   title: 'Conditions in Loops',
-  path: '/arrays-conditions-practice',
   sectionId: 'arrays',
   previousChapterId: 'arrays-practice',
   nextChapterId: 'arrays-strings',
