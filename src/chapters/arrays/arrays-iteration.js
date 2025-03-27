@@ -1,7 +1,6 @@
 export const arrayIterationChapter = {
   id: 'arrays-iteration',
   title: 'Array Iteration',
-  path: '/arrays-iteration',
   sectionId: 'arrays',
   previousChapterId: 'arrays-indices',
   nextChapterId: 'arrays-push',
@@ -17,7 +16,8 @@ In JavaScript, there is a specific kind of loop called a \`for..of\` loop that i
 
 With a \`for..of\` loop, you don't need to worry about accessing individual items using the \`array[index]\` syntax. All you need to do is declare a variable to store the current item, and the \`for..of\` loop will assign it the correct value as it iterates the array.
 
-Go ahead and copy the following code into the code editor and run it. You will see each car model in the console output.
+
+> **ℹ️ Info:** Go ahead and copy the following code into the code editor and click "Run Code" it. You will see each car model in the console output.
 
 ## Cars
 

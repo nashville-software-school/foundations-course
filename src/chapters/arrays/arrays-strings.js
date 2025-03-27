@@ -1,7 +1,6 @@
 export const arrayStringsChapter = {
   id: 'arrays-strings',
   title: 'Strings Within Strings',
-  path: '/arrays-strings',
   sectionId: 'arrays',
   previousChapterId: 'arrays-conditions-practice',
   nextChapterId: 'arrays-split-join',

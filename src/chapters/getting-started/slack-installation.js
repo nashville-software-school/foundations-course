@@ -1,7 +1,6 @@
 export const slackInstallationChapter = {
     id: 'slack-installation',
     title: 'Slack Installation',
-    path: '/slack-installation',
     sectionId: 'getting-started',
     previousChapterId: 'visual-studio-code',
     content: `Slack is a messaging app for teams that will be your primary communication tool throughout your learning journey. It's where you'll interact with instructors, fellow students, and get important announcements.

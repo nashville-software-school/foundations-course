@@ -1,7 +1,6 @@
 export const objectsLibrariesChapter = {
   id: 'objects-libraries',
   title: 'Libraries and Books',
-  path: '/objects-libraries',
   sectionId: 'objects',
   previousChapterId: 'objects-complex',
   nextChapterId: null,

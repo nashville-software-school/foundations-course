@@ -1,7 +1,6 @@
 export const functionsIntroChapter = {
   id: 'functions-intro',
   title: 'Introduction to Functions',
-  path: '/functions-intro',
   sectionId: 'functions',
   previousChapterId: null,  // First chapter in the Functions section
   nextChapterId: 'functions-defining-invoking',

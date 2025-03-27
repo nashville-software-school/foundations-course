@@ -1,7 +1,6 @@
 export const objectsMultipleChapter = {
   id: 'objects-multiple',
   title: 'Multiple Objects',
-  path: '/objects-multiple',
   sectionId: 'objects',
   previousChapterId: 'objects-intro',
   nextChapterId: 'objects-collections',

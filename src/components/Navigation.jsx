@@ -287,9 +287,9 @@ function Navigation() {
                   return (
                     <li key={chapter.id} className="chapter-item">
                       <Link
-                        to={isProtected ? '/login' : chapter.path}
+                        to={isProtected ? '/login' : chapter.id}
                         className={`chapter-link ${status} ${
-                          location.pathname === chapter.path ? 'active' : ''
+                          location.pathname === chapter.id ? 'active' : ''
                         } ${isProtected ? 'protected' : ''}`}
                       >
                         <span className="chapter-number">{index + 1}</span>

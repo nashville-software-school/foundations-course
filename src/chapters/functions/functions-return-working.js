@@ -1,7 +1,6 @@
 export const functionsReturnWorkingChapter = {
   id: 'functions-return-working',
   title: 'Working with Return Values',
-  path: '/functions-return-working',
   sectionId: 'functions',
   previousChapterId: 'functions-return-intro',
   nextChapterId: 'functions-return-practice',

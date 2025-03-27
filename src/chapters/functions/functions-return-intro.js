@@ -1,7 +1,6 @@
 export const functionsReturnIntroChapter = {
   id: 'functions-return-intro',
   title: 'Introduction to Return Values',
-  path: '/functions-return-intro',
   sectionId: 'functions',
   previousChapterId: 'functions-arrow-syntax',
   nextChapterId: 'functions-return-working',

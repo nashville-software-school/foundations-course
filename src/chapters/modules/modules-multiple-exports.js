@@ -1,7 +1,6 @@
 export const modulesMultipleExportsChapter = {
   id: 'modules-multiple-exports',
   title: 'Working with Multiple Exports',
-  path: '/modules-multiple-exports',
   sectionId: 'modules',
   previousChapterId: 'modules-single-responsibility',
   nextChapterId: 'modules-functions',

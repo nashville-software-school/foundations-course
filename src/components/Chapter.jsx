@@ -195,6 +195,9 @@ const chapterStyles = css`
       background: #ccc;
       cursor: not-allowed;
     }
+    &.red{
+      background:red;
+    }
   }
 
   .console-output {
@@ -314,31 +317,14 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
     })
   }, [chapterContent?.content, renderer])
 
-  // Auto-hide test results after 8 seconds
-  useEffect(() => {
-    let timer
-    if (testResults) {
-      setShowResults(true)
-      timer = setTimeout(() => {
-        setShowResults(false)
-      }, 8000)
-    }
-    return () => clearTimeout(timer)
-  }, [testResults])
-
-  // Auto-hide console output after 8 seconds
-  useEffect(() => {
-    let timer
-      setShowConsoleOutput(true)
-      timer = setTimeout(() => {
-        setShowConsoleOutput(false)
-        setConsoleOutput(null)
-      }, 8000)
-    return () => clearTimeout(timer)
-  }, [consoleOutput])
-
+  function clearCodeOutput() {
+    setShowResults(false)
+    setShowConsoleOutput(false)
+    setConsoleOutput(null)
+  }
   useEffect(() => {
     if (chapterContent?.exercise) {
+      clearCodeOutput()
       const progress = getExerciseProgress(chapterId)
 
       if (progress.completed && progress.completedCode) {
@@ -364,7 +350,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
   const handleFilesChange = (newFiles) => {
     // Only update the files that exist in the current chapter's starter code
     const validFiles = {}
-    const starterCode = chapterContent?.exercise?.starterCode || {}
+    const starterCode = chapterContent?.exercise?.starterCode || {'index.js':chapterContent?.exercise?.starterCode}
     const starterCodeFiles = typeof starterCode === 'string' ? ['index.js'] : Object.keys(starterCode)
 
     Object.keys(newFiles).forEach(filename => {
@@ -375,7 +361,33 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
     setFiles(validFiles)
   }
 
+  function formatConsoleValue(value) {
+    if (value === null) return "null";
+    if (value === undefined) return "undefined";
+    if (Number.isNaN(value)) return "NaN";
+    if (value === Infinity) return "Infinity";
+    if (value === -Infinity) return "-Infinity";
+    if (Object.is(value, -0)) return "-0";
+    if (typeof value === "bigint") return value.toString() + "n";
+    if (typeof value === "symbol") return value.toString();
+    if (typeof value === "function") {
+      return `[Function${value.name ? `: ${value.name}` : ""}]`;
+    }
+    if (typeof value === "string") return `"${value}"`;
+    if (typeof value === "object") {
+      try {
+        return JSON.stringify(value, null, 2);
+      } catch {
+        return "[Object]";
+      }
+    }
+    return String(value);
+  }
+  const restoreInitialCode = () => {
+    setFiles({ 'index.js': chapterContent.exercise.starterCode })
+  }
   const runCode = () => {
+    setShowConsoleOutput(true)
     // Store original console.log
     const originalConsoleLog = console.log;
 
@@ -384,7 +396,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
 
     // Override console.log
     console.log = (...args) => {
-      output.push(args.join(' '));
+      output.push(args.map(formatConsoleValue).join(' '));
       originalConsoleLog(...args);
     };
 
@@ -399,6 +411,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
         const combinedCode = Object.values(files).join('\n');
         new Function(combinedCode)();
       }
+
     } catch (error) {
       output.push(`Error: ${error.message}`);
     } finally {
@@ -407,7 +420,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
     }
 
     // Update state with captured output
-    if (output.length === 0 || output.join('').trim() === '') {
+    if (output.length === 0) {
       output.push(`No console.log output
 
 * Did you forget to add console.log statements?
@@ -420,6 +433,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
 
   const runTests = () => {
     if (chapterContent?.exercise?.tests) {
+      setShowResults(true)
       // Track attempt before running tests
       trackAttempt(chapterId)
 
@@ -577,12 +591,16 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
           )}
 
           <div className="button-row">
+            <button className="run-code-button red" onClick={restoreInitialCode}>
+              Reset to Starter Code
+            </button>
             <button className="run-code-button" onClick={runCode}>
               Run Code
             </button>
+            {chapterContent?.exercise?.tests.length > 0 &&
             <button className="test-button" onClick={runTests}>
               Run Tests
-            </button>
+            </button>}
           </div>
 
 

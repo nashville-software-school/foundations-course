@@ -1,7 +1,6 @@
 export const githubAccountChapter = {
     id: 'github-account',
     title: 'Git & Github',
-    path: '/github-account',
     sectionId: 'getting-started',
     previousChapterId: null,
     content: `# Git

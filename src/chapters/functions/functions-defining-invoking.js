@@ -1,7 +1,6 @@
 export const functionsDefiningInvokingChapter = {
   id: 'functions-defining-invoking',
   title: 'Defining vs Invoking Functions',
-  path: '/functions-defining-invoking',
   sectionId: 'functions',
   previousChapterId: 'functions-intro',
   nextChapterId: 'functions-naming',

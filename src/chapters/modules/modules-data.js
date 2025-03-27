@@ -1,7 +1,6 @@
 export const modulesDataChapter = {
   id: 'modules-data',
   title: 'Modules and Data',
-  path: '/modules-data',
   sectionId: 'modules',
   previousChapterId: 'modules-functions',
   nextChapterId: 'modules-organization',

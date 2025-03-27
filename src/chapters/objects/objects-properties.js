@@ -1,7 +1,6 @@
 export const objectsPropertiesChapter = {
   id: 'objects-properties',
   title: 'Adding Properties',
-  path: '/objects-properties',
   sectionId: 'objects',
   previousChapterId: 'objects-libraries',
   nextChapterId: 'objects-voting',

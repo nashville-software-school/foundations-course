@@ -42,8 +42,8 @@ Each stop on our journey includes **hands-on code, discussions, and quiz challen
 ### 🛑 **Quiz Break #1**
 <a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Data Types Quiz</a>
 
-⚠️ **Note:** In this workshop, \`console.log\` will show as **alerts** 🚨 due to a custom-built interpreter.
-It’s not a full JS environment, so some behaviors may be different. Just stick to the exercises here! ✅
+⚠️ **Note:** When you click 'Run Tests' in this workshop, \`console.log\` will show as **alerts** 🚨 due to a custom-built interpreter.
+It’s not a full JS environment, some behaviors may be different. Use this code space only for the provided exercises, not for experimenting with random JS code!
 ### **🛠️ Run Code Snippet One:**
 
 ✅ **Discussion:** *Why does \`planet2\` still say "Mars" after \`planet1\` changes?*
@@ -89,7 +89,7 @@ It’s not a full JS environment, so some behaviors may be different. Just stick
 
 🚀 Houston, systems are nominal. ✅
 
-✅ **Discussion:** *Why does \`deepClone.abilities.laser\` remain \`false\` this time?*
+✅ **Discussion:** *Why does \`alien2.abilities.laser\` remain \`false\` this time?*
 
 ### 🛑 **Quiz #4**
 <a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Deep Copy Quiz</a>
@@ -174,9 +174,10 @@ It’s not a full JS environment, so some behaviors may be different. Just stick
  **************************************************
  **************************************************
  */
-// let deepClone = structuredClone(alien1));
+// let alien1 = { species: "Zorgon", abilities: { laser: true } };
+// let alien2 = structuredClone(alien1);
 // alien1.abilities.laser = true;
-// console.log(deepClone.abilities.laser); // What will show?
+// console.log(alien2.abilities.laser); // What will show?
 /*
  **************************************************
  *             Code Snippet Five                  *
@@ -184,7 +185,7 @@ It’s not a full JS environment, so some behaviors may be different. Just stick
  **************************************************
  */
 // let result1 = "2" + "2"
-// console.log(result1)); // What will show?
+// console.log(result1); // What will show?
 /*
  **************************************************
  *             Code Snippet Six                   *
@@ -195,97 +196,6 @@ It’s not a full JS environment, so some behaviors may be different. Just stick
 // console.log(result2); // Corrected version
 `,
     solution: ``,
-    tests: [
-      {
-        name: "Test One",
-        test: (code) => {
-          try {
-            const func1 = new Function(code + "\nreturn planet1");
-            const result1 = func1();
-
-            const func2 = new Function(code + "\nreturn planet2");
-            const result2 = func2();
-            alert("planet1: " + result1);
-            alert("planet2: " + result2);
-            return true;
-          } catch {
-            return true;
-          }
-        },
-        message: ``,
-      },
-      {
-        name: "Test Two",
-        test: (code) => {
-          try {
-            const func = new Function(code + "\nreturn spaceship2.captain");
-            const result3 = func();
-            alert("spaceship2.captain: " + result3);
-            return true;
-          } catch {
-            return true;
-          }
-        },
-        message: "",
-      },
-      {
-        name: "Test Three",
-        test: (code) => {
-          try {
-            const func = new Function(code + "\nreturn alien2.abilities.laser");
-            const result4 = func();
-            alert("alien2.abilities.laser: " + result4);
-            return true;
-          } catch {
-            return true;
-          }
-        },
-        message: "",
-      },
-      {
-        name: "Test Four",
-        test: (code) => {
-          try {
-            const func = new Function(
-              code + "\nreturn deepClone.abilities.laser"
-            );
-            const result5 = func();
-            alert("deepClone.abilities.laser: " + result5);
-            return true;
-          } catch {
-            return true;
-          }
-        },
-        message: "",
-      },
-      {
-        name: "Test Five",
-        test: (code) => {
-          try {
-            const func = new Function(code + "\nreturn result1");
-            const result6 = func();
-            alert("result1: " + result6);
-            return true;
-          } catch {
-            return true;
-          }
-        },
-        message: "",
-      },
-      {
-        name: "Test Six",
-        test: (code) => {
-          try {
-            const func = new Function(code + "\nreturn result2");
-            const result7 = func();
-            alert("result2: " + result7);
-            return true;
-          } catch {
-            return true;
-          }
-        },
-        message: "",
-      },
-    ],
+    tests: [],
   },
 };

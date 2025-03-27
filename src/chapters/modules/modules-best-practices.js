@@ -1,7 +1,6 @@
 export const modulesBestPracticesChapter = {
   id: 'modules-best-practices',
   title: 'Module Best Practices',
-  path: '/modules-best-practices',
   sectionId: 'modules',
   previousChapterId: 'modules-dependencies',
   nextChapterId: 'modules-final-project',

@@ -1,7 +1,6 @@
 export const arrayPushChapter = {
   id: 'arrays-push',
   title: 'Adding Items to Arrays',
-  path: '/arrays-push',
   sectionId: 'arrays',
   previousChapterId: 'arrays-iteration',
   nextChapterId: 'arrays-conditions',

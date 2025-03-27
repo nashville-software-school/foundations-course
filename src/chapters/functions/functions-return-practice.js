@@ -1,7 +1,6 @@
 export const functionsReturnPracticeChapter = {
   id: 'functions-return-practice',
   title: 'Return Value Practice',
-  path: '/functions-return-practice',
   sectionId: 'functions',
   previousChapterId: 'functions-return-working',
   nextChapterId: 'functions-scope-basics',
