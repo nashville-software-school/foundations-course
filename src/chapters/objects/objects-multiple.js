@@ -101,28 +101,26 @@ const tulip = {
 const rose = {
 
 }
-`,
-    solution: `const createTulip = () => {
-    const tulip = {
-        color: "yellow",
-        stemLength: 10,
-        growingSeason: "Spring",
-        thorny: false
-    }
 
-    return tulip
+console.log(tulip.color)
+console.log(rose.stemLength)
+`,
+    solution: `
+const tulip = {
+    color: "yellow",
+    stemLength: 10,
+    growingSeason: "Spring",
+    thorny: false
 }
 
-const createRose = () => {
-    const rose = {
-        color: "red",
-        stemLength: 12,
-        growingSeason: "Summer",
-        thorny: true
-    }
+const rose = {
+    color: "red",
+    stemLength: 12,
+    growingSeason: "Summer",
+    thorny: true
+}
 
-    return rose
-}`,
+`,
     tests: [
       {
         name: "Tulip Object Creation",

@@ -185,7 +185,9 @@ const output = \`Our combined monthly income is \${combinedIncome}. Our net mont
                         return false;
                     }
                 },
-                message: "Make sure to use string interpolation (backticks and ${}) to have the correct numbers in the output string"
+                message: `Make sure you include the correct values in the output string
+* Make sure everything is spelled correctly
+* Make sure you use string interpolation`
             }
         ]
     }
