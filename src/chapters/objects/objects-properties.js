@@ -53,12 +53,20 @@ goldfish.location = "Large Tank"`,
     tests: [
       {
         name: "Location Property Added",
-        test: (code) => code.includes('goldfish.location'),
+        test: (code) => {
+          const func = new Function(code + '\nreturn goldfish');
+          const goldfish = func();
+          return goldfish.hasOwnProperty('location');
+        },
         message: "Make sure you're using dot notation to add the location property"
       },
       {
         name: "Correct Tank Value",
-        test: (code) => code.includes('"Large Tank"') || code.includes("'Large Tank'"),
+        test: (code) => {
+          const func = new Function(code + '\nreturn goldfish');
+          const goldfish = func();
+          return goldfish.location === "Large Tank";
+        },
         message: "Make sure you set the location to 'Large Tank'"
       }
     ]
