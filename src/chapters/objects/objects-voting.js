@@ -22,9 +22,6 @@ Use string interpolation to return the following string from the function. Remem
 
 "Abigail Brown manages the Commonwealth Community Center at 70 Main Street in Nashville, TN"
 
-## Next Steps
-
-After you complete this exercise, go back to the classroom and open the Closet Inventory project to see how software developers use objects to display information in the browser.
 
 \`\`\`js
 {
@@ -39,66 +36,94 @@ After you complete this exercise, go back to the classroom and open the Closet I
         zipCode: "37021"
     }
 }
-\`\`\``,
+\`\`\`
+`,
   exercise: {
-    starterCode: `const votingBooth = () => {
-    const votingLocation = {
-        name: "Commonwealth Community Center",
-        address: {
-            street: {
-                number: 70,
-                name: "Main Street"
-            },
-            city: "Nashville",
-            state: "TN",
-            zipCode: "37021"
-        }
-    }
-    // Add the new property
-    votingLocation. = ""
+    starterCode: `const votingLocation = {
+  name: "Commonwealth Community Center",
+  address: {
+      street: {
+          number: 70,
+          name: "Main Street"
+      },
+      city: "Nashville",
+      state: "TN",
+      zipCode: "37021"
+  }
+}
 
-    // Use string interpolation after the \`return\` keyword to produce the required string
-    return
-}`,
-    solution: `const votingBooth = () => {
-    const votingLocation = {
-        name: "Commonwealth Community Center",
-        address: {
-            street: {
-                number: 70,
-                name: "Main Street"
-            },
-            city: "Nashville",
-            state: "TN",
-            zipCode: "37021"
-        }
-    }
-    // Add the new property
-    votingLocation.manager = "Abigail Brown"
+// First, add the new property
 
-    // Use string interpolation after the \`return\` keyword to produce the required string
-    return \`\${votingLocation.manager} manages the \${votingLocation.name} at \${votingLocation.address.street.number} \${votingLocation.address.street.name} in \${votingLocation.address.city}, \${votingLocation.address.state}\`
-}`,
+
+// Second, produce the required string
+const output = \`\`
+
+
+console.log(output)
+`,
+    solution: `const votingLocation = {
+    name: "Commonwealth Community Center",
+    address: {
+        street: {
+            number: 70,
+            name: "Main Street"
+        },
+        city: "Nashville",
+        state: "TN",
+        zipCode: "37021"
+    }
+}
+
+// Add the new property
+votingLocation.manager = "Abigail Brown"
+
+const output = \`\${votingLocation.manager} manages the \${votingLocation.name} at \${votingLocation.address.street.number} \${votingLocation.address.street.name} in \${votingLocation.address.city}, \${votingLocation.address.state}\`
+
+console.log(output)
+
+`,
     tests: [
       {
-        name: "Manager Property Added",
-        test: (code) => code.includes('votingLocation.manager'),
-        message: "Make sure you're using dot notation to add the manager property"
-      },
-      {
-        name: "Manager Value Set",
-        test: (code) => code.includes('"Abigail Brown"') || code.includes("'Abigail Brown'"),
-        message: "Make sure you set the manager to 'Abigail Brown'"
+        name: "Manager Property Added Correctly",
+        test: (code) => {
+          try {
+            // Execute the student's code and check if the manager property was added
+            const evalFunction = new Function(code + '; return votingLocation.manager;');
+            const managerValue = evalFunction();
+
+            // Check if manager property has the correct value
+            return managerValue === "Abigail Brown" && code.includes('votingLocation.manager')
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure you've added the 'manager' property with dot notation."
       },
       {
         name: "String Interpolation Used",
-        test: (code) => code.includes('`${'),
-        message: "Make sure you're using string interpolation with backticks and ${}"
+        test: (code) => {
+          // Verify proper template literal syntax is used
+          return code.includes('`${') && code.includes('}`');
+        },
+        message: "Make sure you're using string interpolation."
       },
       {
-        name: "Correct Output Format",
-        test: (code) => code.includes('manages the') && code.includes('at') && code.includes('in'),
-        message: "Make sure your output matches the required format"
+        name: "Output Has Exact Required Format",
+        test: (code) => {
+          try {
+            // Execute the code and get the output value
+            const evalFunction = new Function(code + '; return output;');
+            const outputString = evalFunction();
+
+            // Check against the exact expected string
+            const expectedOutput = "Abigail Brown manages the Commonwealth Community Center at 70 Main Street in Nashville, TN";
+
+            return outputString === expectedOutput;
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure your output string exactly matches the required format."
       }
     ]
   }

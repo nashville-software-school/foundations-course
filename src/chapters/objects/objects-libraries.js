@@ -95,8 +95,8 @@ const bookAuthor = book.author.lastName
 const checkedInBy = book.checkedIn.librarian.lastName
 
 
-console.log(\`Book Author: ${bookAuthor}\`)
-console.log(\`Checked In By: ${checkedInBy}\`)
+console.log(\`Book Author: \${bookAuthor}\`)
+console.log(\`Checked In By: \${checkedInBy}\`)
 `,
         tests: [
             {
