@@ -1,289 +1,14 @@
-/** @jsxImportSource @emotion/react */
 import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useChapter } from '../context/ChapterContext'
 import { useLearnerProgress } from '../context/LearnerProgressContext'
 import Editor from '@monaco-editor/react'
 import { marked } from 'marked'
-import { css } from '@emotion/react'
 import CodeBlock from './CodeBlock'
 import MultiFileEditor from './MultiFileEditor'
 import ProtectedRoute from './ProtectedRoute'
 import * as ReactDOM from 'react-dom/client'
-
-const chapterStyles = css`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  padding: 0.5rem 1rem 0 1rem;
-  height: 100%;
-  max-height: 100vh;
-  overflow: hidden;
-  width: 100%;
-  transition: all 0.3s ease;
-
-  .content-container {
-    flex: 1;
-    min-height: 0;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background: white;
-    padding: 1rem;
-    overflow-y: auto;
-  }
-
-  .content-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    min-width: 0;
-    transition: all 0.3s ease;
-
-    h1 {
-      color: #2c3e50;
-      margin-bottom: 1.5rem;
-    }
-
-    h2 {
-      color: #34495e;
-      margin: 2rem 0 1rem;
-    }
-
-    pre {
-      background: #f8f9fa;
-      padding: 1.5rem;
-      border-radius: 6px;
-      margin: 1.5rem 0;
-    }
-
-    ol, ul {
-      margin-left: 2rem;
-      margin-bottom: 1.5rem;
-    }
-  }
-
-  .editor-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    min-width: 0;
-    transition: all 0.3s ease;
-  }
-
-  .editor-container {
-    flex: 1;
-    min-height: 0;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background: white;
-  }
-
-  .test-results {
-    position: relative;
-    padding: 1.5rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    min-height: 100px;
-    max-height: 200px;
-    overflow-y: auto;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-
-    &.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .close-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-      color: #666;
-      padding: 4px;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.2s;
-
-      &:hover {
-        color: #333;
-      }
-    }
-
-    h3 {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    p, li {
-      color: #2c3e50;
-      line-height: 1.6;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-      color: #2c3e50;
-      margin: 1rem 0 0.5rem;
-    }
-
-    ol, ul {
-      margin-left: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    ol {
-      list-style-type: decimal;
-    }
-
-    ul {
-      list-style-type: disc;
-    }
-  }
-
-  .button-row {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-  }
-
-  .test-button {
-    padding: 0.75rem 3.5rem;
-    background:rgb(30, 0, 255);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background: #0056b3;
-    }
-
-    &:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-  }
-
-  .run-code-button {
-    padding: 0.75rem 3.5rem;
-    background:rgb(190, 140, 33);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background: #5a6268;
-    }
-
-    &:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-    &.red{
-      background:red;
-    }
-  }
-
-  .console-output {
-    position: relative;
-    padding: 1rem;
-    background: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    min-height: 100px;
-    max-height: 200px;
-    overflow-y: auto;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-    font-family: monospace;
-    white-space: pre-wrap;
-
-    &.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .close-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-      color: #666;
-      padding: 4px;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.2s;
-
-      &:hover {
-        color: #333;
-      }
-    }
-
-    h3 {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-      color: #2c3e50;
-    }
-
-    pre {
-      margin: 0;
-      padding: 0;
-      background: transparent;
-      color: #333;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-  }
-
-  .button-container {
-    display: flex;
-    gap: 1rem;
-    justify-content: space-between;
-  }
-
-  .nav-button {
-    padding: 0.75rem 1.5rem;
-    background: #28a745;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background: #218838;
-    }
-
-    &:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-  }
-`
+import './Chapter.css'
 
 const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, getPreviousChapter, getNextChapter }) => {
   const { chapterId } = useParams()
@@ -293,6 +18,8 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
   const [showResults, setShowResults] = useState(true)
   const [consoleOutput, setConsoleOutput] = useState(null)
   const [showConsoleOutput, setShowConsoleOutput] = useState(true)
+  const [hideResultsTimeout, setHideResultsTimeout] = useState(null)
+  const [hideConsoleTimeout, setHideConsoleTimeout] = useState(null)
 
   // Configure marked renderer for code blocks
   const renderer = useMemo(() => {
@@ -321,6 +48,16 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
     setShowResults(false)
     setShowConsoleOutput(false)
     setConsoleOutput(null)
+
+    // Clear any existing timeouts
+    if (hideResultsTimeout) {
+      clearTimeout(hideResultsTimeout)
+      setHideResultsTimeout(null)
+    }
+    if (hideConsoleTimeout) {
+      clearTimeout(hideConsoleTimeout)
+      setHideConsoleTimeout(null)
+    }
   }
   useEffect(() => {
     if (chapterContent?.exercise) {
@@ -388,6 +125,18 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
   }
   const runCode = () => {
     setShowConsoleOutput(true)
+
+    // Clear any existing timeout for console output
+    if (hideConsoleTimeout) {
+      clearTimeout(hideConsoleTimeout)
+    }
+
+    // Set a new timeout to hide console output after 8 seconds
+    const timeout = setTimeout(() => {
+      setShowConsoleOutput(false)
+    }, 8000)
+    setHideConsoleTimeout(timeout)
+
     // Store original console.log
     const originalConsoleLog = console.log;
 
@@ -434,6 +183,18 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
   const runTests = () => {
     if (chapterContent?.exercise?.tests) {
       setShowResults(true)
+
+      // Clear any existing timeout for test results
+      if (hideResultsTimeout) {
+        clearTimeout(hideResultsTimeout)
+      }
+
+      // Set a new timeout to hide test results after 8 seconds
+      const timeout = setTimeout(() => {
+        setShowResults(false)
+      }, 8000)
+      setHideResultsTimeout(timeout)
+
       // Track attempt before running tests
       trackAttempt(chapterId)
 
@@ -477,7 +238,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
   }
 
   return (
-    <div css={chapterStyles} style={{
+    <div className="chapter" style={{
       gridTemplateColumns: chapterContent.exercise ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)',
       width: '100%',
     }}>
@@ -591,16 +352,16 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
           )}
 
           <div className="button-row">
-            <button className="run-code-button red" onClick={restoreInitialCode}>
-              Reset to Starter Code
-            </button>
-            <button className="run-code-button" onClick={runCode}>
+            <button className="code-button run-code-button" onClick={runCode}>
               Run Code
             </button>
             {chapterContent?.exercise?.tests.length > 0 &&
-            <button className="test-button" onClick={runTests}>
+            <button className="code-button test-button" onClick={runTests}>
               Run Tests
             </button>}
+            <button className="code-button reset-button" onClick={restoreInitialCode}>
+              Reset
+            </button>
           </div>
 
 

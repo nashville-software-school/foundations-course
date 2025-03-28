@@ -30,12 +30,12 @@ console.log("Welcome to our site, John!")
 console.log("Welcome to our site, Sarah!")
 console.log("Welcome to our site, Miguel!")
 
-// With a function, we write the code once and reuse it
-function welcomeUser(name) {
-    console.log("Welcome to our site, " + name + "!")
+// First, you need to define a function with a descriptive name
+function welcomeUser (name) {
+    console.log(\`Welcome to our site, \${name}!\`)
 }
 
-// Now we can just use the function
+// Now you can run the function as many times as you want
 welcomeUser("John")
 welcomeUser("Sarah")
 welcomeUser("Miguel")
@@ -50,25 +50,48 @@ welcomeUser("Miguel")
 
 ## Exercise: Your First Function
 
-Create a function called \`greetPet\` that will display a message saying "Good dog!" when used. Then we'll see how to use (or "call") this function.
+Create a basic function named \`greetPet\` that will display a message saying "Good dog!" when run. It will will look very similar to the \`sayHello\` example function above.
 `,
   exercise: {
     starterCode: `// Write your function here
 
+
+
+// This should display "Good dog!" when you run your code
+greetPet()
 `,
-    solution: `function greetPet() {
+    solution: `function greetPet () {
     console.log("Good dog!")
 }`,
+
     tests: [
       {
-        name: "Function Creation",
+        name: "Function Exists with Correct Name",
         test: (code) => {
-          return code.includes('function greetPet') &&
-                 code.includes('console.log') &&
-                 code.includes('"Good dog!"')
+          try {
+            // Create a function that executes the student's code and checks if greetPet exists
+            const greetPet = new Function(`${code}; return greetPet`)()
+            // Check if greetPet is defined and is a function
+            return typeof greetPet === 'function';
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure you've created a function named greetPet that uses console.log to display 'Good dog!'"
+        message: "Make sure you've created a function named exactly 'greetPet'."
+      },
+      {
+        name: "Function Outputs Correct Message",
+        test: (code) => {
+          // Check if the function contains the exact string "Good dog!"
+          return (
+            code.includes('"Good dog!"') ||
+            code.includes("'Good dog!'") ||
+            code.includes("`Good dog!`")
+          );
+        },
+        message: "Make sure your function outputs exactly 'Good dog!' when called."
       }
     ]
+
   }
 }
