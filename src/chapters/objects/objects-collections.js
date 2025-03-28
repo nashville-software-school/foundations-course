@@ -22,8 +22,10 @@ let team = ""
 for (const name of names) {
 
   // Append to the team variable's value
-  team += \`Teammate: \${name}\n\`
-} console.log(team)
+  team += \`Teammate: \${name}\\n\`
+}
+
+console.log(team)
 
 /* Teammate: Jameka
 Teammate: Rose
@@ -70,7 +72,7 @@ for (const teammateObject of teammateArray) {
 
   // Append to the team variable's value.
   // Use dot notation to access properties on objects.
-  team += \`Teammate: \${teammateObject.firstName} \${teammateObject.lastName}\n\`
+  team += \`Teammate: \${teammateObject.firstName} \${teammateObject.lastName}\\n\`
 }
 
 console.log(team) /* Teammate: Jameka Williams
@@ -86,7 +88,7 @@ Teammate: Mary Thomas
 In the code above, if you look at the end of the string template, you will notice two characters: a backslash and the letter n.
 
 \`\`\`js
-team += \`Teammate: \${teammateObject.firstName} \${teammateObject.lastName}\n\`
+team += \`Teammate: \${teammateObject.firstName} \${teammateObject.lastName}\\n\`
 \`\`\`
 
 Those two characters create a new line in the string. This allows you to have the output shown above, where each teammate is on a new line instead of one, continuous string.
@@ -95,17 +97,17 @@ Those two characters create a new line in the string. This allows you to have th
 
 The office manager of a doctor's office wants to provide a list each day that shows the name of each patient, and the time of their appointment. An array of objects is provided with some same patients represented as objects. Write a for..of loop that iterates the objects in the array, and then use dot notation to append the patient's full name, and the time of their appointment to the string value of the schedule variable.
 
-#### Example output (yours will look different because the data is different)
+#### Output Format _(🧨 yours will look different because the data is different)_
 
+\`\`\`
 Patient Nancy Johnson has an appointment at 9:30
-
 Patient Clarrissa Ford has an appointment at 10:15
-
 Patient Abigail Debrowski has an appointment at 11:00
-
 Patient John Beury has an appointment at 1:20
+\`\`\`
 
-> Note: Make sure you use \\n at the end of your string templates to make each appointment on its own line`,
+> Note: Make sure you use \`\\n\` at the end of your string templates to make each appointment on its own line.
+`,
   exercise: {
     starterCode: `// Sample appointments array
 const appointments = [
@@ -129,7 +131,14 @@ const appointments = [
 // Create schedule string
 let schedule = ""
 
-// Add your code here`,
+// Add your code here to iterate the array and build the string
+
+
+
+
+
+console.log(schedule)
+`,
     solution: `// Sample appointments array
 const appointments = [
     {
@@ -159,6 +168,19 @@ for (const appointment of appointments) {
 
 console.log(schedule)`,
     tests: [
+      {
+        name: "Correct Output",
+        test: (code) => {
+          try {
+            const schedule = new Function(code + "; return schedule;")()
+            const expectedOutput = `Patient Maria Sanchez has an appointment at 2:15\nPatient John McGrath has an appointment at 1:30\nPatient Lamar Washington has an appointment at 10:15\n`
+            return schedule === expectedOutput
+          }
+          catch (e) {
+            return false;
+          }
+        }
+      },
       {
         name: "For..of Loop",
         test: (code) => code.includes('for (const') && code.includes(' of appointments)'),
