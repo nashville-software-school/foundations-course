@@ -72,7 +72,11 @@ You work for a car dealership, and you want to get the email address of each sal
     }
 }
 
-// Add your code here to get the email address`,
+// Update this code here to assign the email address to this variable
+const associateEmail =
+
+console.log(associateEmail)
+`,
     solution: `const salesAssociate = {
     firstName: "Rachel",
     lastName: "Martinez",
@@ -85,17 +89,34 @@ You work for a car dealership, and you want to get the email address of each sal
 
 const associateEmail = salesAssociate.contact.email
 console.log(associateEmail)`,
+
     tests: [
       {
-        name: "Object Property Access",
-        test: (code) => code.includes('.contact.email'),
-        message: "Make sure you're using dot notation to access the nested email property"
+        name: "Correct Email Value",
+        test: (code) => {
+          try {
+            // Create a function that executes the student's code and returns the associateEmail value
+            const evalFunction = new Function(code + '; return associateEmail;');
+            const result = evalFunction();
+
+            // Check if the result matches the expected email
+            return result === "rachel.martinez@dealership.com";
+          } catch (error) {
+            // If there's an error in execution, the test fails
+            return false;
+          }
+        },
+        message: "Make sure your code correctly assigns the email address 'rachel.martinez@dealership.com' to the associateEmail variable."
       },
       {
-        name: "Variable Assignment",
-        test: (code) => code.includes('=') && code.includes('salesAssociate.contact.email'),
-        message: "Make sure you're assigning the email address to a variable"
+        name: "Using Proper Object Notation",
+        test: (code) => {
+          // Still keeping this test to ensure they're using the proper dot notation
+          return code.includes('salesAssociate.contact.email');
+        },
+        message: "Make sure you're using dot notation to access the nested email property."
       }
     ]
+
   }
 }
