@@ -1,7 +1,6 @@
 export const arrayMethodsChapter = {
   id: 'array-methods',
   title: 'Array Methods',
-  path: '/array-methods',
   sectionId: 'arrays', // Added section ID
   previousChapterId: 'arrays-intro', // Links to the intro chapter
   content: `JavaScript provides many built-in methods to work with arrays. These methods help you manipulate and transform array data.

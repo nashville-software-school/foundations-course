@@ -1,7 +1,6 @@
 export const mathOperationsChapter = {
     id: "math-operations",
     title: "\"Scary\" Math Operations",
-    path: "/math-operations",
     sectionId: "variables-and-values",
     previousChapterId: "variables-intro",
     nextChapterId: "string-interpolation",

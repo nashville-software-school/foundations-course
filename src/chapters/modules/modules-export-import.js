@@ -1,7 +1,6 @@
 export const modulesExportImportChapter = {
   id: 'modules-export-import',
   title: 'Basic Export/Import Syntax',
-  path: '/modules-export-import',
   sectionId: 'modules',
   previousChapterId: 'modules-intro',
   nextChapterId: 'modules-single-responsibility',

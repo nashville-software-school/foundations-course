@@ -1,7 +1,6 @@
 export const arrayIntroChapter = {
   id: 'arrays-intro',
   title: 'Introduction',
-  path: '/arrays-intro',
   sectionId: 'arrays',
   previousChapterId: null,
   nextChapterId: 'arrays-indices',

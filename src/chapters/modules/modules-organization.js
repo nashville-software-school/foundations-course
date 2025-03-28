@@ -1,7 +1,6 @@
 export const modulesOrganizationChapter = {
   id: 'modules-organization',
   title: 'Module Organization',
-  path: '/modules-organization',
   sectionId: 'modules',
   previousChapterId: 'modules-data',
   nextChapterId: 'modules-dependencies',

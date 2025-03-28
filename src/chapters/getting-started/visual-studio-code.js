@@ -1,7 +1,6 @@
 export const visualStudioCodeChapter = {
     id: 'visual-studio-code',
     title: 'Visual Studio Code',
-    path: '/visual-studio-code',
     sectionId: 'getting-started',
     previousChapterId: 'anthropic-account',
     content: `Visual Studio Code (VS Code) is a powerful, lightweight code editor that will be your primary tool for writing code. It's free, open-source, and highly customizable.

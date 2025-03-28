@@ -1,7 +1,6 @@
 export const functionsNamingChapter = {
   id: 'functions-naming',
   title: 'Function Names and Purpose',
-  path: '/functions-naming',
   sectionId: 'functions',
   previousChapterId: 'functions-defining-invoking',
   nextChapterId: 'functions-parameters',

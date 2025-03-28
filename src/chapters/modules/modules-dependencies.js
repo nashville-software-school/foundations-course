@@ -1,7 +1,6 @@
 export const modulesDependenciesChapter = {
   id: 'modules-dependencies',
   title: 'Module Dependencies',
-  path: '/modules-dependencies',
   sectionId: 'modules',
   previousChapterId: 'modules-organization',
   nextChapterId: 'modules-best-practices',

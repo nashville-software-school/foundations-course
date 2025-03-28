@@ -1,7 +1,6 @@
 export const stringInterpolationChapter = {
   id: 'string-interpolation',
   title: 'String Values',
-  path: '/string-interpolation',
   sectionId: 'variables-and-values',
   previousChapterId: 'math-operations',
   nextChapterId: 'multiline-strings',

@@ -1,7 +1,6 @@
 export const functionsConditionsChapter = {
   id: 'functions-conditions',
   title: 'Functions with Conditions',
-  path: '/functions-conditions',
   sectionId: 'functions',
   previousChapterId: 'functions-scope-parameters',
   nextChapterId: 'functions-loops',

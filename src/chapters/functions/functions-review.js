@@ -1,7 +1,6 @@
 export const functionsReviewChapter = {
   id: 'functions-review',
   title: 'Review and Practice',
-  path: '/functions-review',
   sectionId: 'functions',
   previousChapterId: 'functions-calling-functions',
   nextChapterId: null,

@@ -1,7 +1,6 @@
 export const arrayLengthChapter = {
   id: 'arrays-length',
   title: 'Array Length',
-  path: '/arrays-length',
   sectionId: 'arrays',
   previousChapterId: 'arrays-conditions',
   nextChapterId: 'arrays-practice',

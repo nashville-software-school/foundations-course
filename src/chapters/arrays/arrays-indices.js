@@ -1,7 +1,6 @@
 export const arrayIndicesChapter = {
   id: 'arrays-indices',
   title: 'Array Positions',
-  path: '/arrays-indices',
   sectionId: 'arrays',
   previousChapterId: 'arrays-intro',
   nextChapterId: 'arrays-iteration',

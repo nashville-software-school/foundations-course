@@ -1,7 +1,6 @@
 export const modulesIntroChapter = {
   id: 'modules-intro',
   title: 'Introduction to Modules',
-  path: '/modules-intro',
   sectionId: 'modules',
   previousChapterId: null,  // First chapter in the Modules section
   nextChapterId: 'modules-export-import',
