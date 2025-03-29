@@ -39,7 +39,7 @@ const calculateTotal = (price) => {
 }
 
 // We can also use taxRate here
-console.log("Tax rate is: " + taxRate)
+console.log(\`Tax rate is: \${taxRate}\`)
 \`\`\`
 
 ### Why Scope Matters
@@ -77,11 +77,11 @@ const playerName = "Mario"    // Global
 
 const startGame = () => {
     const lives = 3          // Local to startGame
-    console.log(playerName + " starts with " + lives + " lives")
+    console.log(\`\${playerName} starts with \${lives} lives\`)
 
     const loseLife = () => {
         const remaining = lives - 1    // Can see 'lives' from outer function
-        console.log(playerName + " has " + remaining + " lives left")
+        console.log(\`\${playerName} has \${remaining} lives left\`)
     }
 }
 \`\`\`
@@ -95,7 +95,11 @@ const startGame = () => {
 
 ## Exercise: Fix the Scope
 
-The code below has some scope problems. Fix them by moving variables to the right place or making them accessible where needed.
+The code below has some scope problems. Fix them by moving variables to the right place or making them accessible where needed. You'll need to:
+
+1. Make sure the score variable is declared in the correct scope
+2. Use the right variable type so the score can be updated
+3. Make sure both functions can access and modify the score variable
 `,
   exercise: {
     starterCode: `// This code has scope problems!
@@ -111,10 +115,11 @@ const score = 0
 displayScore()
 updateScore()
 displayScore()`,
-    solution: `let score = 0    // Changed to let since we're updating it
+    solution: `// This code has scope problems!
+let score = 0    // Changed to let since we're updating it
 
 const displayScore = () => {
-    console.log("Score: " + score)
+    console.log(\`Score: \${score}\`)
 }
 
 const updateScore = () => {
@@ -128,19 +133,114 @@ displayScore()`,
       {
         name: "Global Score Variable",
         test: (code) => {
-          return (code.match(/score\s*=/g) || []).length === 1 &&
-                 code.includes('let score = 0')
+          try {
+            // Check if score is declared at the global level (outside functions)
+            const functionCode = code.match(/const\s+\w+\s*=\s*\(\)\s*=>\s*{[^}]*}/g) || [];
+            const codeWithoutFunctions = functionCode.reduce((acc, func) => acc.replace(func, ''), code);
+
+            // Check if score is declared with let or var (not const)
+            return (codeWithoutFunctions.includes('let score = 0') ||
+                   codeWithoutFunctions.includes('var score = 0'));
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure score is declared as a global variable using 'let'"
+        message: "Make sure score is declared as a global variable using 'let' (not 'const') since its value will change."
       },
+
       {
-        name: "Arrow Function Structure",
+        name: "Functions Access Score",
         test: (code) => {
-          return code.includes('const displayScore = () =>') &&
-                 code.includes('const updateScore = () =>') &&
-                 code.includes('score + 100')
+          try {
+            // Run the code and check if it executes without errors
+            // We need to capture console.log output
+            const originalConsoleLog = console.log;
+
+            let loggedMessages = [];
+            console.log = (...args) => {
+              loggedMessages.push(args.join(' '));
+            };
+
+            // Execute the code
+            new Function(code)();
+
+            // Restore console.log
+            console.log = originalConsoleLog;
+
+            // Check if displayScore successfully logs a value both times
+            return loggedMessages.length >= 2 &&
+                  loggedMessages[0].includes('Score: 0') &&
+                  loggedMessages[1].includes('Score: 100');
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure to use arrow function syntax and ensure they can access the score variable"
+        message: "Your code should run without errors, showing 'Score: 0' first and 'Score: 100' after updating."
+      },
+
+      {
+        name: "Function Declarations",
+        test: (code) => {
+          try {
+            // Check if both functions are declared correctly as arrow functions
+            const displayScoreRegex = /const\s+displayScore\s*=\s*\(\)\s*=>/;
+            const updateScoreRegex = /const\s+updateScore\s*=\s*\(\)\s*=>/;
+
+            return displayScoreRegex.test(code) && updateScoreRegex.test(code);
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure both functions are declared with arrow function syntax."
+      },
+
+      {
+        name: "Functions Execute Correctly",
+        test: (code) => {
+          try {
+            // Create a test environment
+            const testFunc = new Function(code.replace(/console\.log/g, '// console.log') + `
+              // Return values to check
+              return {
+                initialScore: typeof score === 'number' ? score : undefined,
+                // Reset score to test
+                finalCheck: (function() {
+                  score = 0;
+                  displayScore();
+                  updateScore();
+                  return score === 100;
+                })()
+              };
+            `);
+
+            const result = testFunc();
+            return result.initialScore === 100 && result.finalCheck === true;
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure your updateScore function correctly adds 100 to the score variable."
+      },
+
+      {
+        name: "No Local Score Variables",
+        test: (code) => {
+          try {
+            // Check if score is redeclared inside functions
+            const displayScoreFunc = code.match(/const\s+displayScore\s*=\s*\(\)\s*=>[\s\n]*{([^}]*)}/)?.[1] || '';
+            const updateScoreFunc = code.match(/const\s+updateScore\s*=\s*\(\)\s*=>[\s\n]*{([^}]*)}/)?.[1] || '';
+
+            return !displayScoreFunc.includes('let score') &&
+                  !displayScoreFunc.includes('const score') &&
+                  !displayScoreFunc.includes('var score') &&
+                  !updateScoreFunc.includes('let score') &&
+                  !updateScoreFunc.includes('const score') &&
+                  !updateScoreFunc.includes('var score');
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Don't declare 'score' inside the functions - they should both use the global score variable."
       }
     ]
   }
