@@ -1,3 +1,5 @@
+
+
 export const functionsMultipleParametersChapter = {
   id: 'functions-multiple-parameters',
   title: 'Multiple Parameters',
@@ -13,11 +15,11 @@ Sometimes a function needs more than one piece of information to do its job. We 
 Here's how to create a function with multiple parameters:
 
 \`\`\`js
-//                  First     Second
-//                parameter parameter
-//                    ↓         ↓
+//                       First      Second
+//                     parameter   parameter
+//                         ↓           ↓
 function createFullName(firstName, lastName) {
-    console.log(firstName + " " + lastName)
+    console.log(\`\${firstName} \${lastName}\`)
 }
 
 createFullName("John", "Smith")  // Displays: John Smith
@@ -29,7 +31,7 @@ When using multiple parameters, the order is important. The arguments you provid
 
 \`\`\`js
 function showPrice(item, price) {
-    console.log("The " + item + " costs $" + price)
+    console.log(\`The \${item} costs \$\${price}\`)
 }
 
 // Correct order
@@ -48,13 +50,14 @@ function calculateRectangle(width, height) {
     const area = width * height
     const perimeter = 2 * (width + height)
 
-    console.log("Area: " + area)
-    console.log("Perimeter: " + perimeter)
+    console.log(\`Area: \${area}\`)
+    console.log(\`Perimeter: \${perimeter}\`)
 }
 
 // Calculate for a rectangle that is 5 units wide and 3 units tall
 calculateRectangle(5, 3)
-// Displays:
+
+// Produces the following output
 // Area: 15
 // Perimeter: 16
 \`\`\`
@@ -76,9 +79,9 @@ function process(x, y, z, a, b) {
 // Much clearer!
 function createUser(name, age, email) {
     console.log("Creating user:")
-    console.log("Name: " + name)
-    console.log("Age: " + age)
-    console.log("Email: " + email)
+    console.log(\`Name: \${name}\`)
+    console.log(\`Age: \${age}\`)
+    console.log(\`Email: \${email}\`)
 }
 
 createUser("Sarah Johnson", 28, "sarah@email.com")
@@ -104,40 +107,170 @@ function sendMessage(recipient, message) { }
 
 ## Exercise: Create a Game Score Function
 
-Create a function that displays a player's game score. It should take two parameters:
+Create a function named \`displayGameScore\` that displays a player's game score. It should take two parameters:
+
 1. The player's name
 2. The number of points they scored
 
 The function should display a message like: "Mario scored 100 points!"
 `,
   exercise: {
-    starterCode: `// Create your function here
-// Remember to use both parameters in the message
+    starterCode: `/*
+  Create your function here with two parameters.
+  Remember to use both parameters in the message.
+*/
+
+
+// Then call the function with different player names and scores
 
 `,
-    solution: `function displayGameScore(playerName, points) {
+    solution: `/*
+  Create your function here with two parameters.
+  Remember to use both parameters in the message.
+*/
+function displayGameScore(playerName, points) {
     console.log(playerName + " scored " + points + " points!")
-}`,
+}
+
+
+// Then call the function with different player names and scores
+displayGameScore("William", 100)
+displayGameScore("Elizabeth", 50)
+displayGameScore("Jamal", 75)
+
+
+`,
     tests: [
+      // Simplified tests for the displayGameScore function
       {
-        name: "Function Definition",
+        name: "Function Existence",
         test: (code) => {
-          return code.includes('function') &&
-                 code.includes('playerName') &&
-                 code.includes('points') &&
-                 code.includes('console.log')
+          try {
+            // Check if displayGameScore function exists
+            const func = new Function(code + '; return typeof displayGameScore === "function";');
+            return func();
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure you've created a function with two parameters: playerName and points"
+        message: "Make sure you've created a function named 'displayGameScore'."
       },
+
       {
-        name: "Message Format",
+        name: "Parameter Count",
         test: (code) => {
-          return code.includes('scored') &&
-                 code.includes('points') &&
-                 code.includes('+')
+          try {
+            // Check if displayGameScore has 2 parameters
+            const func = new Function(code + '; return displayGameScore.length;');
+            return func() === 2;
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Your function should create a message using both parameters"
+        message: "Your displayGameScore function should have exactly two parameters."
+      },
+
+      {
+        name: "Function Output with Mario",
+        test: (code) => {
+          try {
+            // Save original console.log
+            const originalConsoleLog = console.log;
+
+            // Track logged messages
+            let loggedMessages = [];
+            console.log = (...args) => {
+              loggedMessages.push(args.join(' '));
+            };
+
+            // Execute the code with "Mario" and 100
+            new Function(code + '; displayGameScore("Mario", 100);')();
+
+            // Restore console.log
+            console.log = originalConsoleLog;
+
+            // Check if output contains both "Mario" and "100" and "points"
+            return loggedMessages.some(msg =>
+              msg.includes('Mario') &&
+              msg.includes('100') &&
+              msg.includes('points')
+            );
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Your function should output a message that includes 'Mario', '100', and 'points'."
+      },
+
+      {
+        name: "Function Output with Luigi",
+        test: (code) => {
+          try {
+            // Save original console.log
+            const originalConsoleLog = console.log;
+
+            // Track logged messages
+            let loggedMessages = [];
+            console.log = (...args) => {
+              loggedMessages.push(args.join(' '));
+            };
+
+            // Execute the code with "Luigi" and 50
+            new Function(code + '; displayGameScore("Luigi", 50);')();
+
+            // Restore console.log
+            console.log = originalConsoleLog;
+
+            // Check if output contains both "Luigi" and "50"
+            return loggedMessages.some(msg =>
+              msg.includes('Luigi') &&
+              msg.includes('50')
+            );
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Your function should work with different names and scores."
+      },
+
+      {
+        name: "Function Uses Parameters",
+        test: (code) => {
+          try {
+            // Save original console.log
+            console.clear()
+            const originalConsoleLog = console.log;
+
+            // Track logged messages for different inputs
+            let firstCall = [];
+            let secondCall = [];
+
+            // First test with Mario/100
+            console.log = (...args) => {
+              firstCall.push(args.join(' '));
+            };
+            new Function(code + '; displayGameScore("Mario", 100);')();
+
+            // Second test with Luigi/50
+            console.log = (...args) => {
+              secondCall.push(args.join(' '));
+            };
+            new Function(code + '; displayGameScore("Luigi", 50);')();
+
+            // Restore console.log
+            console.log = originalConsoleLog;
+
+            // Make sure outputs are different, confirming parameters are used
+            return firstCall.length > 0 &&
+              secondCall.length > 0 &&
+              firstCall[firstCall.length-1] !== secondCall[firstCall.length-1];
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Your function should use both parameters to create different outputs for different inputs."
       }
+
     ]
   }
 }
