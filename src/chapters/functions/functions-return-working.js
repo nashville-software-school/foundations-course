@@ -105,6 +105,11 @@ Here's a summary of what you can do with return values:
 Create two arrow functions that work together to calculate a shopping total:
 1. \`calculateSubtotal\` - takes quantity and price, returns their product
 2. \`calculateTotal\` - takes a subtotal, adds 8% tax, and returns the final amount
+
+Then:
+1. Calculate the subtotal for 3 items at $4.99 each
+2. Calculate the final total with tax
+3. Use console.log to display both the subtotal and the final total
 `,
   exercise: {
     starterCode: `// Create calculateSubtotal here
@@ -116,19 +121,26 @@ Create two arrow functions that work together to calculate a shopping total:
 // Test your functions:
 // 1. Calculate subtotal for 3 items at $4.99 each
 // 2. Calculate the final total with tax
-
-// Use console.log to display the results
+// 3. Use console.log to display both results
 `,
-    solution: `const calculateSubtotal = (quantity, price) => {
+    solution: `// Create calculateSubtotal here
+const calculateSubtotal = (quantity, price) => {
     return quantity * price
 }
 
+// Create calculateTotal here
 const calculateTotal = (subtotal) => {
     return subtotal * 1.08
 }
 
+// Test your functions:
+// 1. Calculate subtotal for 3 items at $4.99 each
 const subtotal = calculateSubtotal(3, 4.99)
-const finalTotal = calculateTotal(subtotal)`,
+console.log("Subtotal: $" + subtotal.toFixed(2))
+
+// 2. Calculate the final total with tax
+const finalTotal = calculateTotal(subtotal)
+console.log("Total with tax: $" + finalTotal.toFixed(2))`,
     tests: [
       {
         name: "Subtotal Function Definition",
@@ -247,15 +259,77 @@ const finalTotal = calculateTotal(subtotal)`,
         test: (code) => {
           try {
             // Check if variables are used to store results
-            const variableRegex = /(const|let|var)\s+subtotal\s*=\s*calculateSubtotal\s*\(/;
-            const finalRegex = /(const|let|var)\s+\w+\s*=\s*calculateTotal\s*\(\s*subtotal\s*\)/;
+            const subtotalVarRegex = /(const|let|var)\s+\w+\s*=\s*calculateSubtotal\s*\(/;
+            const totalVarRegex = /(const|let|var)\s+\w+\s*=\s*calculateTotal\s*\(/;
 
-            return variableRegex.test(code) && finalRegex.test(code);
+            return subtotalVarRegex.test(code) && totalVarRegex.test(code);
           } catch (error) {
             return false;
           }
         },
-        message: "Make sure you store your function results in variables as shown in the instructions."
+        message: "Make sure you store your function results in variables."
+      },
+
+      {
+        name: "Console Output for Subtotal",
+        test: (code) => {
+          try {
+            // Save original console.log
+            const originalConsoleLog = console.log;
+
+            // Track logged messages
+            let loggedMessages = [];
+            console.log = (...args) => {
+              loggedMessages.push(args.join(' '));
+            };
+
+            // Execute the code
+            new Function(code)();
+
+            // Restore console.log
+            console.log = originalConsoleLog;
+
+            // Check if any message contains "Subtotal" or subtotal value
+            return loggedMessages.some(msg =>
+              (msg.includes("Subtotal") || msg.includes("subtotal")) &&
+              (msg.includes("14.97") || msg.includes("14.9") || msg.includes("15"))
+            );
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure to log the subtotal result to the console."
+      },
+
+      {
+        name: "Console Output for Total",
+        test: (code) => {
+          try {
+            // Save original console.log
+            const originalConsoleLog = console.log;
+
+            // Track logged messages
+            let loggedMessages = [];
+            console.log = (...args) => {
+              loggedMessages.push(args.join(' '));
+            };
+
+            // Execute the code
+            new Function(code)();
+
+            // Restore console.log
+            console.log = originalConsoleLog;
+
+            // Check if any message contains "Total" or "total" and an appropriate value
+            return loggedMessages.some(msg =>
+              (msg.includes("Total") || msg.includes("total")) &&
+              (msg.includes("16.17") || msg.includes("16.1") || msg.includes("16.2"))
+            );
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure to log the final total with tax to the console."
       }
     ]
   }
