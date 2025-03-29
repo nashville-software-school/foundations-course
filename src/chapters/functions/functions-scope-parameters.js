@@ -14,7 +14,7 @@ When you create a parameter, it becomes a local variable in your function:
 
 \`\`\`js
 const greet = (name) => {      // 'name' is a local variable
-    console.log("Hello, " + name)
+    console.log(\`Hello, \${name}\`)
 }
 
 greet("Alex")              // Works: "Hello, Alex"
@@ -31,7 +31,7 @@ const name = "Global Name"    // Global variable
 const greet = (name) => {     // Parameter
     // Inside here, 'name' refers to the parameter
     // not the global variable
-    console.log("Hello, " + name)
+    console.log(\`Hello, \${name}\`)
 }
 
 greet("Alex")                 // Displays: Hello, Alex
@@ -61,7 +61,7 @@ Changes to parameters don't affect the original values:
 \`\`\`js
 const doubleNumber = (num) => {
     num = num * 2              // Only changes the local copy
-    console.log("Inside: " + num)
+    console.log(\`Inside: \${num}\`)
 }
 
 let myNumber = 5
@@ -76,11 +76,11 @@ Inner functions can see parameters from outer functions:
 \`\`\`js
 const createGame = (playerName) => {
     const start = () => {
-        console.log(playerName + " is starting the game")
+        console.log(\`\${playerName} is starting the game\`)
     }
 
     const end = () => {
-        console.log(playerName + " finished the game")
+        console.log(\`\${playerName} finished the game\`)
     }
 
     start()
@@ -100,60 +100,175 @@ createGame("Mario")
 ## Exercise: Score Keeper
 
 Create a score keeping system with parameters and scope. You'll need to:
-1. Track a player's name (parameter)
-2. Use a global high score
-3. Update the high score when beaten
+1. Create an arrow function named \`checkHighScore\` that takes player name and score as parameters
+2. Use the global high score variable that's already defined
+3. Update the high score when the player's score is higher
+4. Return an appropriate message about the result
+5. Test your function with multiple calls
 `,
   exercise: {
-    starterCode: `// Create a global high score
+    starterCode: `// The global high score is already defined
 let highScore = 0
 
-// Create your arrow function here
-// It should:
-// 1. Take player name and score as parameters
-// 2. Compare score to high score
-// 3. Update high score if beaten
-// 4. Return a message about the result
+// Create an arrow function named 'checkHighScore' that:
+// 1. Takes playerName and score as parameters
+// 2. Compares score to highScore
+// 3. Updates highScore if the score is higher
+// 4. Returns a message about the result
+
+
+
+// Test your function with multiple calls below
+// Example: console.log(checkHighScore("Alice", 50))
 
 `,
-    solution: `let highScore = 0
+    solution: `// The global high score is already defined
+let highScore = 0
 
+// Create an arrow function named 'checkHighScore' that:
+// 1. Takes playerName and score as parameters
+// 2. Compares score to highScore
+// 3. Updates highScore if the score is higher
+// 4. Returns a message about the result
 const checkHighScore = (playerName, score) => {
     if (score > highScore) {
         highScore = score
-        return playerName + " set a new high score of " + score + "!"
+        return \`\${playerName} set a new high score of \${score}!\`
     } else {
-        return playerName + " scored " + score + ". High score is still " + highScore
+        return \`\${playerName} scored \${score}. High score is still \${highScore}\`
     }
-}`,
+}
+
+// Test your function with multiple calls below
+console.log(checkHighScore("Alice", 50))
+console.log(checkHighScore("Bob", 30))
+console.log(checkHighScore("Charlie", 80))`,
     tests: [
       {
-        name: "Function Structure",
+        name: "Function Name and Structure",
         test: (code) => {
-          return code.includes('const checkHighScore = (') &&
-                 code.includes('=>') &&
-                 code.includes('playerName') &&
-                 code.includes('score') &&
-                 code.includes('highScore')
+          try {
+            // Check specifically for a function named checkHighScore
+            const correctNameRegex = /(const|let|var)\s+checkHighScore\s*=\s*\(\s*\w+\s*,\s*\w+\s*\)\s*=>/;
+            return correctNameRegex.test(code);
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure your arrow function takes both playerName and score parameters"
+        message: "Make sure you've created an arrow function named 'checkHighScore' that takes two parameters."
       },
+
       {
-        name: "High Score Logic",
+        name: "Parameters",
         test: (code) => {
-          return code.includes('score > highScore') &&
-                 code.includes('highScore = score')
+          try {
+            // Check if function has exactly two parameters
+            const func = new Function(code + `;
+              return typeof checkHighScore === "function" && checkHighScore.length === 2;
+            `);
+            return func();
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Your function should compare and update the high score when beaten"
+        message: "Your checkHighScore function should take exactly two parameters: playerName and score."
       },
+
       {
-        name: "Return Messages",
+        name: "Condition Check",
         test: (code) => {
-          return code.includes('return') &&
-                 code.includes('new high score') &&
-                 code.includes('High score is still')
+          try {
+            // Look for a condition comparing score to highScore
+            const hasComparison = code.includes('score >') ||
+                                 code.includes('> highScore') ||
+                                 code.includes('highScore <') ||
+                                 code.includes('< score');
+
+            return hasComparison;
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure to return appropriate messages for both new high scores and regular scores"
+        message: "Your function should compare the score parameter to the highScore variable."
+      },
+
+      {
+        name: "Return Values",
+        test: (code) => {
+          try {
+            // Look for return statements in conditional blocks
+            const hasDifferentReturns =
+              (code.match(/return/g) || []).length >= 2 ||  // Multiple returns
+              (code.includes('return') && code.includes('if') && code.includes('else')); // Return in conditional
+
+            return hasDifferentReturns;
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Your function should return different messages depending on whether a high score was achieved."
+      },
+
+      {
+        name: "Function Calls",
+        test: (code) => {
+          try {
+            // Count checkHighScore function calls (at least 2 needed)
+            const callPattern = /checkHighScore\s*\(/g;
+            const calls = code.match(callPattern) || [];
+
+            return calls.length >= 2;
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Test your function by calling checkHighScore at least twice with different values."
+      },
+
+      {
+        name: "Functional Test",
+        test: (code) => {
+          try {
+            // This test runs a functional test of the student's implementation
+
+            // Save original console.log
+            const originalLog = console.log;
+            console.log = () => {};
+
+            // Reset highScore
+            let highScore = 0;
+
+            try {
+              // Execute and test the student's function
+              const func = new Function(code + `;
+                // Test sequence
+                checkHighScore("Test1", 5000);  // Sets highScore to 5000
+                if (highScore !== 5000) return false;
+
+                checkHighScore("Test2", 25);  // Shouldn't change highScore
+                if (highScore !== 5000) return false;
+
+                checkHighScore("Test3", 7500);  // Updates highScore to 75
+                return highScore === 7500;
+              `);
+
+              const result = func();
+
+              // Restore console.log
+              console.log = originalLog;
+
+              return result;
+            } catch (e) {
+              // Restore console.log in case of error
+              console.log = originalLog;
+              return false;
+            }
+          } catch (error) {
+            console.log = console.log || (() => {});
+            return false;
+          }
+        },
+        message: "Your function should update the high score when beaten but leave it unchanged otherwise."
       }
     ]
   }
