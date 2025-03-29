@@ -14,7 +14,7 @@ Think of a parameter as a special variable that a function can use. When we defi
 
 \`\`\`js
 function greet(name) {
-    console.log("Hello, " + name + "!")
+    console.log(\`Hello \${name}!\`)
 }
 \`\`\`
 
@@ -41,7 +41,7 @@ With parameters:
 \`\`\`js
 // One function works for any name!
 function greet(name) {
-    console.log("Hello, " + name + "!")
+    console.log(\`Hello, \${name}!\`)
 }
 
 // We can use it with different names
@@ -62,7 +62,7 @@ function sayGoodMorning() {
 
 // With a parameter - flexible and reusable
 function sayTimeOfDay(timeOfDay) {
-    console.log("Good " + timeOfDay + "!")
+    console.log(\`Good \${timeOfDay}!\`)
 }
 
 // The function with parameters is more flexible
@@ -82,35 +82,103 @@ sayTimeOfDay("night")    // Displays: Good night!
 The function below always says the same thing. Modify it to use a parameter so it can work with different activities.
 `,
   exercise: {
-    starterCode: `// Currently this function can only talk about running
+    starterCode: `/*
+  Currently this function can only talk about running.
+  Change it to work with any activity.
+*/
 function describeActivity() {
     console.log("I love running!")
 }
 
-// Change it to work with any activity`,
+`,
     solution: `function describeActivity(activity) {
-    console.log("I love " + activity + "!")
+    console.log(\`I love \${activity}!\`)
 }`,
     tests: [
       {
-        name: "Parameter Added",
+        name: "Function Has Parameter",
         test: (code) => {
-          return code.includes('function describeActivity(activity)') ||
-                 code.includes('function describeActivity( activity )') ||
-                 code.includes('function describeActivity(hobby)') ||
-                 code.includes('function describeActivity(sport)')
+          try {
+            // Check if the function is defined with a parameter
+            const functionMatch = code.match(/function\s+describeActivity\s*\(\s*([a-zA-Z][a-zA-Z0-9]*)\s*\)/);
+            return functionMatch !== null && functionMatch[1].length > 0;
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure you've added a parameter to the function"
+        message: "Make sure your function has a parameter. Example: function describeActivity(activity) { ... }"
       },
       {
-        name: "Using Parameter",
+        name: "Parameter Used in Output",
         test: (code) => {
-          return code.includes('+ activity +') ||
-                 code.includes('+activity+') ||
-                 code.includes('+ hobby +') ||
-                 code.includes('+ sport +')
+          try {
+            // Extract the parameter name
+            const paramMatch = code.match(/function\s+describeActivity\s*\(\s*([a-zA-Z][a-zA-Z0-9]*)\s*\)/);
+            if (!paramMatch) return false;
+
+            const paramName = paramMatch[1];
+
+            // Check if the parameter is used in the console.log statement
+            return code.includes(`console.log`) &&
+              (code.includes(`+ ${paramName} +`) ||
+                code.includes(`+${paramName}+`) ||
+                code.includes(`\${${paramName}}`) ||  // Template literals
+                code.includes(`, ${paramName},`));    // console.log format strings
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure you're using the parameter in the console.log message"
+        message: "Make sure you're using the parameter in your console.log message to make the function flexible."
+      },
+      {
+        name: "Function Works with Different Activities",
+        test: (code) => {
+          try {
+
+            // Replace console.log with a return statement for testing
+            code = code.replace(/console\.log\s*\(\s*["'`]I love /g, "return `I love ");
+            // Replace closing parenthesis with a closing backtick
+            // Replace the `) character sequence with just a backtick
+            code = code.replace(/`\)\s*}/g, "`}");
+
+            const evalFunction = new Function(`${code}; return describeActivity`)();
+            // Test the function with different activities
+            const activities = ["running", "swimming", "reading"];
+            for (const activity of activities) {
+              const output = evalFunction(activity);
+              if (!output.includes(`I love ${activity}!`)) {
+                return false;
+              }
+            }
+
+            return true;
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Your function should work with any activity. Make sure you're using the parameter correctly."
+      },
+      {
+        name: "Output Format is Correct",
+        test: (code) => {
+          try {
+            // Extract the parameter name
+            const paramMatch = code.match(/function\s+describeActivity\s*\(\s*([a-zA-Z][a-zA-Z0-9]*)\s*\)/);
+            if (!paramMatch) return false;
+
+            const paramName = paramMatch[1];
+
+            // Check if the output format matches "I love [activity]!"
+            return code.includes(`console.log`) &&
+              (code.includes(`"I love " + ${paramName} + "!"`) ||
+                code.includes(`'I love ' + ${paramName} + '!'`) ||
+                code.includes("`I love ${") || // Check for template literal pattern
+                code.match(/console\.log\s*\(\s*["'`]I love /)); // Check beginning of string
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure your output format is correct: 'I love [activity]!'"
       }
     ]
   }
