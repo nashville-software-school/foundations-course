@@ -116,6 +116,8 @@ Create two arrow functions that work together to calculate a shopping total:
 // Test your functions:
 // 1. Calculate subtotal for 3 items at $4.99 each
 // 2. Calculate the final total with tax
+
+// Use console.log to display the results
 `,
     solution: `const calculateSubtotal = (quantity, price) => {
     return quantity * price
@@ -129,35 +131,131 @@ const subtotal = calculateSubtotal(3, 4.99)
 const finalTotal = calculateTotal(subtotal)`,
     tests: [
       {
-        name: "Subtotal Function",
+        name: "Subtotal Function Definition",
         test: (code) => {
-          return code.includes('const calculateSubtotal') &&
-                 code.includes('=>') &&
-                 code.includes('quantity') &&
-                 code.includes('price') &&
-                 code.includes('return') &&
-                 code.includes('*')
+          try {
+            // Check for arrow function syntax
+            const hasArrowSyntax = code.includes("=>") &&
+                                 (code.includes("const calculateSubtotal =") ||
+                                  code.includes("let calculateSubtotal =") ||
+                                  code.includes("var calculateSubtotal ="));
+
+            // Check function existence and parameters
+            const func = new Function(code + `;
+              return typeof calculateSubtotal === "function" && calculateSubtotal.length === 2;
+            `);
+
+            return hasArrowSyntax && func();
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure calculateSubtotal is an arrow function that multiplies quantity and price"
+        message: "Make sure you've created an arrow function called 'calculateSubtotal' that takes two parameters (quantity and price)."
       },
+
       {
-        name: "Total Function",
+        name: "Subtotal Function Behavior",
         test: (code) => {
-          return code.includes('const calculateTotal') &&
-                 code.includes('=>') &&
-                 code.includes('subtotal') &&
-                 code.includes('return') &&
-                 code.includes('1.08')
+          try {
+            // Test the function's return value with specific inputs
+            const func = new Function(code + `;
+              // Test several inputs
+              const test1 = calculateSubtotal(2, 10) === 20;
+              const test2 = calculateSubtotal(3, 4.99).toFixed(2) === "14.97";
+              const test3 = calculateSubtotal(1, 5) === 5;
+
+              return test1 && test2 && test3;
+            `);
+
+            return func();
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure calculateTotal is an arrow function that adds 8% tax to the subtotal"
+        message: "Your calculateSubtotal function should multiply quantity and price correctly."
       },
+
       {
-        name: "Using Functions",
+        name: "Total Function Definition",
         test: (code) => {
-          return code.includes('calculateSubtotal(3, 4.99)') &&
-                 code.includes('calculateTotal(subtotal)')
+          try {
+            // Check for arrow function syntax
+            const hasArrowSyntax = code.includes("=>") &&
+                                 (code.includes("const calculateTotal =") ||
+                                  code.includes("let calculateTotal =") ||
+                                  code.includes("var calculateTotal ="));
+
+            // Check function existence and parameters
+            const func = new Function(code + `;
+              return typeof calculateTotal === "function" && calculateTotal.length === 1;
+            `);
+
+            return hasArrowSyntax && func();
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure you're testing your functions with the correct values"
+        message: "Make sure you've created an arrow function called 'calculateTotal' that takes one parameter (subtotal)."
+      },
+
+      {
+        name: "Total Function Behavior",
+        test: (code) => {
+          try {
+            // Test the function's return value with specific inputs
+            const func = new Function(code + `;
+              // Test several inputs
+              const test1 = Math.abs(calculateTotal(100) - 108) < 0.01;
+              const test2 = Math.abs(calculateTotal(50) - 54) < 0.01;
+              const test3 = Math.abs(calculateTotal(14.97) - 16.17) < 0.05;
+
+              return test1 && test2 && test3;
+            `);
+
+            return func();
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Your calculateTotal function should add 8% tax correctly."
+      },
+
+      {
+        name: "Functions Working Together",
+        test: (code) => {
+          try {
+            // Test both functions working together
+            const func = new Function(code + `;
+              // Calculate final total for 3 items at $4.99
+              const expected = 16.17; // 3 * 4.99 * 1.08 = 16.17
+              const actual = calculateTotal(calculateSubtotal(3, 4.99));
+
+              // Allow for small floating point differences
+              return Math.abs(actual - expected) < 0.05;
+            `);
+
+            return func();
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure your functions work together correctly to calculate the total with tax."
+      },
+
+      {
+        name: "Using Functions with Variables",
+        test: (code) => {
+          try {
+            // Check if variables are used to store results
+            const variableRegex = /(const|let|var)\s+subtotal\s*=\s*calculateSubtotal\s*\(/;
+            const finalRegex = /(const|let|var)\s+\w+\s*=\s*calculateTotal\s*\(\s*subtotal\s*\)/;
+
+            return variableRegex.test(code) && finalRegex.test(code);
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure you store your function results in variables as shown in the instructions."
       }
     ]
   }
