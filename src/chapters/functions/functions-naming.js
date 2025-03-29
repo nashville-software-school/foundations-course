@@ -103,28 +103,96 @@ function calculateDiscountedPrice(price) {
 }`,
     tests: [
       {
-        name: "First Function Rename",
+        name: "No Original Function Names",
         test: (code) => {
-          return code.toLowerCase().includes('greaterthan') ||
-                 code.toLowerCase().includes('isabove') ||
-                 code.toLowerCase().includes('morethan')
+          // Check that none of the original poor function names remain
+          return !(/function\s+number\s*\(/i.test(code)) &&
+            !(/function\s+text\s*\(/i.test(code)) &&
+            !(/function\s+math\s*\(/i.test(code));
         },
-        message: "The first function should have a name that indicates it's checking if a number is greater than 100"
+        message: "Make sure you've renamed all the original functions (number, text, and math) to more descriptive names."
       },
       {
-        name: "Second Function Rename",
+        name: "First Function Uses Verb and Describes Purpose",
         test: (code) => {
-          return code.toLowerCase().includes('welcome')
+          // Extract the first function name using regex
+          const match = code.match(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*num\s*\)/);
+          if (!match) return false;
+
+          const functionName = match[1].toLowerCase();
+
+          // Check if the name contains appropriate verbs/descriptors
+          const hasVerb = /^(is|check|validate|compare|exceeds|isabove|verify)/i.test(functionName);
+          const hasContext = /(greater|above|exceed|more|over|beyond|hundred|100)/i.test(functionName);
+
+          return hasVerb && hasContext;
         },
-        message: "The second function should have a name that indicates it's displaying a welcome message"
+        message: "The first function should start with a verb (like 'is', 'check', 'validate')."
       },
       {
-        name: "Third Function Rename",
+        name: "Second Function Uses Verb and Describes Purpose",
         test: (code) => {
-          return code.toLowerCase().includes('discountprice') ||
-                 code.toLowerCase().includes('calculatediscount')
+          // Extract the second function name using regex
+          const match = code.match(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*name\s*\)/);
+          if (!match) return false;
+
+          const functionName = match[1].toLowerCase();
+
+          // Check if the name contains appropriate verbs/descriptors
+          const hasVerb = /^(display|show|print|log|create|generate|format|get|write)/i.test(functionName);
+          const hasContext = /(welcome|greeting|message)/i.test(functionName);
+
+          return hasVerb && hasContext;
         },
-        message: "The third function should have a name that indicates it's calculating a discounted price. Perhaps `calculateDiscount` or `disacountPrice`?"
+        message: "The second function should start with a verb (like 'display', 'show', 'create')."
+      },
+      {
+        name: "Third Function Uses Verb and Describes Purpose",
+        test: (code) => {
+          // Extract the third function name using regex
+          const match = code.match(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*price\s*\)/);
+          if (!match) return false;
+
+          const functionName = match[1].toLowerCase();
+
+          // Check if the name contains appropriate verbs/descriptors
+          const hasVerb = /^(calculate|compute|get|apply|determine|find)/i.test(functionName);
+          const hasContext = /(discount|sale|reduced|final|after|percent|percentage|price)/i.test(functionName);
+
+          return hasVerb && hasContext;
+        },
+        message: "The third function should start with a verb (like 'calculate', 'compute', 'apply')."
+      },
+      {
+        name: "Function Behavior Unchanged",
+        test: (code) => {
+          try {
+            // Replace function declarations with assignments to check behavior
+            const modifiedCode = code
+              .replace(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*num\s*\)/, 'const firstFunction = function(num)')
+              .replace(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*name\s*\)/, 'const secondFunction = function(name)')
+              .replace(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*price\s*\)/, 'const thirdFunction = function(price)');
+
+            // Execute the code and check behavior
+            const evalFunction = new Function(modifiedCode + `;
+            // Check if first function correctly compares to 100
+            const firstResult1 = firstFunction(50);
+            const firstResult2 = firstFunction(150);
+
+            // Check if third function correctly calculates 80%
+            const thirdResult = thirdFunction(100);
+
+            return firstResult1 === false &&
+                   firstResult2 === true &&
+                   thirdResult === 80;
+          `);
+
+            return evalFunction();
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure you've only changed the function names, not the functionality of the functions."
       }
     ]
   }
