@@ -86,24 +86,49 @@ Complete this exercise by:
 }
 
 celebrateScore()
-celebrateScore()`,
+celebrateScore()
+
+`,
     tests: [
+
       {
-        name: "Function Definition",
+        name: "Function Uses Correct Syntax",
         test: (code) => {
-          return code.includes('function celebrateScore') &&
-                 code.includes('console.log') &&
-                 code.includes('"Touchdown!"')
+          // Check if they're using the function keyword with the correct name
+          return /function\s+celebrateScore\s*\(\)/.test(code);
         },
-        message: "Make sure you've defined the celebrateScore function that displays 'Touchdown!'"
+        message: "Make sure you're using the correct syntax: 'function celebrateScore() { ... }'"
       },
       {
-        name: "Function Invocation",
+        name: "Function Invoked At Least Twice",
         test: (code) => {
-          const invocations = (code.match(/celebrateScore\(\)/g) || []).length
-          return invocations >= 2
+          // Count how many times the function is invoked
+          const invocations = (code.match(/celebrateScore\s*\(\)/g) || []).length;
+          return invocations >= 2;
         },
-        message: "Remember to invoke (call) the celebrateScore function twice"
+        message: "Remember to invoke (call) the celebrateScore function at least twice."
+      },
+      {
+        name: "Function Works When Executed",
+        test: (code) => {
+          try {
+            // Execute the code with a custom console.log that tracks invocations
+            code = "let callCount = 0;" + code;
+
+            const evalFunction = new Function(code.replace(
+              /console\.log\s*\(['"´]Touchdown!['"´]\)/g,
+              "callCount++;"
+            ) + `;
+            // Return if function was called enough times with correct message
+            return callCount >= 2;
+          `);
+
+            return evalFunction();
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure your function is properly defined and called twice, outputting 'Touchdown!' each time."
       }
     ]
   }
