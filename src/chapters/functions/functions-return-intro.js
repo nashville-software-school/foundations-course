@@ -101,22 +101,106 @@ Create an arrow function called \`makeGreeting\` that takes a name and returns a
     starterCode: `// Create an arrow function that returns "Hello, NAME!"
 // For example: makeGreeting("John") should return "Hello, John!"
 
+
+
+// Invoke the function and assign the return value to a variable
+
+
+// Console log the variable you used above to see the greeting
+
 `,
-    solution: `const makeGreeting = (name) => {
-    return "Hello, " + name + "!"
-}`,
+    solution: `// Create an arrow function that returns "Hello, NAME!"
+// For example: makeGreeting("John") should return "Hello, John!"
+const makeGreeting = (name) => \`Hello, \${name}!\`
+
+// Invoke the function and assign the return value to a variable
+const greeting = makeGreeting("John")
+
+// Console log the variable you used above to see the greeting
+console.log(greeting)
+`,
     tests: [
       {
-        name: "Function Returns Greeting",
+        name: "Arrow Function Definition",
         test: (code) => {
-          return code.includes('const makeGreeting') &&
-                 code.includes('=>') &&
-                 code.includes('return') &&
-                 !code.includes('console.log') &&
-                 code.includes('"Hello, "') &&
-                 code.includes('+ name +')
+          try {
+            // Check for arrow function syntax
+            const hasArrowSyntax = code.includes("=>") &&
+              (code.includes("const makeGreeting =") ||
+                code.includes("let makeGreeting =") ||
+                code.includes("var makeGreeting ="));
+
+            // Check function existence and parameter
+            const func = new Function(code + `;
+              return typeof makeGreeting === "function" && makeGreeting.length === 1;
+            `);
+
+            return hasArrowSyntax && func();
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Make sure your arrow function returns a greeting message using return, not console.log"
+        message: "Make sure you've created an arrow function called 'makeGreeting' that takes one parameter."
+      },
+
+      {
+        name: "Function Returns Value",
+        test: (code) => {
+          try {
+            // Test the function's return value
+            const func = new Function(code + `;
+              const result = makeGreeting("Test");
+              return typeof result === "string" && result.includes("Hello,") && result.includes("Test");
+            `);
+
+            return func();
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Your function should return a string that includes 'Hello,' and the name parameter."
+      },
+
+      {
+        name: "Function Invocation",
+        test: (code) => {
+          try {
+            // Check if the code calls makeGreeting and assigns the result
+            const variableAssignmentRegex = /const\s+\w+\s*=\s*makeGreeting\s*\([^)]*\)/;
+            return variableAssignmentRegex.test(code);
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure you invoke the function and assign its return value to a variable."
+      },
+
+      {
+        name: "Console Output",
+        test: (code) => {
+          try {
+            // Save original console.log
+            const originalConsoleLog = console.log;
+
+            // Track logged messages
+            let loggedMessages = [];
+            console.log = (...args) => {
+              loggedMessages.push(args.join(' '));
+            };
+
+            // Execute the code
+            new Function(code)();
+
+            // Restore console.log
+            console.log = originalConsoleLog;
+
+            // Check if any message contains "Hello," indicating the variable was logged
+            return loggedMessages.some(msg => msg.includes("Hello,"));
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure you console.log the variable containing the greeting."
       }
     ]
   }

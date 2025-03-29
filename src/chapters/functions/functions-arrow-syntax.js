@@ -2,10 +2,7 @@ export const functionsArrowSyntaxChapter = {
   id: "functions-arrow-syntax",
   title: "Arrow Function Syntax",
   sectionId: "functions",
-  content: `
-# Arrow Function Syntax
-
-JavaScript provides a more concise way to write functions using what's called "arrow function syntax". This modern syntax was introduced in ES6 (ECMAScript 2015) and has become very popular among JavaScript developers.
+  content: `JavaScript provides an alternative way to write functions using what's called "arrow function syntax". This modern syntax was introduced in ES6 (ECMAScript 2015) and has become very popular among JavaScript developers.
 
 ## The Arrow Function Syntax
 
@@ -30,7 +27,7 @@ The arrow function syntax:
 
 ## Shorter Syntax for Simple Functions
 
-Arrow functions have a special "concise body" syntax when the function body is a single expression:
+Arrow functions have a special "concise body" syntax when the function body is a single expression. It is important to note that this only works when the function body is a single expression that returns a value. In this case, we can omit the curly braces and the \`return\` keyword.
 
 \`\`\`javascript
 // Traditional function
@@ -45,6 +42,16 @@ const double = (number) => {
 
 // Arrow function with concise syntax
 const double = number => number * 2
+
+/*
+ This function cannot be written in concise
+ syntax because it has multiple lines
+*/
+const calculateTaxes = (income) => {
+    const taxRate = 0.2
+    const adjustedIncome = income * taxRate
+    return adjustedIncome
+}
 \`\`\`
 
 Notice in the concise syntax:
@@ -104,28 +111,117 @@ function greet(name) {
 
 function getRandomNumber() {
     return Math.random()
-}`,
+}
+
+// After converting, test your functions by invoking them here
+`,
     tests: [
       {
         name: "Convert add function",
         test: (code) => {
-          return code.includes("const add = (x, y) =>") || code.includes("let add = (x, y) =>") || code.includes("var add = (x, y) =>");
+          try {
+            // Check for arrow syntax
+            const hasArrowSyntax = code.includes("=>") &&
+              (code.includes("const add =") ||
+                code.includes("let add =") ||
+                code.includes("var add ="));
+
+            // Test functionality by executing the function
+            const func = new Function(code + `;
+          if (typeof add !== "function") {
+            return false;
+          }
+          return add(5, 3) === 8;
+        `);
+
+            return hasArrowSyntax && func();
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Convert the add function to use arrow syntax"
+        message: "Convert the add function to use arrow syntax. Make sure it still adds two numbers correctly."
       },
+
       {
         name: "Convert greet function",
         test: (code) => {
-          return code.includes("const greet = ") && code.includes("=>") && code.includes("name");
+          try {
+            // Check for arrow syntax
+            const hasArrowSyntax = code.includes("=>") &&
+              (code.includes("const greet =") ||
+                code.includes("let greet =") ||
+                code.includes("var greet ="));
+
+            // Test functionality
+            const func = new Function(code + `;
+          if (typeof greet !== "function") {
+            return false;
+          }
+          return greet("Alice") === "Hello, Alice!";
+        `);
+
+            return hasArrowSyntax && func();
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Convert the greet function to use arrow syntax"
+        message: "Convert the greet function to use arrow syntax. Make sure it still returns the correct greeting."
       },
+
       {
         name: "Convert getRandomNumber function",
         test: (code) => {
-          return code.includes("const getRandomNumber = () =>") || code.includes("let getRandomNumber = () =>") || code.includes("var getRandomNumber = () =>");
+          try {
+            // Check for arrow syntax with empty parentheses
+            const hasArrowSyntax = (code.includes("const getRandomNumber = () =>") ||
+              code.includes("let getRandomNumber = () =>") ||
+              code.includes("var getRandomNumber = () =>"));
+
+            // Test functionality
+            const func = new Function(code + `;
+          if (typeof getRandomNumber !== "function") {
+            return false;
+          }
+          const result = getRandomNumber();
+          return typeof result === "number" && result >= 0 && result < 1;
+        `);
+
+            return hasArrowSyntax && func();
+          } catch (error) {
+            return false;
+          }
         },
-        message: "Convert the getRandomNumber function to use arrow syntax"
+        message: "Convert the getRandomNumber function to use arrow syntax with empty parentheses. Make sure it still returns a random number."
+      },
+
+      {
+        name: "Use of concise syntax",
+        test: (code) => {
+          try {
+            // Check if at least one function uses concise syntax (no curly braces)
+            // We'll look for arrow functions without curly braces
+            const arrowFuncRegex = /=>\s*[^{]/;
+            return arrowFuncRegex.test(code);
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Try using the concise arrow syntax (without curly braces) for at least one of your functions."
+      },
+
+      {
+        name: "All functions are converted",
+        test: (code) => {
+          try {
+            // Make sure there are no traditional function declarations left
+            return !code.includes("function add") &&
+              !code.includes("function greet") &&
+              !code.includes("function getRandomNumber");
+          } catch (error) {
+            return false;
+          }
+        },
+        message: "Make sure you've converted all three functions to arrow syntax."
       }
     ]
   },

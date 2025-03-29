@@ -121,7 +121,7 @@ The function should display a message like: "Mario scored 100 points!"
 */
 
 
-// Then call the function with different player names and scores
+// Then invoke the function with different player names and scores
 
 `,
     solution: `/*
@@ -133,7 +133,7 @@ function displayGameScore(playerName, points) {
 }
 
 
-// Then call the function with different player names and scores
+// Then invoke the function with different player names and scores
 displayGameScore("William", 100)
 displayGameScore("Elizabeth", 50)
 displayGameScore("Jamal", 75)
