@@ -18,11 +18,11 @@ There's an important difference between parameters and arguments:
 //           parameter
 //              ↓
 function greet(name) {
-    console.log("Hello, " + name + "!")
+    console.log(\`Hello, \${name}!\`)
 }
 
-//              argument
-//                 ↓
+//       argument
+//          ↓
 greet("Elizabeth")  // Displays: Hello, Elizabeth!
 \`\`\`
 
@@ -32,7 +32,7 @@ The beauty of functions is that we can use them with different arguments:
 
 \`\`\`js
 function displayScore(points) {
-    console.log("You scored " + points + " points!")
+    console.log(\`You scored \${points} points!\`)
 }
 
 // Using different arguments
@@ -43,14 +43,14 @@ displayScore(100)   // Displays: You scored 100 points!
 
 ### Arguments Can Be Variables
 
-We can use variables as arguments too:
+We can use variables as arguments too, because they are just descriptive labels for real values:
 
 \`\`\`js
 function double(number) {
     console.log(number * 2)
 }
 
-// Using a variable as an argument
+// We're not passing \`myScore\` directly, but its value of 5
 const myScore = 5
 double(myScore)    // Displays: 10
 
@@ -65,11 +65,11 @@ Look how arguments let us reuse the same function in different ways:
 \`\`\`js
 function createGreeting(name, emotion) {
     if (emotion === "happy") {
-        console.log("😊 Welcome, " + name + "!")
+        console.log(\`😊 Welcome, \${name}!\`)
     } else if (emotion === "excited") {
-        console.log("🎉 WELCOME, " + name + "!!!")
+        console.log(\`🎉 WELCOME, \${name}!!!\`)
     } else {
-        console.log("👋 Welcome, " + name)
+        console.log(\`👋 Welcome, \${name}\`)
     }
 }
 
@@ -89,7 +89,7 @@ createGreeting("Jordan", "calm")    // 👋 Welcome, Jordan
 
 ## Exercise: Using Arguments
 
-Complete the exercise by calling the \`calculateTotal\` function with different arguments to calculate prices with tax.
+Complete the exercise by calling the \`calculateTotal\` function with different arguments to calculate prices with tax. Run your code to see the results in the console.
 `,
   exercise: {
     starterCode: `// This function adds 10% tax to a price
