@@ -14,17 +14,34 @@ const navStyles = css`
   }
 
   .section {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
   }
-  .section-optional::before {
-    content: "Optional Section";
-    float: right;
-    color: #ccc;
-    display: block;
-    width: 100%;
-    height: 1px;
-    background-color: #ccc;
-    margin: 0 0 20px 0;
+  .section-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .required-work-header {
+    margin: 0.5rem 0 0.5rem 0;
+
+  }
+
+  .additional-work-header {
+    margin: 1.5rem 0 1rem 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid #dee2e6;
+  }
+
+  .additional-work-header h3 {
+    color: #495057;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+  }
+
+  .additional-work-description {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0 0 1rem 0;
+    font-style: italic;
   }
   .section-content {
     overflow: hidden;
@@ -240,7 +257,7 @@ function Navigation() {
     ).length
     const inProgress = sectionChapters.filter(
       chapter => !getExerciseProgress(chapter.id).completed &&
-                 getExerciseProgress(chapter.id).attempts > 0
+        getExerciseProgress(chapter.id).attempts > 0
     ).length
 
     return {
@@ -250,88 +267,117 @@ function Navigation() {
     }
   }
 
-  return (
-    <nav css={navStyles}>
-      {sections.map(section => {
-        const sectionChapters = groupedChapters[section.id] || []
-        if (sectionChapters.length === 0) return null
+  // Helper function to render a section
+  const renderSection = (section) => {
+    const sectionChapters = groupedChapters[section.id] || []
+    if (sectionChapters.length === 0) return null
 
-        const isExpanded = isSectionExpanded(section.id)
-        const progress = calculateSectionProgress(sectionChapters)
+    const isExpanded = isSectionExpanded(section.id)
+    const progress = calculateSectionProgress(sectionChapters)
 
-        return (
-          <div key={section.id} className={`section ${section.optional ? 'section-optional':''}`}>
-            <SectionHeader
-              section={section}
-              isExpanded={isExpanded}
-              onToggle={() => toggleSection(section.id)}
-            />
+    return (
+      <div key={section.id} className="section">
+        <SectionHeader
+          section={section}
+          isExpanded={isExpanded}
+          onToggle={() => toggleSection(section.id)}
+        />
 
-            <div className={`section-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
-              <div className="section-progress">
-                <div className="progress-text">
-                  <span>{Math.round(progress.percentage)}% Complete</span>
-                </div>
-                <div className="progress-bar-container">
-                  <div
-                    className="progress-bar"
-                    style={{ width: `${progress.percentage}%` }}
-                  />
-                </div>
-              </div>
-
-              <ul className="chapter-list">
-                {sectionChapters.map((chapter, index) => {
-                  const status = getChapterStatus(chapter.id)
-                  const isProtected = chapter.requiresAuth && !isAuthenticated
-                  return (
-                    <li key={chapter.id} className="chapter-item">
-                      <Link
-                        to={isProtected ? '/login' : chapter.id}
-                        className={`chapter-link ${status} ${
-                          location.pathname === chapter.id ? 'active' : ''
-                        } ${isProtected ? 'protected' : ''}`}
-                      >
-                        <span className="chapter-number">{index + 1}</span>
-                        <span className="chapter-title">{chapter.title}</span>
-                        {isProtected && <LockIcon />}
-                        {!isProtected && status !== 'not-started' ? (
-                          <span className="status-icon">
-                            {status === 'completed' ? '✓' : '●'}
-                          </span>
-                        ) : (!isProtected && chapter.exercise === null && (
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault()
-                              trackCompletion(chapter.id)
-                            }}
-                            css={css`
-                              background: #e9ecef;
-                              border: 1px solid #dee2e6;
-                              border-radius: 4px;
-                              padding: 2px 8px;
-                              font-size: 0.8rem;
-                              cursor: pointer;
-                              color: #495057;
-                              transition: all 0.2s ease;
-                              &:hover {
-                                background: #dee2e6;
-                                border-color: #ced4da;
-                              }
-                            `}
-                          >
-                            Done
-                          </button>
-                        ))}
-                      </Link>
-                    </li>
-                  )
-                })}
-              </ul>
+        <div className={`section-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
+          <div className="section-progress">
+            <div className="progress-text">
+              <span>{Math.round(progress.percentage)}% Complete</span>
+            </div>
+            <div className="progress-bar-container">
+              <div
+                className="progress-bar"
+                style={{ width: `${progress.percentage}%` }}
+              />
             </div>
           </div>
-        )
-      })}
+
+          <ul className="chapter-list">
+            {sectionChapters.map((chapter, index) => {
+              const status = getChapterStatus(chapter.id)
+              const isProtected = chapter.requiresAuth && !isAuthenticated
+              return (
+                <li key={chapter.id} className="chapter-item">
+                  <Link
+                    to={isProtected ? '/login' : chapter.id}
+                    className={`chapter-link ${status} ${location.pathname === chapter.id ? 'active' : ''
+                      } ${isProtected ? 'protected' : ''}`}
+                  >
+                    <span className="chapter-number">{index + 1}</span>
+                    <span className="chapter-title">{chapter.title}</span>
+                    {isProtected && <LockIcon />}
+                    {!isProtected && status !== 'not-started' ? (
+                      <span className="status-icon">
+                        {status === 'completed' ? '✓' : '●'}
+                      </span>
+                    ) : (!isProtected && chapter.exercise === null && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          trackCompletion(chapter.id)
+                        }}
+                        css={css`
+                          background: #e9ecef;
+                          border: 1px solid #dee2e6;
+                          border-radius: 4px;
+                          padding: 2px 8px;
+                          font-size: 0.8rem;
+                          cursor: pointer;
+                          color: #495057;
+                          transition: all 0.2s ease;
+                          &:hover {
+                            background: #dee2e6;
+                            border-color: #ced4da;
+                          }
+                        `}
+                      >
+                        Done
+                      </button>
+                    ))}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </div>
+    )
+  }
+
+  // Filter sections into required and optional
+  const requiredSections = sections.filter(section => section.required || (!section.optional && !section.required))
+  const optionalSections = sections.filter(section => section.optional)
+
+  return (
+    <nav css={navStyles}>
+      {/* Required Sections */}
+      <div className="required-work-header">
+        <h3>Required Work</h3>
+        <p className="additional-work-description">
+          These sections are required to complete the Foundations Course
+        </p>
+      </div>
+      <div className="section-group required-sections">
+        {requiredSections.map(renderSection)}
+      </div>
+
+      {/* Optional Sections */}
+      {optionalSections.length > 0 && (
+        <div className="section-group optional-sections">
+          <div className="additional-work-header">
+            <h3>Additional Work</h3>
+            <p className="additional-work-description">
+              The following sections are optional if you want to practice your skills
+            </p>
+          </div>
+
+          {optionalSections.map(renderSection)}
+        </div>
+      )}
     </nav>
   )
 }

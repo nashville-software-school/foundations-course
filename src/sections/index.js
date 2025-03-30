@@ -4,44 +4,52 @@
  */
 
 export const sections = [
+  // Required sections
   {
     id: "getting-started",
     title: "Getting Started",
     description: "Essential setup steps to begin your learning journey",
+    required: true
   },
   {
     id: "variables-and-values",
     title: "Variables and Values",
     description: "Understanding data storage and manipulation in JavaScript",
+    required: true
   },
   {
     id: "arrays",
     title: "Arrays",
     description: "Working with collections of data",
+    required: true
   },
   {
     id: "objects",
     title: "Objects",
     description: "Organizing related data and behavior",
+    required: true
   },
   {
     id: "functions",
     title: "Functions",
     description: "Creating reusable code blocks",
+    required: true
   },
   {
     id: "modules",
     title: "Modules",
     description:
       "Building maintainable applications by organizing code across multiple files",
+    required: true
   },
+  // Optional sections
   {
     id: "leonids",
     title: "Leonid's Toys",
     optional: true,
     description:
       "Practice Javascript concepts by manipulating the inventory for Leonid's Toy Shoppe",
-    },
+  },
   {
     id: "daily-notes",
     title: "Daily Notes",
@@ -50,8 +58,9 @@ export const sections = [
   },
   {
     id: "assessment",
-    title: "Self-Assessment",
-    description: "TBD",
+    title: "Flower Shop", // Renamed from "Self-Assessment"
+    optional: true, // Now marked as optional
+    description: "Practice your JavaScript skills by building a flower shop application",
   },
   {
     id: 'workshops',
