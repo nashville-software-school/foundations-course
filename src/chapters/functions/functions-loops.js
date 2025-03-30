@@ -1,180 +1,277 @@
 export const functionsLoopsChapter = {
-  id: 'functions-loops',
-  title: 'Functions with Loops',
-  sectionId: 'functions',
-  previousChapterId: 'functions-conditions',
-  nextChapterId: 'functions-calling-functions',
-  content: `## Processing Collections with Functions
+    id: 'functions-loops',
+    title: 'Functions with Loops',
+    sectionId: 'functions',
+    previousChapterId: 'functions-conditions',
+    nextChapterId: 'functions-calling-functions',
+    content: `## Processing Collections with Functions
 
-Functions become even more powerful when we combine them with loops. This lets us process arrays and other collections of data efficiently.
+  Functions become even more powerful when we combine them with loops. This lets us process arrays and other collections of data efficiently.
 
-### Processing Arrays
+  ### Processing Arrays
 
-Here's a simple function that uses a loop to process an array:
+  Here's a simple function that uses a loop to process an array:
 
-\`\`\`js
-const displayAllScores = (scores) => {
-    for (let i = 0; i < scores.length; i++) {
-        console.log("Score " + (i + 1) + ": " + scores[i])
-    }
-}
-
-const gameScores = [85, 92, 78, 95, 88]
-displayAllScores(gameScores)
-// Displays:
-// Score 1: 85
-// Score 2: 92
-// Score 3: 78
-// Score 4: 95
-// Score 5: 88
-\`\`\`
-
-### Calculating with Loops
-
-Functions can use loops to calculate results from arrays:
-
-\`\`\`js
-const calculateAverage = (numbers) => {
-    let total = 0
-
-    for (let i = 0; i < numbers.length; i++) {
-        total = total + numbers[i]
-    }
-
-    return total / numbers.length
-}
-
-const temperatures = [72, 75, 79, 73, 71]
-console.log("Average: " + calculateAverage(temperatures))
-// Displays: Average: 74
-\`\`\`
-
-### Finding Values
-
-We can use functions with loops to find specific values:
-
-\`\`\`js
-const findHighestScore = (scores) => {
-    let highest = scores[0]    // Start with first score
-
-    for (let i = 1; i < scores.length; i++) {
-        if (scores[i] > highest) {
-            highest = scores[i]
-        }
-    }
-
-    return highest
-}
-
-const scores = [85, 92, 78, 95, 88]
-console.log("Highest score: " + findHighestScore(scores))
-// Displays: Highest score: 95
-\`\`\`
-
-### Processing Strings
-
-Loops in functions can also process strings character by character:
-
-\`\`\`js
-const countVowels = (text) => {
-    let vowelCount = 0
-    const vowels = ["a", "e", "i", "o", "u"]
-
-    for (let i = 0; i < text.length; i++) {
-        if (vowels.includes(text[i].toLowerCase())) {
-            vowelCount = vowelCount + 1
-        }
-    }
-
-    return vowelCount
-}
-
-console.log(countVowels("Hello World"))    // Displays: 3
-console.log(countVowels("JavaScript"))     // Displays: 2
-\`\`\`
-
-### Building New Arrays
-
-Functions can use loops to create new arrays:
-
-\`\`\`js
-const doubleAllNumbers = (numbers) => {
-    const doubled = []
-
-    for (let i = 0; i < numbers.length; i++) {
-        doubled.push(numbers[i] * 2)
-    }
-
-    return doubled
-}
-
-const values = [1, 2, 3, 4, 5]
-console.log(doubleAllNumbers(values))
-// Displays: [2, 4, 6, 8, 10]
-\`\`\`
-
-### Best Practices for Loops in Functions
-
-1. Check if the array is empty first
-2. Use clear variable names for counters and totals
-3. Consider what should happen with empty or invalid inputs
-4. Test with different array sizes
-
-## Exercise: Shopping Cart Total
-
-Create an arrow function that calculates the total cost of items in a shopping cart. The function should:
-1. Take an array of prices
-2. Add them all up
-3. Apply a 10% discount if the total is over $100
-4. Return the final total
-`,
-  exercise: {
-    starterCode: `const calculateCartTotal = (prices) => {
-    // Your code here
-    // Remember to:
-    // 1. Add up all prices
-    // 2. Apply 10% discount if total > 100
-    // 3. Return the final total
-}
-
-// Example usage:
-// calculateCartTotal([20, 30, 40])  should return 90
-// calculateCartTotal([50, 60, 70])  should return 162 (180 - 10%)`,
-    solution: `const calculateCartTotal = (prices) => {
-    let total = 0
-
-    for (let i = 0; i < prices.length; i++) {
-        total = total + prices[i]
-    }
-
-    if (total > 100) {
-        total = total * 0.9    // Apply 10% discount
-    }
-
-    return total
-}`,
-    tests: [
-      {
-        name: "Loop Implementation",
-        test: (code) => {
-          return code.includes('const calculateCartTotal = (') &&
-                 code.includes('=>') &&
-                 code.includes('for') &&
-                 code.includes('prices.length') &&
-                 code.includes('total') &&
-                 code.includes('prices[i]')
-        },
-        message: "Make sure you're using an arrow function with a loop to add up all prices"
-      },
-      {
-        name: "Discount Logic",
-        test: (code) => {
-          return code.includes('> 100') &&
-                 code.includes('0.9') &&
-                 code.includes('return total')
-        },
-        message: "Your function should apply a 10% discount for totals over $100"
+  \`\`\`js
+  const displayAllScores = (scores) => {
+      for (let i = 0; i < scores.length; i++) {
+          console.log(\`Score \${i + 1}: \${scores[i]}\`)
       }
-    ]
   }
+
+  const gameScores = [85, 92, 78, 95, 88];
+  displayAllScores(gameScores);
+  // Displays:
+  // Score 1: 85
+  // Score 2: 92
+  // Score 3: 78
+  // Score 4: 95
+  // Score 5: 88
+  \`\`\`
+
+  ### Calculating with Loops
+
+  Functions can use loops to calculate results from arrays:
+
+  \`\`\`js
+  const calculateAverage = (numbers) => {
+      let total = 0
+
+      for (let i = 0; i < numbers.length; i++) {
+          total = total + numbers[i]
+      }
+
+      return total / numbers.length
+  }
+
+  const temperatures = [72, 75, 79, 73, 71];
+  const avgTemperature = calculateAverage(temperatures);
+  console.log(\`Average: \${avgTemperature}\`);
+  // Displays: Average: 74
+  \`\`\`
+
+  ### Finding Values
+
+  We can use functions with loops to find specific values:
+
+  \`\`\`js
+  const findHighestScore = (scores) => {
+      // Check if array is empty first
+      if (scores.length === 0) {
+          return null;  // Return null for empty arrays
+      }
+
+      let highest = scores[0]    // Start with first score
+
+      for (let i = 1; i < scores.length; i++) {
+          if (scores[i] > highest) {
+              highest = scores[i]
+          }
+      }
+
+      return highest
+  }
+
+  const scores = [85, 92, 78, 95, 88];
+  const highestScore = findHighestScore(scores);
+  console.log(\`Highest score: \${highestScore}\`);
+  // Displays: Highest score: 95
+  \`\`\`
+
+  ### Processing Strings
+
+  Loops in functions can also process strings character by character:
+
+  \`\`\`js
+  const countVowels = (text) => {
+      let vowelCount = 0
+      const vowels = ["a", "e", "i", "o", "u"]
+
+      for (let i = 0; i < text.length; i++) {
+          if (vowels.includes(text[i].toLowerCase())) {
+              vowelCount = vowelCount + 1
+          }
+      }
+
+      return vowelCount
+  }
+
+  const helloVowels = countVowels("Hello World");
+  console.log(helloVowels);    // Displays: 3
+
+  const jsVowels = countVowels("JavaScript");
+  console.log(jsVowels);       // Displays: 3
+  \`\`\`
+
+  ### Building New Arrays
+
+  Functions can use loops to create new arrays:
+
+  \`\`\`js
+  const doubleAllNumbers = (numbers) => {
+      const doubled = []
+
+      for (let i = 0; i < numbers.length; i++) {
+          doubled.push(numbers[i] * 2)
+      }
+
+      return doubled
+  }
+
+  const values = [1, 2, 3, 4, 5];
+  const doubledValues = doubleAllNumbers(values);
+  console.log(doubledValues);
+  // Displays: [2, 4, 6, 8, 10]
+  \`\`\`
+
+  ### Best Practices for Loops in Functions
+
+  1. Check if the array is empty first
+  2. Use clear variable names for counters and totals
+  3. Consider what should happen with empty or invalid inputs
+  4. Test with different array sizes
+
+  ### Properly Invoking Functions with Arrays
+
+  When working with functions that process arrays, always follow these steps:
+
+  1. **Invoke the function** with your array
+  2. **Store the return value** in a descriptive variable
+  3. **Pass that variable to console.log()** to see the result
+
+  For example:
+  \`\`\`js
+  // DON'T do this (calling console.log directly on the function):
+  console.log(doubleAllNumbers([1, 2, 3]));
+
+  // DO this instead (storing the result first):
+  const doubledResult = doubleAllNumbers([1, 2, 3]);
+  console.log(doubledResult);
+  \`\`\`
+
+  ## Exercise: Shopping Cart Total
+
+  You are given a function named \`calculateCartTotal\` in the starter code. Your job is to write the logic that calculates the total cost of items in a shopping cart. The function should:
+
+  1. Take an array of prices
+  2. Add them all up
+  3. Apply a 10% discount if the total is over $100
+  4. Return the final total
+  `,
+    exercise: {
+        starterCode: `const calculateCartTotal = () => {
+      // 1. Create a variable to store the total, starting at 0
+
+      // 2. Loop through all prices in the array and add each to total
+
+      // 3. Check if total is over $100, and if so apply a 10% discount
+
+      // 4. Return the final total
+  }
+
+  // Test your function with following steps:
+  // 1. Invoke the function
+  // 2. Store the return value in a variable
+  // 3. Log the variable to the console
+
+
+
+`,
+        solution: `const calculateCartTotal = (prices) => {
+      let total = 0
+
+      for (const price of prices) {
+          // Add each price to the total
+          total += price
+      }
+
+      if (total > 100) {
+          total = total * 0.9    // Apply 10% discount
+      }
+
+      return total
+  }
+
+  // Invoke the function and display results
+  const smallCartTotal = calculateCartTotal([20, 30, 40]);
+  console.log(smallCartTotal);  // Displays: 90
+
+  const largeCartTotal = calculateCartTotal([50, 60, 70]);
+  console.log(largeCartTotal);  // Displays: 162`,
+        tests: [
+            {
+                name: "Small Cart Calculation",
+                test: (code) => {
+                    try {
+                        const body = `${code};\nreturn calculateCartTotal;`
+                        const func = new Function(body)()
+                        const total = func([20, 30, 40]);
+                        return total === 90;
+                    } catch (e) {
+                        console.log(`Error: ${e}`);
+                        return false;
+                    }
+                },
+                message: "Your function should return 90 for a cart with prices [20, 30, 40]"
+            },
+            {
+                name: "Large Cart with Discount",
+                test: (code) => {
+                    try {
+                        const fn = new Function(code + `; return calculateCartTotal([50, 60, 70]);`);
+                        return Math.abs(fn() - 162) < 0.01;
+                    } catch (e) {
+                        return false;
+                    }
+                },
+                message: "Your function should return 162 (after 10% discount) for a cart with prices [50, 60, 70]"
+            },
+            {
+                name: "Empty Cart",
+                test: (code) => {
+                    try {
+                        const fn = new Function(code + `; return calculateCartTotal([]);`);
+                        return fn() === 0;
+                    } catch (e) {
+                        return false;
+                    }
+                },
+                message: "Your function should handle empty carts (return 0)"
+            },
+            {
+                name: "Exactly $100 (No Discount)",
+                test: (code) => {
+                    try {
+                        const fn = new Function(code + `; return calculateCartTotal([25, 25, 50]);`);
+                        return Math.abs(fn() - 100) < 0.01;
+                    } catch (e) {
+                        return false;
+                    }
+                },
+                message: "Your function should not apply a discount for a total of exactly $100"
+            },
+            {
+                name: "Just Over $100 (With Discount)",
+                test: (code) => {
+                    try {
+                        const fn = new Function(code + `; return calculateCartTotal([25, 25, 51]);`);
+                        return Math.abs(fn() - 90.9) < 0.01;
+                    } catch (e) {
+                        return false;
+                    }
+                },
+                message: "Your function should apply a discount for a total just over $100"
+            },
+            {
+                name: "Function structure check",
+                test: (code) => {
+                    return code.includes('const calculateCartTotal = (') &&
+                        code.includes('for') &&
+                        code.includes('of prices') &&
+                        code.includes('return');
+                },
+                message: "Make sure you're using a for..of loop to process all prices in the array"
+            }
+        ]
+    }
 }
