@@ -57,13 +57,16 @@ const styles = {
 function MultiFileEditor({ files, onChange, options = {} }) {
   const [activeFile, setActiveFile] = useState(Object.keys(files)[0])
 
-  // Reset active file when files prop changes
+  // Reset active file only when file structure changes
   useEffect(() => {
     const fileNames = Object.keys(files)
     if (fileNames.length > 0) {
-      setActiveFile(fileNames[0])
+      // Check if the current active file still exists in the new files
+      if (!fileNames.includes(activeFile)) {
+        setActiveFile(fileNames[0])
+      }
     }
-  }, [files])
+  }, [JSON.stringify(Object.keys(files))])
 
   const handleEditorChange = (value) => {
     onChange({
