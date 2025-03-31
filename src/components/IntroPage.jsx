@@ -134,8 +134,10 @@ function IntroPage() {
               </div>
             </div>
           )}
+
+
           <iframe
-            src={`https://www.youtube.com/embed/dQw4w9WgXcQ${videoPlaying ? '?autoplay=1' : ''}`}
+            src="https://www.loom.com/embed/a7602b99d3844b0cb393715ac0e18971?sid=32f93162-2754-4077-8ee6-ea9d4c52c31d"
             title="Course Introduction Video"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen

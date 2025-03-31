@@ -2,38 +2,45 @@
 import { css } from '@emotion/react'
 
 const toggleStyles = css`
-  position: absolute;
-  top: 50%;
+  position: relative;
   right: 0;
-  transform: translateY(-50%);
-  width: 15px;
-  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  height: 30px;
   cursor: pointer;
   z-index: 9999;
   transition: all 0.2s ease;
+  padding: 0 8px;
+  border-radius: 4px;
+  white-space: nowrap;
 
   &:hover {
-    border: 1px solid #ccc;
+    background-color: #e9ecef;
   }
 
   .toggle-icon {
     font-size: 18px;
-    color: #fff;
+    color: #333;
     font-weight: bold;
+    margin-right: 5px;
+  }
+
+  .toggle-text {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
   }
 `
 
 function NavigationToggle({ isExpanded, onToggle }) {
   return (
-      <div className="toggle-icon" css={toggleStyles}
+      <div css={toggleStyles}
       onClick={onToggle}
       role="button"
       aria-label={isExpanded ? "Collapse navigation" : "Expand navigation"}
       tabIndex={0}>
-        {isExpanded ? '◀' : '▶'}
+        <span className="toggle-icon">{isExpanded ? '◀' : '▶'}</span>
+        <span className="toggle-text">{isExpanded ? 'Collapse Nav' : ''}</span>
       </div>
   )
 }

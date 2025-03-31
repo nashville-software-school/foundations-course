@@ -36,7 +36,6 @@ export const chapters = [
   ...protectedArrayChapters,
   ...protectedObjectChapters,
   ...protectedFunctionChapters,
-  ...protectedModulesChapters,
   ...projectModulesChapters,
   ...protectedLeonidsChapters,
   ...protectedAssessments,

@@ -58,6 +58,8 @@ const layoutStyles = css`
     transition: all 0.3s ease;
     min-width: 0;
     z-index: 100;
+    display: flex;
+    flex-direction: column;
   }
 
   .nav-sidebar.expanded {
@@ -74,6 +76,18 @@ const layoutStyles = css`
     transition: all 0.3s ease;
   }
 
+  .nav-header {
+    position: sticky;
+    top: 0;
+    background: #f6f8fa;
+    padding: 0.5rem 0;
+    z-index: 101;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: flex-end;
+    min-height: 30px;
+  }
+
   .nav-content {
     padding: 0 1rem 2rem 1rem;
     width: 100%;
@@ -83,6 +97,11 @@ const layoutStyles = css`
   .nav-sidebar.collapsed .nav-content {
     opacity: 0;
     pointer-events: none;
+  }
+
+  .nav-sidebar.collapsed .nav-header {
+    justify-content: center;
+    padding: 0.5rem 0.25rem;
   }
 
   .main-content {
@@ -127,10 +146,12 @@ function Layout() {
       </header>
       <div className="content-area">
         <nav className={`nav-sidebar ${isNavExpanded ? 'expanded' : 'collapsed'}`}>
+          <div className="nav-header">
             <NavigationToggle
               isExpanded={isNavExpanded}
               onToggle={toggleNavigation}
             />
+          </div>
           <div className="nav-content">
             <Navigation />
           </div>
