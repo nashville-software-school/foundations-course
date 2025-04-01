@@ -81,47 +81,83 @@ The developer who wrote this code knew that "o" was an abbreviation for "oranges
 
 Speaking of naming variables, it is a convention in the JavaScript developer community to name variables with camel case. This means that the variable starts with a lower-case letter, but each additional word in the variable name should start with a capital letter.
 
-Bad variable naming
 \`\`\`js
-let bagofdonuts = 2
+let bagofdonuts = 2    // Incorrect variable naming
+let bagOfDonuts = 2    // Correct variable naming
+
+let cucumbers = 3      // Good naming since it is a single word
+
+let icecream = 1       // Incorrect variable naming
+let iceCream = 1       // Correct variable naming
 \`\`\`
-Good variable naming
+
+## Adding and Subtracting Values
+
+Now that you have a basic understanding of what variables are, let's see how to use them. You can add and subtract values from each other. This is done with the \`+\` and \`-\` operators.
+
+For example, if you wanted to add the number of oranges and the number of bags of chips together, you would do this.
+
 \`\`\`js
-let bagOfDonuts = 2
+let oranges = 4
+let bagsOfChips = 2
+let total = oranges + bagsOfChips
+console.log(total)
 \`\`\`
-Good variable naming because it is a single word
+This would produce the output of 6 in the console.
+
+## Let and Const
+
+In the previous example, you used the \`let\` keyword to declare a variable. This means that you can change the value of the variable later on in your code. For example, if you wanted to change the number of oranges to 5, you could do this.
+
 \`\`\`js
-let cucumbers = 3
+oranges = 5
+console.log(oranges)
 \`\`\`
-Bad variable naming
+
+This would produce the output of 5 in the console.
+
+However, if you wanted to declare a variable that you didn't want to change, you would use the \`const\` keyword instead. For example, if you wanted to declare a variable for the number of bags of chips, you could do this.
+
 \`\`\`js
-let icecream = 1
+const bagsOfChips = 2
+console.log(bagsOfChips)
 \`\`\`
-Good variable naming
+
+This would produce the output of 2 in the console. However, if you tried to change the value of the variable later on in your code, you would get an error.
+
 \`\`\`js
-let iceCream = 1
+bagsOfChips = 3
+console.log(bagsOfChips)
 \`\`\`
+
+This would produce an error in the console. The error would say that you cannot change the value of a constant variable.
 
 ## Exercise: Electric Bill Calculator
 
 Now it is time for you to write your own code. Imagine that you want to determine what your electric bill costs are for an entire year. You gather all twelve electric bills in front of you and want to add them together.
 
-Create variables for each month's electric bill and calculate the yearly total.
+Create variables for each month's electric bill and calculate the yearly total. Once you have all the variables declared, you will need to add them together to get the total. You can use the \`+\` operator to do this.
+
+You can use the \`let\` keyword to declare the variables, and then use the \`const\` keyword to declare a variable for the total. You will need to use the \`console.log()\` function to print out the total.
 `,
     exercise: {
-        starterCode: `// January's electric bill
+        starterCode: `// January's electric bill declared with \`let\`
 let januaryBill = 145
 
-// Create variables for the remaining months.
-// Give them any value you want.
+// Declare variables for the remaining months with the \`let\` keyword.
+// Give them any numeric value you want.
 
 
 
-// Then calculate the total yearly charges by
-// declaring a constant variable named "yearlyTotal"
-// that is the sum of all twelve months.
+/*
+   Then calculate the total yearly charges by declaring a constant
+   variable named "yearlyTotal" that is the sum of all twelve months.
+   Use the \`const\` keyword for this variable.
+*/
 
 
+// console.log will print the value of the variable to the console.
+// The "Run Code" button will allow you to see the output of this code.
 console.log(yearlyTotal)
 `,
         solution: `// Monthly electric bills
