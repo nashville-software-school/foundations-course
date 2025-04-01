@@ -30,7 +30,6 @@ function IntroRedirect() {
 
   // For demonstration purposes, if we have the URL parameter, pass it along to maintain state
   if (!hasSeenIntroCookie || !hasSeenIntroParam) {
-    console.log('Redirecting to intro page');
     return <Navigate to="/intro" replace />;
   }
 

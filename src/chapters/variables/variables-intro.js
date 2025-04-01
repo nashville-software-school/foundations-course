@@ -2,6 +2,7 @@ export const variablesIntroChapter = {
     id: 'variables-intro',
     title: 'Introduction',
     sectionId: 'variables-and-values',
+    nextChapterId: 'string-interpolation',
     previousChapterId: null, // First chapter in Variables and Values section
     content: `Software developers work with all kinds of data, produced by all kinds of people and processes. Medical records, food and drink sales, atmospheric condition, transportation patterns... these things all get produced from data.
 

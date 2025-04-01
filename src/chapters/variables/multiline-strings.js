@@ -2,7 +2,7 @@ export const multilineStringsChapter = {
   id: 'multiline-strings',
   title: 'Multi-line Strings',
   sectionId: 'variables-and-values',
-  previousChapterId: 'string-interpolation',
+  previousChapterId: 'math-operations',
   nextChapterId: 'string-methods',
   content: `So far you have used \`console.log()\` to produce strings of output in the console. Sometimes, developers want their output to be more attractive, especially if the output requires a multi-line format to be more readable.
 

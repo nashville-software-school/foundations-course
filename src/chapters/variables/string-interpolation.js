@@ -2,8 +2,8 @@ export const stringInterpolationChapter = {
   id: 'string-interpolation',
   title: 'String Values',
   sectionId: 'variables-and-values',
-  previousChapterId: 'math-operations',
-  nextChapterId: 'multiline-strings',
+  previousChapterId: 'variables-intro',
+  nextChapterId: 'math-operations',
   content: `In the previous exercise, you worked with variables that represented numeric values. In this chapter, you are going to work with different kinds of values: strings. A string value is a series of numbers, letters, and symbols surrounded by either a single quote \`'\` or a double quote \`"\`.
 
 You are going to be using double quotes around all of your strings, just so that you can be consistent.
@@ -20,7 +20,7 @@ That string contains numbers, a symbol _(the dash)_, and letters. Trust me, you 
 
 ## String Interpolation
 
-Yeah, we know it's a weird word. What it means is that you can insert a string value into another string by using the variable name. Here's a quick example of what it looks like.
+Yeah, we know it's a weird word. What it means is that you can insert a string value into another string by using the variable name. Here's a quick example of what it looks like. It can be hard to notice, but the string below is surrounded by backticks (\`), not quotes. The backtick is the key right beneath your ESCAPE key on your keyboard.
 
 Remember the \`const\` keyword? It means that I cannot change the value of the variable after it has been declared.
 
@@ -39,7 +39,10 @@ This would produce the output of the following string.
 I play games on my Sony Playstation and my 2017 Macbook Pro
 \`\`\`
 
-It's important to note that the string that was assigned as the value for the \`gameSystems\` variable does not have single quotes around it. If you look closely, you'll notice that the character is slightly tilted. It's called the backtick. It's the key right beneath your ESCAPE key on your keyboard.
+| Character | Description |
+|-----------|-------------|
+| \`         | Backtick, used for inserting the value of a variable into a larger string |
+| ' or "     | Single or double quotes, used for simple string value with nothing dynamic added |
 
 ## Exercise
 

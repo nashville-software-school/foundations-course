@@ -9,8 +9,8 @@ import { variablesReviewChapter } from './variables-review'
 
 export const variablesChapters = [
   variablesIntroChapter,
-  mathOperationsChapter,
   stringInterpolationChapter,
+  mathOperationsChapter,
   multilineStringsChapter,
   stringMethodsChapter,
   booleanLogicChapter,
