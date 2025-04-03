@@ -173,7 +173,7 @@ const email = "   hello@email.com   "
 const phone = "555 0123"
 
 // Convert the name to all uppercase
-const name = "john"
+const customerName = "john"
 
 // Check if the password contains the letter "x"
 const password = "SecurePass"
@@ -186,10 +186,18 @@ const cleanEmail =
 const formattedPhone =
 const formattedName =
 const containsX =
-const fileStart = `,
+const fileStart =
+
+// These allow you to check your results when you click the "Run Code" button
+console.log(cleanEmail)
+console.log(formattedPhone)
+console.log(formattedName)
+console.log(containsX)
+console.log(fileStart)
+`,
     solution: `const email = "   hello@email.com   "
 const phone = "555 0123"
-const name = "john"
+const customerName = "john"
 const password = "SecurePass"
 const filename = "vacation.jpg"
 
@@ -200,7 +208,7 @@ const cleanEmail = email.trim()
 const formattedPhone = phone.replace(" ", "-")
 
 // Convert to uppercase
-const formattedName = name.toUpperCase()
+const formattedName = customerName.toUpperCase()
 
 // Check if contains "x"
 const containsX = password.includes("x")
