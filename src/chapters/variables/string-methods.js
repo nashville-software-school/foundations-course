@@ -11,8 +11,8 @@ export const stringMethodsChapter = {
 The \`length\` property returns the number of characters in a string.
 
 \`\`\`js
-const name = "John Doe"
-console.log(name.length) // Output: 8
+const patientName = "John Doe"
+console.log(patientName.length) // Output: 8
 
 const empty = ""
 console.log(empty.length) // Output: 0
@@ -63,6 +63,10 @@ console.log(rightPadded.trimEnd()) // Output: "Text"
 \`\`\`
 
 ## Substring Extraction
+
+In software languages, the position of a character in a string is often referred to as its index. The first character has an index of 0, the second character has an index of 1, and so on. This is known as zero-based indexing, and can be confusing for beginners.
+
+You can use the index to extract a substring from a string. The following methods are commonly used for this purpose:
 
 ### slice(startIndex, endIndex)
 Extracts a portion of a string. The endIndex is optional and not included in the result.
@@ -125,70 +129,84 @@ const text = "cat cat cat"
 console.log(text.replaceAll("cat", "dog")) // Output: "dog dog dog"
 \`\`\`
 
-## Real-World Examples
+## Simple Examples for Practice
 
-### Formatting User Input
+### Removing Spaces
 \`\`\`js
 const username = "   JohnDoe123   "
-const cleanUsername = username.trim().toLowerCase()
-// Result: "johndoe123"
+const trimmedUsername = username.trim()
+// Result: "JohnDoe123"
 \`\`\`
 
-### Validating File Types
+### Converting to Uppercase
 \`\`\`js
-const filename = "document.pdf"
-const isImage = filename.toLowerCase().endsWith(".jpg") ||
-                filename.toLowerCase().endsWith(".png")
-// Result: false
+const message = "hello world"
+const shoutedMessage = message.toUpperCase()
+// Result: "HELLO WORLD"
 \`\`\`
 
-### Extracting Domain from Email
+### Replacing Text
 \`\`\`js
-const email = "user@example.com"
-const domain = email.slice(email.indexOf("@") + 1)
-// Result: "example.com"
+const greeting = "Hello Sam"
+const newGreeting = greeting.replace("Sam", "Kim")
+// Result: "Hello Kim"
+\`\`\`
+
+### Getting Part of a String
+\`\`\`js
+const message = "Hello World"
+const firstFive = message.slice(0, 5)
+// Result: "Hello"
 \`\`\`
 
 ## Exercise
 
 You'll be working with user data that needs cleaning and formatting. Use various string methods to transform the data as specified in the comments.
 
-Try it in the editor!`,
+In the editor, you will see several strings defined, with a comment indicating what you need to do with each string. Your task is to write the code that performs the required transformations. Refer to the examples above for guidance.
+`,
   exercise: {
-    starterCode: `// 1. Clean up the email address (remove spaces, convert to lowercase)
-const email = "   User.Name@Email.COM   "
+    starterCode: `// Remove spaces from the beginning and end of the email
+const email = "   hello@email.com   "
 
-// 2. Format the phone number (should be "555-0123")
+// Replace the space with a hyphen in the phone number
 const phone = "555 0123"
 
-// 3. Format the name (first letter uppercase, rest lowercase)
-const name = "jOHN dOE"
+// Convert the name to all uppercase
+const name = "john"
 
-// 4. Check if the password ends with a number
-const password = "SecurePass123"
+// Check if the password contains the letter "x"
+const password = "SecurePass"
 
-// 5. Extract the file type (e.g., "jpg" from "photo.jpg")
-const filename = "vacation-photo.jpg"
+// Get the first 4 characters of the filename
+const filename = "vacation.jpg"
 
-// Your code here:
+// Your code here (use only ONE string method for each task):
 const cleanEmail =
 const formattedPhone =
 const formattedName =
-const hasNumberAtEnd =
-const fileType = `,
-    solution: `const email = "   User.Name@Email.COM   "
+const containsX =
+const fileStart = `,
+    solution: `const email = "   hello@email.com   "
 const phone = "555 0123"
-const name = "jOHN dOE"
-const password = "SecurePass123"
-const filename = "vacation-photo.jpg"
+const name = "john"
+const password = "SecurePass"
+const filename = "vacation.jpg"
 
-const cleanEmail = email.trim().toLowerCase()
+// Remove spaces from beginning and end
+const cleanEmail = email.trim()
+
+// Replace space with hyphen
 const formattedPhone = phone.replace(" ", "-")
-const formattedName = name.toLowerCase().split(" ")
-  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-  .join(" ")
-const hasNumberAtEnd = /[0-9]$/.test(password)
-const fileType = filename.slice(filename.lastIndexOf(".") + 1)`,
+
+// Convert to uppercase
+const formattedName = name.toUpperCase()
+
+// Check if contains "x"
+const containsX = password.includes("x")
+
+// Get first 4 characters
+const fileStart = filename.slice(0, 4)`,
     tests: [
       {
         name: "Email Formatting",
@@ -196,12 +214,12 @@ const fileType = filename.slice(filename.lastIndexOf(".") + 1)`,
           try {
             const func = new Function(code + '\n return cleanEmail')
             const cleanEmail = func()
-            return cleanEmail === "user.name@email.com"
+            return cleanEmail === "hello@email.com"
           } catch (error) {
             return false
           }
         },
-        message: "The email should be trimmed and converted to lowercase"
+        message: "The email should be trimmed to remove spaces"
       },
       {
         name: "Phone Formatting",
@@ -217,29 +235,41 @@ const fileType = filename.slice(filename.lastIndexOf(".") + 1)`,
         message: "The phone number should be formatted with a hyphen (555-0123)"
       },
       {
-        name: "Name Capitalization",
+        name: "Name Formatting",
         test: (code) => {
           try {
             const func = new Function(code + '\n return formattedName')
             const formattedName = func()
-            return formattedName === "John Doe"
+            return formattedName === "JOHN"
           } catch (error) {
             return false
           }
         },
-        message: "The name should be properly capitalized (John Doe)"
+        message: "The name should be converted to uppercase (JOHN)"
       },
       {
-        name: "Password Validation",
+        name: "Password Check",
         test: (code) => {
           try {
-            const hasNumberAtEnd = new Function(code + '\n return hasNumberAtEnd')()
-            return hasNumberAtEnd === true
+            const containsX = new Function(code + '\n return containsX')()
+            return containsX === false
           } catch (error) {
             return false
           }
         },
-        message: "Check if the password ends with a number using the slice() string method"
+        message: "Check if the password contains the letter 'x'"
+      },
+      {
+        name: "Filename Start",
+        test: (code) => {
+          try {
+            const fileStart = new Function(code + '\n return fileStart')()
+            return fileStart === "vaca"
+          } catch (error) {
+            return false
+          }
+        },
+        message: "Extract the first 4 characters of the filename"
       }
     ]
   }

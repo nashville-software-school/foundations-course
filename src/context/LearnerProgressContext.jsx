@@ -47,13 +47,14 @@ export const LearnerProgressProvider = ({ children }) => {
         console.log('Verified cookie value:', cookieValue);
     }, [progress])
 
-    const trackAttempt = (exerciseId) => {
+    const trackAttempt = (exerciseId, chapterTitle) => {
         setProgress(prev => {
             const exercise = prev.exercises[exerciseId] || {
                 attempts: 0,
                 completed: false,
                 firstAttempt: null,
-                lastAttempt: null
+                lastAttempt: null,
+                title: chapterTitle
             }
 
             return {

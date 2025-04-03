@@ -196,7 +196,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       setHideResultsTimeout(timeout)
 
       // Track attempt before running tests
-      trackAttempt(chapterId)
+      trackAttempt(chapterId, currentChapter.title)
 
       const results = chapterContent.exercise.tests.map(test => {
         // For single-file exercises, pass just the code

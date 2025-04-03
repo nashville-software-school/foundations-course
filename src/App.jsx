@@ -28,13 +28,13 @@ function IntroRedirect() {
   console.log('IntroRedirect - hasSeenIntro from context:', hasSeenIntroContext);
   console.log('IntroRedirect - hasSeenIntro from cookie:', hasSeenIntroCookie);
 
-  // For demonstration purposes, if we have the URL parameter, pass it along to maintain state
-  if (!hasSeenIntroCookie || !hasSeenIntroParam) {
+  // Only redirect to intro if neither cookie nor URL parameter indicate the intro was seen
+  if (!hasSeenIntroCookie && !hasSeenIntroParam) {
     return <Navigate to="/intro" replace />;
   }
 
   console.log('Redirecting to main content');
-  // Preserve the URL parameter when redirecting
+  // If hasSeenIntroParam is true, preserve it when redirecting
   return <Navigate to={hasSeenIntroParam ? "/github-account?hasSeenIntro=true" : "/github-account"} replace />;
 }
 
