@@ -1,6 +1,6 @@
 export const arrayIntroChapter = {
   id: 'arrays-intro',
-  title: 'Introduction',
+  title: 'Introduction to Arrays',
   sectionId: 'arrays',
   previousChapterId: null,
   nextChapterId: 'arrays-indices',

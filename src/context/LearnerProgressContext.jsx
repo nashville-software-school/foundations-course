@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { useAuth } from '../context/AuthContext'
 import { chapters } from '../chapters'
 import Cookies from 'js-cookie'
 
@@ -28,6 +29,7 @@ export const LearnerProgressProvider = ({ children }) => {
 
         return defaultState
     })
+    const { user } = useAuth()
 
     // Persist to localStorage and cookies whenever progress changes
     useEffect(() => {
@@ -45,10 +47,63 @@ export const LearnerProgressProvider = ({ children }) => {
         const cookieValue = Cookies.get('hasSeenIntro');
         console.log('Verified localStorage data:', savedData.length);
         console.log('Verified cookie value:', cookieValue);
-    }, [progress])
+
+        // Only send progress to API if lastUpdatedExerciseId exists
+        if (progress.lastUpdatedExerciseId && progress.exercises[progress.lastUpdatedExerciseId]) {
+            console.log('Sending progress for exercise:', progress.lastUpdatedExerciseId);
+            sendProgressToAPI(
+                progress.lastUpdatedExerciseId,
+                progress.exercises[progress.lastUpdatedExerciseId]
+            );
+        }
+    }, [progress, user]) // Added user as a dependency since it's used in sendProgressToAPI
+
+    // Function to do a PUT request to the Learning Platform API. Must accept the current exercise being worked on as a parameter. The exercise is stringified and sent to the API
+    const sendProgressToAPI = async (exerciseId, currentProgress) => {
+        // Validate parameters
+        if (!exerciseId || !currentProgress) {
+            console.warn('sendProgressToAPI called with invalid parameters:', { exerciseId, currentProgress });
+            return;
+        }
+
+        // Validate user is authenticated
+        if (!user || !user.id) {
+            console.warn('sendProgressToAPI called without authenticated user');
+            return;
+        }
+
+        const payload = {
+            ...currentProgress,
+            userId: user.id,
+            username: user.name,
+        }
+
+        try {
+            // Use dedicated environment variable for learning platform API
+            // Default to localhost for development if not set
+            const apiDomain = import.meta.env.VITE_LEARNING_PLATFORM_API || 'http://localhost:8000';
+            const apiUrl = `${apiDomain}/foundations/${exerciseId}`;
+
+            console.log(`Sending progress to API: ${apiUrl}`);
+
+            const response = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                console.warn(`API response not OK: ${response.status} ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error sending progress to API:', error)
+        }
+    }
 
     const trackAttempt = (exerciseId, chapterTitle) => {
-        setProgress(prev => {
+        return setProgress(prev => {
             const exercise = prev.exercises[exerciseId] || {
                 attempts: 0,
                 completed: false,
@@ -57,7 +112,7 @@ export const LearnerProgressProvider = ({ children }) => {
                 title: chapterTitle
             }
 
-            return {
+            const newState = {
                 ...prev,
                 exercises: {
                     ...prev.exercises,
@@ -68,8 +123,11 @@ export const LearnerProgressProvider = ({ children }) => {
                         lastAttempt: new Date().toISOString()
                     }
                 },
-                lastUpdated: new Date().toISOString()
+                lastUpdated: new Date().toISOString(),
+                lastUpdatedExerciseId: exerciseId
             }
+
+            return newState
         })
     }
 
@@ -95,7 +153,8 @@ export const LearnerProgressProvider = ({ children }) => {
                         completedCode: code
                     }
                 },
-                lastUpdated: new Date().toISOString()
+                lastUpdated: new Date().toISOString(),
+                lastUpdatedExerciseId: exerciseId // Add this to track which exercise was completed
             }
         })
     }
@@ -147,7 +206,9 @@ export const LearnerProgressProvider = ({ children }) => {
             const newState = {
                 ...prev,
                 hasSeenIntro: true,
-                lastUpdated: new Date().toISOString()
+                lastUpdated: new Date().toISOString(),
+                // Preserve lastUpdatedExerciseId if it exists
+                lastUpdatedExerciseId: prev.lastUpdatedExerciseId
             };
 
             console.log('New progress state:', newState);
@@ -161,7 +222,8 @@ export const LearnerProgressProvider = ({ children }) => {
         trackCompletion,
         getExerciseProgress,
         getGlobalProgress,
-        markIntroAsSeen
+        markIntroAsSeen,
+        sendProgressToAPI
     }
 
     return (

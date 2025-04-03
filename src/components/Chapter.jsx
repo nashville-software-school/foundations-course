@@ -12,7 +12,12 @@ import './Chapter.css'
 
 const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, getPreviousChapter, getNextChapter }) => {
   const { chapterId } = useParams()
-  const { trackAttempt, trackCompletion, getExerciseProgress } = useLearnerProgress()
+  const {
+    trackAttempt,
+    sendProgressToAPI,
+    trackCompletion,
+    getExerciseProgress
+  } = useLearnerProgress()
   const [files, setFiles] = useState({})
   const [testResults, setTestResults] = useState(null)
   const [showResults, setShowResults] = useState(true)

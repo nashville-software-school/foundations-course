@@ -8,7 +8,8 @@ export default defineConfig(({ mode }) => {
 
   console.log('OAuth env variables loaded:', {
     clientId: env.VITE_OAUTH_CLIENT_ID ? 'Present' : 'Missing',
-    proxyDomain: env.VITE_PROXY_DOMAIN ? 'Present' : 'Missing'
+    proxyDomain: env.VITE_PROXY_DOMAIN ? 'Present' : 'Missing',
+    lmsDomain: env.VITE_LEARNING_PLATFORM_API ? 'Present' : 'Missing',
   });
 
   // Make sure we have the required environment variables
@@ -31,7 +32,8 @@ export default defineConfig(({ mode }) => {
     // Make env variables available to client-side code
     define: {
       'process.env.VITE_OAUTH_CLIENT_ID': JSON.stringify(env.VITE_OAUTH_CLIENT_ID),
-      'process.env.VITE_PROXY_DOMAIN': JSON.stringify(env.VITE_PROXY_DOMAIN)
+      'process.env.VITE_PROXY_DOMAIN': JSON.stringify(env.VITE_PROXY_DOMAIN),
+      'process.env.VITE_LEARNING_PLATFORM_API': JSON.stringify(env.VITE_LEARNING_PLATFORM_API),
     },
     // Environment Variables:
     // Vite automatically loads env files in the following order:

@@ -11,7 +11,7 @@ import { assessments } from './assessments'
 // Helper function to add requiresAuth flag based on section
 const addAuthRequirement = (chapter) => ({
   ...chapter,
-  requiresAuth: ["arrays", "objects", "functions", "modules"].includes(
+  requiresAuth: ["variables-and-values", "arrays", "objects", "functions", "modules"].includes(
     chapter.sectionId
   ),
 });

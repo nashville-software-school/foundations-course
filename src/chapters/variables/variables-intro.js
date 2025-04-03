@@ -1,6 +1,6 @@
 export const variablesIntroChapter = {
     id: 'variables-intro',
-    title: 'Variabes Introduction',
+    title: 'Variables Introduction',
     sectionId: 'variables-and-values',
     nextChapterId: 'string-interpolation',
     previousChapterId: null, // First chapter in Variables and Values section

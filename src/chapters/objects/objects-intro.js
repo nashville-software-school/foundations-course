@@ -1,6 +1,6 @@
 export const objectsIntroChapter = {
   id: 'objects-intro',
-  title: 'Introduction',
+  title: 'Introduction to Objects',
   sectionId: 'objects',
   previousChapterId: null,
   nextChapterId: 'objects-multiple',
