@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const arrayIntroChapter = {
   id: 'arrays-intro',
   title: 'Introduction to Arrays',
@@ -54,22 +56,30 @@ const fruits = []
 
 console.log(fruits)
 `,
-    solution: `const fruits = ["Banana", "Orange", "Apple", "Watermelon", "Blueberry"]
+    solution: `// Current setup
+const yellowFruit = "Banana"
+const orangeFruit = "Orange"
+const redFruit = "Apple"
+const greenFruit = "Watermelon"
+const blueFruit = "Blueberry"
+
+// Your code here
+const fruits = ["Banana", "Orange", "Apple", "Watermelon", "Blueberry"]
 console.log(fruits)`,
     tests: [
       {
         name: "Array Creation",
         test: (code) => {
           try {
-            const fruitsArray = new Function(code + `;return fruits`)()
-            return fruitsArray.length === 5 &&
+            const fruitsArray = new Function(code + `\n return fruits`)()
+            return new TestResult(fruitsArray.length === 5 &&
               fruitsArray[0] === "Banana" &&
               fruitsArray[1] === "Orange" &&
               fruitsArray[2] === "Apple" &&
               fruitsArray[3] === "Watermelon" &&
-              fruitsArray[4] === "Blueberry"
-          } catch (error) {
-            return false
+              fruitsArray[4] === "Blueberry")
+          } catch {
+            return new TestResult(false)
           }
         },
         message: "Make sure you've included all fruits in the array in the correct order"

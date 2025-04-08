@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const arrayIterationChapter = {
   id: 'arrays-iteration',
   title: 'Array Iteration',
@@ -106,29 +108,45 @@ for (const topic of topics) {
 }`,
     tests: [
       {
+        name: "Correct Syntax",
+        test: (code) => {
+            try {
+                new Function(code)(); // Just check that it executes
+                return new TestResult(true)
+            } catch {
+                return new TestResult(false);
+            }
+          },
+          message: "Make sure your code runs without syntax or runtime errors."
+      },
+      {
         name: "Array Creation",
         test: (code) => {
-          const topicsArray = new Function(code + `;return topics`)();
-          return topicsArray.length === 7 &&
+          try {
+          const topicsArray = new Function(code + `\nreturn topics`)();
+          return new TestResult(topicsArray.length === 7 &&
             topicsArray[0] === "Variables" &&
             topicsArray[1] === "Loops" &&
             topicsArray[2] === "Arrays" &&
             topicsArray[3] === "Functions" &&
             topicsArray[4] === "Objects" &&
             topicsArray[5] === "Modules" &&
-            topicsArray[6] === "Events"
+            topicsArray[6] === "Events")
+          } catch {
+            return new TestResult(false);
+          }
         },
         message: `Make sure you've included all the topics in the array
 * Make sure the topics are in the correct order`
       },
       {
         name: "For..of Loop",
-        test: (code) => code.includes('for (const') && code.includes(' of topics)'),
+        test: (code) => new TestResult(code.includes('for (const') && code.includes(' of topics)')),
         message: "Make sure you're using a for..of loop to iterate the topics array"
       },
       {
         name: "Console Output",
-        test: (code) => code.includes('console.log('),
+        test: (code) => new TestResult(code.includes('console.log')),
         message: "Make sure to use console.log() to output each topic"
       }
     ]

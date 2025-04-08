@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const multilineStringsChapter = {
   id: 'multiline-strings',
   title: 'Multi-line Strings',
@@ -69,12 +71,12 @@ const healthInsurance = 508
 // 2. Total monthly expenses
 // 3. Net monthly income
 
-const statement = ""  // Use backticks and calculations here`,
+const statement = "";  // Use backticks and calculations here`,
     solution: `// Monthly income
 const myIncome = 5478
 const spouseIncome = 4028
 
-// Monthly expenses
+// Monthly expenses;
 const phoneBill = 254
 const mortgage = 2161
 const carInsurance = 205
@@ -87,19 +89,19 @@ Our net monthly income is \${(myIncome + spouseIncome) - (phoneBill + mortgage +
       {
         name: "Multi-line Format",
         test: (code) => {
-          return code.includes('`') &&
+          return new TestResult(code.includes('`') &&
                  code.includes('\n') &&
-                 code.includes('statement')
+                 code.includes('statement'))
         },
         message: "Make sure to use backticks for multi-line string formatting"
       },
       {
         name: "Calculations",
         test: (code) => {
-          const func = new Function(code + '; return statement')();
-          return func.includes('Our combined monthly income is 9506.') &&
-                  func.includes('Our total monthly expenses are 3128.') &&
-                  func.includes('Our net monthly income is 6378.');
+          const res = new Function(code + '\n  return statement;')();
+          return new TestResult(res.includes('Our combined monthly income is 9506.') &&
+            res.includes('Our total monthly expenses are 3128.') &&
+            res.includes('Our net monthly income is 6378.'));
         },
         message: "Make sure to calculate total income and expenses correctly"
       }

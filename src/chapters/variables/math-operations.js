@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const mathOperationsChapter = {
     id: "math-operations",
     title: "\"Scary\" Math Operations",
@@ -101,52 +103,52 @@ Our combined monthly income is xxx. Our net monthly income is xxx.
 \`\`\``,
     exercise: {
         starterCode: `// Your monthly income
-const myIncome = 4388
+const myIncome = 4388;
 
 // Your husband's monthly income
-const spouseIncome = 3512
+const spouseIncome = 3512;
 
 // Monthly bills
-const internetBill = 158
-const waterBill = 68
-const electricBill = 129
-const fuelExpenses = 295
-const foodExpenses = 503
+const internetBill = 158;
+const waterBill = 68;
+const electricBill = 129;
+const fuelExpenses = 295;
+const foodExpenses = 503;
 
 // Calculate combined income
-let combinedIncome = 0
+let combinedIncome = 0;
 
 // Calculate net income (combined income minus all expenses)
-let netIncome = 0
+let netIncome = 0;
 
 // Create the output string using string interpolation
-const output = ""`,
+const output = "";`,
         solution: `// Your monthly income
-const myIncome = 4388
+const myIncome = 4388;
 
 // Your husband's monthly income
-const spouseIncome = 3512
+const spouseIncome = 3512;
 
 // Monthly bills
-const internetBill = 158
-const waterBill = 68
-const electricBill = 129
-const fuelExpenses = 295
-const foodExpenses = 503
+const internetBill = 158;
+const waterBill = 68;
+const electricBill = 129;
+const fuelExpenses = 295;
+const foodExpenses = 503;
 
 // Calculate combined income
-let combinedIncome = myIncome + spouseIncome
+let combinedIncome = myIncome + spouseIncome;
 
 // Calculate net income (combined income minus all expenses)
-let netIncome = combinedIncome
-netIncome -= internetBill
-netIncome -= waterBill
-netIncome -= electricBill
-netIncome -= fuelExpenses
-netIncome -= foodExpenses
+let netIncome = combinedIncome;
+netIncome -= internetBill;
+netIncome -= waterBill;
+netIncome -= electricBill;
+netIncome -= fuelExpenses;
+netIncome -= foodExpenses;
 
 // Create the output string using string interpolation
-const output = \`Our combined monthly income is \${combinedIncome}. Our net monthly income is \${netIncome}.\`
+const output = \`Our combined monthly income is \${combinedIncome}. Our net monthly income is \${netIncome}.\`;
 `,
         tests: [
             {
@@ -154,9 +156,9 @@ const output = \`Our combined monthly income is \${combinedIncome}. Our net mont
                 test: (code) => {
                     try {
                         const result = new Function(code + '\nreturn combinedIncome')();
-                        return result === 7900;
-                    } catch (error) {
-                        return false;
+                        return new TestResult(result === 7900);
+                    } catch {
+                        return new TestResult(false);
                     }
                 },
                 message: "The combined income should be $7900 (myIncome + spouseIncome)"
@@ -166,9 +168,9 @@ const output = \`Our combined monthly income is \${combinedIncome}. Our net mont
                 test: (code) => {
                     try {
                         const result = new Function(code + '\nreturn netIncome')();
-                        return result === 6747
-                    } catch (error) {
-                        return false;
+                        return new TestResult(result === 6747);
+                    } catch {
+                        return new TestResult(false);
                     }
                 },
                 message: "The net income should be $6747 (combined income minus all expenses)"
@@ -179,9 +181,9 @@ const output = \`Our combined monthly income is \${combinedIncome}. Our net mont
                     try {
                         const result = new Function(code + '\nreturn output')();
                         const expectedOutput = "Our combined monthly income is 7900. Our net monthly income is 6747.";
-                        return result === expectedOutput;
-                    } catch (error) {
-                        return false;
+                        return new TestResult(result === expectedOutput);
+                    } catch {
+                        return new TestResult(false);
                     }
                 },
                 message: `Make sure you include the correct values in the output string

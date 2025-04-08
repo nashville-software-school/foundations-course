@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const variablesReviewChapter = {
   id: 'variables-review',
   title: 'Section Project',
@@ -123,16 +125,16 @@ console.log(output)`,
         name: "Total Photos Calculation",
         test: (code) => {
           try {
-            const func = new Function(code + '; return output')
+            const func = new Function(code + '\n return output')
             const result = func()
             if (result === undefined) return false
             const expectedOutput = `There are 124 total photos
 There are 72 photos of women
 There are 52 photos of men
 Photos will be stored in a plum colored Photo Album`
-            return result === expectedOutput
-          } catch (error) {
-            return false
+            return new TestResult(result === expectedOutput)
+          } catch {
+            return  new TestResult(false)
           }
         },
         message: "Make sure to calculate the total photos by adding femalePhotos and malePhotos"
@@ -144,13 +146,13 @@ Photos will be stored in a plum colored Photo Album`
             const func = new Function(code + '; return photoStorage')
             const result = func()
             if (result === undefined) return false
-            return result === "Photo Album" &&
+            return  new TestResult(result === "Photo Album" &&
                    code.includes('if') &&
                    code.includes('else') &&
                    code.includes('110') &&
-                   code.includes('50')
-          } catch (error) {
-            return false
+                   code.includes('50'))
+          } catch {
+            return  new TestResult(false)
           }
         },
         message: "Use if/else statements to determine storage type based on total photos (>110 for album, >=50 for shoe box)"
@@ -159,12 +161,12 @@ Photos will be stored in a plum colored Photo Album`
         name: "Album Color Selection",
         test: (code) => {
           try {
-            const func = new Function(code + '; return albumColor;')
+            const func = new Function(code + '\n return albumColor;')
             const result = func()
             if (result === undefined) return false
-            return result === "plum"
-          } catch (error) {
-            return false
+            return  new TestResult(result === "plum")
+          } catch {
+            return  new TestResult(false)
           }
         },
         message: "Determine album color based on comparing femalePhotos and malePhotos"

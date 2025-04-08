@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const stringInterpolationChapter = {
   id: 'string-interpolation',
   title: 'String Values',
@@ -70,23 +72,35 @@ const refrigerator = "Samsung French Door"
 const allElectronics = \`I have the following electronic devices. My \${television} television, my \${computer} computer, my \${refrigerator} refrigerator, and my \${phone} phone\``,
     tests: [
       {
+        name: "String Interpolation Correct Syntax",
+        test: (code) => {
+            try {
+                new Function(code)(); // Just check that it executes
+                return new TestResult(true)
+            } catch {
+                return new TestResult(false);
+            }
+          },
+          message: "Make sure your string interpolation code runs without errors."
+      },
+      {
         name: "Variable Creation",
         test: (code) => {
-          return code.includes('const computer') &&
+          return new TestResult(code.includes('const computer') &&
                  code.includes('const phone') &&
                  code.includes('const television') &&
-                 code.includes('const refrigerator')
+                 code.includes('const refrigerator'))
         },
         message: "Make sure to create all four electronic device variables"
       },
       {
         name: "String Interpolation",
         test: (code) => {
-          return code.includes('`') &&
+          return new TestResult(code.includes('`') &&
                  code.includes('${television}') &&
                  code.includes('${computer}') &&
                  code.includes('${refrigerator}') &&
-                 code.includes('${phone}')
+                 code.includes('${phone}'))
         },
         message: "Make sure to use string interpolation with backticks and ${} syntax"
       }

@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const stringMethodsChapter = {
   id: 'string-methods',
   title: 'String Methods',
@@ -11,11 +13,11 @@ export const stringMethodsChapter = {
 The \`length\` property returns the number of characters in a string.
 
 \`\`\`js
-const patientName = "John Doe"
-console.log(patientName.length) // Output: 8
+const patientName = "John Doe";
+console.log(patientName.length); // Output: 8
 
-const empty = ""
-console.log(empty.length) // Output: 0
+const empty = "";
+console.log(empty.length); // Output: 0
 \`\`\`
 
 ## Case Transformation
@@ -24,16 +26,16 @@ console.log(empty.length) // Output: 0
 Converts all characters to uppercase.
 
 \`\`\`js
-const message = "Hello, World!"
-console.log(message.toUpperCase()) // Output: "HELLO, WORLD!"
+const message = "Hello, World!";
+console.log(message.toUpperCase()); // Output: "HELLO, WORLD!"
 \`\`\`
 
 ### toLowerCase()
 Converts all characters to lowercase.
 
 \`\`\`js
-const shout = "PLEASE BE QUIET"
-console.log(shout.toLowerCase()) // Output: "please be quiet"
+const shout = "PLEASE BE QUIET";
+console.log(shout.toLowerCase()); // Output: "please be quiet"
 \`\`\`
 
 ## Whitespace Removal
@@ -222,9 +224,9 @@ const fileStart = filename.slice(0, 4)`,
           try {
             const func = new Function(code + '\n return cleanEmail')
             const cleanEmail = func()
-            return cleanEmail === "hello@email.com"
-          } catch (error) {
-            return false
+            return new TestResult(cleanEmail === "hello@email.com")
+          } catch {
+            return new TestResult(false)
           }
         },
         message: "The email should be trimmed to remove spaces"
@@ -235,9 +237,9 @@ const fileStart = filename.slice(0, 4)`,
           try {
             const func = new Function(code + '\n return formattedPhone')
             const formattedPhone = func()
-            return formattedPhone === "555-0123"
-          } catch (error) {
-            return false
+            return new TestResult(formattedPhone === "555-0123")
+          } catch {
+            return new TestResult(false)
           }
         },
         message: "The phone number should be formatted with a hyphen (555-0123)"
@@ -248,9 +250,9 @@ const fileStart = filename.slice(0, 4)`,
           try {
             const func = new Function(code + '\n return formattedName')
             const formattedName = func()
-            return formattedName === "JOHN"
-          } catch (error) {
-            return false
+            return new TestResult(formattedName === "JOHN")
+          } catch {
+            return new TestResult(false)
           }
         },
         message: "The name should be converted to uppercase (JOHN)"
@@ -260,9 +262,9 @@ const fileStart = filename.slice(0, 4)`,
         test: (code) => {
           try {
             const containsX = new Function(code + '\n return containsX')()
-            return containsX === false
-          } catch (error) {
-            return false
+            return new TestResult(containsX === false)
+          } catch {
+            return new TestResult(false)
           }
         },
         message: "Check if the password contains the letter 'x'"
@@ -272,9 +274,9 @@ const fileStart = filename.slice(0, 4)`,
         test: (code) => {
           try {
             const fileStart = new Function(code + '\n return fileStart')()
-            return fileStart === "vaca"
-          } catch (error) {
-            return false
+            return new TestResult(fileStart === "vaca")
+          } catch {
+            return new TestResult(false)
           }
         },
         message: "Extract the first 4 characters of the filename"

@@ -136,12 +136,6 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       clearTimeout(hideConsoleTimeout)
     }
 
-    // Set a new timeout to hide console output after 8 seconds
-    const timeout = setTimeout(() => {
-      setShowConsoleOutput(false)
-    }, 8000)
-    setHideConsoleTimeout(timeout)
-
     // Store original console.log
     const originalConsoleLog = console.log;
 
@@ -194,14 +188,20 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
         clearTimeout(hideResultsTimeout)
       }
 
-      // Set a new timeout to hide test results after 8 seconds
-      const timeout = setTimeout(() => {
-        setShowResults(false)
-      }, 8000)
-      setHideResultsTimeout(timeout)
-
       // Track attempt before running tests
       trackAttempt(chapterId, currentChapter.title)
+
+      // TEMP backward compatible fill until I update all tests to return the new object of format: 
+      // {
+      //   pass: boolan, 
+      //   message: ()= string
+      // }
+      // Legacy tests  return true or false
+      function upgradeLegacyReturn(ret){
+        return {
+          pass:ret
+        }
+      }
 
       const results = chapterContent.exercise.tests.map(test => {
         // For single-file exercises, pass just the code
@@ -209,14 +209,18 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
         const isMultiFile = typeof chapterContent.exercise.starterCode === 'object'
         const testArg = isMultiFile ? files : files['index.js']
 
+        let testResult = test.test(testArg)
+        if (typeof testResult == "boolean") {
+          testResult = upgradeLegacyReturn(testResult)
+        }
         return {
           name: test.name,
-          passed: test.test(testArg),
+          testResult,
           message: test.message
         }
       })
 
-      const allPassed = results.every(result => result.passed)
+      const allPassed = results.every(result => result.testResult.pass)
 
       // Track completion if all tests passed
       if (allPassed) {
@@ -227,8 +231,15 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       }
 
       const fullMessage = results.reduce((messages, currentResult) => {
-        messages.push(currentResult.passed ? `* <span style="color: green;">${currentResult.name} passed!</span>` : `* ${currentResult.message}`)
-        return messages
+          if (currentResult.testResult.pass){
+            messages.push(`* <span style="color: green;">${currentResult.name} passed!</span>`);
+          } else {
+            messages.push(`* ${currentResult.message}`)
+            if (hasFunction(currentResult.testResult.message) && currentResult.testResult.message()){
+              messages.push(`* ${currentResult.testResult.message()}`)
+            }
+          }
+          return messages
       }, []).join('\n')
 
       const testResults = {
@@ -241,7 +252,9 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       setTestResults(testResults)
     }
   }
-
+  function hasFunction(variable) {
+    return typeof variable === 'function';
+  }
   return (
     <div className="chapter" style={{
       gridTemplateColumns: chapterContent.exercise ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)',

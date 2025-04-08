@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const arrayPushChapter = {
   id: 'arrays-push',
   title: 'Adding Items to Arrays',
@@ -88,22 +90,30 @@ console.log(toFireInKiln)`,
       {
         name: "Four items added to kiln array",
         test: (code) => {
-          const kilnArray = new Function(`${code}; return toFireInKiln;`)()
-          return kilnArray.length === 4
+        try {
+            const kilnArray = new Function(`${code}; return toFireInKiln;`)()
+            return new TestResult(kilnArray.length === 4)
+        } catch {
+          return new TestResult(false)
+        }
         },
         message: "Make sure you're using a for..of loop to iterate the clay array so that 4 coffee mugs are created"
       },
       {
         name: "Kiln array contains only coffee mugs",
         test: (code) => {
-          const kilnArray = new Function(`${code}; return toFireInKiln;`)()
-          return kilnArray.every(mug => mug === "coffee mug")
+         try {
+           const kilnArray = new Function(`${code}; return toFireInKiln;`)()
+           return  new TestResult(kilnArray.every(mug => mug === "coffee mug"))
+         } catch {
+          return new TestResult(false)
+         }
         },
         message: "The kiln array should only contain string values of 'coffee mug'"
       },
       {
         name: "Array Push",
-        test: (code) => code.includes('toFireInKiln.push('),
+        test: (code) =>  new TestResult(code.includes('toFireInKiln.push(')),
         message: "Make sure to use the push() method to add mugs to the toFireInKiln array"
       }
     ]

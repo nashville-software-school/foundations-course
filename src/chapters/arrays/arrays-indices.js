@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const arrayIndicesChapter = {
   id: 'arrays-indices',
   title: 'Array Positions',
@@ -95,18 +97,60 @@ const thirdGlass = dirtyDishes[5]  // Whiskey glass`,
     tests: [
       {
         name: "First Glass",
-        test: (code) => code.includes('dirtyDishes[1]'),
+        test: (code) => {
+          try {
+            const wrapper = new Function(`${code} \n return firstGlass === dirtyDishes[1];
+            `);
+            const passed = wrapper();
+            return new TestResult(passed);
+          } catch {
+            return new TestResult(false, "* Code error. Did you define firstGlass?");
+          }
+        },
         message: "Make sure to get the Water glass at index 1"
       },
       {
         name: "Second Glass",
-        test: (code) => code.includes('dirtyDishes[3]'),
+        test: (code) => {
+          try {
+            const wrapper = new Function(`${code}\nreturn secondGlass === dirtyDishes[3];
+            `);
+            const passed = wrapper();
+            return new TestResult(passed);
+          } catch {
+            return new TestResult(false, "* Code error. Did you define secondGlass?");
+          }
+        },
         message: "Make sure to get the Wine glass at index 3"
       },
       {
         name: "Third Glass",
-        test: (code) => code.includes('dirtyDishes[5]'),
+        test: (code) => {
+          try {
+            const wrapper = new Function(`${code}\nreturn thirdGlass === dirtyDishes[5];
+            `);
+            const passed = wrapper();
+            return new TestResult(passed);
+          } catch {
+            return new TestResult(false, "* Code error. Did you define thirdGlass?");
+          }
+        },
         message: "Make sure to get the Whiskey glass at index 5"
+      },
+      {
+        name: "First Glass",
+        test: (code) => new TestResult(code.includes('dirtyDishes[1]')),
+        message: "Make sure to use square bracket notation array[index] to access index 1 and get the Water glass."
+      },
+      {
+        name: "Second Glass",
+        test: (code) => new TestResult(code.includes('dirtyDishes[3]')),
+        message: "Make sure to use square bracket notation array[index] to access index 3 and get the Wine glass."
+      },
+      {
+        name: "Third Glass",
+        test: (code) => new TestResult(code.includes('dirtyDishes[5]')),
+        message: "Make sure to use square bracket notation array[index] to access index 5 and get the Whiskey glass."
       }
     ]
   }

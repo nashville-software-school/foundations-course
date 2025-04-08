@@ -89,7 +89,8 @@
     pointer-events: none;
 }
 
-.chapter .test-results .close-button {
+.chapter .test-results .close-button,
+.chapter .console-output .close-button {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -106,7 +107,8 @@
     transition: color 0.2s;
 }
 
-.chapter .test-results .close-button:hover {
+.chapter .test-results .close-button:hover,
+.chapter .console-output .close-button:hover {
     color: #333;
 }
 
@@ -211,27 +213,6 @@
 .chapter .console-output.hidden {
     opacity: 0;
     pointer-events: none;
-}
-
-.chapter .console-output .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    color: #666;
-    padding: 4px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.2s;
-}
-
-.chapter .console-output .close-button:hover {
-    color: #333;
 }
 
 .chapter .console-output h3 {

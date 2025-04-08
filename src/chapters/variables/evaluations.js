@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const evaluationsChapter = {
   id: 'evaluations',
   title: 'Less Than, More Than',
@@ -152,11 +154,11 @@ console.log(\`This is what I'm wearing today:
         test: (code) => {
           try {
             const { torsoClothing, legClothing, footWear } = new Function(code + "\n return { torsoClothing, legClothing, footWear}")();
-            return torsoClothing === "Jacket" &&
+            return new TestResult(torsoClothing === "Jacket" &&
                    legClothing === "Pants" &&
-                   footWear === "Sneakers";
-          } catch (error) {
-            return false;
+                   footWear === "Sneakers");
+          } catch {
+            return new TestResult(false);
           }
         },
         message: "When temperature is 48 degrees, you should wear a Jacket, Pants, and Sneakers"
@@ -164,10 +166,10 @@ console.log(\`This is what I'm wearing today:
       {
         name: "Using Proper Conditions",
         test: (code) => {
-          return code.includes('if') &&
+          return new TestResult(code.includes('if') &&
                  code.includes('else if') &&
                  code.includes('>=') &&
-                 code.includes('<') ;
+                 code.includes('<'));
         },
         message: "Make sure to use if/else if statements with proper comparison operators (>=, <)"
       }

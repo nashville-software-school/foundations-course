@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const booleanLogicChapter = {
   id: 'boolean-logic',
   title: 'Conditional Logic',
@@ -138,9 +140,9 @@ if (iWokeUpEarly === true) {
         test: (code) => {
           try {
             const iWokeUpEarly = new Function(code + '\n return iWokeUpEarly')()
-            return typeof iWokeUpEarly === 'boolean' && iWokeUpEarly === false;
-          } catch (error) {
-            return false;
+            return new TestResult(typeof iWokeUpEarly === 'boolean' && iWokeUpEarly === false);
+          } catch {
+            return new TestResult(false);
           }
         },
         message: "Make sure to declare iWokeUpEarly as false"
@@ -148,8 +150,8 @@ if (iWokeUpEarly === true) {
       {
         name: "If/Else Structure",
         test: (code) => {
-          return code.includes('if') && code.includes('else') &&
-                 code.includes('===') && code.includes('true');
+          return new TestResult(code.includes('if') && code.includes('else') &&
+                 code.includes('===') && code.includes('true'));
         },
         message: "Your code should include an if/else statement with proper condition checking"
       },
@@ -157,14 +159,12 @@ if (iWokeUpEarly === true) {
         name: "Netflix Message",
         test: (code) => {
           try {
-            let consoleOutput = '';
-            const originalLog = console.log;
-            console.log = (msg) => { consoleOutput = msg; };
-            eval(code);
-            console.log = originalLog;
-            return consoleOutput === "I fell asleep on the couch after the 12th straight episode of The Office";
-          } catch (error) {
-            return false;
+            const logs = [];
+            const mockConsole = { log: (msg) => logs.push(msg) };
+            new Function("console",code)(mockConsole)
+            return new TestResult(logs[0] === "I fell asleep on the couch after the 12th straight episode of The Office");
+          } catch {
+            return new TestResult(false);
           }
         },
         message: "When iWokeUpEarly is false, output the Netflix binge message"

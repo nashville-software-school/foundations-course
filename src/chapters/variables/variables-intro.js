@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const variablesIntroChapter = {
     id: 'variables-intro',
     title: 'Variables Introduction',
@@ -182,51 +184,75 @@ const yearlyTotal = januaryBill + februaryBill + marchBill +
 console.log(yearlyTotal)`,
         tests: [
             {
-                name: "Variable Declaration",
+                name: "Monthly variables are named correctly and assigned numbers",
                 test: (code) => {
-
+                    const requiredVars = [
+                        'februaryBill', 'marchBill', 'aprilBill', 'mayBill', 'juneBill',
+                        'julyBill', 'augustBill', 'septemberBill', 'octoberBill',
+                        'novemberBill', 'decemberBill'
+                    ];
+            
+                    const feedback = [];
+            
                     try {
-                        const func = new Function(code + '; return yearlyTotal;')
-                        const result = func()
-                        if (result > 0 &&
-                            code.includes('let februaryBill') &&
-                            code.includes('let marchBill') &&
-                            code.includes('let aprilBill') &&
-                            code.includes('let mayBill') &&
-                            code.includes('let juneBill') &&
-                            code.includes('let julyBill') &&
-                            code.includes('let augustBill') &&
-                            code.includes('let septemberBill') &&
-                            code.includes('let octoberBill') &&
-                            code.includes('let novemberBill') &&
-                            code.includes('let decemberBill')) {
-                            return true
+                        // Wrap code and try to return all expected vars
+                        const wrapper = new Function(`
+                            ${code}
+                            return {
+                                ${requiredVars.join(', ')}
+                            };
+                        `);
+            
+                        const result = wrapper();
+            
+                        for (const name of requiredVars) {
+                            if (!(name in result)) {
+                                feedback.push(`${name} is missing or misnamed`);
+                            } else if (typeof result[name] !== 'number' || Number.isNaN(result[name])) {
+                                feedback.push(`${name} must be assigned a number`);
+                            }
                         }
-
-                    } catch (error) {
-                        return false
+            
+                        if (feedback.length > 0) {
+                            throw new Error(feedback.join('\n'));
+                        }
+                        return new TestResult(true);
+                    } catch (err) {
+                         // Attach helpful message from error or fallback to generic one
+                        return  new TestResult(false,err.message || "Make sure all monthly variables are named correctly and assigned numbers")
                     }
-
                 },
-                message: `Make sure to declare variables for all twelve months
-                - Make sure to use the correct variable names (e.g. octoberBill, novemberBill)
-                - Make sure to use the \`let\` keyword for each month variable
-                - Make sure you use \`const\` for the yearlyTotal variable`
+                message: "All monthly variables must be named exactly (e.g. marchBill) and assigned a number"
             },
             {
                 name: "Total Calculation",
                 test: (code) => {
                     try {
                         const {januaryBill, februaryBill, marchBill, aprilBill, mayBill, juneBill, julyBill, augustBill, septemberBill, octoberBill, novemberBill, decemberBill, yearlyTotal} = new Function(code + '; return {januaryBill, februaryBill, marchBill, aprilBill, mayBill, juneBill, julyBill, augustBill, septemberBill, octoberBill, novemberBill, decemberBill, yearlyTotal}')()
-                        return yearlyTotal === januaryBill + februaryBill + marchBill + aprilBill + mayBill + juneBill + julyBill + augustBill + septemberBill + octoberBill + novemberBill + decemberBill
-
+                        const res = yearlyTotal === januaryBill + februaryBill + marchBill + aprilBill + mayBill + juneBill + julyBill + augustBill + septemberBill + octoberBill + novemberBill + decemberBill
+                        return new TestResult(res)
                     }
-                    catch (error) {
-                        return false
+                    catch {
+                        return new TestResult(false)
                     }
                 },
                 message: "Make sure you add up all the months to get the yearly total"
-            }
+            },
+            {
+                name: "Prints the correct yearly total",
+                test: (code) => {
+                  const logs = [];
+                  const mockConsole = { log: (msg) => logs.push(msg) };
+                  try {
+                        const yearlyTotal = 
+                        new Function( "console",code + '\n return yearlyTotal')(mockConsole)
+                        return new TestResult(logs[0] === yearlyTotal); 
+                    } catch {
+                    return new TestResult(false)
+                  }
+                },
+                message: "You should console.log(\"*** yearly total ***\")"
+              },
         ]
     }
 }

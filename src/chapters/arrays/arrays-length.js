@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const arrayLengthChapter = {
   id: 'arrays-length',
   title: 'Array Length',
@@ -58,23 +60,27 @@ for (const expense of monthlyExpenses) {
 // Calculate your average monthly food costs
 const averageExpense = totalExpense / monthlyExpenses.length
 
-console.log(\`On average, I spend \${averageExpense.toFixed(1)} dollars on groceries per month.
-So far this year, I have spent \${totalExpense.toFixed(0)} dollars on groceries.\`)`,
+console.log(\`My total expenses are \${totalExpense} and my average monthly expenses are \${averageExpense}\`)`,
     tests: [
       {
         name: "For..of Loop",
-        test: (code) => code.includes('for (const') && code.includes(' of monthlyExpenses)'),
-        message: "Make sure you're using a for..of loop to iterate the monthlyExpenses array"
+        test: (code) => {
+          const forOfPattern = /for\s*\(\s*(?:var|let|const)\s+.*?\s+of\s+monthlyExpenses\)/;
+          const passed = forOfPattern.test(code);
+          return new TestResult(passed);
+        },
+        message: `Make sure you're using a for..of loop to iterate the monthlyExpenses array
+* Make sure to declare the loop variable with var,let or const keywords`
       },
       {
         name: "Total Calculation",
         test: (code) => {
           try {
             const total = new Function(`${code}; return totalExpense;`)()
-            return total === 955
+            return new TestResult(total === 955)
           }
-          catch (e) {
-            return false
+          catch {
+            return new TestResult(false)
           }
         },
         message: "Make sure you're adding each expense to the total"
@@ -84,10 +90,10 @@ So far this year, I have spent \${totalExpense.toFixed(0)} dollars on groceries.
         test: (code) => {
           try {
             const average = new Function(`${code}; return averageExpense;`)()
-            return average === 191
+            return new TestResult(average === 191);
           }
-          catch (e) {
-            return false
+          catch {
+            return new TestResult(false);
           }
         },
         message: "Make sure you're calculating the average using the array length"
@@ -96,10 +102,11 @@ So far this year, I have spent \${totalExpense.toFixed(0)} dollars on groceries.
         name: "Output Format",
         test: (code) => {
           try {
-            return code.includes('`My total expenses are ${totalExpense} and my average monthly expenses are ${averageExpense}`');
+            const passing = code.includes('`My total expenses are ${totalExpense} and my average monthly expenses are ${averageExpense}`');
+            return new TestResult(passing);
           }
-          catch (e) {
-            return false
+          catch {
+            return new TestResult(false);
           }
         },
         message: "Make sure your output matches the required format"

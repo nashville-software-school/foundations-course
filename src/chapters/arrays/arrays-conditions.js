@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const arrayConditionsChapter = {
   id: 'arrays-conditions',
   title: 'Arrays with Conditions',
@@ -87,37 +89,50 @@ console.log(finishedFood)
 `,
     tests: [
       {
-        name: "For..of Loop",
-        test: (code) => code.includes('for (const') && code.includes(' of rawIngredients)'),
-        message: "Make sure you're using a for..of loop to iterate the rawIngredients array"
-      },
-      {
         name: "Conditional Logic",
         test: (code) => {
-          return code.includes('if (') &&
+          return new TestResult(code.includes('if (') &&
                  code.includes('else if (') &&
                  code.includes('=== "egg"') &&
                  code.includes('=== "beef patty"') &&
-                 code.includes('=== "potato"');
+                 code.includes('=== "potato"'));
         },
         message: "Make sure you have all the required if/else conditions for each ingredient type"
       },
       {
         name: "Array contains 8 items",
         test: (code) => {
-          const foodArray = new Function(`${code}; return finishedFood;`)()
-          return foodArray.length === 8
+          try {
+            const foodArray = new Function(`${code}; return finishedFood;`)()
+            return new TestResult(foodArray.length === 8)
+          } catch {
+            return TestResult(false)
+          }
         },
         message: "Make sure you're adding the correct number of food items to the finishedFood array"
       },
       {
         name: "Array contains only food items",
         test: (code) => {
-          const foodArray = new Function(`${code}; return finishedFood;`)()
-          const containsCorrectFoods = foodArray.length === 8 && foodArray.every(food => food === "biscuit" || food === "burger" || food === "fries")
-          return containsCorrectFoods
+         try {
+           const foodArray = new Function(`${code}; return finishedFood;`)()
+           const containsCorrectFoods = foodArray.length === 8 && foodArray.every(food => food === "biscuit" || food === "burger" || food === "fries")
+           return  new TestResult(containsCorrectFoods)
+         } catch {
+            return new TestResult(false)
+         }
         },
         message: "The finishedFood array should only contain 'biscuit', 'burger', or 'fries'"
+      },
+      {
+        name: "For..of Loop",
+        test: (code) => {
+          const forOfPattern = /for\s*\(\s*(?:var|let|const)\s+.*?\s+of\s+rawIngredients\)/;
+          const passed = forOfPattern.test(code);
+          return new TestResult(passed);
+        },
+        message: `Make sure you're using a for..of loop to iterate the rawIngredients array.
+* Make sure to declare the loop variable with var,let or const keywords`
       }
     ]
   }
