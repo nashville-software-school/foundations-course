@@ -126,16 +126,20 @@ console.log(output)`,
             const func = new Function(code + '; return output')
             const result = func()
             if (result === undefined) return false
+
             const expectedOutput = `There are 124 total photos
 There are 72 photos of women
 There are 52 photos of men
-Photos will be stored in a plum colored Photo Album`
-            return result === expectedOutput
+Photos will be stored in a Photo Album colored plum`
+            // Remove spaces and newlines for comparison
+            const resultOutput = result.replace(/\s+/g, ' ').trim()
+            const expectedOutputTrimmed = expectedOutput.replace(/\s+/g, ' ').trim()
+            return resultOutput === expectedOutputTrimmed
           } catch (error) {
             return false
           }
         },
-        message: "Make sure to calculate the total photos by adding femalePhotos and malePhotos"
+        message: "Make sure your string matches exactly the expected output. Check for spaces, periods, and new lines."
       },
       {
         name: "Storage Type Selection",

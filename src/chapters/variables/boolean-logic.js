@@ -162,7 +162,6 @@ if (iWokeUpEarly === true) {
             console.log = (msg) => { consoleOutput = msg; };
             const iWokeUpEarly = new Function(code + '\n return iWokeUpEarly')()
             console.log = originalLog;
-            console.log(consoleOutput)
             return consoleOutput && consoleOutput !== "";
           } catch (error) {
             return false;
