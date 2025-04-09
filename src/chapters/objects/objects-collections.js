@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const objectsCollectionsChapter = {
   id: 'objects-collections',
   title: 'Object Collections',
@@ -173,38 +175,38 @@ console.log(schedule)`,
           try {
             const schedule = new Function(code + "; return schedule;")()
             const expectedOutput = `Patient Maria Sanchez has an appointment at 2:15\nPatient John McGrath has an appointment at 1:30\nPatient Lamar Washington has an appointment at 10:15\n`
-            return schedule === expectedOutput
+            return new TestResult({passed:schedule === expectedOutput})
           }
           catch (e) {
-            return false;
+            return new TestResult({passed:false,message:e.message})
           }
         }
       },
       {
         name: "For..of Loop",
-        test: (code) => code.includes('for (const') && code.includes(' of appointments)'),
+        test: (code) => new TestResult({passed:code.includes('for (const') && code.includes(' of appointments)')}),
         message: "Make sure you're using a for..of loop to iterate the appointments array"
       },
       {
         name: "Object Property Access",
         test: (code) => {
-          return code.includes('.firstName') &&
+          return new TestResult({passed:code.includes('.firstName') &&
                  code.includes('.lastName') &&
-                 code.includes('.appointmentTime');
+                 code.includes('.appointmentTime')});
         },
         message: "Make sure you're using dot notation to access all required object properties"
       },
       {
         name: "String Template",
         test: (code) => {
-          return code.includes('`Patient ${') &&
-                 code.includes('has an appointment at ${');
+          return new TestResult({passed:code.includes('`Patient ${') &&
+                 code.includes('has an appointment at ${')});
         },
         message: "Make sure your output string matches the required format"
       },
       {
         name: "Line Breaks",
-        test: (code) => code.includes('\\n'),
+        test: (code) => new TestResult({passed:code.includes('\\n')}),
         message: "Make sure to add line breaks after each appointment"
       }
     ]

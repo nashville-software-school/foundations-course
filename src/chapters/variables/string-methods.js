@@ -224,9 +224,9 @@ const fileStart = filename.slice(0, 4)`,
           try {
             const func = new Function(code + '\n return cleanEmail')
             const cleanEmail = func()
-            return new TestResult(cleanEmail === "hello@email.com")
+            return new TestResult({passed:cleanEmail === "hello@email.com"})
           } catch {
-            return new TestResult(false)
+            return new TestResult({passed:false})
           }
         },
         message: "The email should be trimmed to remove spaces"
@@ -237,9 +237,9 @@ const fileStart = filename.slice(0, 4)`,
           try {
             const func = new Function(code + '\n return formattedPhone')
             const formattedPhone = func()
-            return new TestResult(formattedPhone === "555-0123")
+            return new TestResult({passed:formattedPhone === "555-0123"})
           } catch {
-            return new TestResult(false)
+            return new TestResult({passed:false})
           }
         },
         message: "The phone number should be formatted with a hyphen (555-0123)"
@@ -250,9 +250,9 @@ const fileStart = filename.slice(0, 4)`,
           try {
             const func = new Function(code + '\n return formattedName')
             const formattedName = func()
-            return new TestResult(formattedName === "JOHN")
+            return new TestResult({passed:formattedName === "JOHN"})
           } catch {
-            return new TestResult(false)
+            return new TestResult({passed:false})
           }
         },
         message: "The name should be converted to uppercase (JOHN)"
@@ -262,9 +262,9 @@ const fileStart = filename.slice(0, 4)`,
         test: (code) => {
           try {
             const containsX = new Function(code + '\n return containsX')()
-            return new TestResult(containsX === false)
+            return new TestResult({passed:containsX === false})
           } catch {
-            return new TestResult(false)
+            return new TestResult({passed:false})
           }
         },
         message: "Check if the password contains the letter 'x'"
@@ -274,9 +274,9 @@ const fileStart = filename.slice(0, 4)`,
         test: (code) => {
           try {
             const fileStart = new Function(code + '\n return fileStart')()
-            return new TestResult(fileStart === "vaca")
+            return new TestResult({passed:fileStart === "vaca"})
           } catch {
-            return new TestResult(false)
+            return new TestResult({passed:false})
           }
         },
         message: "Extract the first 4 characters of the filename"

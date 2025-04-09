@@ -76,9 +76,9 @@ const allElectronics = \`I have the following electronic devices. My \${televisi
         test: (code) => {
             try {
                 new Function(code)(); // Just check that it executes
-                return new TestResult(true)
+                return new TestResult({passed:true})
             } catch {
-                return new TestResult(false);
+                return new TestResult({passed:false});
             }
           },
           message: "Make sure your string interpolation code runs without errors."
@@ -86,21 +86,21 @@ const allElectronics = \`I have the following electronic devices. My \${televisi
       {
         name: "Variable Creation",
         test: (code) => {
-          return new TestResult(code.includes('const computer') &&
+          return new TestResult({passed:code.includes('const computer') &&
                  code.includes('const phone') &&
                  code.includes('const television') &&
-                 code.includes('const refrigerator'))
+                 code.includes('const refrigerator')})
         },
         message: "Make sure to create all four electronic device variables"
       },
       {
         name: "String Interpolation",
         test: (code) => {
-          return new TestResult(code.includes('`') &&
+          return new TestResult({passed:code.includes('`') &&
                  code.includes('${television}') &&
                  code.includes('${computer}') &&
                  code.includes('${refrigerator}') &&
-                 code.includes('${phone}'))
+                 code.includes('${phone}')})
         },
         message: "Make sure to use string interpolation with backticks and ${} syntax"
       }

@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const arrayReviewChapter = {
     id: 'arrays-review',
     title: 'Section Project',
@@ -185,10 +187,11 @@ console.log(\`Average Expense: \${averageExpense.toFixed(2)}\`)
                 test: (code) => {
                     try {
                         const total = new Function(`${code}; return totalExpenses;`)()
-                        return total === 2642
+                        const passed =  total === 2642
+                        return new TestResult({passed})
                     }
                     catch (e) {
-                        return false
+                        return new TestResult({passed:false,message:e.message})
                     }
                 },
                 message: "Make sure you're adding each expense to the total. Should be 2642."
@@ -198,10 +201,10 @@ console.log(\`Average Expense: \${averageExpense.toFixed(2)}\`)
                 test: (code) => {
                     try {
                         const average = new Function(`${code}; return averageExpense;`)()
-                        return parseFloat(average.toFixed(2)) === 110.08
+                        return new TestResult({passed:parseFloat(average.toFixed(2)) === 110.08})
                     }
                     catch (e) {
-                        return false
+                        return new TestResult({passed:false,message:e.message})
                     }
                 },
                 message: "Make sure you're calculating the average. Should be 110.08."
@@ -211,16 +214,17 @@ console.log(\`Average Expense: \${averageExpense.toFixed(2)}\`)
                 test: (code) => {
                     try {
                         const { clothing, entertainment, food, fuel, travel, utilities, largePurchases } = new Function(`${code}; return { clothing, entertainment, food, fuel, travel, utilities, largePurchases };`)()
-                        return clothing.length === 3
+                        const passed = clothing.length === 3
                             && entertainment.length === 5
                             && food.length === 3
                             && fuel.length === 4
                             && travel.length === 2
                             && utilities.length === 4
                             && largePurchases.length === 7
+                        return new TestResult({passed})
                     }
                     catch (e) {
-                        return false
+                        return new TestResult({passed:false,message:e.message})
                     }
                 },
                 message: "Make sure you're categorizing each expense correctly"

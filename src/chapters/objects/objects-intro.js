@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const objectsIntroChapter = {
   id: 'objects-intro',
   title: 'Introduction to Objects',
@@ -87,10 +89,11 @@ const student = {
         test: (code) => {
           try {
             const student = new Function(`${code}; return student`)();
-            return student.hasOwnProperty('name') && typeof student.name === 'string';
+            const passed =  Object.prototype.hasOwnProperty.call(student, 'name') && typeof student.name === 'string';
+            return new TestResult({passed})
           }
           catch (e) {
-            return false;
+             return new TestResult({passed:false,message:e.message});
           }
         },
         message: "The name property does not exist on the student object, or it is not a string."
@@ -100,10 +103,11 @@ const student = {
         test: (code) => {
           try {
             const student = new Function(`${code}; return student`)();
-            return student.hasOwnProperty('location') && typeof student.location === 'string';
+            const passed =  Object.prototype.hasOwnProperty.call(student, 'location') && typeof student.location === 'string';
+            return new TestResult({passed})
           }
           catch (e) {
-            return false;
+            return new TestResult({passed:false,message:e.message});
           }
         },
         message: "The location property does not exist on the student object, or it is not a string."
@@ -113,10 +117,11 @@ const student = {
         test: (code) => {
           try {
             const student = new Function(`${code}; return student`)();
-            return student.hasOwnProperty("gender") && typeof student.gender === "string";
+            const passed =  Object.prototype.hasOwnProperty.call(student, "gender") && typeof student.gender === "string";
+            return new TestResult({passed})
           }
           catch (e) {
-            return false;
+            return new TestResult({passed:false,message:e.message});
           }
         },
         message: "The gender property does not exist on the student object, or it is not a string."
@@ -126,10 +131,11 @@ const student = {
         test: (code) => {
           try {
             const student = new Function(`${code}; return student`)();
-            return student.hasOwnProperty("age") && typeof student.age === "number";
+            const passed = Object.prototype.hasOwnProperty.call(student, "age") && typeof student.age === "number";
+            return new TestResult({passed})
           }
           catch (e) {
-            return false;
+            return new TestResult({passed:false,message:e.message});
           }
         },
         message: "The age property does not exist on the student object, or it is not a number."

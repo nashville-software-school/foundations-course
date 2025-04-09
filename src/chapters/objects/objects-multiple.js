@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const objectsMultipleChapter = {
   id: 'objects-multiple',
   title: 'Multiple Objects',
@@ -118,38 +120,47 @@ const rose = {
     growingSeason: "Summer",
     thorny: true
 }
-
 `,
     tests: [
       {
         name: "Tulip Object Creation",
         test: (code) => {
-          const func = new Function(code + '\nreturn {tulip, rose}');
-          const { tulip, rose } = func();
-          return tulip.hasOwnProperty('color') &&
-                  tulip.hasOwnProperty('stemLength') &&
-                  tulip.hasOwnProperty('growingSeason') &&
-                  tulip.hasOwnProperty('thorny') &&
-                  rose.hasOwnProperty('color') &&
-                  rose.hasOwnProperty('stemLength') &&
-                  rose.hasOwnProperty('growingSeason') &&
-                  rose.hasOwnProperty('thorny');
+        try {
+            const func = new Function(code + '\nreturn {tulip, rose}');
+            const { tulip, rose } = func();
+            const passed =  Object.prototype.hasOwnProperty.call(tulip, 'color') &&
+                    Object.prototype.hasOwnProperty.call(tulip,'stemLength') &&
+                    Object.prototype.hasOwnProperty.call(tulip,'growingSeason') &&
+                    Object.prototype.hasOwnProperty.call(tulip,'thorny') &&
+                    Object.prototype.hasOwnProperty.call(rose,'color') &&
+                    Object.prototype.hasOwnProperty.call(rose,'stemLength') &&
+                    Object.prototype.hasOwnProperty.call(rose,'growingSeason') &&
+                    Object.prototype.hasOwnProperty.call(rose,'thorny');
+            return new TestResult({passed})
+        } catch (error) {
+          return new TestResult({passed:false,message:error.message})
+        }
         },
         message: "Make sure you add all required properties to the tulip and rose objects"
       },
       {
         name: "Property Types",
         test: (code) => {
-          const func = new Function(code + '\nreturn {tulip, rose}');
-          const { tulip, rose } = func();
-          return typeof tulip.color === 'string' &&
-                  typeof tulip.stemLength === 'number' &&
-                  typeof tulip.growingSeason === 'string' &&
-                  typeof tulip.thorny === 'boolean' &&
-                  typeof rose.color === 'string' &&
-                  typeof rose.stemLength === 'number' &&
-                  typeof rose.growingSeason === 'string' &&
-                  typeof rose.thorny === 'boolean';
+         try {
+           const func = new Function(code + '\nreturn {tulip, rose}');
+           const { tulip, rose } = func();
+           const passed = typeof tulip.color === 'string' &&
+                   typeof tulip.stemLength === 'number' &&
+                   typeof tulip.growingSeason === 'string' &&
+                   typeof tulip.thorny === 'boolean' &&
+                   typeof rose.color === 'string' &&
+                   typeof rose.stemLength === 'number' &&
+                   typeof rose.growingSeason === 'string' &&
+                   typeof rose.thorny === 'boolean';
+            return new TestResult({passed})
+         } catch (error) {
+            return new TestResult({passed:false,message:error.message})
+         }
         },
         message: `Make sure you're using the correct data types for each property.
 Color should be a string. stemLength should be a number. growingSeason should be a string. thorny should be a boolean.`

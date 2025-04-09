@@ -72,14 +72,15 @@ console.log(fruits)`,
         test: (code) => {
           try {
             const fruitsArray = new Function(code + `\n return fruits`)()
-            return new TestResult(fruitsArray.length === 5 &&
-              fruitsArray[0] === "Banana" &&
-              fruitsArray[1] === "Orange" &&
-              fruitsArray[2] === "Apple" &&
-              fruitsArray[3] === "Watermelon" &&
-              fruitsArray[4] === "Blueberry")
+            const passed = fruitsArray.length === 5 &&
+            fruitsArray[0] === "Banana" &&
+            fruitsArray[1] === "Orange" &&
+            fruitsArray[2] === "Apple" &&
+            fruitsArray[3] === "Watermelon" &&
+            fruitsArray[4] === "Blueberry";
+            return new TestResult({passed})
           } catch {
-            return new TestResult(false)
+            return new TestResult({passed:false})
           }
         },
         message: "Make sure you've included all fruits in the array in the correct order"

@@ -91,11 +91,12 @@ console.log(finishedFood)
       {
         name: "Conditional Logic",
         test: (code) => {
-          return new TestResult(code.includes('if (') &&
-                 code.includes('else if (') &&
-                 code.includes('=== "egg"') &&
-                 code.includes('=== "beef patty"') &&
-                 code.includes('=== "potato"'));
+          const passed = code.includes('if (') &&
+          code.includes('else if (') &&
+          code.includes('=== "egg"') &&
+          code.includes('=== "beef patty"') &&
+          code.includes('=== "potato"');
+          return new TestResult({passed, testName:"Conditional Logic"});
         },
         message: "Make sure you have all the required if/else conditions for each ingredient type"
       },
@@ -104,9 +105,9 @@ console.log(finishedFood)
         test: (code) => {
           try {
             const foodArray = new Function(`${code}; return finishedFood;`)()
-            return new TestResult(foodArray.length === 8)
+            return new TestResult({passed:foodArray.length === 8})
           } catch {
-            return TestResult(false)
+            return TestResult({passed:false})
           }
         },
         message: "Make sure you're adding the correct number of food items to the finishedFood array"
@@ -117,9 +118,9 @@ console.log(finishedFood)
          try {
            const foodArray = new Function(`${code}; return finishedFood;`)()
            const containsCorrectFoods = foodArray.length === 8 && foodArray.every(food => food === "biscuit" || food === "burger" || food === "fries")
-           return  new TestResult(containsCorrectFoods)
+           return  new TestResult({passed:containsCorrectFoods})
          } catch {
-            return new TestResult(false)
+            return new TestResult({passed:false})
          }
         },
         message: "The finishedFood array should only contain 'biscuit', 'burger', or 'fries'"
@@ -129,7 +130,7 @@ console.log(finishedFood)
         test: (code) => {
           const forOfPattern = /for\s*\(\s*(?:var|let|const)\s+.*?\s+of\s+rawIngredients\)/;
           const passed = forOfPattern.test(code);
-          return new TestResult(passed);
+          return new TestResult({passed:passed});
         },
         message: `Make sure you're using a for..of loop to iterate the rawIngredients array.
 * Make sure to declare the loop variable with var,let or const keywords`

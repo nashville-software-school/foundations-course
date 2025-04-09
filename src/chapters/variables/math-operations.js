@@ -156,9 +156,9 @@ const output = \`Our combined monthly income is \${combinedIncome}. Our net mont
                 test: (code) => {
                     try {
                         const result = new Function(code + '\nreturn combinedIncome')();
-                        return new TestResult(result === 7900);
+                        return new TestResult({passed:result === 7900});
                     } catch {
-                        return new TestResult(false);
+                        return new TestResult({passed:false});
                     }
                 },
                 message: "The combined income should be $7900 (myIncome + spouseIncome)"
@@ -168,9 +168,9 @@ const output = \`Our combined monthly income is \${combinedIncome}. Our net mont
                 test: (code) => {
                     try {
                         const result = new Function(code + '\nreturn netIncome')();
-                        return new TestResult(result === 6747);
+                        return new TestResult({passed:result === 6747});
                     } catch {
-                        return new TestResult(false);
+                        return new TestResult({passed:false});
                     }
                 },
                 message: "The net income should be $6747 (combined income minus all expenses)"
@@ -181,9 +181,9 @@ const output = \`Our combined monthly income is \${combinedIncome}. Our net mont
                     try {
                         const result = new Function(code + '\nreturn output')();
                         const expectedOutput = "Our combined monthly income is 7900. Our net monthly income is 6747.";
-                        return new TestResult(result === expectedOutput);
+                        return new TestResult({passed:result === expectedOutput});
                     } catch {
-                        return new TestResult(false);
+                        return new TestResult({passed:false});
                     }
                 },
                 message: `Make sure you include the correct values in the output string

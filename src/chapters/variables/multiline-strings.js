@@ -89,9 +89,9 @@ Our net monthly income is \${(myIncome + spouseIncome) - (phoneBill + mortgage +
       {
         name: "Multi-line Format",
         test: (code) => {
-          return new TestResult(code.includes('`') &&
+          return new TestResult({passed:code.includes('`') &&
                  code.includes('\n') &&
-                 code.includes('statement'))
+                 code.includes('statement')})
         },
         message: "Make sure to use backticks for multi-line string formatting"
       },
@@ -99,9 +99,9 @@ Our net monthly income is \${(myIncome + spouseIncome) - (phoneBill + mortgage +
         name: "Calculations",
         test: (code) => {
           const res = new Function(code + '\n  return statement;')();
-          return new TestResult(res.includes('Our combined monthly income is 9506.') &&
+          return new TestResult({passed:res.includes('Our combined monthly income is 9506.') &&
             res.includes('Our total monthly expenses are 3128.') &&
-            res.includes('Our net monthly income is 6378.'));
+            res.includes('Our net monthly income is 6378.')});
         },
         message: "Make sure to calculate total income and expenses correctly"
       }

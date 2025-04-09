@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const arraySplitJoinChapter = {
   id: 'arrays-split-join',
   title: 'Strings and Arrays Conversion',
@@ -96,7 +98,7 @@ lions and tigers and bears, oh my
 You could also wrap the strings in HTML elements.
 
 \`\`\`js
-const employees = \[ "Mary Bulshear", "Kelley Avignon", "Brian Wellington", "Cherie Midreaux" \]
+const employees = [ "Mary Bulshear", "Kelley Avignon", "Brian Wellington", "Cherie Midreaux"]
 const listItems = employees.join("&lt;/li&gt;&lt;li&gt;")
 
 console.log(\`&lt;li&gt;\${listItems}&lt;/li&gt;\`)
@@ -161,11 +163,12 @@ console.log(output)
         name: "Disorder array created",
         test: (code) => {
           try {
-            const disorderArray = new Function(`${code}; return disorderArray`)()
-            return Array.isArray(disorderArray) && disorderArray.length === 8
+            const disorderArray = new Function(`${code}\n return disorderArray`)()
+            const passed = Array.isArray(disorderArray) && disorderArray.length === 8
+            return new TestResult({passed})
           }
           catch (e) {
-            return false
+            return new TestResult({passed:false,message:e.message})
           }
         },
         message: "Make sure you're splitting the string into an array"
@@ -174,11 +177,12 @@ console.log(output)
         name: "HTML string created",
         test: (code) => {
           try {
-            const htmlString = new Function(`${code}; return htmlString`)()
-            return htmlString === "Depression</div><div>Bipolar</div><div>Manic</div><div>Anxiety</div><div>Anorexia</div><div>Posttraumtic Stress</div><div>Seasonal Affective</div><div>Bulimia"
+            const htmlString = new Function(`${code}\n return htmlString`)()
+            const passed =  htmlString === "Depression</div><div>Bipolar</div><div>Manic</div><div>Anxiety</div><div>Anorexia</div><div>Posttraumtic Stress</div><div>Seasonal Affective</div><div>Bulimia"
+            return new TestResult({passed})
           }
           catch (e) {
-            return false
+            return new TestResult({passed:false,message:e.message})
           }
         },
         message: "Make sure you're joining the array back into a string with HTML div tags"
@@ -187,11 +191,12 @@ console.log(output)
         name: "Correct output",
         test: (code) => {
           try {
-            const output = new Function(`${code}; return output`)()
-            return output === "<div>Depression</div><div>Bipolar</div><div>Manic</div><div>Anxiety</div><div>Anorexia</div><div>Posttraumtic Stress</div><div>Seasonal Affective</div><div>Bulimia</div>"
+            const output = new Function(`${code}\n return output`)()
+            const passed =  output === "<div>Depression</div><div>Bipolar</div><div>Manic</div><div>Anxiety</div><div>Anorexia</div><div>Posttraumtic Stress</div><div>Seasonal Affective</div><div>Bulimia</div>"
+            return new TestResult({passed})
           }
           catch (e) {
-            return false
+            return new TestResult({passed:false,message:e.message})
           }
         },
         message: "Make sure you're adding the opening and closing div tags for the output"

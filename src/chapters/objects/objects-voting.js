@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const objectsVotingChapter = {
   id: 'objects-voting',
   title: 'Section Project',
@@ -91,9 +93,9 @@ console.log(output)
             const managerValue = evalFunction();
 
             // Check if manager property has the correct value
-            return managerValue === "Abigail Brown" && code.includes('votingLocation.manager')
+            return new TestResult({passed:managerValue === "Abigail Brown" && code.includes('votingLocation.manager')})
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message})
           }
         },
         message: "Make sure you've added the 'manager' property with dot notation."
@@ -102,7 +104,7 @@ console.log(output)
         name: "String Interpolation Used",
         test: (code) => {
           // Verify proper template literal syntax is used
-          return code.includes('`${') && code.includes('}`');
+          return new TestResult({passed:code.includes('`${') && code.includes('}`')});
         },
         message: "Make sure you're using string interpolation."
       },
@@ -117,9 +119,9 @@ console.log(output)
             // Check against the exact expected string
             const expectedOutput = "Abigail Brown manages the Commonwealth Community Center at 70 Main Street in Nashville, TN";
 
-            return outputString === expectedOutput;
+            return new TestResult({passed:outputString === expectedOutput});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message})
           }
         },
         message: "Make sure your output string exactly matches the required format."

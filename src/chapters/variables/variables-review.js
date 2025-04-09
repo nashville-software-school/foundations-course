@@ -132,9 +132,9 @@ console.log(output)`,
 There are 72 photos of women
 There are 52 photos of men
 Photos will be stored in a plum colored Photo Album`
-            return new TestResult(result === expectedOutput)
+            return new TestResult({passed:result === expectedOutput})
           } catch {
-            return  new TestResult(false)
+            return  new TestResult({passed:false})
           }
         },
         message: "Make sure to calculate the total photos by adding femalePhotos and malePhotos"
@@ -146,13 +146,13 @@ Photos will be stored in a plum colored Photo Album`
             const func = new Function(code + '; return photoStorage')
             const result = func()
             if (result === undefined) return false
-            return  new TestResult(result === "Photo Album" &&
+            return  new TestResult({passed:result === "Photo Album" &&
                    code.includes('if') &&
                    code.includes('else') &&
                    code.includes('110') &&
-                   code.includes('50'))
+                   code.includes('50')})
           } catch {
-            return  new TestResult(false)
+            return  new TestResult({passed:false})
           }
         },
         message: "Use if/else statements to determine storage type based on total photos (>110 for album, >=50 for shoe box)"
@@ -164,9 +164,9 @@ Photos will be stored in a plum colored Photo Album`
             const func = new Function(code + '\n return albumColor;')
             const result = func()
             if (result === undefined) return false
-            return  new TestResult(result === "plum")
+            return  new TestResult({passed:result === "plum"})
           } catch {
-            return  new TestResult(false)
+            return  new TestResult({passed:false})
           }
         },
         message: "Determine album color based on comparing femalePhotos and malePhotos"

@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const objectsLibrariesChapter = {
     id: 'objects-libraries',
     title: 'Libraries and Books',
@@ -104,14 +106,14 @@ console.log(\`Checked In By: \${checkedInBy}\`)
                 test: (code) => {
                     try {
                         // Create a function that executes the student's code and returns the bookAuthor variable
-                        const evalFunction = new Function(code + '; return bookAuthor;');
+                        const evalFunction = new Function(code + '\n return bookAuthor;');
                         const result = evalFunction();
 
                         // Check if the result matches the expected author last name
-                        return result === "Thompson";
+                        return new TestResult({passed:result === "Thompson"});
                     } catch (error) {
                         // If there's an error in execution, the test fails
-                        return false;
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Make sure you've correctly assigned the author's last name 'Thompson' to the bookAuthor variable."
@@ -121,14 +123,14 @@ console.log(\`Checked In By: \${checkedInBy}\`)
                 test: (code) => {
                     try {
                         // Create a function that executes the student's code and returns the checkedInBy variable
-                        const evalFunction = new Function(code + '; return checkedInBy;');
+                        const evalFunction = new Function(code + '\n return checkedInBy;');
                         const result = evalFunction();
 
                         // Check if the result matches the expected librarian last name
                         return result === "Wilson";
                     } catch (error) {
                         // If there's an error in execution, the test fails
-                        return false;
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Make sure you've correctly assigned the librarian's last name 'Wilson' to the checkedInBy variable."
@@ -137,7 +139,7 @@ console.log(\`Checked In By: \${checkedInBy}\`)
                 name: "Using Proper Dot Notation for Author",
                 test: (code) => {
                     // Check if they're using proper dot notation to access the author's last name
-                    return code.includes('book.author.lastName');
+                    return new TestResult({passed:code.includes('book.author.lastName')});
                 },
                 message: "Make sure you're using dot notation (book.author.lastName) to access the author's last name property."
             },
@@ -145,7 +147,7 @@ console.log(\`Checked In By: \${checkedInBy}\`)
                 name: "Using Proper Dot Notation for Librarian",
                 test: (code) => {
                     // Check if they're using proper dot notation to access the librarian's last name
-                    return code.includes('book.checkedIn.librarian.lastName');
+                    return new TestResult({passed:code.includes('book.checkedIn.librarian.lastName')});
                 },
                 message: "Make sure you're using dot notation (book.checkedIn.librarian.lastName) to access the librarian's last name property."
             }

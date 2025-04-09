@@ -112,9 +112,9 @@ for (const topic of topics) {
         test: (code) => {
             try {
                 new Function(code)(); // Just check that it executes
-                return new TestResult(true)
+                return new TestResult({passed:true})
             } catch {
-                return new TestResult(false);
+                return new TestResult({passed:false});
             }
           },
           message: "Make sure your code runs without syntax or runtime errors."
@@ -124,16 +124,17 @@ for (const topic of topics) {
         test: (code) => {
           try {
           const topicsArray = new Function(code + `\nreturn topics`)();
-          return new TestResult(topicsArray.length === 7 &&
-            topicsArray[0] === "Variables" &&
-            topicsArray[1] === "Loops" &&
-            topicsArray[2] === "Arrays" &&
-            topicsArray[3] === "Functions" &&
-            topicsArray[4] === "Objects" &&
-            topicsArray[5] === "Modules" &&
-            topicsArray[6] === "Events")
+          const passed = topicsArray.length === 7 &&
+          topicsArray[0] === "Variables" &&
+          topicsArray[1] === "Loops" &&
+          topicsArray[2] === "Arrays" &&
+          topicsArray[3] === "Functions" &&
+          topicsArray[4] === "Objects" &&
+          topicsArray[5] === "Modules" &&
+          topicsArray[6] === "Events";
+          return new TestResult({passed})
           } catch {
-            return new TestResult(false);
+            return new TestResult({passed:false});
           }
         },
         message: `Make sure you've included all the topics in the array
@@ -141,12 +142,12 @@ for (const topic of topics) {
       },
       {
         name: "For..of Loop",
-        test: (code) => new TestResult(code.includes('for (const') && code.includes(' of topics)')),
+        test: (code) => new TestResult({passed:code.includes('for (const') && code.includes(' of topics)')}),
         message: "Make sure you're using a for..of loop to iterate the topics array"
       },
       {
         name: "Console Output",
-        test: (code) => new TestResult(code.includes('console.log')),
+        test: (code) => new TestResult({passed:code.includes('console.log')}),
         message: "Make sure to use console.log() to output each topic"
       }
     ]

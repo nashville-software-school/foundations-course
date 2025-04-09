@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const arrayStringsChapter = {
   id: 'arrays-strings',
   title: 'Strings Within Strings',
@@ -173,8 +175,7 @@ for (const coffee of coffees) {
 // Use a multi-line template string to generate the expected results
 let output = \`I need \${light} orders of the light coffee with nothing in them
 I need \${medium} orders of the medium coffee with cream in them
-I need \${toastyDark} orders of the medium-dark and dark coffees with cream and sugar in them
-\`
+I need \${toastyDark} orders of the toasty and dark coffees with cream and sugar in them\`
 
 // Log your output to the console
 console.log(output)
@@ -183,28 +184,38 @@ console.log(output)
       {
         name: "Correct count of each roast type",
         test: (code) => {
-          const { light, medium, toastyDark } = new Function(`${code}; return { light, medium, toastyDark }`)()
-          return light === 3 && medium === 2 && toastyDark === 5
+          try {
+            const { light, medium, toastyDark } = new Function(`${code}; return { light, medium, toastyDark }`)()
+            return new TestResult({passed:light === 3 && medium === 2 && toastyDark === 5})
+          } catch ({message}) {
+            return new TestResult({passed:false,message})
+          }
         },
         message: "Make sure you're incrementing the correct variable for each roast"
       },
       {
         name: "Output is correct",
         test: (code) => {
-          const output = new Function(`${code}; return output`)()
-          return output.includes("I need 3 orders of the light coffee with nothing in them") &&
-                 output.includes("I need 2 orders of the medium coffee with cream in them") &&
-                 output.includes("I need 5 orders of the toasty and dark coffees with cream and sugar")
+          try {
+            const output = new Function(`${code}\n return output`)()
+            const passed =  output.includes("I need 3 orders of the light coffee with nothing in them") &&
+                   output.includes("I need 2 orders of the medium coffee with cream in them") &&
+                   output.includes("I need 5 orders of the toasty and dark coffees with cream and sugar")
+                   return new TestResult({passed})
+          } catch (error) {
+            return new TestResult({passed:false, message:error.message})
+          }
         },
         message: "Make sure you're outputting the correct number of each roast type"
       },
       {
         name: "String.includes() Usage",
         test: (code) => {
-          return code.includes('.includes("light")') &&
+          const passed =  code.includes('.includes("light")') &&
                  code.includes('.includes("medium")') &&
                  code.includes('.includes("toasty")') &&
                  code.includes('.includes("dark")');
+          return new TestResult({passed})
         },
         message: "Make sure you're using String.includes() to check for each roast type"
       }

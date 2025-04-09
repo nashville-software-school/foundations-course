@@ -67,7 +67,7 @@ console.log(\`My total expenses are \${totalExpense} and my average monthly expe
         test: (code) => {
           const forOfPattern = /for\s*\(\s*(?:var|let|const)\s+.*?\s+of\s+monthlyExpenses\)/;
           const passed = forOfPattern.test(code);
-          return new TestResult(passed);
+          return new TestResult({passed});
         },
         message: `Make sure you're using a for..of loop to iterate the monthlyExpenses array
 * Make sure to declare the loop variable with var,let or const keywords`
@@ -77,10 +77,10 @@ console.log(\`My total expenses are \${totalExpense} and my average monthly expe
         test: (code) => {
           try {
             const total = new Function(`${code}; return totalExpense;`)()
-            return new TestResult(total === 955)
+            return new TestResult({passed:total === 955})
           }
           catch {
-            return new TestResult(false)
+            return new TestResult({passed:false})
           }
         },
         message: "Make sure you're adding each expense to the total"
@@ -90,10 +90,10 @@ console.log(\`My total expenses are \${totalExpense} and my average monthly expe
         test: (code) => {
           try {
             const average = new Function(`${code}; return averageExpense;`)()
-            return new TestResult(average === 191);
+            return new TestResult({passed:average === 191});
           }
           catch {
-            return new TestResult(false);
+            return new TestResult({passed:false});
           }
         },
         message: "Make sure you're calculating the average using the array length"
@@ -103,10 +103,10 @@ console.log(\`My total expenses are \${totalExpense} and my average monthly expe
         test: (code) => {
           try {
             const passing = code.includes('`My total expenses are ${totalExpense} and my average monthly expenses are ${averageExpense}`');
-            return new TestResult(passing);
+            return new TestResult({passed:passing});
           }
           catch {
-            return new TestResult(false);
+            return new TestResult({passed:false});
           }
         },
         message: "Make sure your output matches the required format"

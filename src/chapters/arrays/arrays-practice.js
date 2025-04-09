@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const arrayPracticeChapter = {
   id: 'arrays-practice',
   title: 'Array Practice',
@@ -61,7 +63,7 @@ I have driven a total of \${totalMiles} miles.\`)`,
         name: "Array Creation",
         test: (code) => {
           const weeklyMiles = new Function(`${code}; return weeklyMiles`)()
-          return Array.isArray(weeklyMiles) && weeklyMiles.length > 0
+          return new TestResult({passed:Array.isArray(weeklyMiles) && weeklyMiles.length > 0})
         },
         message: "Make sure define the `weeklyMiles` array and add some sample miles"
       },
@@ -70,10 +72,10 @@ I have driven a total of \${totalMiles} miles.\`)`,
         test: (code) => {
           try {
             const {totalMiles, weeklyMiles } = new Function(`${code}; return {totalMiles, weeklyMiles}`)()
-            return totalMiles === weeklyMiles.reduce((a, b) => a + b, 0)
+            return new TestResult({passed:totalMiles === weeklyMiles.reduce((a, b) => a + b, 0)})
           }
-          catch (e) {
-            return false
+          catch {
+            return new TestResult({passed:false})
           }
         },
         message: "Make sure to declare a totalMiles variable and add each weekly mileage to it"
@@ -83,10 +85,10 @@ I have driven a total of \${totalMiles} miles.\`)`,
         test: (code) => {
           try {
             const { averageMiles, totalMiles, weeklyMiles } = new Function(`${code}; return {averageMiles, totalMiles, weeklyMiles}`)()
-            return averageMiles === totalMiles / weeklyMiles.length
+            return new TestResult({passed:averageMiles === totalMiles / weeklyMiles.length})
           }
-          catch (e) {
-            return false
+          catch {
+            return new TestResult({passed:false})
           }
         },
         message: "Make sure to calculate the average miles using the total miles and the array length"
@@ -95,14 +97,26 @@ I have driven a total of \${totalMiles} miles.\`)`,
         name: "Output Message",
         test: (code) => {
           try {
-            return code.includes('`I average ${averageMiles} miles each week.\nI have driven a total of ${totalMiles} miles.`')
-          }
-          catch (e) {
-            return false
+            let capturedOutput = "";
+            const mockConsole = {log: (msg) => {capturedOutput = msg;}};
+            const wrapper = new Function('console', `
+              ${code}
+            `);
+            wrapper(mockConsole);
+            const passed = capturedOutput.includes('\n');
+            return new TestResult({passed,
+              message:
+                passed ? "Output uses a multi-line template string"
+                : "Make sure to use a template string with both average and total miles, and include a line break"});
+      
+          } catch (e) {
+            console.error(e)
+            return new TestResult({passed:false, message:" Code has an error or did not produce output"});
           }
         },
         message: "Make sure to use a multi-line template string to output the average and total miles"
       }
+      
     ]
   }
 }

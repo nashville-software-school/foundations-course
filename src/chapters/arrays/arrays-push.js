@@ -92,9 +92,9 @@ console.log(toFireInKiln)`,
         test: (code) => {
         try {
             const kilnArray = new Function(`${code}; return toFireInKiln;`)()
-            return new TestResult(kilnArray.length === 4)
+            return new TestResult({passed:kilnArray.length === 4})
         } catch {
-          return new TestResult(false)
+          return new TestResult({passed:false})
         }
         },
         message: "Make sure you're using a for..of loop to iterate the clay array so that 4 coffee mugs are created"
@@ -104,16 +104,16 @@ console.log(toFireInKiln)`,
         test: (code) => {
          try {
            const kilnArray = new Function(`${code}; return toFireInKiln;`)()
-           return  new TestResult(kilnArray.every(mug => mug === "coffee mug"))
+           return  new TestResult({passed:kilnArray.every(mug => mug === "coffee mug")})
          } catch {
-          return new TestResult(false)
+          return new TestResult({passed:false})
          }
         },
         message: "The kiln array should only contain string values of 'coffee mug'"
       },
       {
         name: "Array Push",
-        test: (code) =>  new TestResult(code.includes('toFireInKiln.push(')),
+        test: (code) =>  new TestResult({passed:code.includes('toFireInKiln.push(')}),
         message: "Make sure to use the push() method to add mugs to the toFireInKiln array"
       }
     ]

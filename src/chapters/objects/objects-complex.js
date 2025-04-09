@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const objectsComplexChapter = {
   id: 'objects-complex',
   title: 'Complex Objects',
@@ -88,7 +90,6 @@ console.log(associateEmail)
 
 const associateEmail = salesAssociate.contact.email
 console.log(associateEmail)`,
-
     tests: [
       {
         name: "Correct Email Value",
@@ -99,10 +100,10 @@ console.log(associateEmail)`,
             const result = evalFunction();
 
             // Check if the result matches the expected email
-            return result === "rachel.martinez@dealership.com";
+            return new TestResult({passed:result === "rachel.martinez@dealership.com"});
           } catch (error) {
             // If there's an error in execution, the test fails
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Make sure your code correctly assigns the email address 'rachel.martinez@dealership.com' to the associateEmail variable."
@@ -110,11 +111,18 @@ console.log(associateEmail)`,
       {
         name: "Using Proper Object Notation",
         test: (code) => {
-          // Still keeping this test to ensure they're using the proper dot notation
-          return code.includes('salesAssociate.contact.email');
+         try {
+           const logs = [];
+           const mockConsole = { log: (msg) => logs.push(msg) };
+           new Function("console",code)(mockConsole)
+           return new TestResult({passed:logs[0] === "rachel.martinez@dealership.com"});
+         } catch (error) {
+            return new TestResult({passed:false,message:error.message});
+         }
         },
-        message: "Make sure you're using dot notation to access the nested email property."
-      }
+        message: "Make sure you're using console.log to print email."
+      },
+      
     ]
 
   }

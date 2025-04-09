@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const objectsPropertiesChapter = {
   id: 'objects-properties',
   title: 'Adding Properties',
@@ -53,18 +55,26 @@ goldfish.location = "Large Tank"`,
       {
         name: "Location Property Added",
         test: (code) => {
-          const func = new Function(code + '\nreturn goldfish');
-          const goldfish = func();
-          return goldfish.hasOwnProperty('location');
+          try {
+            const func = new Function(code + '\nreturn goldfish');
+            const goldfish = func();
+            return new TestResult({passed:Object.prototype.hasOwnProperty.call(goldfish, 'location')});
+          } catch (error) {
+            return new TestResult({passed:false,message:error.message})
+          }
         },
         message: "Make sure you're using dot notation to add the location property"
       },
       {
         name: "Correct Tank Value",
         test: (code) => {
-          const func = new Function(code + '\nreturn goldfish');
-          const goldfish = func();
-          return goldfish.location === "Large Tank";
+         try {
+           const func = new Function(code + '\nreturn goldfish');
+           const goldfish = func();
+           return new TestResult({passed:goldfish.location === "Large Tank"});
+         } catch (error) {
+            return new TestResult({passed:false,message:error.message})
+         }
         },
         message: "Make sure you set the location to 'Large Tank'"
       }

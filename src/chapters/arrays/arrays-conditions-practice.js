@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const arrayConditionsPracticeChapter = {
   id: 'arrays-conditions-practice',
   title: 'Conditions in Loops',
@@ -71,8 +73,12 @@ I was happy on \${happyHours.length} days.\`)`,
     tests: [
       {
         name: "For..of Loop",
-        test: (code) => code.includes('for (const') && code.includes(' of hours)'),
-        message: "Make sure you're using a for..of loop to iterate the hours array"
+        test: (code) => {
+          const forOfPattern = /for\s*\(\s*(?:var|let|const)\s+.*?\s+of\s+hours\)/;
+          const passed = forOfPattern.test(code);
+          return new TestResult({passed:passed});
+        },
+        message: `Make sure you're using a for..of loop to iterate the the hours array`
       },
       {
         name: "Array contains 17 items",
@@ -80,10 +86,10 @@ I was happy on \${happyHours.length} days.\`)`,
           try {
             const grumpyArray = new Function(`${code}; return grumpyHours;`)()
             const happyArray = new Function(`${code}; return happyHours;`)()
-            return grumpyArray.length === 6 && happyArray.length === 11
+            return new TestResult({passed:grumpyArray.length === 6 && happyArray.length === 11})
           }
-          catch (e) {
-            return false
+          catch {
+            return  new TestResult({passed:false})
           }
         },
         message: "Make sure you're adding the correct number of hours to the grumpyHours and happyHours arrays"
@@ -94,10 +100,10 @@ I was happy on \${happyHours.length} days.\`)`,
           try {
             const grumpyArray = new Function(`${code}; return grumpyHours;`)()
             const happyArray = new Function(`${code}; return happyHours;`)()
-            return grumpyArray.length > 0 && happyArray.length > 0 && grumpyArray.every(hours => hours < 7) && happyArray.every(hours => hours >= 7)
+            return  new TestResult({passed:grumpyArray.length > 0 && happyArray.length > 0 && grumpyArray.every(hours => hours < 7) && happyArray.every(hours => hours >= 7)})
           }
-          catch (e) {
-            return false
+          catch {
+            return  new TestResult({passed:false})
           }
         },
         message: "Make sure the grumpyHours array only contains hours less than 7 and the happyHours array only contains hours greater than or equal to 7"

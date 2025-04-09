@@ -191,9 +191,6 @@ console.log(yearlyTotal)`,
                         'julyBill', 'augustBill', 'septemberBill', 'octoberBill',
                         'novemberBill', 'decemberBill'
                     ];
-            
-                    const feedback = [];
-            
                     try {
                         // Wrap code and try to return all expected vars
                         const wrapper = new Function(`
@@ -204,22 +201,23 @@ console.log(yearlyTotal)`,
                         `);
             
                         const result = wrapper();
-            
+                        const testResult = new TestResult({
+                            passed:true,
+                            testName:"Monthly variables are named correctly and assigned numbers"})
+
                         for (const name of requiredVars) {
                             if (!(name in result)) {
-                                feedback.push(`${name} is missing or misnamed`);
+                                testResult.passed = false;
+                                testResult.add_message(`${name} is missing or misnamed`);
                             } else if (typeof result[name] !== 'number' || Number.isNaN(result[name])) {
-                                feedback.push(`${name} must be assigned a number`);
+                                testResult.passed = false;
+                                testResult.add_message(`${name} must be assigned a number`);
                             }
                         }
-            
-                        if (feedback.length > 0) {
-                            throw new Error(feedback.join('\n'));
-                        }
-                        return new TestResult(true);
-                    } catch (err) {
-                         // Attach helpful message from error or fallback to generic one
-                        return  new TestResult(false,err.message || "Make sure all monthly variables are named correctly and assigned numbers")
+                        if (!testResult.passed) return testResult
+                        return new TestResult({passed:true});
+                    } catch {
+                        return  new TestResult({passed:false, message: "Make sure all monthly variables are named correctly and assigned numbers"})
                     }
                 },
                 message: "All monthly variables must be named exactly (e.g. marchBill) and assigned a number"
@@ -229,11 +227,11 @@ console.log(yearlyTotal)`,
                 test: (code) => {
                     try {
                         const {januaryBill, februaryBill, marchBill, aprilBill, mayBill, juneBill, julyBill, augustBill, septemberBill, octoberBill, novemberBill, decemberBill, yearlyTotal} = new Function(code + '; return {januaryBill, februaryBill, marchBill, aprilBill, mayBill, juneBill, julyBill, augustBill, septemberBill, octoberBill, novemberBill, decemberBill, yearlyTotal}')()
-                        const res = yearlyTotal === januaryBill + februaryBill + marchBill + aprilBill + mayBill + juneBill + julyBill + augustBill + septemberBill + octoberBill + novemberBill + decemberBill
-                        return new TestResult(res)
+                        const passed = yearlyTotal === januaryBill + februaryBill + marchBill + aprilBill + mayBill + juneBill + julyBill + augustBill + septemberBill + octoberBill + novemberBill + decemberBill
+                        return new TestResult({passed})
                     }
                     catch {
-                        return new TestResult(false)
+                        return new TestResult({passed:false})
                     }
                 },
                 message: "Make sure you add up all the months to get the yearly total"
@@ -246,9 +244,9 @@ console.log(yearlyTotal)`,
                   try {
                         const yearlyTotal = 
                         new Function( "console",code + '\n return yearlyTotal')(mockConsole)
-                        return new TestResult(logs[0] === yearlyTotal); 
+                        return new TestResult({passed:logs[0] === yearlyTotal}); 
                     } catch {
-                    return new TestResult(false)
+                    return new TestResult({passed:false})
                   }
                 },
                 message: "You should console.log(\"*** yearly total ***\")"

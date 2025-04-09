@@ -191,15 +191,12 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       // Track attempt before running tests
       trackAttempt(chapterId, currentChapter.title)
 
-      // TEMP backward compatible fill until I update all tests to return the new object of format: 
-      // {
-      //   pass: boolan, 
-      //   message: ()= string
-      // }
+      // TEMP backward compatible fill until I update all 
+      // tests to return the new object of format see 'class TestResult'
       // Legacy tests  return true or false
       function upgradeLegacyReturn(ret){
         return {
-          pass:ret
+          passed:ret
         }
       }
 
@@ -220,7 +217,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
         }
       })
 
-      const allPassed = results.every(result => result.testResult.pass)
+      const allPassed = results.every(result => result.testResult.passed)
 
       // Track completion if all tests passed
       if (allPassed) {
@@ -231,12 +228,15 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       }
 
       const fullMessage = results.reduce((messages, currentResult) => {
-          if (currentResult.testResult.pass){
+          if (currentResult.testResult.passed){
             messages.push(`* <span style="color: green;">${currentResult.name} passed!</span>`);
           } else {
             messages.push(`* ${currentResult.message}`)
-            if (hasFunction(currentResult.testResult.message) && currentResult.testResult.message()){
-              messages.push(`* ${currentResult.testResult.message()}`)
+            if (hasFunction(currentResult.testResult.messages) && currentResult.testResult.messages().length > 0){
+              for(const message of currentResult.testResult.messages()){
+                // two spaces here are intentional to create nested li's 
+                messages.push(`  * ${message}`)
+              }
             }
           }
           return messages
@@ -360,7 +360,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
               <h3>{testResults.passed ? '✅ Tests Passed!' : '❌ Some Tests Failed'}</h3>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: marked(testResults.message.split('\n').map(line => line.trim()).join('\n'), {
+                  __html: marked(testResults.message.split('\n').join('\n'), {
                     breaks: true,
                     gfm: true
                   })
