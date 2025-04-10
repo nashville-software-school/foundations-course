@@ -191,15 +191,6 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       // Track attempt before running tests
       trackAttempt(chapterId, currentChapter.title)
 
-      // TEMP backward compatible fill until I update all 
-      // tests to return the new object of format see 'class TestResult'
-      // Legacy tests  return true or false
-      function upgradeLegacyReturn(ret){
-        return {
-          passed:ret
-        }
-      }
-
       const results = chapterContent.exercise.tests.map(test => {
         // For single-file exercises, pass just the code
         // For multi-file exercises, pass all files
@@ -207,9 +198,6 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
         const testArg = isMultiFile ? files : files['index.js']
 
         let testResult = test.test(testArg)
-        if (typeof testResult == "boolean") {
-          testResult = upgradeLegacyReturn(testResult)
-        }
         return {
           name: test.name,
           testResult,
