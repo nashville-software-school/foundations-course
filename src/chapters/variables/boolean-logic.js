@@ -159,14 +159,12 @@ if (iWokeUpEarly === true) {
         name: "Netflix Message",
         test: (code) => {
           try {
-            let consoleOutput = '';
-            const originalLog = console.log;
-            console.log = (msg) => { consoleOutput = msg; };
-            const iWokeUpEarly = new Function(code + '\n return iWokeUpEarly')()
-            console.log = originalLog;
-            return consoleOutput && consoleOutput !== "";
-          } catch (error) {
-            return false;
+            const logs = [];
+            const mockConsole = { log: (msg) => logs.push(msg) };
+            new Function("console",code)(mockConsole)
+            return new TestResult({passed:logs[0] !== ""});
+          } catch {
+            return new TestResult({passed:false});
           }
         },
         message: "When iWokeUpEarly is false, output the Netflix binge message"

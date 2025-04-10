@@ -63,13 +63,17 @@ const refrigerator = ""
 const allElectronics = ""
 
 // Your sentence should look like:
-// "I have the following electronic devices. My xxx television, my xxx computer, my xxx refrigerator, and my xxx phone"`,
+// "I have the following electronic devices. My xxx television, my xxx computer, my xxx refrigerator, and my xxx phone"
+
+console.log(allElectronics)
+`,
     solution: `const computer = "2023 Macbook Pro"
 const phone = "iPhone 14 Pro"
 const television = "65-inch LG OLED"
 const refrigerator = "Samsung French Door"
 
-const allElectronics = \`I have the following electronic devices. My \${television} television, my \${computer} computer, my \${refrigerator} refrigerator, and my \${phone} phone\``,
+const allElectronics = \`I have the following electronic devices. My \${television} television, my \${computer} computer, my \${refrigerator} refrigerator, and my \${phone} phone\`
+`,
     tests: [
       {
         name: "String Interpolation Correct Syntax",
