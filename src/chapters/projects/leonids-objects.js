@@ -46,7 +46,35 @@ You must create three separate toy objects using these variable names:
   `,
   exercise: {
     starterCode: ``,
-    solution: ``,
+    solution: `// Define the woodenTrain object
+const woodenTrain = {
+  name: "Handcrafted Wooden Train",
+  manufacturer: "Leonid's Toys",
+  priceInDollars: 24.99,
+  inStock: true,
+  recommendedAgeRange: "3-10 years",
+  weightInGrams: null // At least one property set to null
+};
+
+// Define the stuffedRabbit object
+const stuffedRabbit = {
+  name: "Plush Stuffed Rabbit",
+  manufacturer: "Leonid's Toys",
+  priceInDollars: 19.95,
+  inStock: null, // At least one property set to null
+  recommendedAgeRange: "0-5 years",
+  weightInGrams: 250
+};
+
+// Define the kite object
+const kite = {
+  name: "Colorful Painted Kite",
+  manufacturer: null, // At least one property set to null
+  priceInDollars: 14.50,
+  inStock: true,
+  recommendedAgeRange: "5-12 years",
+  weightInGrams: 180
+};`,
     tests: [
       {
         name: "Defines woodenTrain as an object",

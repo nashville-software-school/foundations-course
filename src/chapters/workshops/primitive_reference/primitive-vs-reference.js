@@ -195,7 +195,69 @@ It’s not a full JS environment, some behaviors may be different. Use this code
 // let result2 = Number("2") + Number("2")
 // console.log(result2); // Corrected version
 `,
-    solution: ``,
+    solution: `
+/*
+ **************************************************
+ *             Code Snippet One                   *
+ **************************************************
+ **************************************************
+ */
+let planet1 = "Mars"; // Primitive
+let planet2 = planet1;
+planet1 = "Venus";
+console.log(planet1); // Venus
+console.log(planet2); // Mars
+
+/*
+ **************************************************
+ *             Code Snippet Two                   *
+ **************************************************
+ **************************************************
+ */
+let spaceship1 = { captain: "Buzz Aldrin" }; // Reference type
+let spaceship2 = spaceship1;
+spaceship1.captain = "Sally Ride";
+console.log(spaceship2.captain); // Sally Ride
+
+/*
+ **************************************************
+ *             Code Snippet Three                 *
+ **************************************************
+ **************************************************
+ */
+let alien1 = { species: "Zorgon", abilities: { laser: true } };
+let alien2 = { ...alien1 }; // Shallow copy
+alien1.abilities.laser = false;
+console.log(alien2.abilities.laser); // false - because nested objects are still shared by reference
+
+/*
+ **************************************************
+ *             Code Snippet Four                  *
+ **************************************************
+ **************************************************
+ */
+let alien1 = { species: "Zorgon", abilities: { laser: true } };
+let alien2 = structuredClone(alien1); // Deep copy
+alien1.abilities.laser = false;
+console.log(alien2.abilities.laser); // true - deep copy creates a completely separate copy
+
+/*
+ **************************************************
+ *             Code Snippet Five                  *
+ **************************************************
+ **************************************************
+ */
+let result1 = "2" + "2"
+console.log(result1); // "22" - string concatenation, not addition
+
+/*
+ **************************************************
+ *             Code Snippet Six                   *
+ **************************************************
+ **************************************************
+ */
+let result2 = Number("2") + Number("2")
+console.log(result2); // 4 - converts strings to numbers before addition`,
     tests: [],
   },
 };

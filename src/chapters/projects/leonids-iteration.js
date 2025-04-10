@@ -128,7 +128,26 @@ Painted Kite
   `,
   exercise: {
     starterCode: ``,
-    solution: ``,
+    solution: `// Define the toyInventory array with three toy objects
+const toyInventory = [
+  {
+    name: "Wooden Train",
+    priceInDollars: 24.99
+  },
+  {
+    name: "Stuffed Rabbit",
+    priceInDollars: 19.95
+  },
+  {
+    name: "Painted Kite",
+    priceInDollars: 14.50
+  }
+];
+
+// Use a for...of loop to print the name of each toy
+for (const toy of toyInventory) {
+  console.log(toy.name);
+}`,
     tests: [
         {
           name: "Defines toyInventory as an array",
@@ -196,12 +215,12 @@ Painted Kite
                 },
               };
 
-              const func = new Function("console", code + "\nreturn logs;");
+              const func = new Function("console", code);
 
-              const result = func(mockConsole);
-              const passed = result.join('\n').includes("Wooden Train") &&
-                      result.join('\n').includes("Stuffed Rabbit") &&
-                      result.join('\n').includes("Painted Kite");
+              func(mockConsole);
+              const passed = logs[0].includes("Wooden Train") &&
+                logs[1].includes("Stuffed Rabbit") &&
+                logs[2].includes("Painted Kite");
               return new TestResult({passed});
             } catch (error) {
               return new TestResult({passed: false, message: error.message});

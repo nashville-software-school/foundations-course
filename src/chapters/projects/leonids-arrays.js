@@ -97,7 +97,24 @@ In this exercise, you’ll define an array that contains
   `,
   exercise: {
     starterCode: ``,
-    solution: ``,
+    solution: `const toyInventory = [
+  {
+    name: "Wooden Train",
+    manufacturer: "Leonid's Toys",
+    priceInDollars: 24.99
+  },
+  {
+    name: "Plush Bear",
+    manufacturer: "Cuddly Creations",
+    priceInDollars: 19.95,
+    color: null
+  },
+  {
+    name: "Building Blocks",
+    manufacturer: "Educational Toys Inc.",
+    priceInDollars: 34.50
+  }
+]`,
     tests: [
       {
         name: "Defines toyInventory as an array",

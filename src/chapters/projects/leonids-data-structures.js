@@ -126,7 +126,37 @@ The function should:
 function findToyById(toys, id) {
   // Your code here
 }`,
-    solution: ``,
+    solution: `
+const inventory = [
+  { id: 101, name: "Hand-Carved Wooden Train", maker: "Leonid" },
+  { id: 102, name: "Painted Rocking Horse", maker: "Leonid" },
+  { id: 103, name: "Stuffed Bear with Bow Tie", maker: "Leonid" },
+  { id: 104, name: "Miniature Sailboat", maker: "Leonid" },
+  { id: 105, name: "Patchwork Doll", maker: "Leonid" },
+  { id: 106, name: "Wooden Puzzle Box", maker: "Leonid" },
+  { id: 107, name: "Knitted Sock Monkey", maker: "Leonid" },
+  { id: 108, name: "Spinning Top", maker: "Leonid" },
+  { id: 109, name: "Tiny Puppet Theater", maker: "Leonid" },
+  { id: 110, name: "Hand-Painted Marbles", maker: "Leonid" },
+  { id: 111, name: "Fabric Kite with Tail", maker: "Leonid" },
+  { id: 112, name: "Wool-Stuffed Bunny", maker: "Leonid" },
+  { id: 113, name: "Wooden Xylophone", maker: "Leonid" },
+  { id: 114, name: "Tin Wind-Up Robot", maker: "Leonid" },
+  { id: 115, name: "Miniature Toy Chest", maker: "Leonid" }
+];
+
+function findToyById(toys, id) {
+  // Iterate through the toys array
+  for (const toy of toys) {
+    // If the current toy's id matches the id we're looking for, return the toy
+    if (toy.id === id) {
+      return toy;
+    }
+  }
+  
+  // If no toy with the matching id is found, return null
+  return null;
+}`,
     tests: [
       {
         name: "Finds toy with id 101",

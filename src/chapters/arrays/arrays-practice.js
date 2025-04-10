@@ -116,7 +116,6 @@ I have driven a total of \${totalMiles} miles.\`)`,
         },
         message: "Make sure to use a multi-line template string to output the average and total miles"
       }
-      
     ]
   }
 }

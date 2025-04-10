@@ -7,7 +7,8 @@ export const camelCasedId = {
   content: `<< Section content goes here >>`,
   exercise: {
     starterCode: ``,
-    solution: ``,
+    solution: `// This is a template file, so no specific solution is required.
+// The solution would depend on the specific exercise requirements.`,
     tests: [
       {
         name: "<< Title >>",

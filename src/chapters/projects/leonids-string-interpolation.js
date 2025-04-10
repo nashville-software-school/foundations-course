@@ -4,7 +4,7 @@ export const leonidsStringInterpolation = {
   id: "leonids-string-interpolation",
   title: "Toy Catalog",
   sectionId: "leonids",
-  previousChapterId: "leonids-arrays-push",
+  previousChapterId: "leonids-conditionals",
   nextChapterId: "leonids-iteration-update",
   content: `
 ## String Interpolation

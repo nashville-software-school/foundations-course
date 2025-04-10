@@ -5,7 +5,7 @@ export const leonidsArraysPush = {
   title: "New Toys",
   sectionId: "leonids",
   previousChapterId: "leonids-iteration",
-  nextChapterId: "leonids-string-interpolation",
+  nextChapterId: "leonids-conditionals",
   content: `
 In this chapter you will learn about the \`push()\` method that is available on every array which allows you to add things to the array.
 

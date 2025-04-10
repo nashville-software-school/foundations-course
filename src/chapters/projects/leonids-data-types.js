@@ -86,7 +86,26 @@ Instructions:
 
 // TODO: Call createToy with the correct data types
 const myToy = createToy( /* Fill in the arguments correctly */ );`,
-    solution: ``,
+    solution: `function createToy(name, category, ageRecommendation, isBatteryOperated, features, dimensions) {
+    return {
+        name,
+        category,
+        ageRecommendation,
+        isBatteryOperated,
+        features,
+        dimensions
+    };
+}
+
+// Call createToy with the correct data types
+const myToy = createToy(
+    "Wooden Train Set", // name: string
+    "Educational", // category: string
+    5, // ageRecommendation: number
+    false, // isBatteryOperated: boolean
+    ["Handcrafted", "Non-toxic paint", "Develops motor skills"], // features: array of strings
+    { height: 10.5, width: 25.0 } // dimensions: object with height and width as numbers
+);`,
     tests: [
       {
         name: "Test Name",

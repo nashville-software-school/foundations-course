@@ -4,7 +4,7 @@ import { variablesChapters } from './variables'
 import { arrayChapters } from './arrays'
 import { objectChapters } from './objects'
 import { functionChapters } from './functions'
-import { modulesChapters } from './modules'
+// import { modulesChapters } from './modules'
 import { workshopChapters } from './workshops'
 import { assessments } from './assessments'
 
@@ -26,7 +26,7 @@ const protectedVariablesChapters = variablesChapters.map(addAuthRequirement)
 const protectedArrayChapters = arrayChapters.map(addAuthRequirement)
 const protectedObjectChapters = objectChapters.map(addAuthRequirement)
 const protectedFunctionChapters = functionChapters.map(addAuthRequirement)
-const protectedModulesChapters = modulesChapters.map(addAuthRequirement)
+// const protectedModulesChapters = modulesChapters.map(addAuthRequirement)
 const protectedWorkshopChapters = workshopChapters.map(addAuthRequirement)
 const protectedAssessments = assessments.map(addAuthRequirement)
 
