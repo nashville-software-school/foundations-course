@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsScopeBasicsChapter = {
   id: 'functions-scope-basics',
   title: 'Understanding Scope Basics',
@@ -139,10 +141,11 @@ displayScore()`,
             const codeWithoutFunctions = functionCode.reduce((acc, func) => acc.replace(func, ''), code);
 
             // Check if score is declared with let or var (not const)
-            return (codeWithoutFunctions.includes('let score = 0') ||
+            const passed = (codeWithoutFunctions.includes('let score = 0') ||
                    codeWithoutFunctions.includes('var score = 0'));
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure score is declared as a global variable using 'let' (not 'const') since its value will change."
@@ -168,11 +171,12 @@ displayScore()`,
             console.log = originalConsoleLog;
 
             // Check if displayScore successfully logs a value both times
-            return loggedMessages.length >= 2 &&
+            const passed = loggedMessages.length >= 2 &&
                   loggedMessages[0].includes('Score: 0') &&
                   loggedMessages[1].includes('Score: 100');
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Your code should run without errors, showing 'Score: 0' first and 'Score: 100' after updating."
@@ -186,9 +190,10 @@ displayScore()`,
             const displayScoreRegex = /const\s+displayScore\s*=\s*\(\)\s*=>/;
             const updateScoreRegex = /const\s+updateScore\s*=\s*\(\)\s*=>/;
 
-            return displayScoreRegex.test(code) && updateScoreRegex.test(code);
+            const passed = displayScoreRegex.test(code) && updateScoreRegex.test(code);
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure both functions are declared with arrow function syntax."
@@ -214,9 +219,10 @@ displayScore()`,
             `);
 
             const result = testFunc();
-            return result.initialScore === 100 && result.finalCheck === true;
+            const passed = result.initialScore === 100 && result.finalCheck === true;
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure your updateScore function correctly adds 100 to the score variable."
@@ -230,14 +236,15 @@ displayScore()`,
             const displayScoreFunc = code.match(/const\s+displayScore\s*=\s*\(\)\s*=>[\s\n]*{([^}]*)}/)?.[1] || '';
             const updateScoreFunc = code.match(/const\s+updateScore\s*=\s*\(\)\s*=>[\s\n]*{([^}]*)}/)?.[1] || '';
 
-            return !displayScoreFunc.includes('let score') &&
+            const passed = !displayScoreFunc.includes('let score') &&
                   !displayScoreFunc.includes('const score') &&
                   !displayScoreFunc.includes('var score') &&
                   !updateScoreFunc.includes('let score') &&
                   !updateScoreFunc.includes('const score') &&
                   !updateScoreFunc.includes('var score');
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Don't declare 'score' inside the functions - they should both use the global score variable."

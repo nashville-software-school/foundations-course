@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsReturnWorkingChapter = {
   id: 'functions-return-working',
   title: 'Working with Return Values',
@@ -157,9 +159,10 @@ console.log("Total with tax: $" + finalTotal.toFixed(2))`,
               return typeof calculateSubtotal === "function" && calculateSubtotal.length === 2;
             `);
 
-            return hasArrowSyntax && func();
+            const passed = hasArrowSyntax && func();
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure you've created an arrow function called 'calculateSubtotal' that takes two parameters (quantity and price)."
@@ -179,9 +182,10 @@ console.log("Total with tax: $" + finalTotal.toFixed(2))`,
               return test1 && test2 && test3;
             `);
 
-            return func();
+            const passed = func();
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Your calculateSubtotal function should multiply quantity and price correctly."
@@ -202,9 +206,10 @@ console.log("Total with tax: $" + finalTotal.toFixed(2))`,
               return typeof calculateTotal === "function" && calculateTotal.length === 1;
             `);
 
-            return hasArrowSyntax && func();
+            const passed = hasArrowSyntax && func();
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure you've created an arrow function called 'calculateTotal' that takes one parameter (subtotal)."
@@ -224,9 +229,10 @@ console.log("Total with tax: $" + finalTotal.toFixed(2))`,
               return test1 && test2 && test3;
             `);
 
-            return func();
+            const passed = func();
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Your calculateTotal function should add 8% tax correctly."
@@ -246,9 +252,10 @@ console.log("Total with tax: $" + finalTotal.toFixed(2))`,
               return Math.abs(actual - expected) < 0.05;
             `);
 
-            return func();
+            const passed = func();
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure your functions work together correctly to calculate the total with tax."
@@ -262,9 +269,10 @@ console.log("Total with tax: $" + finalTotal.toFixed(2))`,
             const subtotalVarRegex = /(const|let|var)\s+\w+\s*=\s*calculateSubtotal\s*\(/;
             const totalVarRegex = /(const|let|var)\s+\w+\s*=\s*calculateTotal\s*\(/;
 
-            return subtotalVarRegex.test(code) && totalVarRegex.test(code);
+            const passed = subtotalVarRegex.test(code) && totalVarRegex.test(code);
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure you store your function results in variables."
@@ -290,12 +298,13 @@ console.log("Total with tax: $" + finalTotal.toFixed(2))`,
             console.log = originalConsoleLog;
 
             // Check if any message contains "Subtotal" or subtotal value
-            return loggedMessages.some(msg =>
+            const passed = loggedMessages.some(msg =>
               (msg.includes("Subtotal") || msg.includes("subtotal")) &&
               (msg.includes("14.97") || msg.includes("14.9") || msg.includes("15"))
             );
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure to log the subtotal result to the console."
@@ -321,12 +330,13 @@ console.log("Total with tax: $" + finalTotal.toFixed(2))`,
             console.log = originalConsoleLog;
 
             // Check if any message contains "Total" or "total" and an appropriate value
-            return loggedMessages.some(msg =>
+            const passed = loggedMessages.some(msg =>
               (msg.includes("Total") || msg.includes("total")) &&
               (msg.includes("16.17") || msg.includes("16.1") || msg.includes("16.2"))
             );
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure to log the final total with tax to the console."

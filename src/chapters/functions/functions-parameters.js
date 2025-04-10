@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsParametersChapter = {
   id: 'functions-parameters',
   title: 'Introducing Parameters',
@@ -101,9 +103,10 @@ function describeActivity() {
           try {
             // Check if the function is defined with a parameter
             const functionMatch = code.match(/function\s+describeActivity\s*\(\s*([a-zA-Z][a-zA-Z0-9]*)\s*\)/);
-            return functionMatch !== null && functionMatch[1].length > 0;
+            const passed = functionMatch !== null && functionMatch[1].length > 0;
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure your function has a parameter. Example: function describeActivity(activity) { ... }"
@@ -114,18 +117,19 @@ function describeActivity() {
           try {
             // Extract the parameter name
             const paramMatch = code.match(/function\s+describeActivity\s*\(\s*([a-zA-Z][a-zA-Z0-9]*)\s*\)/);
-            if (!paramMatch) return false;
+            if (!paramMatch) return new TestResult({passed: false});
 
             const paramName = paramMatch[1];
 
             // Check if the parameter is used in the console.log statement
-            return code.includes(`console.log`) &&
+            const passed = code.includes(`console.log`) &&
               (code.includes(`+ ${paramName} +`) ||
                 code.includes(`+${paramName}+`) ||
                 code.includes(`\${${paramName}}`) ||  // Template literals
                 code.includes(`, ${paramName},`));    // console.log format strings
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure you're using the parameter in your console.log message to make the function flexible."
@@ -134,7 +138,6 @@ function describeActivity() {
         name: "Function Works with Different Activities",
         test: (code) => {
           try {
-
             // Replace console.log with a return statement for testing
             code = code.replace(/console\.log\s*\(\s*["'`]I love /g, "return `I love ");
             // Replace closing parenthesis with a closing backtick
@@ -147,13 +150,13 @@ function describeActivity() {
             for (const activity of activities) {
               const output = evalFunction(activity);
               if (!output.includes(`I love ${activity}!`)) {
-                return false;
+                return new TestResult({passed: false});
               }
             }
 
-            return true;
+            return new TestResult({passed: true});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Your function should work with any activity. Make sure you're using the parameter correctly."
@@ -164,18 +167,19 @@ function describeActivity() {
           try {
             // Extract the parameter name
             const paramMatch = code.match(/function\s+describeActivity\s*\(\s*([a-zA-Z][a-zA-Z0-9]*)\s*\)/);
-            if (!paramMatch) return false;
+            if (!paramMatch) return new TestResult({passed: false});
 
             const paramName = paramMatch[1];
 
             // Check if the output format matches "I love [activity]!"
-            return code.includes(`console.log`) &&
+            const passed = code.includes(`console.log`) &&
               (code.includes(`"I love " + ${paramName} + "!"`) ||
                 code.includes(`'I love ' + ${paramName} + '!'`) ||
                 code.includes("`I love ${") || // Check for template literal pattern
                 code.match(/console\.log\s*\(\s*["'`]I love /)); // Check beginning of string
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure your output format is correct: 'I love [activity]!'"

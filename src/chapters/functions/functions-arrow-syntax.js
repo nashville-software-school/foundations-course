@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsArrowSyntaxChapter = {
   id: "functions-arrow-syntax",
   title: "Arrow Function Syntax",
@@ -134,9 +136,10 @@ function getRandomNumber() {
           return add(5, 3) === 8;
         `);
 
-            return hasArrowSyntax && func();
+            const passed =  hasArrowSyntax && func();
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Convert the add function to use arrow syntax. Make sure it still adds two numbers correctly."
@@ -159,10 +162,9 @@ function getRandomNumber() {
           }
           return greet("Alice") === "Hello, Alice!";
         `);
-
-            return hasArrowSyntax && func();
+            return new TestResult({passed:hasArrowSyntax && func()});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Convert the greet function to use arrow syntax. Make sure it still returns the correct greeting."
@@ -186,9 +188,10 @@ function getRandomNumber() {
           return typeof result === "number" && result >= 0 && result < 1;
         `);
 
-            return hasArrowSyntax && func();
+            const passed =  hasArrowSyntax && func();
+            return new TestResult({passed})
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Convert the getRandomNumber function to use arrow syntax with empty parentheses. Make sure it still returns a random number."
@@ -201,9 +204,10 @@ function getRandomNumber() {
             // Check if at least one function uses concise syntax (no curly braces)
             // We'll look for arrow functions without curly braces
             const arrowFuncRegex = /=>\s*[^{]/;
-            return arrowFuncRegex.test(code);
+            const passed = arrowFuncRegex.test(code);
+            return new TestResult({passed})
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Try using the concise arrow syntax (without curly braces) for at least one of your functions."
@@ -214,11 +218,12 @@ function getRandomNumber() {
         test: (code) => {
           try {
             // Make sure there are no traditional function declarations left
-            return !code.includes("function add") &&
+            const passed = !code.includes("function add") &&
               !code.includes("function greet") &&
               !code.includes("function getRandomNumber");
+              return new TestResult({passed})
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Make sure you've converted all three functions to arrow syntax."

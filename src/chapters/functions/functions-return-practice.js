@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsReturnPracticeChapter = {
     id: 'functions-return-practice',
     title: 'Return Value Practice',
@@ -157,9 +159,10 @@ export const functionsReturnPracticeChapter = {
                 return typeof calculateGameScore === "function" && calculateGameScore.length === 2;
               `);
 
-              return hasArrowSyntax && func();
+              const passed = hasArrowSyntax && func();
+              return new TestResult({passed});
             } catch (error) {
-              return false;
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "Make sure you've created an arrow function called 'calculateGameScore' that takes two parameters."
@@ -174,9 +177,10 @@ export const functionsReturnPracticeChapter = {
                 return calculateGameScore(500, 2.5) === "High Score!";
               `);
 
-              return func();
+              const passed = func();
+              return new TestResult({passed});
             } catch (error) {
-              return false;
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "Your function should return 'High Score!' when the total is 1000 or more."
@@ -191,9 +195,10 @@ export const functionsReturnPracticeChapter = {
                 return calculateGameScore(300, 2) === "Keep trying!";
               `);
 
-              return func();
+              const passed = func();
+              return new TestResult({passed});
             } catch (error) {
-              return false;
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "Your function should return 'Keep trying!' when the total is less than 1000."
@@ -214,9 +219,10 @@ export const functionsReturnPracticeChapter = {
                 return test1 && test2;
               `);
 
-              return func();
+              const passed = func();
+              return new TestResult({passed});
             } catch (error) {
-              return false;
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "Make sure your function correctly calculates the total points and compares it to 1000."
@@ -228,9 +234,10 @@ export const functionsReturnPracticeChapter = {
             try {
               // Check if variable stores function result
               const variableAssignmentRegex = /(const|let|var)\s+\w+\s*=\s*calculateGameScore\s*\([^)]*\)/;
-              return variableAssignmentRegex.test(code);
+              const passed = variableAssignmentRegex.test(code);
+              return new TestResult({passed});
             } catch (error) {
-              return false;
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "Make sure you store a function result in a variable."
@@ -256,11 +263,12 @@ export const functionsReturnPracticeChapter = {
               console.log = originalConsoleLog;
 
               // Check if any message contains "High Score!" or "Keep trying!"
-              return loggedMessages.some(msg =>
+              const passed = loggedMessages.some(msg =>
                 msg.includes("High Score!") || msg.includes("Keep trying!")
               );
+              return new TestResult({passed});
             } catch (error) {
-              return false;
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "Make sure you log the result of your function to the console."

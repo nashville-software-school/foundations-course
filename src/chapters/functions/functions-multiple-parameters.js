@@ -1,4 +1,4 @@
-
+import { TestResult } from "../../utils/test_utils";
 
 export const functionsMultipleParametersChapter = {
   id: 'functions-multiple-parameters',
@@ -148,9 +148,10 @@ displayGameScore("Jamal", 75)
           try {
             // Check if displayGameScore function exists
             const func = new Function(code + '; return typeof displayGameScore === "function";');
-            return func();
+            const passed = func();
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Make sure you've created a function named 'displayGameScore'."
@@ -162,9 +163,10 @@ displayGameScore("Jamal", 75)
           try {
             // Check if displayGameScore has 2 parameters
             const func = new Function(code + '; return displayGameScore.length;');
-            return func() === 2;
+            const passed = func() === 2;
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Your displayGameScore function should have exactly two parameters."
@@ -190,13 +192,14 @@ displayGameScore("Jamal", 75)
             console.log = originalConsoleLog;
 
             // Check if output contains both "Mario" and "100" and "points"
-            return loggedMessages.some(msg =>
+            const passed = loggedMessages.some(msg =>
               msg.includes('Mario') &&
               msg.includes('100') &&
               msg.includes('points')
             );
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Your function should output a message that includes 'Mario', '100', and 'points'."
@@ -222,12 +225,13 @@ displayGameScore("Jamal", 75)
             console.log = originalConsoleLog;
 
             // Check if output contains both "Luigi" and "50"
-            return loggedMessages.some(msg =>
+            const passed = loggedMessages.some(msg =>
               msg.includes('Luigi') &&
               msg.includes('50')
             );
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Your function should work with different names and scores."
@@ -261,11 +265,12 @@ displayGameScore("Jamal", 75)
             console.log = originalConsoleLog;
 
             // Make sure outputs are different, confirming parameters are used
-            return firstCall.length > 0 &&
+            const passed = firstCall.length > 0 &&
               secondCall.length > 0 &&
               firstCall[firstCall.length-1] !== secondCall[firstCall.length-1];
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Your function should use both parameters to create different outputs for different inputs."
