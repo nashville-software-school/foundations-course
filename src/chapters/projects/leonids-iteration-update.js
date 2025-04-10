@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const leonidsIterationUpdate = {
   id: "leonids-iteration-update",
   title: "Raising Prices",
@@ -90,11 +92,12 @@ Leonid has decided to increase prices by 5%. Your task is to:
           try {
             const func = new Function(code + "\n return toyCatalog;");
             const toys = func();
-            return toys[0].priceInDollars === 30 &&
+            const passed = toys[0].priceInDollars === 30 &&
                    toys[1].priceInDollars === 25 &&
                    toys[2].priceInDollars === 20;
-          } catch {
-            return false;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "toyCatalog must contain the original prices before any increase"
@@ -102,14 +105,24 @@ Leonid has decided to increase prices by 5%. Your task is to:
       {
         name: "Uses for...of loop over toyCatalog",
         test: (code) => {
-          return /\bfor\s*\(\s*const\s+\w+\s+of\s+toyCatalog\s*\)/.test(code);
+          try {
+            const passed = /\bfor\s*\(\s*const\s+\w+\s+of\s+toyCatalog\s*\)/.test(code);
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
+          }
         },
         message: "You should use a for...of loop to iterate over toyCatalog"
       },
       {
         name: "Uses .toFixed(2) to format prices",
         test: (code) => {
-          return /\.toFixed\s*\(\s*2\s*\)/.test(code);
+          try {
+            const passed = /\.toFixed\s*\(\s*2\s*\)/.test(code);
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
+          }
         },
         message: "You should use .toFixed(2) to format the price"
       },
@@ -119,12 +132,13 @@ Leonid has decided to increase prices by 5%. Your task is to:
           try {
             const func = new Function(code + "\n return displayCatalog;");
             const result = func();
-            return Array.isArray(result) &&
+            const passed = Array.isArray(result) &&
                    result[0] === "Toy: Wooden Train | Price: $31.50 | Color: Red" &&
                    result[1] === "Toy: Stuffed Rabbit | Price: $26.25 | Color: Gray" &&
                    result[2] === "Toy: Painted Kite | Price: $21.00 | Color: Blue";
-          } catch {
-            return false;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "displayCatalog should include correctly formatted strings with increased prices"

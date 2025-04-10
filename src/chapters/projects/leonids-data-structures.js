@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const leonidsDataStructures = {
   id: "leonids-data-structures",
   title: "Data Structures",
@@ -132,9 +134,10 @@ function findToyById(toys, id) {
           try {
             const func = new Function(code + `\n return findToyById([{ id: 101, name: 'Hand-Carved Wooden Train', maker: 'Leonid' }], 101);`);
             const toy = func();
-            return toy.name === "Hand-Carved Wooden Train";
-          } catch {
-            return false;
+            const passed = toy.name === "Hand-Carved Wooden Train";
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Should return the toy with id 101"
@@ -145,9 +148,10 @@ function findToyById(toys, id) {
           try {
             const func = new Function(code + `\n return findToyById([{ id: 101, name: 'Hand-Carved Wooden Train', maker: 'Leonid' }], 999);`);
             const toy = func();
-            return toy === null;
-          } catch {
-            return false;
+            const passed = toy === null;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Should return null when id is not found"
@@ -161,9 +165,10 @@ function findToyById(toys, id) {
               { id: 111, name: 'Fabric Kite with Tail', maker: 'Leonid' }
             ], 110);`);
             const toy = func();
-            return toy.name === "Hand-Painted Marbles";
-          } catch {
-            return false;
+            const passed = toy.name === "Hand-Painted Marbles";
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Should return the toy with id 110"
@@ -174,9 +179,10 @@ function findToyById(toys, id) {
           try {
             const func = new Function(code + `\n return findToyById([{ id: 105, name: 'Patchwork Doll', maker: 'Leonid' }], 105);`);
             const toy = func();
-            return typeof toy === "object" && toy !== null;
-          } catch {
-            return false;
+            const passed = typeof toy === "object" && toy !== null;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Should return a non-null object"
@@ -190,9 +196,10 @@ function findToyById(toys, id) {
               { id: 114, name: 'Tin Wind-Up Robot', maker: 'Leonid' }
             ], 115);`);
             const toy = func();
-            return toy.name !== "Tin Wind-Up Robot";
-          } catch {
-            return false;
+            const passed = toy.name !== "Tin Wind-Up Robot";
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Should not return a different toy with a wrong id"

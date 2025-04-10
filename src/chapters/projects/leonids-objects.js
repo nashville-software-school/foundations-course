@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const leonidsObjects = {
   id: "leonids-objects",
   title: "Representing Toys as Objects",
@@ -52,10 +54,10 @@ You must create three separate toy objects using these variable names:
           try {
             const func = new Function(code + `\n return woodenTrain;`);
             const toy = func();
-            console.log("toy",toy)
-            return typeof toy === "object" && toy !== null;
-          } catch {
-            return false;
+            const passed = typeof toy === "object" && toy !== null;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "woodenTrain should be a non-null object"
@@ -66,9 +68,10 @@ You must create three separate toy objects using these variable names:
           try {
             const func = new Function(code + `\n return stuffedRabbit;`);
             const toy = func();
-            return typeof toy === "object" && toy !== null;
-          } catch {
-            return false;
+            const passed = typeof toy === "object" && toy !== null;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "stuffedRabbit should be a non-null object"
@@ -79,9 +82,10 @@ You must create three separate toy objects using these variable names:
           try {
             const func = new Function(code + `\n return kite;`);
             const toy = func();
-            return typeof toy === "object" && toy !== null;
-          } catch {
-            return false;
+            const passed = typeof toy === "object" && toy !== null;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "kite should be a non-null object"
@@ -92,7 +96,7 @@ You must create three separate toy objects using these variable names:
           try {
             const func = new Function(code + `\n return [woodenTrain, stuffedRabbit, kite];`);
             const toys = func();
-            return toys.every(toy => {
+            const passed = toys.every(toy => {
               const keys = Object.keys(toy);
               return keys.includes("name") &&
                      keys.includes("manufacturer") &&
@@ -101,8 +105,9 @@ You must create three separate toy objects using these variable names:
                      keys.includes("recommendedAgeRange") &&
                      keys.includes("weightInGrams");
             });
-          } catch {
-            return false;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Each toy should include all six required properties"
@@ -113,9 +118,10 @@ You must create three separate toy objects using these variable names:
           try {
             const func = new Function(code + `\n return [woodenTrain, stuffedRabbit, kite];`);
             const toys = func();
-            return toys.every(toy => Object.values(toy).some(v => v === null));
-          } catch {
-            return false;
+            const passed = toys.every(toy => Object.values(toy).some(v => v === null));
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Each toy should have at least one property set to null"

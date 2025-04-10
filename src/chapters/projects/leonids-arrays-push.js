@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const leonidsArraysPush = {
   id: "leonids-arrays-push",
   title: "New Toys",
@@ -106,9 +108,10 @@ toyInventoryCollection.push({ name: "Painted Kite", priceInDollars: 20 });`,
           test: (code) => {
             try {
               const func = new Function(code + "\n return Array.isArray(toyInventory);");
-              return func();
-            } catch {
-              return false;
+              const passed = func();
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "You should define toyInventory as an array"
@@ -119,13 +122,14 @@ toyInventoryCollection.push({ name: "Painted Kite", priceInDollars: 20 });`,
             try {
               const func = new Function(code + "\n return toyInventory;");
               const result = func();
-              return Array.isArray(result) &&
+              const passed = Array.isArray(result) &&
                      result.length === 3 &&
                      result[0] === "Wooden Train" &&
                      result[1] === "Stuffed Rabbit" &&
                      result[2] === "Painted Kite";
-            } catch {
-              return false;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "toyInventory should contain all three toys in the correct order"
@@ -133,15 +137,25 @@ toyInventoryCollection.push({ name: "Painted Kite", priceInDollars: 20 });`,
         {
           name: "Each push adds only one item",
           test: (code) => {
-            const pushCalls = code.match(/\.push\s*\([^,]+?\)/g);
-            return pushCalls && pushCalls.length === 3;
+            try {
+              const pushCalls = code.match(/\.push\s*\([^,]+?\)/g);
+              const passed = pushCalls && pushCalls.length === 3;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "Use .push() three separate times, each with a single argument"
         },
         {
           name: "Does not assign array all at once",
           test: (code) => {
-            return !/toyInventory\s*=\s*\[[^\]]+\]/.test(code)
+            try {
+              const passed = !/toyInventory\s*=\s*\[[^\]]+\]/.test(code);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "Do not use a full array literal to define toyInventory. Use .push() instead"
         },
@@ -150,9 +164,10 @@ toyInventoryCollection.push({ name: "Painted Kite", priceInDollars: 20 });`,
           test: (code) => {
             try {
               const func = new Function(code + "\n return Array.isArray(toyInventoryCollection);");
-              return func();
-            } catch {
-              return false;
+              const passed = func();
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "You should define toyInventoryCollection as an array"
@@ -163,11 +178,12 @@ toyInventoryCollection.push({ name: "Painted Kite", priceInDollars: 20 });`,
             try {
               const func = new Function(code + "\n return toyInventoryCollection;");
               const result = func();
-              return Array.isArray(result) &&
+              const passed = Array.isArray(result) &&
                      result.length === 3 &&
                      result.every(t => typeof t === "object" && t !== null);
-            } catch {
-              return false;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "toyInventoryCollection should contain three objects"
@@ -178,14 +194,15 @@ toyInventoryCollection.push({ name: "Painted Kite", priceInDollars: 20 });`,
             try {
               const func = new Function(code + "\n return toyInventoryCollection;");
               const result = func();
-              return result.every(toy =>
+              const passed = result.every(toy =>
                 'name' in toy &&
                 'priceInDollars' in toy &&
                 typeof toy.name === "string" &&
                 typeof toy.priceInDollars === "number"
               );
-            } catch {
-              return false;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "Each toy should have a name (string) and priceInDollars (number)"
@@ -193,8 +210,13 @@ toyInventoryCollection.push({ name: "Painted Kite", priceInDollars: 20 });`,
         {
           name: "Each object was added using push",
           test: (code) => {
-            const pushCalls = code.match(/\.push\s*\(\s*{[^}]+}\s*\)/g);
-            return pushCalls && pushCalls.length === 3;
+            try {
+              const pushCalls = code.match(/\.push\s*\(\s*{[^}]+}\s*\)/g);
+              const passed = pushCalls && pushCalls.length === 3;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "Use .push() three times to add objects directly"
         },
@@ -204,11 +226,12 @@ toyInventoryCollection.push({ name: "Painted Kite", priceInDollars: 20 });`,
             try {
               const func = new Function(code + "\n return toyInventoryCollection;");
               const result = func();
-              return result[0].name === "Wooden Train" && result[0].priceInDollars === 30 &&
+              const passed = result[0].name === "Wooden Train" && result[0].priceInDollars === 30 &&
                      result[1].name === "Stuffed Rabbit" && result[1].priceInDollars === 25 &&
                      result[2].name === "Painted Kite" && result[2].priceInDollars === 20;
-            } catch {
-              return false;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "The pushed objects must match the exact name and price values"

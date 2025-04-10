@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const leonidsConditionals = {
   id: "leonids-conditionals",
   title: "Helping Customers Find the Right Toy",
@@ -45,7 +47,13 @@ This is a very basic implementation of tools that you use on the Web when you se
     tests: [
       {
         name: "<< Title >>",
-        test: (code) => true,
+        test: (code) => {
+          try {
+            return new TestResult({passed: true});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
+          }
+        },
         message: "",
       },
     ],

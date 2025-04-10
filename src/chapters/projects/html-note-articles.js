@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const htmlNoteArticlesId = {
     id: "html-note-articles",
     title: "HTML Note Articles",
@@ -73,41 +75,61 @@ for (const note of notes) {
         {
           name: "Logs the header",
           test: (code) => {
-            const logs = [];
-            const mockConsole = { log: (msg) => logs.push(msg) };
-      
-            const func = new Function("console", code);
-            func(mockConsole);
-      
-            return logs[0] === "***  Note Articles  ***";
+            try {
+              const logs = [];
+              const mockConsole = { log: (msg) => logs.push(msg) };
+        
+              const func = new Function("console", code);
+              func(mockConsole);
+        
+              const passed = logs[0] === "***  Note Articles  ***";
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "You should log the header: ***  Note Articles  ***"
         },
         {
           name: "Logs each note wrapped in <article>",
           test: (code) => {
-            const logs = [];
-            const mockConsole = { log: (msg) => logs.push(msg) };
-            const func = new Function( "console", code);
-            func(mockConsole);
-            const expected = ["<article>Always work on a branch and submit a PR, even if I'm working on my own project.</article>",
-            "<article>I have found that slowing down and thinking about the problem, and writing out the comments makes it vastly easier to write code.</article>",
-            "<article>Review all my old code before asking for help or looking at hints.</article>"]
-            return logs.slice(1).join("|") === expected.join("|");
+            try {
+              const logs = [];
+              const mockConsole = { log: (msg) => logs.push(msg) };
+              const func = new Function( "console", code);
+              func(mockConsole);
+              const expected = ["<article>Always work on a branch and submit a PR, even if I'm working on my own project.</article>",
+              "<article>I have found that slowing down and thinking about the problem, and writing out the comments makes it vastly easier to write code.</article>",
+              "<article>Review all my old code before asking for help or looking at hints.</article>"]
+              const passed = logs.slice(1).join("|") === expected.join("|");
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "Each note should be printed as <article>Note Text</article>"
         },
         {
           name: "Uses for...of loop",
           test: (code) => {
-            return /\bfor\s*\(\s*const\s+\w+\s+of\s+notes\s*\)/.test(code);
+            try {
+              const passed = /\bfor\s*\(\s*const\s+\w+\s+of\s+notes\s*\)/.test(code);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "Use a for...of loop to iterate through notes"
         },
         {
           name: "Uses template literals and string interpolation",
           test: (code) => {
-            return /`<article>\$\{.*\.text\}<\/article>`/.test(code);
+            try {
+              const passed = /`<article>\$\{.*\.text\}<\/article>`/.test(code);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "Use a template literal to wrap note.text in <article> tags"
         }

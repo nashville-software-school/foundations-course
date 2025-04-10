@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const leonidsStringInterpolation = {
   id: "leonids-string-interpolation",
   title: "Toy Catalog",
@@ -99,13 +101,14 @@ for (const toy of toyCatalog) {
           try {
             const func = new Function(code + "\n return toyCatalog;");
             const result = func();
-            return Array.isArray(result) &&
+            const passed = Array.isArray(result) &&
                    result.length === 3 &&
                    result[0].name === "Wooden Train" &&
                    result[1].name === "Stuffed Rabbit" &&
                    result[2].name === "Painted Kite";
-          } catch {
-            return false;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "toyCatalog must contain the three specific toy objects"
@@ -113,7 +116,12 @@ for (const toy of toyCatalog) {
       {
         name: "Uses for...of loop over toyCatalog",
         test: (code) => {
-          return /\bfor\s*\(\s*const\s+\w+\s+of\s+toyCatalog\s*\)/.test(code);
+          try {
+            const passed = /\bfor\s*\(\s*const\s+\w+\s+of\s+toyCatalog\s*\)/.test(code);
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
+          }
         },
         message: "You should use a for...of loop to iterate over toyCatalog"
       },
@@ -123,13 +131,14 @@ for (const toy of toyCatalog) {
           try {
             const func = new Function(code + "\n return displayCatalog;");
             const result = func();
-            return Array.isArray(result) &&
+            const passed = Array.isArray(result) &&
                    result.length === 3 &&
                    result[0] === "Toy: Wooden Train | Price: $30 | Color: Red" &&
                    result[1] === "Toy: Stuffed Rabbit | Price: $25 | Color: Gray" &&
                    result[2] === "Toy: Painted Kite | Price: $20 | Color: Blue";
-          } catch {
-            return false;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "displayCatalog should contain correctly formatted catalog entries"
@@ -137,7 +146,12 @@ for (const toy of toyCatalog) {
       {
         name: "Uses template literals and dot notation",
         test: (code) => {
-          return /`\s*Toy:\s*\$\{.*\.name\}\s*\|\s*Price:\s*\$\$\{.*\.priceInDollars\}\s*\|\s*Color:\s*\$\{.*\.color\}\s*`/.test(code);
+          try {
+            const passed = /`\s*Toy:\s*\$\{.*\.name\}\s*\|\s*Price:\s*\$\$\{.*\.priceInDollars\}\s*\|\s*Color:\s*\$\{.*\.color\}\s*`/.test(code);
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
+          }
         },
         message: "You should use string interpolation and dot notation to access and format each toy's info"
       }

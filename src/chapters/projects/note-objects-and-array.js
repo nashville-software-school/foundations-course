@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const noteObjectsAndArrayId = {
     id: "note-objects-and-array",
     title: "Note Objects and Array",
@@ -120,9 +122,10 @@ notes.push({
               const func = new Function(code + "\n return notes;");
               const result = func();
               const ids = result.map(n => n.id);
-              return ids.includes(4) && ids.includes(5) && ids.includes(6);
-            } catch {
-              return false;
+              const passed = ids.includes(4) && ids.includes(5) && ids.includes(6);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "notes should include objects with IDs 4, 5, and 6"
@@ -133,15 +136,16 @@ notes.push({
             try {
               const func = new Function(code + "\n return notes.filter(n => n.id >= 4);");
               const result = func();
-              return result.length === 3 && result.every(n =>
+              const passed = result.length === 3 && result.every(n =>
                 typeof n.text === "string" &&
                 typeof n.author === "string" &&
                 typeof n.date === "string" &&
                 Array.isArray(n.topics) &&
                 n.topics.every(topic => typeof topic === "string")
               );
-            } catch {
-              return false;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "Each new note must have text, author, date, and topics (array of strings)"
@@ -149,8 +153,13 @@ notes.push({
         {
           name: "Uses .push() exactly three times",
           test: (code) => {
-            const pushMatches = code.match(/notes\.push\s*\(/g);
-            return pushMatches && pushMatches.length === 3;
+            try {
+              const pushMatches = code.match(/notes\.push\s*\(/g);
+              const passed = pushMatches && pushMatches.length === 3;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "You should use notes.push() exactly three times"
         }

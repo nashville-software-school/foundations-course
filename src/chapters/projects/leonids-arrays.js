@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const leonidsArrays = {
   id: "leonids-arrays",
   title: "Toy Collection",
@@ -102,9 +104,10 @@ In this exercise, you’ll define an array that contains
         test: (code) => {
           try {
             const func = new Function(code + "\n return Array.isArray(toyInventory);");
-            return func();
-          } catch {
-            return false;
+            const passed = func();
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "toyInventory should be an array"
@@ -114,9 +117,10 @@ In this exercise, you’ll define an array that contains
         test: (code) => {
           try {
             const func = new Function(code + "\n return toyInventory.length === 3 && toyInventory.every(t => typeof t === 'object' && t !== null);");
-            return func();
-          } catch {
-            return false;
+            const passed = func();
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "toyInventory should contain three non-null objects"
@@ -126,9 +130,10 @@ In this exercise, you’ll define an array that contains
         test: (code) => {
           try {
             const func = new Function(code + "\n return toyInventory.every(t => 'name' in t && 'manufacturer' in t && 'priceInDollars' in t);");
-            return func();
-          } catch {
-            return false;
+            const passed = func();
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Each object should have name, manufacturer, and priceInDollars properties"
@@ -138,9 +143,10 @@ In this exercise, you’ll define an array that contains
         test: (code) => {
           try {
             const func = new Function(code + "\n return toyInventory.some(t => Object.values(t).includes(null));");
-            return func();
-          } catch {
-            return false;
+            const passed = func();
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "At least one toy should have a property set to null"
@@ -155,9 +161,10 @@ In this exercise, you’ll define an array that contains
             const declaredVariables = matches.map(m => m[1]);
       
             // Only one declared variable: toyInventory
-            return declaredVariables.length === 1 && declaredVariables[0] === "toyInventory";
-          } catch {
-            return false;
+            const passed = declaredVariables.length === 1 && declaredVariables[0] === "toyInventory";
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Only the toyInventory array should be declared—no extra object variables"

@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const listOfTopicsId = {
     id: "list-of-topics",
     title: "List of Topics",
@@ -121,15 +123,16 @@ for (const note of notes) {
         {
           name: "Prints header line first",
           test: (code) => {
-            const logs = [];
-            let con = { log: (msg) => logs.push(msg) };
             try {
+              const logs = [];
+              let con = { log: (msg) => logs.push(msg) };
               const func = new Function( "console", code);
               func(con);
               
-              return logs[0] === "*** All Note Topics ***";
-            } catch {
-              return false;
+              const passed = logs[0] === "*** All Note Topics ***";
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "You should start by logging '*** All Note Topics ***'"
@@ -137,10 +140,10 @@ for (const note of notes) {
         {
           name: "Prints all topics in order",
           test: (code) => {
-            const logs = [];
-            const console = { log: (msg) => logs.push(msg) };
-      
             try {
+              const logs = [];
+              const console = { log: (msg) => logs.push(msg) };
+      
               const func = new Function( "console", code);
               func(console);
               const expected = [
@@ -158,9 +161,10 @@ for (const note of notes) {
                 "reminder",
                 "github",
               ];
-              return JSON.stringify(logs) === JSON.stringify(expected);
-            } catch {
-              return false;
+              const passed = JSON.stringify(logs) === JSON.stringify(expected);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "You should log each topic in order after the header"
@@ -168,7 +172,12 @@ for (const note of notes) {
         {
           name: "Uses nested for...of loop",
           test: (code) => {
-            return /\bfor\s*\(\s*const\s+\w+\s+of\s+\w+\s*\)[\s\S]*for\s*\(\s*const\s+\w+\s+of\s+\w+\.topics\s*\)/.test(code);
+            try {
+              const passed = /\bfor\s*\(\s*const\s+\w+\s+of\s+\w+\s*\)[\s\S]*for\s*\(\s*const\s+\w+\s+of\s+\w+\.topics\s*\)/.test(code);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "You should use a for...of loop inside another for...of loop"
         }

@@ -31,7 +31,7 @@ When using multiple parameters, the order is important. The arguments you provid
 
 \`\`\`js
 function showPrice(item, price) {
-    console.log(\`The \${item} costs \$\${price}\`)
+    console.log(\`The \${item} costs $\${price}\`)
 }
 
 // Correct order

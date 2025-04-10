@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const leonidsDataTypes = {
   id: "leonids-data-types",
   title: "Data Types",
@@ -92,9 +94,10 @@ const myToy = createToy( /* Fill in the arguments correctly */ );`,
           try {
             const func = new Function(code + "\n return myToy;");
             const toy = func();
-            return typeof toy.name === "string";
-          } catch {
-            return false;
+            const passed = typeof toy.name === "string";
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "What data should represent a toy name?",
@@ -105,9 +108,10 @@ const myToy = createToy( /* Fill in the arguments correctly */ );`,
           try {
             const func = new Function(code + "\n return myToy;");
             const toy = func();
-            return typeof toy.category === "string";
-          } catch {
-            return false;
+            const passed = typeof toy.category === "string";
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "What data should represent a toy category?",
@@ -118,9 +122,10 @@ const myToy = createToy( /* Fill in the arguments correctly */ );`,
           try {
             const func = new Function(code + "\n return myToy;");
             const toy = func();
-            return typeof toy.ageRecommendation === "number";
-          } catch {
-            return false;
+            const passed = typeof toy.ageRecommendation === "number";
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "What data type should store the recommended age?",
@@ -131,9 +136,10 @@ const myToy = createToy( /* Fill in the arguments correctly */ );`,
           try {
             const func = new Function(code + "\n return myToy;");
             const toy = func();
-            return typeof toy.isBatteryOperated === "boolean";
-          } catch {
-            return false;
+            const passed = typeof toy.isBatteryOperated === "boolean";
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "How do we represent a yes/no property?",
@@ -144,12 +150,13 @@ const myToy = createToy( /* Fill in the arguments correctly */ );`,
           try {
             const func = new Function(code + "\n return myToy;");
             const toy = func();
-            return (
+            const passed = (
               Array.isArray(toy.features) &&
               toy.features.every((f) => typeof f === "string")
             );
-          } catch {
-            return false;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "What data type should store multiple features?",
@@ -160,12 +167,13 @@ const myToy = createToy( /* Fill in the arguments correctly */ );`,
           try {
             const func = new Function(code + "\n return myToy;");
             const toy = func();
-            return (
+            const passed = (
               typeof toy.dimensions === "object" && toy.dimensions !== null &&
               typeof toy.dimensions.height === "number" &&
                         typeof toy.dimensions.width === "number");
-          } catch {
-            return false;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "What data type should represent the toy’s dimensions? What data type should dimensions height and width be?",

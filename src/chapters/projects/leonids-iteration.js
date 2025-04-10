@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const leonidsIteration = {
   id: "leonids-iteration",
   title: "Displaying Toy Properties",
@@ -133,9 +135,10 @@ Painted Kite
           test: (code) => {
             try {
               const func = new Function(code + "\n return Array.isArray(toyInventory);");
-              return func();
-            } catch {
-              return false;
+              const passed = func();
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "You should define a toyInventory array"
@@ -146,13 +149,14 @@ Painted Kite
             try {
               const func = new Function(code + "\n return toyInventory.map(t => t.name);");
               const names = func();
-              return Array.isArray(names) &&
+              const passed = Array.isArray(names) &&
                      names.length === 3 &&
                      names[0] === "Wooden Train" &&
                      names[1] === "Stuffed Rabbit" &&
                      names[2] === "Painted Kite";
-            } catch {
-              return false;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "toyInventory should contain the 3 specific toys in the correct order"
@@ -160,14 +164,24 @@ Painted Kite
         {
           name: "Uses for...of loop",
           test: (code) => {
-            return /\bfor\s*\(\s*(?:const|let|var)\s+\w+\s+of\s+toyInventory\s*\)/.test(code);
+            try {
+              const passed = /\bfor\s*\(\s*(?:const|let|var)\s+\w+\s+of\s+toyInventory\s*\)/.test(code);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "You should use a for...of loop to iterate through toyInventory"
         },
         {
           name: "Accesses and logs toy.name in loop",
           test: (code) => {
-            return /console\.log\s*\(\s*\w+\.name\s*\)/.test(code);
+            try {
+              const passed = /console\.log\s*\(\s*\w+\.name\s*\)/.test(code);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "Inside the loop, you should access and log the 'name' property"
         },
@@ -185,12 +199,12 @@ Painted Kite
               const func = new Function("console", code + "\nreturn logs;");
 
               const result = func(mockConsole);
-              console.table("dsdsdsdsdsds",result)
-              return result.join('\n').includes("Wooden Train") &&
+              const passed = result.join('\n').includes("Wooden Train") &&
                       result.join('\n').includes("Stuffed Rabbit") &&
                       result.join('\n').includes("Painted Kite");
-            } catch {
-              return false;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "Your code should log all three toy names in the correct order"

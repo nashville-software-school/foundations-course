@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const noteTopicsSubsectionId = {
     id: "note-topics-subsection",
     title: "Note Topics Subsection",
@@ -86,49 +88,74 @@ console.log(allHTML);
         {
             name: "Logs the header correctly",
             test: (code) => {
-              const logs = [];
-              const mockConsole = { log: (msg) => logs.push(msg) };
-              const func = new Function( "console", code);
-              func( mockConsole);
-              return logs[0] === "***  Note Articles  ***";
+              try {
+                const logs = [];
+                const mockConsole = { log: (msg) => logs.push(msg) };
+                const func = new Function( "console", code);
+                func( mockConsole);
+                const passed = logs[0] === "***  Note Articles  ***";
+                return new TestResult({passed});
+              } catch (error) {
+                return new TestResult({passed: false, message: error.message});
+              }
             },
             message: "Should log the header line: ***  Note Articles  ***"
           },
           {
             name: "Prints note text inside <article>",
             test: (code) => {
-              const logs = [];
-              const mockConsole = { log: (msg) => logs.push(msg) };
-              const func = new Function( "console", code);
-              func(mockConsole);
-              const result = logs[1];
-              return result.includes("<article>") && result.includes("Always work on a branch and submit a PR, even if I'm working on my own project.") && result.includes("</article>");
+              try {
+                const logs = [];
+                const mockConsole = { log: (msg) => logs.push(msg) };
+                const func = new Function( "console", code);
+                func(mockConsole);
+                const result = logs[1];
+                const passed = result.includes("<article>") && result.includes("Always work on a branch and submit a PR, even if I'm working on my own project.") && result.includes("</article>");
+                return new TestResult({passed});
+              } catch (error) {
+                return new TestResult({passed: false, message: error.message});
+              }
             },
             message: "Each note text should be wrapped in an <article> tag"
           },
           {
             name: "Prints each topic inside <section>",
             test: (code) => {
-              const logs = [];
-              const mockConsole = { log: (msg) => logs.push(msg) };
-              const func = new Function( "console", code);
-              func( mockConsole);
-              const html = logs[1];
-              return html.includes("<section>strategy</section>") && html.includes("<section>github</section>");
+              try {
+                const logs = [];
+                const mockConsole = { log: (msg) => logs.push(msg) };
+                const func = new Function( "console", code);
+                func( mockConsole);
+                const html = logs[1];
+                const passed = html.includes("<section>strategy</section>") && html.includes("<section>github</section>");
+                return new TestResult({passed});
+              } catch (error) {
+                return new TestResult({passed: false, message: error.message});
+              }
             },
             message: "Each topic should be wrapped in a <section> tag"
           },
           {
             name: "Uses nested for...of loop",
             test: (code) => {
-              return /for\s*\(\s*const\s+\w+\s+of\s+notes\s*\)[\s\S]*for\s*\(\s*const\s+\w+\s+of\s+\w+\.topics\s*\)/.test(code);
+              try {
+                const passed = /for\s*\(\s*const\s+\w+\s+of\s+notes\s*\)[\s\S]*for\s*\(\s*const\s+\w+\s+of\s+\w+\.topics\s*\)/.test(code);
+                return new TestResult({passed});
+              } catch (error) {
+                return new TestResult({passed: false, message: error.message});
+              }
             },
             message: "You should use a nested for...of loop to iterate through topics"
           },
           {
             name: "Uses template literals with interpolation",
             test: (code) => {
-                return /`[\s\S]*\$\{[^}]+\}[\s\S]*`/.test(code);
+              try {
+                const passed = /`[\s\S]*\$\{[^}]+\}[\s\S]*`/.test(code);
+                return new TestResult({passed});
+              } catch (error) {
+                return new TestResult({passed: false, message: error.message});
+              }
             },
             message: "You should use template literals with ${} to format each string"
           }

@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const listOfNotesId = {
     id: "list-of-notes",
     title: "List of Notes",
@@ -79,21 +81,36 @@ When your code runs, it should print lines like:
         {
           name: "Uses for...of loop on notes array",
           test: (code) => {
-            return /\bfor\s*\(\s*const\s+\w+\s+of\s+notes\s*\)/.test(code);
+            try {
+              const passed = /\bfor\s*\(\s*const\s+\w+\s+of\s+notes\s*\)/.test(code);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "You must use a for...of loop to iterate the notes array"
         },
         {
           name: "Uses console.log to output text property",
           test: (code) => {
-            return /console\.log\s*\(\s*\w+\.text\s*\)/.test(code);
+            try {
+              const passed = /console\.log\s*\(\s*\w+\.text\s*\)/.test(code);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "You must use console.log(note.text) inside the loop"
         },
         {
           name: "Does not log full object",
           test: (code) => {
-            return !/console\.log\s*\(\s*\w+\s*\)/.test(code);
+            try {
+              const passed = !/console\.log\s*\(\s*\w+\s*\)/.test(code);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "Do not log the full object — only note.text"
         }

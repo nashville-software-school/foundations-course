@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const averageTopicsPerNoteId = {
     id: "average-topics-per-note",
     title: "Average Topics per Note",
@@ -127,15 +129,16 @@ console.log(average);`,
         {
           name: "Prints the correct header line",
           test: (code) => {
-            const logs = [];
-            const mockConsole = { log: (msg) => logs.push(msg) };
-      
             try {
+              const logs = [];
+              const mockConsole = { log: (msg) => logs.push(msg) };
+        
               const func = new Function( "console", code);
               func(mockConsole);
-              return logs[0] === "*** Average Topics Per Note ***";
-            } catch {
-              return false;
+              const passed = logs[0] === "*** Average Topics Per Note ***";
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "You should start with console.log(\"*** Average Topics Per Note ***\")"
@@ -143,15 +146,16 @@ console.log(average);`,
         {
           name: "Calculates and logs the correct average",
           test: (code) => {
-            const logs = [];
-            const mockConsole = { log: (msg) => logs.push(msg) };
-      
             try {
+              const logs = [];
+              const mockConsole = { log: (msg) => logs.push(msg) };
+        
               const func = new Function("console", code);
               func(mockConsole);
-              return logs.includes("2.0");
-            } catch {
-              return false;
+              const passed = logs.includes("2.0");
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
             }
           },
           message: "You must calculate and display the correct average number of topics per note"
@@ -159,7 +163,12 @@ console.log(average);`,
         {
           name: "Uses .toFixed(1)",
           test: (code) => {
-            return /\.toFixed\s*\(\s*1\s*\)/.test(code);
+            try {
+              const passed = /\.toFixed\s*\(\s*1\s*\)/.test(code);
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed: false, message: error.message});
+            }
           },
           message: "You should use .toFixed(1) to round the average to one decimal place"
         }

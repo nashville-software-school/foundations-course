@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const listOfNotesByTopicId = {
     id: "list-of-notes-by-topic",
     title: "List of Notes by Topic",
@@ -110,9 +112,10 @@ console.log(filteredNotes);
             test: (code) => {
               try {
                 const func = new Function(code + "\n return Array.isArray(filteredNotes);");
-                return func();
-              } catch {
-                return false;
+                const passed = func();
+                return new TestResult({passed});
+              } catch (error) {
+                return new TestResult({passed: false, message: error.message});
               }
             },
             message: "You should define filteredNotes as an empty array"
@@ -120,25 +123,31 @@ console.log(filteredNotes);
           {
             name: "Uses criteria string for filtering",
             test: (code) => {
-              return /const\s+criteria\s*=\s*["'`](\w+)["'`]/.test(code);
+              try {
+                const passed = /const\s+criteria\s*=\s*["'`](\w+)["'`]/.test(code);
+                return new TestResult({passed});
+              } catch (error) {
+                return new TestResult({passed: false, message: error.message});
+              }
             },
             message: "You should define a criteria string to filter by topic"
           },
           {
             name: "Pushes notes that match topic into filteredNotes",
             test: (code) => {
-              const logs = [];
-              const mockConsole = { log: (...args) => logs.push(args.join(' ')) };
               try {
+                const logs = [];
+                const mockConsole = { log: (...args) => logs.push(args.join(' ')) };
                 const codeWithExport = code + "\n return filteredNotes;";
                 const func = new Function( "console", codeWithExport);
                 const result = func(mockConsole);
-                return Array.isArray(result) &&
+                const passed = Array.isArray(result) &&
                        result.length === 2 &&
                        result[0].id === 3 &&
                        result[1].id === 4;
-              } catch {
-                return false;
+                return new TestResult({passed});
+              } catch (error) {
+                return new TestResult({passed: false, message: error.message});
               }
             },
             message: "You should correctly filter notes by topic"
@@ -146,16 +155,17 @@ console.log(filteredNotes);
           {
             name: "Logs the header message with criteria topic",
             test: (code) => {
-              const logs = [];
-              const mockConsole = { log: (msg) => logs.push(msg) };
-        
               try {
+                const logs = [];
+                const mockConsole = { log: (msg) => logs.push(msg) };
+          
                 const func = new Function( "console", code);
                 func(mockConsole);
-        
-                return logs.some(l => l.includes("*** Notes with the github topic ***"));
-              } catch {
-                return false;
+          
+                const passed = logs.some(l => l.includes("*** Notes with the github topic ***"));
+                return new TestResult({passed});
+              } catch (error) {
+                return new TestResult({passed: false, message: error.message});
               }
             },
             message: "You must log a header with the topic name using string interpolation"

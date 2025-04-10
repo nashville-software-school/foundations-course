@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const projectRequirementsAndAlgorithmId = {
   id: "project-requirements-and-algorithm",
   title: "Project Requirements and Algorithm",
@@ -114,9 +116,10 @@ notes.push({
         test: (code) => {
           try {
             const func = new Function(code + "\n return Array.isArray(notes);");
-            return func();
-          } catch {
-            return false;
+            const passed = func();
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "You must define a variable named `notes` as an array"
@@ -127,9 +130,10 @@ notes.push({
           try {
             const func = new Function(code + "\n return notes;");
             const result = func();
-            return Array.isArray(result) && result.length >= 3;
-          } catch {
-            return false;
+            const passed = Array.isArray(result) && result.length >= 3;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "The notes array should contain at least three objects"
@@ -140,7 +144,7 @@ notes.push({
           try {
             const func = new Function(code + "\n return notes;");
             const result = func();
-            return result.every(note =>
+            const passed = result.every(note =>
               typeof note.id === "number" &&
               typeof note.text === "string" &&
               typeof note.author === "string" &&
@@ -148,8 +152,9 @@ notes.push({
               Array.isArray(note.topics) &&
               note.topics.every(topic => typeof topic === "string")
             );
-          } catch {
-            return false;
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Each note must have id, text, author, date, and topics (an array of strings)"
@@ -160,9 +165,10 @@ notes.push({
           try {
             const func = new Function(code + "\n return notes;");
             const result = func();
-            return result.every(note => Array.isArray(note.topics) && note.topics.length > 0);
-          } catch {
-            return false;
+            const passed = result.every(note => Array.isArray(note.topics) && note.topics.length > 0);
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed: false, message: error.message});
           }
         },
         message: "Each note must include at least one topic"
