@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsArgumentsChapter = {
   id: 'functions-arguments',
   title: 'Using Arguments',
@@ -116,9 +118,14 @@ calculateTotal(25.50)`,
       {
         name: "Function Calls",
         test: (code) => {
-          return code.includes('calculateTotal(50') &&
-                 code.includes('calculateTotal(99.99') &&
-                 code.includes('calculateTotal(25.50')
+          try {
+            const passed = code.includes('calculateTotal(50') &&
+                   code.includes('calculateTotal(99.99') &&
+                   code.includes('calculateTotal(25.50');
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed:false,message:error.message});
+          }
         },
         message: "Make sure you've called calculateTotal with all three prices: 50, 99.99, and 25.50"
       }

@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsConditionsChapter = {
     id: 'functions-conditions',
     title: 'Functions with Conditions',
@@ -200,9 +202,10 @@ export const functionsConditionsChapter = {
           test: (code) => {
             try {
               const fn = new Function(code + `; return calculateTicketPrice(25, false);`);
-              return fn() === 10;
-            } catch (e) {
-              return false;
+              const passed = fn() === 10;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed:false,message:error.message});
             }
           },
           message: "Your function should return $10 for an adult on a weekday"
@@ -212,9 +215,10 @@ export const functionsConditionsChapter = {
           test: (code) => {
             try {
               const fn = new Function(code + `; return calculateTicketPrice(30, true);`);
-              return fn() === 12;
-            } catch (e) {
-              return false;
+              const passed = fn() === 12;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed:false,message:error.message});
             }
           },
           message: "Your function should return $12 for an adult on a weekend"
@@ -224,9 +228,10 @@ export const functionsConditionsChapter = {
           test: (code) => {
             try {
               const fn = new Function(code + `; return calculateTicketPrice(8, false);`);
-              return fn() === 5;
-            } catch (e) {
-              return false;
+              const passed = fn() === 5;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed:false,message:error.message});
             }
           },
           message: "Your function should return $5 for a child on a weekday"
@@ -236,9 +241,10 @@ export const functionsConditionsChapter = {
           test: (code) => {
             try {
               const fn = new Function(code + `; return calculateTicketPrice(10, true);`);
-              return fn() === 6;
-            } catch (e) {
-              return false;
+              const passed = fn() === 6;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed:false,message:error.message});
             }
           },
           message: "Your function should return $6 for a child on a weekend"
@@ -248,9 +254,10 @@ export const functionsConditionsChapter = {
           test: (code) => {
             try {
               const fn = new Function(code + `; return calculateTicketPrice(65, false);`);
-              return fn() === 5;
-            } catch (e) {
-              return false;
+              const passed = fn() === 5;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed:false,message:error.message});
             }
           },
           message: "Your function should return $5 for a senior on a weekday"
@@ -260,9 +267,10 @@ export const functionsConditionsChapter = {
           test: (code) => {
             try {
               const fn = new Function(code + `; return calculateTicketPrice(70, true);`);
-              return fn() === 6;
-            } catch (e) {
-              return false;
+              const passed = fn() === 6;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed:false,message:error.message});
             }
           },
           message: "Your function should return $6 for a senior on a weekend"
@@ -270,9 +278,14 @@ export const functionsConditionsChapter = {
         {
           name: "Function structure check",
           test: (code) => {
-            return code.includes('const calculateTicketPrice = (') &&
-                   code.includes('=>') &&
-                   code.includes('return');
+            try {
+              const passed = code.includes('const calculateTicketPrice = (') &&
+                     code.includes('=>') &&
+                     code.includes('return');
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed:false,message:error.message});
+            }
           },
           message: "Make sure you're using an arrow function syntax with a proper return statement"
         },
@@ -284,9 +297,10 @@ export const functionsConditionsChapter = {
               // This is still a pattern match but necessary to validate proper function invocation
               const hasVariableAssignment = /const\s+\w+\s*=\s*calculateTicketPrice\(\s*\d+\s*,\s*(true|false)\s*\)/.test(code);
               const hasConsoleLog = /console\.log\(\s*\w+\s*\)/.test(code);
-              return hasVariableAssignment && hasConsoleLog;
-            } catch (e) {
-              return false;
+              const passed = hasVariableAssignment && hasConsoleLog;
+              return new TestResult({passed});
+            } catch (error) {
+              return new TestResult({passed:false,message:error.message});
             }
           },
           message: "Make sure you invoke your function, store the result in a variable, and pass that variable to console.log()"

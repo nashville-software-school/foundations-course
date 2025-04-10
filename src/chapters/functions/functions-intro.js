@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsIntroChapter = {
   id: 'functions-intro',
   title: 'Introduction to Functions',
@@ -72,9 +74,9 @@ greetPet()
             // Create a function that executes the student's code and checks if greetPet exists
             const greetPet = new Function(`${code}; return greetPet`)()
             // Check if greetPet is defined and is a function
-            return typeof greetPet === 'function';
+            return new TestResult({passed:typeof greetPet === 'function'});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Make sure you've created a function named exactly 'greetPet'."
@@ -83,11 +85,12 @@ greetPet()
         name: "Function Outputs Correct Message",
         test: (code) => {
           // Check if the function contains the exact string "Good dog!"
-          return (
+          const passed = (
             code.includes('"Good dog!"') ||
             code.includes("'Good dog!'") ||
             code.includes("`Good dog!`")
           );
+          return new TestResult({passed})
         },
         message: "Make sure your function outputs exactly 'Good dog!' when called."
       }

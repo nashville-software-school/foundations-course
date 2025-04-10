@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsReviewChapter = {
     id: 'functions-review',
     title: 'Review and Practice',
@@ -293,9 +295,10 @@ console.log(interaction);
                         // Test morning greeting
                         const result = createGreeting("Jamie", "morning");
                         // Check if the result is correct
-                        return result === "Good morning, Jamie!";
-                    } catch (e) {
-                        return false;
+                        const passed = result === "Good morning, Jamie!";
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your createGreeting function should return 'Good morning, Jamie!' when time is 'morning'"
@@ -308,9 +311,10 @@ console.log(interaction);
                         // Test name starting with A
                         const result = createGreeting("Alex", "evening");
                         // Check if the result is correct
-                        return result === "Good morning, Alex!";
-                    } catch (e) {
-                        return false;
+                        const passed = result === "Good morning, Alex!";
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your createGreeting function should return 'Good morning, Alex!' when name starts with 'A', regardless of time"
@@ -321,9 +325,10 @@ console.log(interaction);
                     try {
                         const createGreeting = new Function(studentCode + `; return createGreeting;`)();
                         const result = createGreeting("Taylor", "afternoon");
-                        return result === "Good afternoon, Taylor!";
-                    } catch (e) {
-                        return false;
+                        const passed = result === "Good afternoon, Taylor!";
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your createGreeting function should return 'Good afternoon, Taylor!' when time is 'afternoon'"
@@ -334,9 +339,10 @@ console.log(interaction);
                     try {
                         const createGreeting = new Function(studentCode + `; return createGreeting;`)();
                         const result = createGreeting("Riley", "evening");
-                        return result === "Hello, Riley!";
-                    } catch (e) {
-                        return false;
+                        const passed = result === "Hello, Riley!";
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your createGreeting function should return 'Hello, Riley!' for other times"
@@ -348,9 +354,10 @@ console.log(interaction);
                         const tellJoke = new Function(studentCode + `; return tellJoke;`)();
                         const result = tellJoke("weather");
 
-                        return result === "What do you call a stormy robot? A thunder-bot!";
-                    } catch (e) {
-                        return false;
+                        const passed = result === "What do you call a stormy robot? A thunder-bot!";
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your tellJoke function should return the correct weather joke"
@@ -366,7 +373,8 @@ console.log(interaction);
                         console.log("result", result)
 
                         // Check if result is an array with the right length
-                        if (!Array.isArray(result) || result.length !== 3) return false;
+                        if (!Array.isArray(result) || result.length !== 3)
+                            return new TestResult({passed:false,message:"Result should be an array with 3 elements"});
 
                         // Check if each greeting is correct
                         const expected = [
@@ -375,12 +383,12 @@ console.log(interaction);
                             createGreeting("Alex", "evening")
                         ];
                         console.log(expected)
-                        return result[0] === expected[0] &&
+                        const passed = result[0] === expected[0] &&
                                result[1] === expected[1] &&
                                result[2] === expected[2];
-                    } catch (e) {
-
-                        return false;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your greetPeople function should return an array of greetings for each person"
@@ -399,9 +407,10 @@ console.log(interaction);
                         const expectedGreeting = createGreeting("Jordan", "morning");
                         const expectedJoke = tellJoke("weather");
 
-                        return result === `${expectedGreeting} ${expectedJoke}`;
-                    } catch (e) {
-                        return false;
+                        const passed = result === `${expectedGreeting} ${expectedJoke}`;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your robotInteraction function should combine the greeting and joke correctly"
@@ -411,9 +420,10 @@ console.log(interaction);
                 test: function(studentCode) {
                     try {
                         // Check if the code uses || operator in createGreeting
-                        return studentCode.includes('||') || studentCode.includes('&&');
-                    } catch (e) {
-                        return false;
+                        const passed = studentCode.includes('||') || studentCode.includes('&&');
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your createGreeting function should use the || (OR) or && (AND) operator"
@@ -423,12 +433,13 @@ console.log(interaction);
                 test: function(studentCode) {
                     try {
                         // Check if the code uses a loop in greetPeople
-                        return (studentCode.includes('for (') ||
+                        const passed = (studentCode.includes('for (') ||
                                 studentCode.includes('while (') ||
                                 studentCode.includes('forEach(')) &&
                                studentCode.includes('push(');
-                    } catch (e) {
-                        return false;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your greetPeople function should use a loop to iterate through the array"

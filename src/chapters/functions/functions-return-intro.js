@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsReturnIntroChapter = {
   id: 'functions-return-intro',
   title: 'Introduction to Return Values',
@@ -135,9 +137,10 @@ console.log(greeting)
               return typeof makeGreeting === "function" && makeGreeting.length === 1;
             `);
 
-            return hasArrowSyntax && func();
+            const passed = hasArrowSyntax && func();
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Make sure you've created an arrow function called 'makeGreeting' that takes one parameter."
@@ -153,9 +156,10 @@ console.log(greeting)
               return typeof result === "string" && result.includes("Hello,") && result.includes("Test");
             `);
 
-            return func();
+            const passed = func();
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Your function should return a string that includes 'Hello,' and the name parameter."
@@ -167,9 +171,10 @@ console.log(greeting)
           try {
             // Check if the code calls makeGreeting and assigns the result
             const variableAssignmentRegex = /const\s+\w+\s*=\s*makeGreeting\s*\([^)]*\)/;
-            return variableAssignmentRegex.test(code);
+            const passed = variableAssignmentRegex.test(code);
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Make sure you invoke the function and assign its return value to a variable."
@@ -195,9 +200,10 @@ console.log(greeting)
             console.log = originalConsoleLog;
 
             // Check if any message contains "Hello," indicating the variable was logged
-            return loggedMessages.some(msg => msg.includes("Hello,"));
+            const passed = loggedMessages.some(msg => msg.includes("Hello,"));
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Make sure you console.log the variable containing the greeting."

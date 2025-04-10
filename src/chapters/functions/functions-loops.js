@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsLoopsChapter = {
     id: 'functions-loops',
     title: 'Functions with Loops',
@@ -206,10 +208,10 @@ export const functionsLoopsChapter = {
                         const body = `${code};\nreturn calculateCartTotal;`
                         const func = new Function(body)()
                         const total = func([20, 30, 40]);
-                        return total === 90;
-                    } catch (e) {
-                        console.log(`Error: ${e}`);
-                        return false;
+                        const passed = total === 90;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your function should return 90 for a cart with prices [20, 30, 40]"
@@ -219,9 +221,10 @@ export const functionsLoopsChapter = {
                 test: (code) => {
                     try {
                         const fn = new Function(code + `; return calculateCartTotal([50, 60, 70]);`);
-                        return Math.abs(fn() - 162) < 0.01;
-                    } catch (e) {
-                        return false;
+                        const passed = Math.abs(fn() - 162) < 0.01;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your function should return 162 (after 10% discount) for a cart with prices [50, 60, 70]"
@@ -231,9 +234,10 @@ export const functionsLoopsChapter = {
                 test: (code) => {
                     try {
                         const fn = new Function(code + `; return calculateCartTotal([]);`);
-                        return fn() === 0;
-                    } catch (e) {
-                        return false;
+                        const passed = fn() === 0;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your function should handle empty carts (return 0)"
@@ -243,9 +247,10 @@ export const functionsLoopsChapter = {
                 test: (code) => {
                     try {
                         const fn = new Function(code + `; return calculateCartTotal([25, 25, 50]);`);
-                        return Math.abs(fn() - 100) < 0.01;
-                    } catch (e) {
-                        return false;
+                        const passed = Math.abs(fn() - 100) < 0.01;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your function should not apply a discount for a total of exactly $100"
@@ -255,9 +260,10 @@ export const functionsLoopsChapter = {
                 test: (code) => {
                     try {
                         const fn = new Function(code + `; return calculateCartTotal([25, 25, 51]);`);
-                        return Math.abs(fn() - 90.9) < 0.01;
-                    } catch (e) {
-                        return false;
+                        const passed = Math.abs(fn() - 90.9) < 0.01;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your function should apply a discount for a total just over $100"
@@ -265,10 +271,15 @@ export const functionsLoopsChapter = {
             {
                 name: "Function structure check",
                 test: (code) => {
-                    return code.includes('const calculateCartTotal = (') &&
-                        code.includes('for') &&
-                        code.includes('of prices') &&
-                        code.includes('return');
+                    try {
+                        const passed = code.includes('const calculateCartTotal = (') &&
+                            code.includes('for') &&
+                            code.includes('of prices') &&
+                            code.includes('return');
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
+                    }
                 },
                 message: "Make sure you're using a for..of loop to process all prices in the array"
             }

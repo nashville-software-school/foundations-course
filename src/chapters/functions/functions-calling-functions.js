@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsCallingFunctionsChapter = {
     id: 'functions-calling-functions',
     title: 'Functions Calling Functions',
@@ -221,9 +223,10 @@ console.log(finalScoreNoBonus)
                 test: (code) => {
                     try {
                         const fn = new Function(code + `; return calculateBasePoints(2, 5);`);
-                        return fn() === 450;
-                    } catch (e) {
-                        return false;
+                        const passed = fn() === 450;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your calculateBasePoints function should return 450 when given time=2 and targets=5"
@@ -233,9 +236,10 @@ console.log(finalScoreNoBonus)
                 test: (code) => {
                     try {
                         const fn = new Function(code + `; return calculateBonus(5);`);
-                        return fn() === 0;
-                    } catch (e) {
-                        return false;
+                        const passed = fn() === 0;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your calculateBonus function should return 0 when targets=5 (not enough for bonus)"
@@ -245,9 +249,10 @@ console.log(finalScoreNoBonus)
                 test: (code) => {
                     try {
                         const fn = new Function(code + `; return calculateBonus(12);`);
-                        return fn() === 1000;
-                    } catch (e) {
-                        return false;
+                        const passed = fn() === 1000;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your calculateBonus function should return 1000 when targets=12 (enough for bonus)"
@@ -257,9 +262,10 @@ console.log(finalScoreNoBonus)
                 test: (code) => {
                     try {
                         const fn = new Function(code + `; return calculateBonus(10);`);
-                        return fn() === 0;
-                    } catch (e) {
-                        return false;
+                        const passed = fn() === 0;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your calculateBonus function should return 0 when targets=10 (exactly at threshold)"
@@ -269,9 +275,10 @@ console.log(finalScoreNoBonus)
                 test: (code) => {
                     try {
                         const fn = new Function(code + `; return calculateFinalScore(2, 5);`);
-                        return fn() === 450;
-                    } catch (e) {
-                        return false;
+                        const passed = fn() === 450;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your calculateFinalScore function should return 450 when time=2 and targets=5 (no bonus)"
@@ -281,9 +288,10 @@ console.log(finalScoreNoBonus)
                 test: (code) => {
                     try {
                         const fn = new Function(code + `; return calculateFinalScore(2, 12);`);
-                        return fn() === 1800;
-                    } catch (e) {
-                        return false;
+                        const passed = fn() === 1800;
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
                     }
                 },
                 message: "Your calculateFinalScore function should return 1800 when time=2 and targets=12 (with bonus)"
@@ -291,8 +299,13 @@ console.log(finalScoreNoBonus)
             {
                 name: "Function Calling Structure",
                 test: (code) => {
-                    return code.includes('calculateBasePoints(time, targets)') &&
-                        code.includes('calculateBonus(targets)');
+                    try {
+                        const passed = code.includes('calculateBasePoints(time, targets)') &&
+                            code.includes('calculateBonus(targets)');
+                        return new TestResult({passed});
+                    } catch (error) {
+                        return new TestResult({passed:false,message:error.message});
+                    }
                 },
                 message: "Your calculateFinalScore function needs to call both helper functions"
             }

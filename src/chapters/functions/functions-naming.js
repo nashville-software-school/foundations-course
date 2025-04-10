@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsNamingChapter = {
   id: 'functions-naming',
   title: 'Function Names and Purpose',
@@ -105,61 +107,78 @@ function calculateDiscountedPrice(price) {
       {
         name: "No Original Function Names",
         test: (code) => {
-          // Check that none of the original poor function names remain
-          return !(/function\s+number\s*\(/i.test(code)) &&
-            !(/function\s+text\s*\(/i.test(code)) &&
-            !(/function\s+math\s*\(/i.test(code));
+          try {
+            // Check that none of the original poor function names remain
+            const passed = !(/function\s+number\s*\(/i.test(code)) &&
+              !(/function\s+text\s*\(/i.test(code)) &&
+              !(/function\s+math\s*\(/i.test(code));
+            return new TestResult({passed});
+          } catch (error) {
+            return new TestResult({passed:false,message:error.message});
+          }
         },
         message: "Make sure you've renamed all the original functions (number, text, and math) to more descriptive names."
       },
       {
         name: "First Function Uses Verb and Describes Purpose",
         test: (code) => {
-          // Extract the first function name using regex
-          const match = code.match(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*num\s*\)/);
-          if (!match) return false;
+          try {
+            // Extract the first function name using regex
+            const match = code.match(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*num\s*\)/);
+            if (!match) return new TestResult({passed:false});
 
-          const functionName = match[1].toLowerCase();
+            const functionName = match[1].toLowerCase();
 
-          // Check if the name contains appropriate verbs/descriptors
-          const hasVerb = /^(is|check|validate|compare|exceeds|isabove|verify)/i.test(functionName);
-          const hasContext = /(greater|above|exceed|more|over|beyond|hundred|100)/i.test(functionName);
+            // Check if the name contains appropriate verbs/descriptors
+            const hasVerb = /^(is|check|validate|compare|exceeds|isabove|verify)/i.test(functionName);
+            const hasContext = /(greater|above|exceed|more|over|beyond|hundred|100)/i.test(functionName);
 
-          return hasVerb && hasContext;
+            return new TestResult({passed: hasVerb && hasContext});
+          } catch (error) {
+            return new TestResult({passed:false,message:error.message});
+          }
         },
         message: "The first function should start with a verb (like 'is', 'check', 'validate')."
       },
       {
         name: "Second Function Uses Verb and Describes Purpose",
         test: (code) => {
-          // Extract the second function name using regex
-          const match = code.match(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*name\s*\)/);
-          if (!match) return false;
+          try {
+            // Extract the second function name using regex
+            const match = code.match(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*name\s*\)/);
+            if (!match) return new TestResult({passed:false});
 
-          const functionName = match[1].toLowerCase();
+            const functionName = match[1].toLowerCase();
 
-          // Check if the name contains appropriate verbs/descriptors
-          const hasVerb = /^(display|show|print|log|create|generate|format|get|write)/i.test(functionName);
-          const hasContext = /(welcome|greeting|message)/i.test(functionName);
+            // Check if the name contains appropriate verbs/descriptors
+            const hasVerb = /^(display|show|print|log|create|generate|format|get|write)/i.test(functionName);
+            const hasContext = /(welcome|greeting|message)/i.test(functionName);
 
-          return hasVerb && hasContext;
+            return new TestResult({passed: hasVerb && hasContext});
+          } catch (error) {
+            return new TestResult({passed:false,message:error.message});
+          }
         },
         message: "The second function should start with a verb (like 'display', 'show', 'create')."
       },
       {
         name: "Third Function Uses Verb and Describes Purpose",
         test: (code) => {
-          // Extract the third function name using regex
-          const match = code.match(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*price\s*\)/);
-          if (!match) return false;
+          try {
+            // Extract the third function name using regex
+            const match = code.match(/function\s+([a-zA-Z][a-zA-Z0-9]*)\s*\(\s*price\s*\)/);
+            if (!match) return new TestResult({passed:false});
 
-          const functionName = match[1].toLowerCase();
+            const functionName = match[1].toLowerCase();
 
-          // Check if the name contains appropriate verbs/descriptors
-          const hasVerb = /^(calculate|compute|get|apply|determine|find)/i.test(functionName);
-          const hasContext = /(discount|sale|reduced|final|after|percent|percentage|price)/i.test(functionName);
+            // Check if the name contains appropriate verbs/descriptors
+            const hasVerb = /^(calculate|compute|get|apply|determine|find)/i.test(functionName);
+            const hasContext = /(discount|sale|reduced|final|after|percent|percentage|price)/i.test(functionName);
 
-          return hasVerb && hasContext;
+            return new TestResult({passed: hasVerb && hasContext});
+          } catch (error) {
+            return new TestResult({passed:false,message:error.message});
+          }
         },
         message: "The third function should start with a verb (like 'calculate', 'compute', 'apply')."
       },
@@ -187,9 +206,10 @@ function calculateDiscountedPrice(price) {
                    thirdResult === 80;
           `);
 
-            return evalFunction();
+            const passed = evalFunction();
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Make sure you've only changed the function names, not the functionality of the functions."

@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const functionsScopeParametersChapter = {
   id: 'functions-scope-parameters',
   title: 'Parameters and Scope',
@@ -150,9 +152,10 @@ console.log(checkHighScore("Charlie", 80))`,
           try {
             // Check specifically for a function named checkHighScore
             const correctNameRegex = /(const|let|var)\s+checkHighScore\s*=\s*\(\s*\w+\s*,\s*\w+\s*\)\s*=>/;
-            return correctNameRegex.test(code);
+            const passed = correctNameRegex.test(code);
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Make sure you've created an arrow function named 'checkHighScore' that takes two parameters."
@@ -166,9 +169,10 @@ console.log(checkHighScore("Charlie", 80))`,
             const func = new Function(code + `;
               return typeof checkHighScore === "function" && checkHighScore.length === 2;
             `);
-            return func();
+            const passed = func();
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Your checkHighScore function should take exactly two parameters: playerName and score."
@@ -184,9 +188,10 @@ console.log(checkHighScore("Charlie", 80))`,
                                  code.includes('highScore <') ||
                                  code.includes('< score');
 
-            return hasComparison;
+            const passed = hasComparison;
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Your function should compare the score parameter to the highScore variable."
@@ -201,9 +206,10 @@ console.log(checkHighScore("Charlie", 80))`,
               (code.match(/return/g) || []).length >= 2 ||  // Multiple returns
               (code.includes('return') && code.includes('if') && code.includes('else')); // Return in conditional
 
-            return hasDifferentReturns;
+            const passed = hasDifferentReturns;
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Your function should return different messages depending on whether a high score was achieved."
@@ -217,9 +223,10 @@ console.log(checkHighScore("Charlie", 80))`,
             const callPattern = /checkHighScore\s*\(/g;
             const calls = code.match(callPattern) || [];
 
-            return calls.length >= 2;
+            const passed = calls.length >= 2;
+            return new TestResult({passed});
           } catch (error) {
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Test your function by calling checkHighScore at least twice with different values."
@@ -235,21 +242,19 @@ console.log(checkHighScore("Charlie", 80))`,
             const originalLog = console.log;
             console.log = () => {};
 
-            // Reset highScore
-            let highScore = 0;
-
             try {
               // Execute and test the student's function
               const func = new Function(code + `;
                 // Test sequence
                 checkHighScore("Test1", 5000);  // Sets highScore to 5000
-                if (highScore !== 5000) return false;
+                if (highScore !== 5000) return new TestResult({passed:false,message:"High score not updated correctly"});
 
                 checkHighScore("Test2", 25);  // Shouldn't change highScore
-                if (highScore !== 5000) return false;
+                if (highScore !== 5000) return new TestResult({passed:false,message:"High score changed when it shouldn't have"});
 
-                checkHighScore("Test3", 7500);  // Updates highScore to 75
-                return highScore === 7500;
+                checkHighScore("Test3", 7500);  // Updates highScore to 7500
+                const passed = highScore === 7500;
+                return new TestResult({passed});
               `);
 
               const result = func();
@@ -258,14 +263,14 @@ console.log(checkHighScore("Charlie", 80))`,
               console.log = originalLog;
 
               return result;
-            } catch (e) {
+            } catch (error) {
               // Restore console.log in case of error
               console.log = originalLog;
-              return false;
+              return new TestResult({passed:false,message:error.message});
             }
           } catch (error) {
             console.log = console.log || (() => {});
-            return false;
+            return new TestResult({passed:false,message:error.message});
           }
         },
         message: "Your function should update the high score when beaten but leave it unchanged otherwise."
