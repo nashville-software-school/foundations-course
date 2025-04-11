@@ -145,7 +145,7 @@ console.log(\`This is what I'm wearing today:
       {
         name: "Multiple Conditions",
         test: (code) => {
-          return code.includes('&&');
+          return new TestResult({passed:code.includes('&&')})
         },
         message: "Make sure to use the && for multiple conditions in a single if statement"
       },
@@ -154,11 +154,11 @@ console.log(\`This is what I'm wearing today:
         test: (code) => {
           try {
             const { torsoClothing, legClothing, footWear } = new Function(code + "\n return { torsoClothing, legClothing, footWear}")();
-            return new TestResult({passed:torsoClothing === "Jacket" &&
-                   legClothing === "Pants" &&
-                   footWear === "Sneakers"});
+            return new TestResult({passed:torsoClothing.toLowerCase() === "jacket" &&
+                   legClothing.toLowerCase() === "pants" &&
+                   footWear.toLowerCase() === "sneakers"});
           } catch {
-            return new TestResult({passed:false});
+            return new TestResult({passed:false})
           }
         },
         message: "When temperature is 48 degrees, you should wear a Jacket, Pants, and Sneakers"

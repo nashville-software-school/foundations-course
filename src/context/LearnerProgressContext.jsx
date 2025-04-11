@@ -76,6 +76,7 @@ export const LearnerProgressProvider = ({ children }) => {
             ...currentProgress,
             userId: user.id,
             username: user.name,
+            solutionShown: currentProgress.solutionShown || false  // Include the solutionShown flag
         }
 
         try {
@@ -102,15 +103,48 @@ export const LearnerProgressProvider = ({ children }) => {
         }
     }
 
-    const trackAttempt = (exerciseId, chapterTitle) => {
+    // Utility function to hash code content for detecting meaningful changes
+    const hashCode = (code) => {
+        // Simple string hashing function
+        let hash = 0;
+        if (!code || code.length === 0) return hash.toString();
+
+        // Normalize whitespace before hashing
+        const normalizedCode = code.replace(/\s+/g, ' ').trim();
+
+        for (let i = 0; i < normalizedCode.length; i++) {
+            const char = normalizedCode.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return hash.toString();
+    }
+
+    const trackAttempt = (exerciseId, chapterTitle, code) => {
         return setProgress(prev => {
             const exercise = prev.exercises[exerciseId] || {
                 attempts: 0,
                 completed: false,
                 firstAttempt: null,
                 lastAttempt: null,
-                title: chapterTitle
+                title: chapterTitle,
+                codeHashes: [],
+                solutionShown: false
             }
+
+            // Hash the current code
+            const currentHash = hashCode(code);
+
+            // Check if this code is different from previous attempts
+            const isNewCode = !exercise.codeHashes || !exercise.codeHashes.includes(currentHash);
+
+            // Only increment attempts if code has changed
+            const newAttempts = isNewCode ? exercise.attempts + 1 : exercise.attempts;
+
+            // Add hash to history if it's new
+            const newCodeHashes = isNewCode
+                ? [...(exercise.codeHashes || []), currentHash]
+                : (exercise.codeHashes || []);
 
             const newState = {
                 ...prev,
@@ -118,9 +152,10 @@ export const LearnerProgressProvider = ({ children }) => {
                     ...prev.exercises,
                     [exerciseId]: {
                         ...exercise,
-                        attempts: exercise.attempts + 1,
+                        attempts: newAttempts,
                         firstAttempt: exercise.firstAttempt || new Date().toISOString(),
-                        lastAttempt: new Date().toISOString()
+                        lastAttempt: new Date().toISOString(),
+                        codeHashes: newCodeHashes
                     }
                 },
                 lastUpdated: new Date().toISOString(),
@@ -128,6 +163,34 @@ export const LearnerProgressProvider = ({ children }) => {
             }
 
             return newState
+        })
+    }
+
+    // Track when a solution is shown to a learner
+    const trackSolutionShown = (exerciseId) => {
+        setProgress(prev => {
+            const exercise = prev.exercises[exerciseId] || {
+                attempts: 0,
+                completed: false,
+                firstAttempt: null,
+                lastAttempt: null,
+                codeHashes: [],
+                solutionShown: false
+            }
+
+            return {
+                ...prev,
+                exercises: {
+                    ...prev.exercises,
+                    [exerciseId]: {
+                        ...exercise,
+                        solutionShown: true,
+                        lastAttempt: new Date().toISOString()
+                    }
+                },
+                lastUpdated: new Date().toISOString(),
+                lastUpdatedExerciseId: exerciseId
+            }
         })
     }
 
@@ -164,7 +227,9 @@ export const LearnerProgressProvider = ({ children }) => {
             attempts: 0,
             completed: false,
             firstAttempt: null,
-            lastAttempt: null
+            lastAttempt: null,
+            codeHashes: [],
+            solutionShown: false
         }
     }
 
@@ -220,6 +285,7 @@ export const LearnerProgressProvider = ({ children }) => {
         progress,
         trackAttempt,
         trackCompletion,
+        trackSolutionShown,
         getExerciseProgress,
         getGlobalProgress,
         markIntroAsSeen,

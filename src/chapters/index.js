@@ -26,21 +26,30 @@ const protectedVariablesChapters = variablesChapters.map(addAuthRequirement)
 const protectedArrayChapters = arrayChapters.map(addAuthRequirement)
 const protectedObjectChapters = objectChapters.map(addAuthRequirement)
 const protectedFunctionChapters = functionChapters.map(addAuthRequirement)
-// const protectedModulesChapters = modulesChapters.map(addAuthRequirement)
 const protectedWorkshopChapters = workshopChapters.map(addAuthRequirement)
 const protectedAssessments = assessments.map(addAuthRequirement)
 
 export const chapters = [
-  ...protectedGettingStartedChapters,
-  ...protectedVariablesChapters,
-  ...protectedArrayChapters,
-  ...protectedObjectChapters,
-  ...protectedFunctionChapters,
-  ...projectModulesChapters,
+  ...gettingStartedChapters,
+  ...variablesChapters,
+  ...arrayChapters,
+  ...objectChapters,
+  ...functionChapters,
   ...protectedLeonidsChapters,
   ...protectedAssessments,
   ...protectedWorkshopChapters
 ]
+// export const chapters = [
+//   ...protectedGettingStartedChapters,
+//   ...protectedVariablesChapters,
+//   ...protectedArrayChapters,
+//   ...protectedObjectChapters,
+//   ...protectedFunctionChapters,
+//   ...projectModulesChapters,
+//   ...protectedLeonidsChapters,
+//   ...protectedAssessments,
+//   ...protectedWorkshopChapters
+// ]
 
 /**
  * Helper function to get chapter by ID

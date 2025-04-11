@@ -110,31 +110,31 @@ for (const topic of topics) {
       {
         name: "Correct Syntax",
         test: (code) => {
-            try {
-                new Function(code)(); // Just check that it executes
-                return new TestResult({passed:true})
-            } catch {
-                return new TestResult({passed:false});
-            }
-          },
-          message: "Make sure your code runs without syntax or runtime errors."
+          try {
+            new Function(code)(); // Just check that it executes
+            return new TestResult({ passed: true })
+          } catch {
+            return new TestResult({ passed: false });
+          }
+        },
+        message: "Make sure your code runs without syntax or runtime errors."
       },
       {
         name: "Array Creation",
         test: (code) => {
           try {
-          const topicsArray = new Function(code + `\nreturn topics`)();
-          const passed = topicsArray.length === 7 &&
-          topicsArray[0] === "Variables" &&
-          topicsArray[1] === "Loops" &&
-          topicsArray[2] === "Arrays" &&
-          topicsArray[3] === "Functions" &&
-          topicsArray[4] === "Objects" &&
-          topicsArray[5] === "Modules" &&
-          topicsArray[6] === "Events";
-          return new TestResult({passed})
+            const topicsArray = new Function(code + `\nreturn topics`)();
+            const passed = topicsArray.length === 7 &&
+              topicsArray[0] === "Variables" &&
+              topicsArray[1] === "Loops" &&
+              topicsArray[2] === "Arrays" &&
+              topicsArray[3] === "Functions" &&
+              topicsArray[4] === "Objects" &&
+              topicsArray[5] === "Modules" &&
+              topicsArray[6] === "Events";
+            return new TestResult({ passed })
           } catch {
-            return new TestResult({passed:false});
+            return new TestResult({ passed: false });
           }
         },
         message: `Make sure you've included all the topics in the array
@@ -142,13 +142,34 @@ for (const topic of topics) {
       },
       {
         name: "For..of Loop",
-        test: (code) => new TestResult({passed:code.includes('for (const') && code.includes(' of topics)')}),
+        test: (code) => new TestResult({ passed: code.includes('for (const') && code.includes(' of topics)') }),
         message: "Make sure you're using a for..of loop to iterate the topics array"
       },
       {
         name: "Console Output",
-        test: (code) => new TestResult({passed:code.includes('console.log')}),
-        message: "Make sure to use console.log() to output each topic"
+        test: (code) => {
+          try {
+            const logs = [];
+            const mockConsole = { log: (msg) => logs.push(msg) }
+
+            const func = new Function("console", code)
+            func(mockConsole)
+
+            const correctLogs = (logs[0] === "Variables" &&
+              logs[1] === "Loops" &&
+              logs[2] === "Arrays" &&
+              logs[3] === "Functions" &&
+              logs[4] === "Objects" &&
+              logs[5] === "Modules" &&
+              logs[6] === "Events")
+
+            return new TestResult({ passed: correctLogs })
+          }
+          catch (error) {
+            return new TestResult({ passed: false, message: error.message })
+          }
+        },
+        message: "Make sure to use console.log() to output each topic in the array"
       }
     ]
   }
