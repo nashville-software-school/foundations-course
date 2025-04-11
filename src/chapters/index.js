@@ -17,11 +17,7 @@ const addAuthRequirement = (chapter) => ({
 });
 
 // Apply requiresAuth to all chapters
-
-const projectModulesChapters = projectChapters.map(addAuthRequirement);
 const protectedLeonidsChapters = leonidsChapters.map(addAuthRequirement);
-
-const protectedGettingStartedChapters = gettingStartedChapters.map(addAuthRequirement)
 const protectedVariablesChapters = variablesChapters.map(addAuthRequirement)
 const protectedArrayChapters = arrayChapters.map(addAuthRequirement)
 const protectedObjectChapters = objectChapters.map(addAuthRequirement)
@@ -31,25 +27,14 @@ const protectedAssessments = assessments.map(addAuthRequirement)
 
 export const chapters = [
   ...gettingStartedChapters,
-  ...variablesChapters,
-  ...arrayChapters,
-  ...objectChapters,
-  ...functionChapters,
+  ...protectedVariablesChapters,
+  ...protectedArrayChapters,
+  ...protectedObjectChapters,
+  ...protectedFunctionChapters,
   ...protectedLeonidsChapters,
   ...protectedAssessments,
   ...protectedWorkshopChapters
 ]
-// export const chapters = [
-//   ...protectedGettingStartedChapters,
-//   ...protectedVariablesChapters,
-//   ...protectedArrayChapters,
-//   ...protectedObjectChapters,
-//   ...protectedFunctionChapters,
-//   ...projectModulesChapters,
-//   ...protectedLeonidsChapters,
-//   ...protectedAssessments,
-//   ...protectedWorkshopChapters
-// ]
 
 /**
  * Helper function to get chapter by ID
