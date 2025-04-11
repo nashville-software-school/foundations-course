@@ -5,6 +5,7 @@ import { arrayChapters } from './arrays'
 import { objectChapters } from './objects'
 import { functionChapters } from './functions'
 // import { modulesChapters } from './modules'
+import { htmlCssChapters } from './html-css'
 import { workshopChapters } from './workshops'
 import { assessments } from './assessments'
 
@@ -24,6 +25,7 @@ const protectedObjectChapters = objectChapters.map(addAuthRequirement)
 const protectedFunctionChapters = functionChapters.map(addAuthRequirement)
 const protectedWorkshopChapters = workshopChapters.map(addAuthRequirement)
 const protectedAssessments = assessments.map(addAuthRequirement)
+const protectedHtmlCssChapters = htmlCssChapters.map(addAuthRequirement)
 
 export const chapters = [
   ...gettingStartedChapters,
@@ -31,6 +33,7 @@ export const chapters = [
   ...protectedArrayChapters,
   ...protectedObjectChapters,
   ...protectedFunctionChapters,
+  ...htmlCssChapters,
   ...protectedLeonidsChapters,
   ...protectedAssessments,
   ...protectedWorkshopChapters

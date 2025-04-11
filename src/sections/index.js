@@ -44,6 +44,12 @@ export const sections = [
   },
   // Optional sections
   {
+    id: "html-css",
+    title: "HTML and CSS",
+    description: "Learn the fundamentals of web page structure and styling",
+    required: true
+  },
+  {
     id: "leonids",
     title: "Leonid's Toys",
     optional: true,

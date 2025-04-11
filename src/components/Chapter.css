@@ -19,6 +19,7 @@
     background: white;
     padding: 1rem;
     overflow-y: auto;
+    max-height: 80vh;
 }
 
 .chapter .content-section {

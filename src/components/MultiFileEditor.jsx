@@ -2,12 +2,12 @@
 import { useState, useEffect } from 'react'
 import { css } from '@emotion/react'
 import Editor from '@monaco-editor/react'
+import { getLanguageFromFilename } from '../utils/exercise_utils'
 
 const styles = {
   container: css`
     display: flex;
     flex-direction: column;
-    height: 100%;
     background: white;
     border-radius: 8px;
     overflow: hidden;
@@ -91,8 +91,8 @@ function MultiFileEditor({ files, onChange, options = {} }) {
       </div>
       <div css={styles.editor}>
         <Editor
-          height="100%"
-          defaultLanguage="javascript"
+          height="300px"
+          defaultLanguage={getLanguageFromFilename(activeFile)}
           theme="vs-light"
           value={files[activeFile]}
           onChange={handleEditorChange}

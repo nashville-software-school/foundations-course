@@ -6,8 +6,11 @@ import Editor from '@monaco-editor/react'
 import { marked } from 'marked'
 import CodeBlock from './CodeBlock'
 import MultiFileEditor from './MultiFileEditor'
+import HTMLRenderer from './HTMLRenderer'
+import HTMLCSSEditor from './HTMLCSSEditor'
 import ProtectedRoute from './ProtectedRoute'
 import * as ReactDOM from 'react-dom/client'
+import { isHTMLExercise } from '../utils/exercise_utils'
 import './Chapter.css'
 
 const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, getPreviousChapter, getNextChapter }) => {
@@ -37,6 +40,17 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       if (language === 'javascript' || language === 'js') {
         const id = `code-block-${Math.random().toString(36).substr(2, 9)}`
         return `<div id="${id}" class="code-block-wrapper">${code}</div>`
+      }
+      // Handle HTML and CSS code blocks
+      if (language === 'html' || language === 'css') {
+        // Escape HTML to prevent rendering
+        const escapedCode = code
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+        return `<pre><code class="language-${language}">${escapedCode}</code></pre>`
       }
       return `<pre><code class="language-${language}">${code}</code></pre>`
     }
@@ -68,6 +82,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       setHideConsoleTimeout(null)
     }
   }
+
   useEffect(() => {
     if (chapterContent?.exercise) {
       clearCodeOutput()
@@ -163,18 +178,44 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
     }
     return String(value);
   }
+
   const restoreInitialCode = () => {
     // Create a new files object with the starter code
-    const newFiles = { 'index.js': chapterContent.exercise.starterCode };
+    let newFiles;
+
+    if (typeof chapterContent.exercise.starterCode === 'string') {
+      // Single file exercise
+      newFiles = { 'index.js': chapterContent.exercise.starterCode };
+    } else {
+      // Multi-file exercise
+      newFiles = { ...chapterContent.exercise.starterCode };
+    }
 
     // Preserve the solution file if it exists and solution tab is visible
-    if (solutionTabVisible && files['solution.js']) {
-      newFiles['solution.js'] = files['solution.js'];
+    if (solutionTabVisible) {
+      if (typeof chapterContent.exercise.solution === 'string' && files['solution.js']) {
+        newFiles['solution.js'] = files['solution.js'];
+      } else if (typeof chapterContent.exercise.solution === 'object') {
+        Object.keys(chapterContent.exercise.solution).forEach(filename => {
+          const solutionFilename = filename.replace(/\.([^.]+)$/, '-solution.$1');
+          if (files[solutionFilename]) {
+            newFiles[solutionFilename] = files[solutionFilename];
+          }
+        });
+      }
     }
 
     setFiles(newFiles);
   }
+
   const runCode = () => {
+    // If this is an HTML exercise, the HTMLRenderer component will handle running the code
+    if (Object.keys(files).some(filename =>
+      filename.endsWith('.html') || filename.endsWith('.css')
+    )) {
+      return;
+    }
+
     setShowConsoleOutput(true)
 
     // Clear any existing timeout for console output
@@ -329,6 +370,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       }
     }
   }
+
   function hasFunction(variable) {
     return typeof variable === 'function';
   }
@@ -373,10 +415,12 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
     // Keep the button visible even after showing the solution
     // We don't need to set showSolutionButton to false anymore
   }
+
   return (
     <div className="chapter" style={{
       gridTemplateColumns: chapterContent.exercise ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)',
       width: '100%',
+      display: 'grid',
     }}>
       <section className="content-section">
         <div className="content-container">
@@ -418,40 +462,64 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
 
       {
         chapterContent.exercise &&
-        <section className="editor-section">
-          <div className="editor-container">
-            {Object.keys(files).length > 1 || solutionTabVisible ? (
-              <MultiFileEditor
-                files={files}
-                onChange={handleFilesChange}
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14,
-                  lineNumbers: 'on',
-                  scrollBeyondLastLine: false,
-                  automaticLayout: true,
-                  padding: { top: 16, bottom: 16 }
-                }}
-              />
-            ) : (
-              <Editor
-                height="100%"
-                defaultLanguage="javascript"
-                theme="vs-light"
-                value={files['index.js']}
-                onChange={(value) => handleFilesChange({ 'index.js': value })}
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14,
-                  lineNumbers: 'on',
-                  scrollBeyondLastLine: false,
-                  automaticLayout: true,
-                  padding: { top: 16, bottom: 16 }
-                }}
-              />
-            )}
-          </div>
+        <section className="editor-section" style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          alignItems: 'stretch',
+        }}>
+          {Object.keys(files).some(filename =>
+            filename.endsWith('.html') || filename.endsWith('.css')
+          ) ? (
+            // HTML/CSS Exercise
+            <HTMLCSSEditor
+              files={files}
+              onChange={handleFilesChange}
+              onRun={() => {
+                // Track attempt when running HTML/CSS code
+                const userFiles = Object.fromEntries(
+                  Object.entries(files).filter(([filename]) => !filename.includes('solution'))
+                );
+                trackAttempt(chapterId, currentChapter.title, JSON.stringify(userFiles));
+              }}
+            />
+          ) : (
+            // JavaScript Exercise
+            <div className="editor-container" style={{ marginBottom: '20px' }}>
+              {Object.keys(files).length > 1 || solutionTabVisible ? (
+                <MultiFileEditor
+                  files={files}
+                  onChange={handleFilesChange}
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    lineNumbers: 'on',
+                    scrollBeyondLastLine: false,
+                    automaticLayout: true,
+                    padding: { top: 16, bottom: 16 }
+                  }}
+                />
+              ) : (
+                <Editor
+                  height="300px"
+                  defaultLanguage="javascript"
+                  theme="vs-light"
+                  value={files['index.js']}
+                  onChange={(value) => handleFilesChange({ 'index.js': value })}
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    lineNumbers: 'on',
+                    scrollBeyondLastLine: false,
+                    automaticLayout: true,
+                    padding: { top: 16, bottom: 16 }
+                  }}
+                />
+              )}
+            </div>
+          )}
 
+          {/* Console Output */}
           {consoleOutput && showConsoleOutput && (
             <div className={`console-output ${!showConsoleOutput ? 'hidden' : ''}`}>
               <button
@@ -503,33 +571,35 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
               </div>
             </div>
           )}
-<div className="button-row">
-  <button className="code-button run-code-button" onClick={runCode}>
-    Run Code
-  </button>
 
-  {showSolutionButton && (
-    <button
-      className="code-button solution-button"
-      onClick={showSolution}
-      title="This will be recorded in your progress"
-    >
-      Show Solution
-    </button>
-  )}
+          <div className="button-row">
+            {!Object.keys(files).some(filename =>
+              filename.endsWith('.html') || filename.endsWith('.css')
+            ) && (
+              <button className="code-button run-code-button" onClick={runCode}>
+                Run Code
+              </button>
+            )}
 
-  {chapterContent?.exercise?.tests.length > 0 &&
-  <button className="code-button test-button" onClick={runTests}>
-    Run Tests
-  </button>}
+            {showSolutionButton && (
+              <button
+                className="code-button solution-button"
+                onClick={showSolution}
+                title="This will be recorded in your progress"
+              >
+                Show Solution
+              </button>
+            )}
 
-  <button className="code-button reset-button" onClick={restoreInitialCode}>
-    Reset
-  </button>
-</div>
+            {chapterContent?.exercise?.tests.length > 0 &&
+            <button className="code-button test-button" onClick={runTests}>
+              Run Tests
+            </button>}
 
-
-
+            <button className="code-button reset-button" onClick={restoreInitialCode}>
+              Reset
+            </button>
+          </div>
         </section>
       }
     </div>
