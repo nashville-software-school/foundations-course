@@ -84,131 +84,77 @@ Chapters are organized in a sequence, with each chapter building on knowledge fr
 
 ## Testing Chapter Exercises
 
-### Current Approach: String Matching
+### Function-Based Testing
 
-Currently, the application uses string matching to test student code:
+A robust approach is using the Function constructor to evaluate the student's code and test the actual functionality. The application provides two ways to implement function-based tests: using boolean returns or using the structured TestResult utility.
 
-```javascript
-// Example of current string-matching test
-{
-  name: "Array Creation",
-  test: (code) => code.includes('["Banana", "Orange", "Apple", "Watermelon", "Blueberry"]'),
-  message: "Make sure you've included all fruits in the array in the correct order"
-}
-```
 
-While this approach is simple, it has limitations:
-- It doesn't test actual functionality
-- It's sensitive to formatting and whitespace
-- It may falsely pass or fail based on string matches that don't reflect code behavior
 
-### Recommended Approach: Function-Based Testing
+### Implementing Tests with TestResult
 
-A more robust approach is to use the Function constructor to evaluate the student's code and test the actual functionality:
+The application includes a `TestResult` utility that provides a more structured approach to test results. This is the recommended approach for new tests:
 
 ```javascript
-// Example of Function-based test
+import { TestResult } from "../../utils/test_utils";
+
+// Example test using TestResult
 {
   name: "Array Creation",
   test: (code) => {
     try {
-      // Combine the student code with test code that returns the variable we want to check
-      const testFunction = new Function(`
-        ${code}
-        return fruits;
-      `);
+      const topicsArray = new Function(code + `\nreturn topics`)();
+      const passed = topicsArray.length === 7 &&
+        topicsArray[0] === "Variables" &&
+        topicsArray[1] === "Loops";
+        // Additional checks...
 
-      // Execute the function and get the actual value
-      const result = testFunction();
-
-      // Test the value for correctness
-      return Array.isArray(result) &&
-             result.length === 5 &&
-             result[0] === "Banana" &&
-             result[1] === "Orange" &&
-             result[2] === "Apple" &&
-             result[3] === "Watermelon" &&
-             result[4] === "Blueberry";
-    } catch (error) {
-      console.error("Test error:", error);
-      return false;
+      return new TestResult({ passed });
+    } catch {
+      return new TestResult({ passed: false });
     }
   },
-  message: "Make sure you've created an array with all the fruits in the correct order"
+  message: "Make sure you've included all topics in the correct order"
 }
 ```
 
-### How to Implement Function-Based Tests
+#### Steps to Implement TestResult Tests
 
-1. **Identify the testable variable or result** from the student's code
+1. **Import the utility**:
+   ```javascript
+   import { TestResult } from "../../utils/test_utils";
+   ```
+
 2. **Create a Function constructor** that combines:
    - The student's code
    - A return statement for the variable/result you want to test
+
 3. **Execute the function** to retrieve the actual value
+
 4. **Test the value** against expected results
 
-#### Example: Testing a Sum Function
+5. **Return a TestResult object**:
+   ```javascript
+   return new TestResult({
+     passed: true|false,  // Required: Test pass/fail status
+     testName: "Test Name",  // Optional: Name of the test
+     message: "Additional info"  // Optional: Informative message
+   });
+   ```
 
-```javascript
-// Chapter exercise: Implement a function that adds two numbers
-{
-  name: "Sum Function",
-  test: (code) => {
-    try {
-      const testFunction = new Function(`
-        ${code}
-        // Test with various inputs
-        return {
-          test1: sum(5, 3),
-          test2: sum(0, 0),
-          test3: sum(-1, 1)
-        };
-      `);
+6. **Add additional messages** (optional):
+   ```javascript
+   const result = new TestResult({ passed: true });
+   result.add_message("Additional context");
+   return result;
+   ```
 
-      const results = testFunction();
-      return results.test1 === 8 &&
-             results.test2 === 0 &&
-             results.test3 === 0;
-    } catch (error) {
-      return false;
-    }
-  },
-  message: "Your sum function should correctly add two numbers"
-}
-```
+#### Benefits of TestResult Approach
 
-#### Example: Testing Array Manipulation
-
-```javascript
-// Chapter exercise: Filter even numbers from an array
-{
-  name: "Even Numbers Filter",
-  test: (code) => {
-    try {
-      const testFunction = new Function(`
-        ${code}
-        return filterEvenNumbers([1, 2, 3, 4, 5, 6]);
-      `);
-
-      const result = testFunction();
-      return Array.isArray(result) &&
-             result.length === 3 &&
-             result.every(num => num % 2 === 0);
-    } catch (error) {
-      return false;
-    }
-  },
-  message: "Your function should return an array with only even numbers"
-}
-```
-
-#### Benefits of Function-Based Testing
-
-- Tests actual code behavior rather than syntax
-- Allows multiple test cases within a single test
-- Doesn't depend on specific formatting or code style
-- Provides more accurate feedback to students
-- Allows testing complex logic and edge cases
+- **Structured results**: Consistent format for test outcomes
+- **Multiple messages**: Can include multiple feedback messages
+- **Cleaner code**: Separates test logic from result formatting
+- **Extensible**: The TestResult object can be enhanced with additional methods
+- **Better error handling**: Provides more context when tests fail
 
 ## Deployment Process
 
@@ -389,7 +335,7 @@ To set up the project for local development:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/foundations-course.git
+   git clone https://github.com/nashville-software-school/foundations-course
    cd foundations-course
    ```
 
