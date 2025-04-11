@@ -304,7 +304,7 @@ function Navigation() {
                 <li key={chapter.id} className="chapter-item">
                   <Link
                     to={isProtected ? '/login' : chapter.id}
-                    className={`chapter-link ${status} ${location.pathname === chapter.id ? 'active' : ''
+                    className={`chapter-link ${status} ${location.pathname === `/${chapter.id}` ? 'active' : ''
                       } ${isProtected ? 'protected' : ''}`}
                   >
                     <span className="chapter-number">{index + 1}</span>

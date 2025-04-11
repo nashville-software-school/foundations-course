@@ -6,6 +6,7 @@ import Editor from '@monaco-editor/react'
 import { marked } from 'marked'
 import CodeBlock from './CodeBlock'
 import MultiFileEditor from './MultiFileEditor'
+import AudioPlayer from './AudioPlayer'
 import ProtectedRoute from './ProtectedRoute'
 import * as ReactDOM from 'react-dom/client'
 import './Chapter.css'
@@ -262,6 +263,12 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       <section className="content-section">
         <div className="content-container">
           <h1>{currentChapter?.title}</h1>
+          <AudioPlayer
+            currentChapter={currentChapter}
+            legend={`Audio overview: ${currentChapter?.title}`}
+            audioFilePath={`${window.location.origin}${import.meta.env.BASE_URL}audio/chapters/${chapterId}-overview.wav`}
+            description="We recommend these audio overviews as a supplement, not a replacement, for the written lessons. For some learners, they may help reinforce and make the covered content more memorable."
+          />
           <div
             dangerouslySetInnerHTML={{ __html: processedContent }}
             ref={contentRef => {
@@ -278,7 +285,11 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
             }}
           />
         </div>
-
+        <AudioPlayer
+            currentChapter={currentChapter}
+            legend={`Excercise overview: ${currentChapter?.title}`}
+            audioFilePath={`${window.location.origin}${import.meta.env.BASE_URL}audio/chapters/${chapterId}-excercise.wav`}
+          />
         <div className="button-container">
           <button
             className="nav-button previous-button"
@@ -332,7 +343,12 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
               />
             )}
           </div>
-
+          {/* TODO show the official solution  */}
+          {testResults && testResults.passed && <AudioPlayer
+            currentChapter={currentChapter}
+            legend={`Solution overview: ${currentChapter?.title}`}
+            audioFilePath={`${window.location.origin}${import.meta.env.BASE_URL}audio/chapters/${chapterId}-solution.wav`}
+          />}
           {consoleOutput && showConsoleOutput && (
             <div className={`console-output ${!showConsoleOutput ? 'hidden' : ''}`}>
               <button
