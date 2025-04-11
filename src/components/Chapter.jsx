@@ -136,6 +136,11 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       clearTimeout(hideConsoleTimeout)
     }
 
+    const timeout = setTimeout(() => {
+      setShowConsoleOutput(false)
+    }, 8000)
+    setHideConsoleTimeout(timeout)
+
     // Store original console.log
     const originalConsoleLog = console.log;
 
@@ -188,6 +193,12 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
         clearTimeout(hideResultsTimeout)
       }
 
+      // Set a new timeout to hide test results after 8 seconds
+      const timeout = setTimeout(() => {
+        setShowResults(false)
+      }, 8000)
+      setHideResultsTimeout(timeout)
+
       // Track attempt before running tests
       trackAttempt(chapterId, currentChapter.title)
 
@@ -222,7 +233,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
             messages.push(`* ${currentResult.message}`)
             if (hasFunction(currentResult.testResult.messages) && currentResult.testResult.messages().length > 0){
               for(const message of currentResult.testResult.messages()){
-                // two spaces here are intentional to create nested li's 
+                // two spaces here are intentional to create nested li's
                 messages.push(`  * ${message}`)
               }
             }
