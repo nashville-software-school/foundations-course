@@ -173,8 +173,13 @@ Create a page with the following elements, in the following order:
 
 </body>
 </html>`,
-      'styles.css': `/* Add your styles here */
+      'styles.css': `body {
+  font-family: Arial, sans-serif;
+  margin: 2rem;
+  line-height: 1.6;
+}
 
+/* Add your styles here */
 `
     },
     solution: {

@@ -1,4 +1,4 @@
-import { TestResult } from "../../utils/test_utils";
+import { TestResult } from "../../utils/test_utils"
 
 export const htmlElementsChapter = {
   id: 'html-elements',
@@ -16,13 +16,54 @@ Semantic elements clearly describe their meaning to both the browser and the dev
 
 Some common semantic elements include:
 
+- \`<div>\`: A generic container for flow content, often used as a layout element
 - \`<header>\`: Represents introductory content or a set of navigational links
-- \`<nav>\`: Defines a section of navigation links
+- \`<nav>\`: Defines a section of navigation links: often a child of the \`<header>\` element
 - \`<main>\`: Specifies the main content of a document
 - \`<section>\`: Defines a section in a document
 - \`<article>\`: Specifies independent, self-contained content
 - \`<aside>\`: Defines content aside from the main content (like a sidebar)
 - \`<footer>\`: Represents a footer for a document or section
+
+### Example of Semantic HTML Structure
+
+Here's an example of a basic webpage structure using semantic HTML elements:
+
+\`\`\`html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Acme, Inc</title>
+</head>
+<body>
+  <header>
+    <nav>
+      <div>Home</div>
+      <div>Products</div>
+      <div>Contact</div>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <h1>Welcome to Acme, Inc</h1>
+
+      <section>
+        <p>Acme, Inc is a leading provider of innovative solutions for businesses of all sizes. We specialize in creating cutting-edge products that help our customers succeed.</p>
+      </section>
+
+      <section>
+        <p>Founded in 2005, our company has grown from a small startup to an industry leader with clients worldwide.</p>
+      </section>
+    </article>
+  </main>
+
+  <footer>
+    <p>&copy 2025 Acme, Inc. All rights reserved.</p>
+  </footer>
+</body>
+</html>
+\`\`\`
 
 ### Lists
 
@@ -44,16 +85,6 @@ HTML provides three types of lists:
      <li>Second step</li>
      <li>Third step</li>
    </ol>
-   \`\`\`
-
-3. **Description Lists** (\`<dl>\`): Lists of terms and their descriptions
-   \`\`\`html
-   <dl>
-     <dt>HTML</dt>
-     <dd>HyperText Markup Language</dd>
-     <dt>CSS</dt>
-     <dd>Cascading Style Sheets</dd>
-   </dl>
    \`\`\`
 
 ### Images and Media
@@ -80,44 +111,24 @@ You can also link to sections within the same page:
 <a href="#section-id">Jump to Section</a>
 \`\`\`
 
-### Tables
+## Exercise: Building a Personal Profile Page
 
-Tables are used to display data in rows and columns:
+In this exercise, you'll create a simple profile page using semantic HTML elements. Your page should include:
 
-\`\`\`html
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Country</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>John</td>
-      <td>25</td>
-      <td>USA</td>
-    </tr>
-    <tr>
-      <td>Emma</td>
-      <td>28</td>
-      <td>Canada</td>
-    </tr>
-  </tbody>
-</table>
-\`\`\`
+1. A header element containing a \`nav\` element
+2. The nav element should contain three \`div\` containing the following text:
+   - Home
+   - Projects
+   - Education
+3. A \`main\` element that contains a child \`article\`
+4. The \`article\` element must include:
+   - An \`h1\` heading with your name
+   - A \`section\` element with some brief text about your career history
+   - Another \`section\` element explaining why you want to be a software developer
+5. A footer with your name, the current year, and your email address
 
-## Exercise: Building a Profile Page
 
-In this exercise, you'll create a simple profile page using various HTML elements. Your page should include:
 
-1. A header with your name
-2. A section about you with a paragraph
-3. A list of your skills
-4. A table with your education or work experience
-
-Use the editor to write your HTML code, then click the "Run" button to see the result.
 `,
   exercise: {
     starterCode: {
@@ -125,13 +136,34 @@ Use the editor to write your HTML code, then click the "Run" button to see the r
 <html>
 <head>
   <title>My Profile</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Create your profile page here -->
+  <!-- Create your profile page here using semantic HTML elements -->
+  <!-- Remember to include header with nav, main with article and sections, and a footer -->
 
 </body>
 </html>`,
-      'styles.css': `/* Add your styles here */
+      'styles.css': `/* Basic styles */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+/* Make navigation links display horizontally */
+nav {
+  display: flex;
+}
+nav div {
+  margin-right: 20px;
+}
+
+/* Add your additional styles here */
+
+
 
 `
     },
@@ -140,56 +172,35 @@ Use the editor to write your HTML code, then click the "Run" button to see the r
 <html>
 <head>
   <title>My Profile</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <h1>John Doe</h1>
-    <p>Web Developer</p>
+    <nav>
+      <div>Home</div>
+      <div>Projects</div>
+      <div>Education</div>
+    </nav>
   </header>
 
-  <section>
-    <h2>About Me</h2>
-    <p>I am a passionate web developer with experience in HTML, CSS, and JavaScript. I enjoy creating responsive and user-friendly websites.</p>
-  </section>
+  <main>
+    <article>
+      <h1>John Doe</h1>
 
-  <section>
-    <h2>My Skills</h2>
-    <ul>
-      <li>HTML</li>
-      <li>CSS</li>
-      <li>JavaScript</li>
-      <li>Responsive Design</li>
-      <li>UI/UX Basics</li>
-    </ul>
-  </section>
+      <section>
+        <h2>Career History</h2>
+        <p>I have worked in IT for 5 years, starting as a help desk technician and moving into network administration. I've always been fascinated by how software works and have been learning programming in my spare time.</p>
+      </section>
 
-  <section>
-    <h2>Education</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Degree</th>
-          <th>Institution</th>
-          <th>Year</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Bachelor of Science in Computer Science</td>
-          <td>University of Technology</td>
-          <td>2020</td>
-        </tr>
-        <tr>
-          <td>Web Development Bootcamp</td>
-          <td>Code Academy</td>
-          <td>2021</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+      <section>
+        <h2>Why I Want to Be a Software Developer</h2>
+        <p>I'm passionate about creating solutions that make people's lives easier. Software development allows me to combine my problem-solving skills with my creativity to build useful applications that can have a real impact.</p>
+      </section>
+    </article>
+  </main>
 
   <footer>
-    <p>Contact me at: john.doe@example.com</p>
+    <p>John Doe &copy 2025 | john.doe@example.com</p>
   </footer>
 </body>
 </html>`,
@@ -202,11 +213,23 @@ body {
   color: #333;
 }
 
+/* Make navigation links display horizontally */
+nav {
+  display: flex;
+}
+nav div {
+  margin-right: 20px;
+}
+
 header {
   background-color: #f4f4f4;
   padding: 20px;
-  text-align: center;
   margin-bottom: 20px;
+}
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 h1, h2 {
@@ -215,26 +238,6 @@ h1, h2 {
 
 section {
   margin-bottom: 30px;
-}
-
-ul {
-  list-style-type: square;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-th, td {
-  padding: 10px;
-  border: 1px solid #ddd;
-  text-align: left;
-}
-
-th {
-  background-color: #f4f4f4;
 }
 
 footer {
@@ -247,44 +250,64 @@ footer {
     },
     tests: [
       {
-        name: "HTML Structure",
+        name: "Semantic HTML Structure",
         test: (files) => {
           try {
-            const htmlContent = files['index.html'];
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(htmlContent, 'text/html');
+            const htmlContent = files['index.html']
+            const parser = new DOMParser()
+            const doc = parser.parseFromString(htmlContent, 'text/html')
 
-            const hasHeader = doc.querySelector('header') !== null;
-            const hasH1 = doc.querySelector('h1') !== null;
-            const hasSection = doc.querySelector('section') !== null;
-            const hasParagraph = doc.querySelector('p') !== null;
-            const hasList = doc.querySelector('ul') !== null || doc.querySelector('ol') !== null;
-            const hasListItems = doc.querySelectorAll('li').length >= 3;
-            const hasTable = doc.querySelector('table') !== null;
-            const hasTableRows = doc.querySelectorAll('tr').length >= 2;
+            // Check for header with nav
+            const header = doc.querySelector('header')
+            const nav = header ? header.querySelector('nav') : null
+            const navDivs = nav ? nav.querySelectorAll('div') : []
+            const hasCorrectNavLinks = Array.from(navDivs).some(div => div.textContent.includes('Home')) &&
+                                      Array.from(navDivs).some(div => div.textContent.includes('Projects')) &&
+                                      Array.from(navDivs).some(div => div.textContent.includes('Education'))
 
-            return new TestResult({
-              passed: hasHeader && hasH1 && hasSection && hasParagraph && hasList && hasListItems && hasTable && hasTableRows,
-              messages: () => [
-                !hasHeader ? "Your page should include a header element" : null,
-                !hasH1 ? "Your page should include an h1 heading" : null,
-                !hasSection ? "Your page should include at least one section element" : null,
-                !hasParagraph ? "Your page should include at least one paragraph" : null,
-                !hasList ? "Your page should include a list (ul or ol)" : null,
-                !hasListItems ? "Your list should have at least 3 items" : null,
-                !hasTable ? "Your page should include a table" : null,
-                !hasTableRows ? "Your table should have at least 2 rows" : null
-              ].filter(Boolean)
-            });
+            // Check for main with article
+            const main = doc.querySelector('main')
+            const article = main ? main.querySelector('article') : null
+            const h1 = article ? article.querySelector('h1') : null
+
+            // Check for sections
+            const sections = article ? article.querySelectorAll('section') : []
+
+            // Check for footer
+            const footer = doc.querySelector('footer')
+            const footerText = footer ? footer.textContent : ''
+            const hasNameInFooter = footerText.length > 0
+            const hasYearInFooter = /\d{4}/.test(footerText)
+            const hasEmailInFooter = /@/.test(footerText)
+
+            const passed = header && nav && navDivs.length >= 3 && hasCorrectNavLinks &&
+                     main && article && h1 && sections.length >= 2 &&
+                     footer && hasNameInFooter && hasYearInFooter && hasEmailInFooter
+
+            const result = new TestResult({ passed })
+
+            if (!header) result.addMessage("Your page should include a header element")
+            if (!nav) result.addMessage("Your header should include a nav element")
+            if (navDivs.length < 3) result.addMessage("Your nav should include at least 3 div elements")
+            if (!hasCorrectNavLinks) result.addMessage("Your nav should include links for Home, Projects, and Education")
+            if (!main) result.addMessage("Your page should include a main element")
+            if (!article) result.addMessage("Your main element should include an article element")
+            if (!h1) result.addMessage("Your article should include an h1 heading")
+            if (sections.length < 2) result.addMessage("Your article should include at least 2 section elements")
+            if (!footer) result.addMessage("Your page should include a footer element")
+            if (!hasNameInFooter) result.addMessage("Your footer should include your name")
+            if (!hasYearInFooter) result.addMessage("Your footer should include the current year")
+            if (!hasEmailInFooter) result.addMessage("Your footer should include your email address")
+
+            return result
           } catch (error) {
-            return new TestResult({
-              passed: false,
-              messages: () => ["Error parsing HTML: " + error.message]
-            });
+            const result = new TestResult({ passed: false })
+            result.addMessage("Error parsing HTML: " + error.message)
+            return result
           }
         },
-        message: "Make sure your profile page includes a header with an h1, sections with paragraphs, a list with at least 3 items, and a table with at least 2 rows."
+        message: "Make sure your profile page includes a header with navigation links (Home, Projects, Education), a main section with an article containing your name and two sections (career history and why you want to be a software developer), and a footer with your name, the current year, and your email address."
       }
     ]
   }
-};
+}

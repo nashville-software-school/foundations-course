@@ -25,7 +25,7 @@ selector {
 - The **declaration block** contains one or more declarations separated by semicolons
 - Each declaration includes a CSS property name and a value, separated by a colon
 
-For example:
+For example, the following style sets the color of all \`<h1>\` elements to blue and the font size to 24 pixels:
 
 \`\`\`css
 h1 {
@@ -36,33 +36,17 @@ h1 {
 
 ### Adding CSS to HTML
 
-There are three ways to add CSS to HTML:
+The most common, modern way of include styles with your HTML is by using a separate CSS file linked with the \`<link>\` element.
 
-1. **Inline CSS**: Using the style attribute in HTML elements
-   \`\`\`html
-   <h1 style="color: blue; font-size: 24px;">Heading</h1>
-   \`\`\`
-
-2. **Internal CSS**: Using the \`<style>\` element in the \`<head>\` section
-   \`\`\`html
-   <head>
-     <style>
-       h1 {
-         color: blue;
-         font-size: 24px;
-       }
-     </style>
-   </head>
-   \`\`\`
-
-3. **External CSS**: Using a separate CSS file linked with the \`<link>\` element
    \`\`\`html
    <head>
      <link rel="stylesheet" href="styles.css">
    </head>
    \`\`\`
 
-For this exercise, we'll be using the external CSS approach, with our styles in the styles.css file.
+Look to the right at the code editor, and you will see that there is a tab named \`styles.css\`. This is where you will write your CSS code.
+
+🧨 The CSS will automatically be applied to the HTML file when you run the code. You don't need to worry about linking it yourself.
 
 ### Common CSS Properties
 
@@ -92,12 +76,15 @@ Here are some common CSS properties you'll use frequently:
 
 ## Exercise: Styling a Web Page
 
-In this exercise, you'll style the HTML page provided using CSS. The HTML contains a simple article with headings, paragraphs, and a list. Your task is to:
+In this exercise, you'll style the HTML page provided using CSS. The HTML contains a simple article with headings, paragraphs, and a list. Your task is to add the following styles to the CSS file:
 
-1. Set appropriate colors for headings and text
-2. Style the background
-3. Add margins and padding to improve spacing
-4. Style the list items
+After you implement each style, click the "Run" button to see the changes applied to the HTML page.
+
+1. Update the body element to have a background-color of "lightblue"
+2. Give the article a border using the following value: \`1px solid black;\`
+3. Give the article a padding rule with a value of \`1rem;\`
+4. Give p elements a color of \`purple;\`
+5. Give img elements a height of \`10rem;\`
 
 Use the editor to write your CSS code, then click the "Run" button to see the result.
 `,
@@ -128,10 +115,20 @@ Use the editor to write your CSS code, then click the "Run" button to see the re
     <div class="note">
       <p>Note: This is just a basic introduction to CSS. There's much more to learn!</p>
     </div>
+
+    <img src="https://picsum.photos/200/300" alt="Sample Image" />
   </article>
 </body>
 </html>`,
-      'styles.css': `/* Add your CSS styles here */
+      'styles.css': `body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+/* Add your CSS styles here */
 
 `
     },
@@ -245,31 +242,47 @@ li:last-child {
           try {
             const cssContent = files['styles.css'];
 
-            // Check for various CSS properties
-            const hasBodyStyles = /body\s*\{[^}]*font-family/i.test(cssContent);
-            const hasHeadingStyles = /h1\s*\{[^}]*color/i.test(cssContent);
-            const hasMarginOrPadding = /margin|padding/i.test(cssContent);
-            const hasBackgroundColor = /background-color/i.test(cssContent);
-            const hasListStyles = /ul\s*\{|li\s*\{/i.test(cssContent);
+            // Check for the required CSS properties
+            const hasBodyBackgroundColor = /body\s*\{[^}]*background-color\s*:\s*lightblue/i.test(cssContent);
+            const hasArticleBorder = /article\s*\{[^}]*border\s*:\s*1px\s+solid\s+black/i.test(cssContent);
+            const hasArticlePadding = /article\s*\{[^}]*padding\s*:\s*1rem/i.test(cssContent);
+            const hasPurpleText = /p\s*\{[^}]*color\s*:\s*purple/i.test(cssContent);
+            const hasImgHeight = /img\s*\{[^}]*height\s*:\s*10rem/i.test(cssContent);
 
-            return new TestResult({
-              passed: hasBodyStyles && hasHeadingStyles && hasMarginOrPadding && hasBackgroundColor && hasListStyles,
-              messages: () => [
-                !hasBodyStyles ? "You should style the body element with at least a font-family property" : null,
-                !hasHeadingStyles ? "You should style at least one heading (h1 or h2) with a color property" : null,
-                !hasMarginOrPadding ? "You should use margin or padding properties to improve spacing" : null,
-                !hasBackgroundColor ? "You should use the background-color property somewhere in your CSS" : null,
-                !hasListStyles ? "You should style the list (ul) or list items (li)" : null
-              ].filter(Boolean)
+            const result = new TestResult({
+              passed: hasBodyBackgroundColor && hasArticleBorder && hasArticlePadding && hasPurpleText && hasImgHeight
             });
+
+            if (!hasBodyBackgroundColor) {
+              result.addMessage("You should set the body element's background-color to lightblue");
+            }
+
+            if (!hasArticleBorder) {
+              result.addMessage("You should give the article element a border of 1px solid black");
+            }
+
+            if (!hasArticlePadding) {
+              result.addMessage("You should give the article element a padding of 1rem");
+            }
+
+            if (!hasPurpleText) {
+              result.addMessage("You should set the color of p elements to purple");
+            }
+
+            if (!hasImgHeight) {
+              result.addMessage("You should set the height of img elements to 10rem");
+            }
+
+            return result;
           } catch (error) {
-            return new TestResult({
-              passed: false,
-              messages: () => ["Error parsing CSS: " + error.message]
+            const result = new TestResult({
+              passed: false
             });
+            result.addMessage("Error parsing CSS: " + error.message);
+            return result;
           }
         },
-        message: "Make sure your CSS includes styles for the body, headings, spacing (margin/padding), background colors, and list elements."
+        message: "Make sure your CSS includes the required styles for body, article, p, and img elements."
       }
     ]
   }

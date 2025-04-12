@@ -1,6 +1,5 @@
 // Factory function to create TestResult objects
 export const TestResult = function({ passed=true, testName="N/A", message=null} = {}) {
-  // Create a new object with no prototype and define all properties on it
   const initialMessages = []
 
   // Add initial message if valid
@@ -8,6 +7,7 @@ export const TestResult = function({ passed=true, testName="N/A", message=null} 
     initialMessages.push(message)
   }
 
+  // Create a new object with no prototype and define all properties on it
   const testResult = Object.create(null, {
     // Public methods
     addMessage: {
