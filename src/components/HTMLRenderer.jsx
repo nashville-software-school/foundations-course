@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './HTMLRenderer.css';
 
 /**
@@ -6,11 +6,18 @@ import './HTMLRenderer.css';
  * @param {Object} props Component props
  * @param {Object} props.files Object containing file contents keyed by filename
  * @param {Function} props.onRun Optional callback when the Run button is clicked
- * @param {Function} props.onRun Optional callback when the Run button is clicked
+ * @param {boolean} props.autoRun Whether to automatically run the code when files change (default: true)
  */
-function HTMLRenderer({ files, onRun }) {
+function HTMLRenderer({ files, onRun, autoRun = true }) {
   const [iframeContent, setIframeContent] = useState('');
   const [isRendered, setIsRendered] = useState(false);
+
+  // Automatically run the code when the component mounts or when files change
+  useEffect(() => {
+    if (autoRun && files) {
+      runCode();
+    }
+  }, [files, autoRun]);
 
   const runCode = () => {
     // Get HTML and CSS content from files

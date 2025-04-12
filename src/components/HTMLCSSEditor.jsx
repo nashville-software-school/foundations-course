@@ -30,8 +30,9 @@ const styles = {
  * @param {Object} props.files Object containing file contents keyed by filename
  * @param {Function} props.onChange Callback when any file content changes
  * @param {Function} props.onRun Optional callback when the Run button is clicked
+ * @param {boolean} props.autoRun Whether to automatically run the code when files change (default: true)
  */
-function HTMLCSSEditor({ files, onChange, onRun }) {
+function HTMLCSSEditor({ files, onChange, onRun, autoRun = true }) {
   return (
     <div css={styles.container}>
       <div css={styles.editorContainer}>
@@ -49,7 +50,7 @@ function HTMLCSSEditor({ files, onChange, onRun }) {
         />
       </div>
       <div css={styles.rendererContainer}>
-        <HTMLRenderer files={files} onRun={onRun} />
+        <HTMLRenderer files={files} onRun={onRun} autoRun={autoRun} />
       </div>
     </div>
   )
