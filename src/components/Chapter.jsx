@@ -10,14 +10,12 @@ import HTMLRenderer from './HTMLRenderer'
 import HTMLCSSEditor from './HTMLCSSEditor'
 import ProtectedRoute from './ProtectedRoute'
 import * as ReactDOM from 'react-dom/client'
-import { isHTMLExercise } from '../utils/exercise_utils'
 import './Chapter.css'
 
 const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, getPreviousChapter, getNextChapter }) => {
   const { chapterId } = useParams()
   const {
     trackAttempt,
-    sendProgressToAPI,
     trackCompletion,
     trackSolutionShown,
     getExerciseProgress
@@ -364,10 +362,6 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
     }
   }
 
-  function hasFunction(variable) {
-    return typeof variable === 'function';
-  }
-
   const showSolution = () => {
     // Track that solution was shown
     trackSolutionShown(chapterId)
@@ -466,6 +460,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
           ) ? (
             // HTML/CSS Exercise
             <HTMLCSSEditor
+              key={chapterId} // Use chapterId as key to force re-render when chapter changes
               files={files}
               onChange={handleFilesChange}
               onRun={() => {
@@ -475,6 +470,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
                 );
                 trackAttempt(chapterId, currentChapter.title, JSON.stringify(userFiles));
               }}
+              autoRun={true} // Explicitly set autoRun to true
             />
           ) : (
             // JavaScript Exercise
