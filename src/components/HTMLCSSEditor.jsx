@@ -9,12 +9,18 @@ const styles = {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
+    flex: 1;
   `,
   editorContainer: css`
     margin-bottom: 0.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   `,
   rendererContainer: css`
     margin-top: 0.5rem;
+    flex: 1;
   `
 }
 

@@ -1,14 +1,15 @@
 .html-renderer {
   display: flex;
   flex-direction: column;
-  min-height: 300px;
+  min-height: 200px;
   background: white;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #e9ecef;
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 100%;
 }
 
 .html-renderer-header {
@@ -47,7 +48,7 @@
 
 .iframe-container {
   flex: 1;
-  min-height: 250px;
+  min-height: 150px;
   position: relative;
   background: #f8f8f8;
   border-top: 1px solid #e9ecef;

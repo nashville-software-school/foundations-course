@@ -11,6 +11,8 @@ const styles = {
     background: white;
     border-radius: 8px;
     overflow: hidden;
+    flex: 1;
+    height: 100%;
   `,
   tabs: css`
     display: flex;
@@ -44,6 +46,9 @@ const styles = {
   editor: css`
     flex: 1;
     min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   `
 }
 
@@ -91,7 +96,7 @@ function MultiFileEditor({ files, onChange, options = {} }) {
       </div>
       <div css={styles.editor}>
         <Editor
-          height="300px"
+          height="100%"
           defaultLanguage={getLanguageFromFilename(activeFile)}
           theme="vs-light"
           value={files[activeFile]}
