@@ -319,7 +319,6 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
         } else {
           testArg = files['index.js'];
         }
-
         let testResult = test.test(testArg)
         return {
           name: test.name,
@@ -342,13 +341,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
           if (currentResult.testResult.passed){
             messages.push(`* <span style="color: green;">${currentResult.name} passed!</span>`);
           } else {
-            messages.push(`* ${currentResult.message}`)
-            if (hasFunction(currentResult.testResult.messages) && currentResult.testResult.messages().length > 0){
-              for(const message of currentResult.testResult.messages()){
-                // two spaces here are intentional to create nested li's
-                messages.push(`  * ${message}`)
-              }
-            }
+            messages.push(`* ${currentResult.message}\n${currentResult.testResult.formattedMessage}`);
           }
           return messages
       }, []).join('\n')

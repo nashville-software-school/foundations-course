@@ -1,33 +1,71 @@
-// Define the prototype object with all methods
-const TestResultProto = {
-  add_message(message) {
-    if(this._valid(message)) this._messages.push(message);
-  },
-  messages() {
-    return this._messages;
-  },
-  formatted_message() {
-    return this._messages.join('\n');
-  },
-  // private
-  _valid(msg){
-    if (msg && typeof msg === 'string') return true
-    return false
-  }
-};
-
 // Factory function to create TestResult objects
 export const TestResult = function({ passed=true, testName="N/A", message=null} = {}) {
-  // Create a new object with the prototype
-  const testResult = Object.create(TestResultProto);
-
-  // Initialize properties
-  testResult.passed = passed;
-  testResult.testName = testName;
-  testResult._messages = [];
+  // Create a new object with no prototype and define all properties on it
+  const initialMessages = []
 
   // Add initial message if valid
-  if(testResult._valid(message)) testResult._messages.push(message);
+  if (message && typeof message === 'string') {
+    initialMessages.push(message)
+  }
 
-  return testResult;
-};
+  const testResult = Object.create(null, {
+    // Public methods
+    addMessage: {
+      value: function(message) {
+        if(this._valid(message)) this._messages.push(message)
+      },
+      enumerable: true,
+      writable: false,
+      configurable: false
+    },
+    messages: {
+      value: function() {
+        return this._messages
+      },
+      enumerable: true,
+      writable: false,
+      configurable: false
+    },
+    formattedMessage: {
+      get: function() {
+        return this._messages.map((msg, index) => `   ${index + 1}. ${msg}`).join('\n')
+      },
+      enumerable: true,
+      configurable: false
+    },
+
+    // Public properties
+    passed: {
+      value: passed,
+      enumerable: true,
+      writable: false,
+      configurable: false
+    },
+    testName: {
+      value: testName,
+      enumerable: true,
+      writable: false,
+      configurable: false
+    },
+
+    // Private methods and properties
+    _valid: {
+      value: function(msg) {
+        if (msg && typeof msg === 'string') return true
+        return false
+      },
+      enumerable: false,
+      writable: false,
+      configurable: false
+    },
+    _messages: {
+      value: initialMessages,
+      enumerable: false,
+      writable: true,
+      configurable: false
+    }
+  })
+
+  // Freeze the object before returning it
+  return Object.freeze(testResult)
+}
