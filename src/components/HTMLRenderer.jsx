@@ -135,7 +135,7 @@ function HTMLRenderer({ files, onRun, autoRun = true }) {
             width: '100%',
             height: '100%',
             border: isRendered ? '1px solid #ddd' : 'none',
-            display: 'block' // Ensure the iframe is displayed as a block element
+            display: 'block'
           }}
         />
       </div>

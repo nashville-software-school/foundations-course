@@ -2,12 +2,16 @@ import { htmlIntroChapter } from './html-intro';
 import { htmlElementsChapter } from './html-elements';
 import { cssBasicsChapter } from './css-basics';
 import { cssSelectorsChapter } from './css-selectors';
-import { flexboxBasicsChapter } from './flexbox-basics';
+import { flexboxIntroChapter } from './flexbox-intro';
+import { flexboxContainerChapter } from './flexbox-container';
+import { flexboxItemsChapter } from './flexbox-items';
 
 export const htmlCssChapters = [
   htmlIntroChapter,
   htmlElementsChapter,
   cssBasicsChapter,
   cssSelectorsChapter,
-  flexboxBasicsChapter
+  flexboxIntroChapter,
+  flexboxContainerChapter,
+  flexboxItemsChapter
 ];

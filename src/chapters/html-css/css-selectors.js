@@ -5,7 +5,7 @@ export const cssSelectorsChapter = {
   title: 'CSS Selectors',
   sectionId: 'html-css',
   previousChapterId: 'css-basics',
-  nextChapterId: 'flexbox-basics',
+  nextChapterId: 'flexbox-intro',
   content: `## CSS Selectors
 
 CSS selectors are patterns used to select and style HTML elements. Understanding selectors is crucial for applying styles effectively.
