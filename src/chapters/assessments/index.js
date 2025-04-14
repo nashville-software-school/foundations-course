@@ -1,3 +1,3 @@
-import { firstAssessmentId } from "./first-assessment.js";
+import { flowerShopId } from "./flower-shop.js";
 
-export const assessments = [firstAssessmentId];
+export const projects = [flowerShopId];

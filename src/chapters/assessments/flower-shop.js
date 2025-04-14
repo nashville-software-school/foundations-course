@@ -1,6 +1,6 @@
-export const firstAssessmentId = {
-    id: "assessment",
-    title: "Self Assessment",
+export const flowerShopId = {
+    id: "flower-shop",
+    title: "Finding the Flowers",
     sectionId: "assessment",
     previousChapterId: null,
     nextChapterId: null,
@@ -51,7 +51,7 @@ Great job! All tests passed!
 
 ### Errors in Your Logic or Syntax
 
-If your code does not work, you will see a message that your code failed, with a brief message about why and possibly some helpful tips on how to fix it. 
+If your code does not work, you will see a message that your code failed, with a brief message about why and possibly some helpful tips on how to fix it.
 You can debug the code by adding console.log statements and clicking 'Run Code' button.
 
 \`\`\`sh
@@ -378,7 +378,7 @@ const flowersAsHTML = () => {
         correct code. If you have code that works, but no
         algorithm, then you failed the exercise.
     */
-    
+
     // Algorithm:
     // 1. Iterate through each flower in the flowers array
     // 2. For each flower, create an article element with:
@@ -388,35 +388,35 @@ const flowersAsHTML = () => {
     //    d. An h2 element for "USDA Zones"
     //    e. A div element for each USDA zone
     // 3. Append each article to the flowersHTMLString
-    
+
     for (const flower of flowers) {
         // Start the article
         flowersHTMLString += "<article>\n"
-        
+
         // Add the flower type as h1
         flowersHTMLString += "    <h1>" + flower.type + "</h1>\n\n"
-        
+
         // Add the colors section
         flowersHTMLString += "    <h2>Colors</h2>\n"
         for (const color of flower.colors) {
             flowersHTMLString += "    <section>" + color + "</section>\n"
         }
-        
+
         // Add the USDA zones section
         flowersHTMLString += "\n    <h2>USDA Zones</h2>\n"
         for (const zone of flower.usdaZones) {
             flowersHTMLString += "    <div>" + zone + "</div>\n"
         }
-        
+
         // Close the article
         flowersHTMLString += "</article>"
-        
+
         // Add a newline between articles (except for the last one)
         if (flower !== flowers[flowers.length - 1]) {
             flowersHTMLString += "\n"
         }
     }
-    
+
     return flowersHTMLString  // Do not modify
 }`,
       tests: [
@@ -513,7 +513,7 @@ const flowersAsHTML = () => {
                     const htmlContainsArticleTags = htmlRepresentations.match(/article/g)?.length / 2 || 0
                     const htmlContainsSectionTags = htmlRepresentations.match(/section/g)?.length / 2 || 0
                     const htmlContainsDivTags = htmlRepresentations.match(/div/g)?.length / 2 || 0
-                
+
                     return htmlContainsArticleTags === 9 && htmlContainsSectionTags === 41 && htmlContainsDivTags === 51;
                 } catch {
                     return false;

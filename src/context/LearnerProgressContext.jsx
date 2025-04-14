@@ -76,7 +76,7 @@ export const LearnerProgressProvider = ({ children }) => {
             ...currentProgress,
             userId: user.id,
             username: user.name,
-            solutionShown: currentProgress.solutionShown || false  // Include the solutionShown flag
+            solutionShown: currentProgress.solutionShown || false
         }
 
         try {
@@ -84,8 +84,6 @@ export const LearnerProgressProvider = ({ children }) => {
             // Default to localhost for development if not set
             const apiDomain = import.meta.env.VITE_LEARNING_PLATFORM_API || 'http://localhost:8000';
             const apiUrl = `${apiDomain}/foundations/${exerciseId}`;
-
-            console.log(`Sending progress to API: ${apiUrl}`);
 
             const response = await fetch(apiUrl, {
                 method: 'PUT',
