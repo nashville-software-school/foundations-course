@@ -407,7 +407,6 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
     <div className="chapter" style={{
       gridTemplateColumns: chapterContent.exercise ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)',
       width: '100%',
-      display: 'grid',
     }}>
       <section className="content-section">
         <div className="content-container">
@@ -449,12 +448,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
 
       {
         chapterContent.exercise &&
-        <section className="editor-section" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          alignItems: 'stretch',
-        }}>
+        <section className="editor-section">
           {Object.keys(files).some(filename =>
             filename.endsWith('.html') || filename.endsWith('.css')
           ) ? (
@@ -474,9 +468,10 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
             />
           ) : (
             // JavaScript Exercise
-            <div className="editor-container" style={{ marginBottom: '20px' }}>
+            <div className="editor-container">
               {Object.keys(files).length > 1 || solutionTabVisible ? (
                 <MultiFileEditor
+                  height="100%"
                   files={files}
                   onChange={handleFilesChange}
                   options={{
@@ -490,7 +485,7 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
                 />
               ) : (
                 <Editor
-                  height="300px"
+                  height="100%"
                   defaultLanguage="javascript"
                   theme="vs-light"
                   value={files['index.js']}

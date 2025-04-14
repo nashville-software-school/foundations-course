@@ -59,7 +59,7 @@ const styles = {
  * @param {Function} props.onChange Callback when any file content changes
  * @param {Object} props.options Monaco editor options
  */
-function MultiFileEditor({ files, onChange, options = {} }) {
+function MultiFileEditor({ files, onChange, options = {}, height = "100%" }) {
   const [activeFile, setActiveFile] = useState(Object.keys(files)[0])
 
   // Reset active file only when file structure changes
@@ -81,7 +81,7 @@ function MultiFileEditor({ files, onChange, options = {} }) {
   }
 
   return (
-    <div css={styles.container}>
+    <div css={styles.container} style={{ height }}>
       <div css={styles.tabs}>
         {Object.keys(files).map(filename => (
           <button

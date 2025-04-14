@@ -33,7 +33,7 @@ export const chapters = [
   ...protectedArrayChapters,
   ...protectedObjectChapters,
   ...protectedFunctionChapters,
-  ...htmlCssChapters,
+  ...protectedHtmlCssChapters,
   ...protectedLeonidsChapters,
   ...protectedAssessments,
   ...protectedWorkshopChapters
