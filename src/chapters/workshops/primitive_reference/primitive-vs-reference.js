@@ -1,3 +1,4 @@
+import js from "@eslint/js";
 import jsMemImg from "./js_mem.png";
 
 export const primitiveVsReferenceChapter = {
@@ -7,7 +8,8 @@ export const primitiveVsReferenceChapter = {
   sectionId: "workshops",
   previousChapterId: null,
   nextChapterId: null,
-  content: `👩‍🚀 Welcome aboard! You’re about to embark on a journey through **JavaScript’s memory universe** with some legendary astronauts. Each stop will take us deeper into **primitive planets, reference black holes, cloning technology, and type transformation!**
+  content: `Welcome aboard! You’re about to embark on a journey through **JavaScript’s memory universe** with some legendary astronauts. Each stop will take
+  us dr into **primitive planets, reference black holes, cloning technology, and type transformation!
 
 ## 🛰 **Mission Overview**
 
@@ -20,120 +22,164 @@ export const primitiveVsReferenceChapter = {
 
 Each stop on our journey includes **hands-on code, discussions, and quiz challenges** to keep eyes on the prize!
 
-**Countdown initiated!** 🚀
+**Countdown initiated!**
 
 ---
 
 
-## 🕓 **Checkpoint 1: Primitive Planets & Reference Black Holes**
+## **Checkpoint 1: Primitive Planets & Reference Black Holes**
 
-👩‍🚀 *Mission Log:* "Our first challenge is to categorize **JavaScript data types**. Some are simple planets (primitives), while others are deep, mysterious black holes (references)."
+*Mission Log:* "Our first challenge is to categorize **JavaScript data types**. Some are simple planets (primitives), while others are deep, mysterious black holes (references)."
 
-### **📝 What are the two types of data in JavaScript?**
+### What are the two types of data in JavaScript?
 
-✅ **Primitive/Value Types (Stored in Stack)**:
+**1. Primitive/Value Types (Stored in Stack)**:
+
 - \`string\`, \`number\`, \`boolean\`, \`null\`, \`undefined\`, \`symbol\`, \`bigint\`
 
-✅ **Reference Types (Stored in Heap, Passed by Reference)**:
+Out of these, \`null\` and \`undefined\` are special values that represent the absence of a value. Symbol and BigInt are more advanced types that are not commonly used in basic programming. Nearly all of the time, you will be using the first four types.
+
+**2. Reference Types (Stored in Heap, Passed by Reference)**:
 
 - \`object\`, \`array\`, \`function\`
 <img width=700 src="${jsMemImg}"/>
 
-### 🛑 **Quiz Break #1**
+### **Quiz Break #1**
 <a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Data Types Quiz</a>
 
-⚠️ **Note:** When you click 'Run Tests' in this workshop, \`console.log\` will show as **alerts** 🚨 due to a custom-built interpreter.
+⚠️ **Note:** When you click 'Run Tests' in this workshop, \`console.log\` will show as **alerts** due to a custom-built interpreter.
+
 It’s not a full JS environment, some behaviors may be different. Use this code space only for the provided exercises, not for experimenting with random JS code!
+
 ### **🛠️ Run Code Snippet One:**
 
-✅ **Discussion:** *Why does \`planet2\` still say "Mars" after \`planet1\` changes?*
+**Discussion:**
 
-### 🛑 **Quiz Break #2**
+*Why does \`planet2\` still say "Mars" after \`planet1\` changes?*
+
+### **Quiz Break #2**
 <a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Reference Types Quiz</a>
 
 
 ---
-## 🕒 **Checkpoint 2: Copying Across the Universe (Stack vs. Heap)**
+## **Checkpoint 2: Copying Across the Universe (Stack vs. Heap)**
 
-👩‍🚀 *Mission Log:* "Next, let’s examine how JavaScript copies data when variables are assigned."
+*Mission Log:* "Next, let’s examine how JavaScript copies data when variables are assigned."
 
-### **How Are Values Copied?**
+### How Are Values Copied?
 
 1️⃣ **Primitives → Copied by Value**
 2️⃣ **Reference Types → Copied by Reference**
 
-### **🛠️ Run Code Snippet Two**
+### Run Code Snippet Two
 
-🚀 Houston, we have a problem! 🛑
+Houston, we have a problem!
 
-✅ **Discussion:** *Why does \`spaceship2.captain\` change to "Sally Ride" too?*
+#### Discussion
 
-### 🛑 **Quiz #3**
+Why does \`spaceship2.captain\` change to "Sally Ride" too?
+
+### Quiz #3
+
 <a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Deep Copy Quiz</a>
 
-
 ---
-## 🕑 **Checkpoint 3: Cloning with Shallow vs. Deep Copies**
 
-👩‍🚀 *Mission Log:* "Let’s test our ship’s cloning technology! Shallow copies are quick but imperfect, while deep copies ensure a full duplicate."
+## Checkpoint 3: Cloning with Shallow vs. Deep Copies
 
-### **Shallow Copy Example (Using \`...\`)**
-### **🛠️ Run Code Snippet Three**
+*Mission Log:* "Let’s test our ship’s cloning technology! Shallow copies are quick but imperfect, while deep copies ensure a full duplicate."
 
-🚀 Houston, we have a problem! 🛑
+### Shallow Copy Example (Using \`...\`)
 
-✅ **Discussion:** *Why does \`alien2.abilities.laser\` change too?*
+The spread operator \`...\` creates a shallow copy of an object. This means that it copies the top-level properties, but nested objects are still shared by reference. In the following code, \`lassie\` and \`laddie\` are two different objects, but they share the same nested object for \`abilities\`.
 
-### **Deep Copy Example (Using \`structuredClone\`)**
-### **🛠️ Run Code Snippet Four**
+\`\`\`js
+let lassie = { species: "Collie", abilities: { speaking: true } };
+let laddie = { ...lassie };                 // Shallow copy
+lassie.abilities.speaking = false;          // Change the original object
+console.log(laddie.abilities.speaking);     // Is this still true on the copy?
 
-🚀 Houston, systems are nominal. ✅
+> false   // Because the nested object wasn't copied, just referenced
+\`\`\`
 
-✅ **Discussion:** *Why does \`alien2.abilities.laser\` remain \`false\` this time?*
+### Run Code Snippet Three
 
-### 🛑 **Quiz #4**
+🚀 Houston, we have a problem!
+
+### Discussion
+
+Why does \`alien2.abilities.laser\` change too?
+
+### Deep Copy Example (Using \`structuredClone\`)
+
+Using the \`structuredClone\` function creates a deep copy of an object. This means that all properties, including nested objects, are fully duplicated.
+\`\`\`js
+let product1 = { name: "Balloon", price: 2.5, details: { color: "red", size: "large" } };
+let product2 = structuredClone(product1); // Deep copy
+product1.details.color = "blue";          // Change the original object
+console.log(product2.details.color);      // Is this still red on the copy?
+
+> "red"   // Because the nested object was fully copied
+\`\`\`
+
+### Run Code Snippet Four
+
+Houston, systems are nominal.
+
+### Discussion
+
+Why does \`alien2.abilities.laser\` remain \`false\` this time?
+
+### Quiz #4
+
 <a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Deep Copy Quiz</a>
 
-
-
 ---
-## 🕐 **Checkpoint 4: Fixing "Monkey Math" - Type Conversion**
 
-👩‍🚀 *Mission Log:* "In space, numbers and strings sometimes get mixed up in weird ways—like ‘Monkey Math’!"
-### **🛠️ Run Code Snippet Five**
+## Checkpoint 4: Fixing "Mystery Math" - Type Conversion
 
-🚀 Houston, we have a problem! 🛑
+*Mission Log:* "In space, numbers and strings sometimes get mixed up in weird ways—like ‘Mystery Math’!"
 
-✅ **Discussion:** *Why does \`"2" + "2"\` behave like this?*
+### Run Code Snippet Five
 
-### **Fixing the Monkey Math 🐵 ➡️ 🚀**
-### **🛠️ Run Code Snippet Six**
+🚀 Houston, we have a problem!
 
+### Discussion
 
-🚀 Houston, systems are nominal. ✅
+Why does \`"2" + "2"\` behave like this?
 
-✅ **Discussion:** *Why does \`Number("2")\` fix the issue?*
+### Fixing the Mystery Math
 
-### 🛑 **Quiz #5**
+To fix the issue, we need to convert the strings to numbers before adding them.
+
+### Run Code Snippet Six
+
+🚀 Houston, systems are nominal.
+
+### Discussion
+
+Why does \`Number("2")\` fix the issue?
+
+### Quiz #5
+
 <a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Data Conversion Quiz</a>
 
 
-## 🌟 **Mission Debrief & Wrap-up**
+## Mission Debrief & Wrap-up
 
+Congratulations! You’ve explored JavaScript’s **memory system, copying mechanics, cloning, and type conversion**!
 
-🎉 Congratulations! You’ve explored JavaScript’s **memory system, copying mechanics, cloning, and type conversion**!
-
-💡 **Final Thought:** Next time you see unexpected behavior in your code, **check whether you're working with a primitive or reference type**! 🚀
+**Final Thought:** Next time you see unexpected behavior in your code, **check whether you're working with a primitive or reference type**! 🚀
 
 ---
 
-### 🎯 **Final Quiz: Rank Up Your JS Knowledge!**
+### Final Quiz: Rank Up Your JS Knowledge!
 
 <a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Deep copy or not to deep copy quiz</a>
 
-### **Thanks for joining the mission! 🚀**
+### Thanks for joining the mission!
 
-👨‍🚀 Remember JavaScript’s universe is vast, keep **exploring**!!! 🌌
+Remember JavaScript’s universe is vast, keep **exploring**!
   `,
   exercise: {
     starterCode: `
