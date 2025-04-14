@@ -116,11 +116,11 @@ There is an array in the code editor of different coffee roasts around the world
 * If it is a medium roast, you put cream in it.
 * If it is a toasty, or dark, roast you put cream and sugar in it.
 
-Your job is to iterate the \`coffees\` array and output the following sentences for each coffee. Replace the \`00\` placeholder with the full name of the coffee.
+Your job is to iterate the \`coffees\` array and increment the correct value each time. Then, when you are done iterating, build a string with the provided \`output\` variable. Replace the \`xx\` placeholder in each sentence with the appropriate value.
 
-\`I need 00 orders of the light coffee with nothing in them\`
-\`I need 00 orders of the medium coffee with cream in them\`
-\`I need 00 orders of the toasty and dark coffees with cream and sugar in them\`
+\`I need xx orders of the light coffee with nothing in them\`
+\`I need xx orders of the medium coffee with cream in them\`
+\`I need xx orders of the toasty and dark coffees with cream and sugar in them\`
 `,
   exercise: {
     starterCode: `const coffees = [
@@ -131,7 +131,7 @@ Your job is to iterate the \`coffees\` array and output the following sentences 
     "vietnamese toasty blend", "peruvian light roast"
 ]
 
-// Provide the correct default value for these variables
+// Provide the correct integer default value for these variables
 let light
 let medium
 let toastyDark
