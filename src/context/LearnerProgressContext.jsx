@@ -34,27 +34,27 @@ export const LearnerProgressProvider = ({ children }) => {
     // Persist to localStorage and cookies whenever progress changes
     useEffect(() => {
         // Save to localStorage
-        localStorage.setItem('learnerProgress', JSON.stringify(progress));
+        localStorage.setItem('learnerProgress', JSON.stringify(progress))
 
         // Save hasSeenIntro to a cookie with 1-year expiration
         if (progress.hasSeenIntro) {
-            console.log('Setting hasSeenIntro cookie to true');
-            Cookies.set('hasSeenIntro', 'true', { expires: 365 });
+            console.log('Setting hasSeenIntro cookie to true')
+            Cookies.set('hasSeenIntro', 'true', { expires: 365 })
         }
 
         // Verify what was saved
-        const savedData = localStorage.getItem('learnerProgress');
-        const cookieValue = Cookies.get('hasSeenIntro');
-        console.log('Verified localStorage data:', savedData.length);
-        console.log('Verified cookie value:', cookieValue);
+        const savedData = localStorage.getItem('learnerProgress')
+        const cookieValue = Cookies.get('hasSeenIntro')
+        console.log('Verified localStorage data:', savedData.length)
+        console.log('Verified cookie value:', cookieValue)
 
         // Only send progress to API if lastUpdatedExerciseId exists
         if (progress.lastUpdatedExerciseId && progress.exercises[progress.lastUpdatedExerciseId]) {
-            console.log('Sending progress for exercise:', progress.lastUpdatedExerciseId);
+            console.log('Sending progress for exercise:', progress.lastUpdatedExerciseId)
             sendProgressToAPI(
                 progress.lastUpdatedExerciseId,
                 progress.exercises[progress.lastUpdatedExerciseId]
-            );
+            )
         }
     }, [progress, user]) // Added user as a dependency since it's used in sendProgressToAPI
 
@@ -62,14 +62,14 @@ export const LearnerProgressProvider = ({ children }) => {
     const sendProgressToAPI = async (exerciseId, currentProgress) => {
         // Validate parameters
         if (!exerciseId || !currentProgress) {
-            console.warn('sendProgressToAPI called with invalid parameters:', { exerciseId, currentProgress });
-            return;
+            console.warn('sendProgressToAPI called with invalid parameters:', { exerciseId, currentProgress })
+            return
         }
 
         // Validate user is authenticated
         if (!user || !user.id) {
-            console.warn('sendProgressToAPI called without authenticated user');
-            return;
+            console.warn('sendProgressToAPI called without authenticated user')
+            return
         }
 
         const payload = {
@@ -82,8 +82,11 @@ export const LearnerProgressProvider = ({ children }) => {
         try {
             // Use dedicated environment variable for learning platform API
             // Default to localhost for development if not set
-            const apiDomain = import.meta.env.VITE_LEARNING_PLATFORM_API || 'http://localhost:8000';
-            const apiUrl = `${apiDomain}/foundations/${exerciseId}`;
+            const apiDomain = import.meta.env.VITE_LEARNING_PLATFORM_API || 'http://localhost:8000'
+            const apiUrl = `${apiDomain}/foundations/${exerciseId}`
+            // Get the `cohort` cookie value
+            const cohort = Cookies.get('cohort')
+            payload.cohort = cohort || null
 
             const response = await fetch(apiUrl, {
                 method: 'PUT',
@@ -91,10 +94,10 @@ export const LearnerProgressProvider = ({ children }) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(payload)
-            });
+            })
 
             if (!response.ok) {
-                console.warn(`API response not OK: ${response.status} ${response.statusText}`);
+                console.warn(`API response not OK: ${response.status} ${response.statusText}`)
             }
         } catch (error) {
             console.error('Error sending progress to API:', error)
@@ -104,18 +107,18 @@ export const LearnerProgressProvider = ({ children }) => {
     // Utility function to hash code content for detecting meaningful changes
     const hashCode = (code) => {
         // Simple string hashing function
-        let hash = 0;
-        if (!code || code.length === 0) return hash.toString();
+        let hash = 0
+        if (!code || code.length === 0) return hash.toString()
 
         // Normalize whitespace before hashing
-        const normalizedCode = code.replace(/\s+/g, ' ').trim();
+        const normalizedCode = code.replace(/\s+/g, ' ').trim()
 
         for (let i = 0; i < normalizedCode.length; i++) {
-            const char = normalizedCode.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash; // Convert to 32bit integer
+            const char = normalizedCode.charCodeAt(i)
+            hash = ((hash << 5) - hash) + char
+            hash = hash & hash // Convert to 32bit integer
         }
-        return hash.toString();
+        return hash.toString()
     }
 
     const trackAttempt = (exerciseId, chapterTitle, code) => {
@@ -131,18 +134,18 @@ export const LearnerProgressProvider = ({ children }) => {
             }
 
             // Hash the current code
-            const currentHash = hashCode(code);
+            const currentHash = hashCode(code)
 
             // Check if this code is different from previous attempts
-            const isNewCode = !exercise.codeHashes || !exercise.codeHashes.includes(currentHash);
+            const isNewCode = !exercise.codeHashes || !exercise.codeHashes.includes(currentHash)
 
             // Only increment attempts if code has changed
-            const newAttempts = isNewCode ? exercise.attempts + 1 : exercise.attempts;
+            const newAttempts = isNewCode ? exercise.attempts + 1 : exercise.attempts
 
             // Add hash to history if it's new
             const newCodeHashes = isNewCode
                 ? [...(exercise.codeHashes || []), currentHash]
-                : (exercise.codeHashes || []);
+                : (exercise.codeHashes || [])
 
             const newState = {
                 ...prev,
@@ -262,8 +265,8 @@ export const LearnerProgressProvider = ({ children }) => {
 
     // Function to mark the intro page as seen
     const markIntroAsSeen = () => {
-        console.log('markIntroAsSeen called');
-        console.log('Previous progress state:', progress);
+        console.log('markIntroAsSeen called')
+        console.log('Previous progress state:', progress)
 
         setProgress(prev => {
             const newState = {
@@ -272,11 +275,11 @@ export const LearnerProgressProvider = ({ children }) => {
                 lastUpdated: new Date().toISOString(),
                 // Preserve lastUpdatedExerciseId if it exists
                 lastUpdatedExerciseId: prev.lastUpdatedExerciseId
-            };
+            }
 
-            console.log('New progress state:', newState);
-            return newState;
-        });
+            console.log('New progress state:', newState)
+            return newState
+        })
     }
 
     const value = {
