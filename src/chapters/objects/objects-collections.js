@@ -8,7 +8,7 @@ export const objectsCollectionsChapter = {
   nextChapterId: 'objects-complex',
   content: `## Object Collections
 
-If previous work in the Foundations Course, you learned how to store a collection of related data in an array and how to use iteration to do something with everything in the array.
+In your previous work in the Foundations Course, you learned how to store a collection of related data in an array and how to use iteration to do something with everything in the array.
 
 Example, an array of your teammates's names can be joined together using a for..of loop, which iterates the array.
 

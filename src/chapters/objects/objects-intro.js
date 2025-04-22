@@ -42,7 +42,7 @@ const michael = {
 
 You've replaced the \`=\` sign with a colon \`:\` for assigning a value to a variable. When a variable is defined this way - in the scope of an object - it's called a property. The variable name is now now called a key. The value is still called value.
 
-Here is an example of representing a book as an object in JavaScript.
+Here is an example of using a JavaScript object to represent a book in your code.
 
 \`\`\`js
 const book = {
@@ -79,7 +79,7 @@ const student = `,
     solution: `/* Create your student object here */
 const student = {
     name: "Jeremy Landy",
-    location: "Phoenix, AR",
+    location: "Phoenix, AZ",
     gender: "male",
     age: 31
 }`,

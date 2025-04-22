@@ -39,9 +39,11 @@ console.log(flower.species.idealCondition.clay)
 
 ## Practice: Librarian and Book Author
 
-The starter code has two functions. The \`bookAuthor()\` function should return the last name of the author of a book. The \`checkedInBy()\` function should return the last name of the librarian that checked the book in.
+The starter code contains a book object that has properties for the book's ISBN, title, author, and checked-in status. The author property is an object itself, containing the author's first and last name. The checked-in property is also an object, containing the date and librarian information.
 
-All you need to do is write the proper code after each \`return\` keyword to access the correct key on the objects.`,
+Your task is to access the author's last name and the librarian's last name using dot notation. The variables \`bookAuthor\` and \`checkedInBy\` are already declared for you, but they are not assigned any values yet.
+
+`,
     exercise: {
         starterCode: `const book = {
     isbn: "0192837465",
@@ -123,11 +125,11 @@ console.log(\`Checked In By: \${checkedInBy}\`)
                 test: (code) => {
                     try {
                         // Create a function that executes the student's code and returns the checkedInBy variable
-                        const evalFunction = new Function(code + '\n return checkedInBy;');
+                        const evalFunction = new Function(code + ';\n return checkedInBy;');
                         const result = evalFunction();
 
                         // Check if the result matches the expected librarian last name
-                        return result === "Wilson";
+                        return new TestResult({ passed:result === "Wilson"})
                     } catch (error) {
                         // If there's an error in execution, the test fails
                         return new TestResult({passed:false,message:error.message});
