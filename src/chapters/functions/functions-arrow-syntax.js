@@ -99,6 +99,17 @@ const calculateTotal = (price, tax) => price + (price * tax)
 \`\`\`
 
 From this point forward, we'll be using arrow function syntax in our examples as it's the more modern approach to writing JavaScript functions.
+
+## Exercise: Convert Traditional Functions to Arrow Functions
+
+In this exercise, you'll convert traditional functions to arrow functions. You'll also practice using the concise syntax for at least one of the functions.
+
+1. Convert the \`add\` function to an arrow function.
+2. Convert the \`greet\` function to an arrow function.
+3. Convert the \`getRandomNumber\` function to an arrow function with empty parentheses.
+4. Test your functions by invoking them at the end of the code.
+
+See if you can use the concise syntax for at least one of the functions.
 `,
   exercise: {
     starterCode: `// Convert these traditional functions to arrow functions
@@ -116,6 +127,11 @@ function getRandomNumber() {
 }
 
 // After converting, test your functions by invoking them here
+const random =
+const greeting =
+const sum =
+
+console.log(random, msg, number)
 `,
     tests: [
       {
