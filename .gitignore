@@ -28,3 +28,6 @@ dist-ssr
 .clinerules-*
 memory-bank/
 projectBrief.md
+.roo/
+.roomodes
+memory-bank/
