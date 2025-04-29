@@ -120,10 +120,16 @@ Then:
 // Create calculateTotal here
 
 
-// Test your functions:
+
 // 1. Calculate subtotal for 3 items at $4.99 each
+
+
 // 2. Calculate the final total with tax
+
+
 // 3. Use console.log to display both results
+console.log(\`Subtotal: $ \${}\`)
+console.log(\`Total with tax: $\${}\`),
 `,
     solution: `// Create calculateSubtotal here
 const calculateSubtotal = (quantity, price) => {
