@@ -164,7 +164,7 @@ let schedule = ""
 
 // Iterate the array and create appointment strings
 for (const appointment of appointments) {
-    schedule += \`Patient \${appointment.firstName} \${appointment.lastName} has an appointment at \${appointment.appointmentTime}\n\`
+    schedule += \`Patient \${appointment.firstName} \${appointment.lastName} has an appointment at \${appointment.appointmentTime}\\n\`
 }
 
 console.log(schedule)`,
