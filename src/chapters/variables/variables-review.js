@@ -117,9 +117,10 @@ if (femalePhotos > malePhotos) {
 const output = \`There are \${totalPhotos} total photos
 There are \${femalePhotos} photos of women
 There are \${malePhotos} photos of men
-Photos will be stored in a \${albumColor} colored \${photoStorage}\`
+Photos will be stored in a \${photoStorage} colored \${albumColor}
 
-console.log(output)`,
+console.log(output)
+`,
     tests: [
       {
         name: "Total Photos Calculation",
