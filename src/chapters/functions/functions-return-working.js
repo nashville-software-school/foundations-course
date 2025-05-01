@@ -129,7 +129,7 @@ Then:
 
 // 3. Use console.log to display both results
 console.log(\`Subtotal: $ \${}\`)
-console.log(\`Total with tax: $\${}\`),
+console.log(\`Total with tax: $\${}\`)
 `,
     solution: `// Create calculateSubtotal here
 const calculateSubtotal = (quantity, price) => {
