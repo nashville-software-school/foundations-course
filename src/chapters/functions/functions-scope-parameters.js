@@ -257,7 +257,7 @@ console.log(checkHighScore("Charlie", 80))`,
 
                 checkHighScore("Test3", 7500);  // Updates highScore to 7500
                 const passed = highScore === 7500;
-                return new TestResult({passed});
+                return {passed, message: "High score updated correctly"};
               `);
 
               const result = func();
@@ -265,7 +265,7 @@ console.log(checkHighScore("Charlie", 80))`,
               // Restore console.log
               console.log = originalLog;
 
-              return result;
+              return new TestResult({passed:result.passed,message:result.message});
             } catch (error) {
               // Restore console.log in case of error
               console.log = originalLog;
