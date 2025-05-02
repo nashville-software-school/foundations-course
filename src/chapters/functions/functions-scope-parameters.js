@@ -90,6 +90,9 @@ const createGame = (playerName) => {
 }
 
 createGame("Mario")
+// Displays:
+// Mario is starting the game
+// Mario finished the game
 \`\`\`
 
 ### Best Practices for Parameters

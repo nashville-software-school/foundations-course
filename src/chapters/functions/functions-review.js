@@ -154,9 +154,9 @@ export const functionsReviewChapter = {
     exercise: {
         starterCode: `// 1. Create a greeting function
 const createGreeting = (name, time) => {
-  // If time is "morning" OR the name starts with "A", say "Good morning, [name]!"
-  // If time is "afternoon", say "Good afternoon, [name]!"
-  // Otherwise, say "Hello, [name]!"
+  // If time is "morning" OR the name starts with "A", return "Good morning, [name]!"
+  // If time is "afternoon", return "Good afternoon, [name]!"
+  // Otherwise, return "Hello, [name]!"
 
 }
 
@@ -370,7 +370,6 @@ console.log(interaction);
                         const createGreeting = new Function(studentCode + `; return createGreeting;`)();
                         const people = ["Sam", "Jo", "Alex"];
                         const result = greetPeople(people, "evening");
-                        console.log("result", result)
 
                         // Check if result is an array with the right length
                         if (!Array.isArray(result) || result.length !== 3)
@@ -382,7 +381,6 @@ console.log(interaction);
                             createGreeting("Jo", "evening"),
                             createGreeting("Alex", "evening")
                         ];
-                        console.log(expected)
                         const passed = result[0] === expected[0] &&
                                result[1] === expected[1] &&
                                result[2] === expected[2];
