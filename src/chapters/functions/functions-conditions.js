@@ -296,7 +296,7 @@ export const functionsConditionsChapter = {
               // Look for variable assignment and console.log pattern
               // This is still a pattern match but necessary to validate proper function invocation
               const hasVariableAssignment = /const\s+\w+\s*=\s*calculateTicketPrice\(\s*\d+\s*,\s*(true|false)\s*\)/.test(code);
-              const hasConsoleLog = /console\.log\(\s*\w+\s*\)/.test(code);
+              const hasConsoleLog = /console\.log\s*\(\s*\w+\s*\)/.test(code);
               const passed = hasVariableAssignment && hasConsoleLog;
               return new TestResult({passed});
             } catch (error) {
