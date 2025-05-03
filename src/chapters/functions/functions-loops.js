@@ -16,19 +16,19 @@ export const functionsLoopsChapter = {
 
   \`\`\`js
   const displayAllScores = (scores) => {
-      for (let i = 0; i < scores.length; i++) {
-          console.log(\`Score \${i + 1}: \${scores[i]}\`)
+      for (const score of scores) {
+          console.log(\`Score: \${score}\`)
       }
   }
 
   const gameScores = [85, 92, 78, 95, 88];
   displayAllScores(gameScores);
   // Displays:
-  // Score 1: 85
-  // Score 2: 92
-  // Score 3: 78
-  // Score 4: 95
-  // Score 5: 88
+  // Score: 85
+  // Score: 92
+  // Score: 78
+  // Score: 95
+  // Score: 88
   \`\`\`
 
   ### Calculating with Loops
@@ -39,8 +39,8 @@ export const functionsLoopsChapter = {
   const calculateAverage = (numbers) => {
       let total = 0
 
-      for (let i = 0; i < numbers.length; i++) {
-          total = total + numbers[i]
+      for (const number of numbers) {
+          total = total + number
       }
 
       return total / numbers.length
@@ -63,11 +63,11 @@ export const functionsLoopsChapter = {
           return null;  // Return null for empty arrays
       }
 
-      let highest = scores[0]    // Start with first score
+      let highest = 0    // Start with first score
 
-      for (let i = 1; i < scores.length; i++) {
-          if (scores[i] > highest) {
-              highest = scores[i]
+      for (const score of scores) {
+          if (score > highest) {
+              highest = score
           }
       }
 
@@ -89,8 +89,8 @@ export const functionsLoopsChapter = {
       let vowelCount = 0
       const vowels = ["a", "e", "i", "o", "u"]
 
-      for (let i = 0; i < text.length; i++) {
-          if (vowels.includes(text[i].toLowerCase())) {
+      for (const letter of text) {
+          if (vowels.includes(letter.toLowerCase())) {
               vowelCount = vowelCount + 1
           }
       }
@@ -113,8 +113,8 @@ export const functionsLoopsChapter = {
   const doubleAllNumbers = (numbers) => {
       const doubled = []
 
-      for (let i = 0; i < numbers.length; i++) {
-          doubled.push(numbers[i] * 2)
+      for (const number of numbers) {
+          doubled.push(number * 2)
       }
 
       return doubled
