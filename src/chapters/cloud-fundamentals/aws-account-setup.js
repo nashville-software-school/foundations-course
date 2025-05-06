@@ -3,9 +3,7 @@ export const awsAccountSetupChapter = {
   title: 'AWS Account Setup',
   sectionId: 'cloud-fundamentals',
   previousChapterId: 'why-use-cloud',
-  content: `# AWS Account Setup
-
-In this chapter, we'll walk through the process of creating an AWS account, understanding the AWS Free Tier, navigating the AWS Management Console, and learning about AWS regions and availability zones.
+  content: `In this chapter, we'll walk through the process of creating an AWS account, understanding the AWS Free Tier, navigating the AWS Management Console, and learning about AWS regions and availability zones.
 
 ## Creating an AWS Account
 

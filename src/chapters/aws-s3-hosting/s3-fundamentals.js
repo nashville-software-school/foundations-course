@@ -3,9 +3,7 @@ export const s3FundamentalsChapter = {
   title: 'S3 Fundamentals',
   sectionId: 'aws-s3-hosting',
   previousChapterId: null,
-  content: `# S3 Fundamentals
-
-## What is S3 (Simple Storage Service)?
+  content: `## What is S3 (Simple Storage Service)?
 
 Amazon Simple Storage Service (S3) is an object storage service that offers industry-leading scalability, data availability, security, and performance. It's one of AWS's oldest and most widely used services, launched in 2006.
 

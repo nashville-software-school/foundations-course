@@ -3,9 +3,7 @@ export const githubActionsBasicsChapter = {
   title: 'GitHub Actions Basics',
   sectionId: 'intro-to-cicd',
   previousChapterId: 'cicd-fundamentals',
-  content: `# GitHub Actions Basics
-
-## What are GitHub Actions?
+  content: `## What are GitHub Actions?
 
 GitHub Actions is a CI/CD platform that allows you to automate your software development workflows directly in your GitHub repository. With GitHub Actions, you can build, test, and deploy your code right from GitHub, as well as automate other tasks like issue triage, dependency updates, and more.
 

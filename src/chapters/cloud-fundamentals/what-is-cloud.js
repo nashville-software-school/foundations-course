@@ -3,9 +3,7 @@ export const whatIsCloudChapter = {
   title: 'What is the Cloud?',
   sectionId: 'cloud-fundamentals',
   previousChapterId: null,
-  content: `# What is the Cloud?
-
-## Definition and Key Characteristics
+  content: `## Definition and Key Characteristics
 
 Cloud computing is the delivery of computing services—including servers, storage, databases, networking, software, analytics, and intelligence—over the Internet ("the cloud") to offer faster innovation, flexible resources, and economies of scale.
 

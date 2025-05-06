@@ -3,9 +3,7 @@ export const hostingNextjsChapter = {
   title: 'Hosting a Next.js Static App on S3',
   sectionId: 'aws-s3-hosting',
   previousChapterId: 's3-fundamentals',
-  content: `# Hosting a Next.js Static App on S3
-
-In this chapter, we'll learn how to deploy a Next.js application as a static website on Amazon S3. This approach is cost-effective, highly scalable, and perfect for content-focused websites.
+  content: `In this chapter, we'll learn how to deploy a Next.js application as a static website on Amazon S3. This approach is cost-effective, highly scalable, and perfect for content-focused websites.
 
 ## Understanding Next.js Static Export
 

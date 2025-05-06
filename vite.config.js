@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-    base: '/foundations-course/',
+    base: '/cloud-course/',
     plugins: [
       react({
         jsxImportSource: '@emotion/react',

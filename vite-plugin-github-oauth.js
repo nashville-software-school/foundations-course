@@ -28,7 +28,7 @@ export default function githubOAuthPlugin(options = {}) {
         );
 
         // Check if the URL starts with or exactly matches the OAuth path
-        // This is more flexible and handles both /oauth/github/token and /foundations-course/oauth/github/token
+        // This is more flexible and handles both /oauth/github/token and /cloud-course/oauth/github/token
         if (
           (req.url === "/oauth/github/token" ||
             req.url.endsWith("/oauth/github/token")) &&

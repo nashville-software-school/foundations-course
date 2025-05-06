@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         // Get the base URL from Vite or use the default
-        const base = import.meta.env.BASE_URL || '/foundations-course/';
+        const base = import.meta.env.BASE_URL || '/cloud-course/';
         const basePath = base.endsWith('/') ? base.slice(0, -1) : base;
 
         // Ensure the redirect URI includes the base path for both dev and prod

@@ -3,9 +3,7 @@ export const deploymentPipelineChapter = {
   title: 'Building a Simple Deployment Pipeline',
   sectionId: 'intro-to-cicd',
   previousChapterId: 'github-actions-basics',
-  content: `# Building a Simple Deployment Pipeline
-
-In this chapter, we'll build a complete CI/CD pipeline using GitHub Actions to automatically deploy our Next.js application to AWS S3. This pipeline will test, build, and deploy our application whenever changes are pushed to the main branch.
+  content: `In this chapter, we'll build a complete CI/CD pipeline using GitHub Actions to automatically deploy our Next.js application to AWS S3. This pipeline will test, build, and deploy our application whenever changes are pushed to the main branch.
 
 ## Setting up AWS Credentials in GitHub Secrets
 
