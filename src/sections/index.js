@@ -4,75 +4,26 @@
  */
 
 export const sections = [
-  // Required sections
+  // Module 1: Cloud Fundamentals
   {
-    id: "getting-started",
-    title: "Getting Started",
-    description: "Essential setup steps to begin your learning journey",
+    id: "cloud-fundamentals",
+    title: "Module 1: Cloud Fundamentals",
+    description: "Understanding cloud computing concepts, benefits, and AWS account setup",
     required: true
   },
+  // Module 2: AWS S3 for Static Website Hosting
   {
-    id: "variables-and-values",
-    title: "Variables and Values",
-    description: "Understanding data storage and manipulation in JavaScript",
+    id: "aws-s3-hosting",
+    title: "Module 2: AWS S3 for Static Website Hosting",
+    description: "Learn to use S3 for object storage and hosting static Next.js applications",
     required: true
   },
+  // Module 3: Introduction to CI/CD
   {
-    id: "arrays",
-    title: "Arrays",
-    description: "Working with collections of data",
+    id: "intro-to-cicd",
+    title: "Module 3: Introduction to CI/CD",
+    description: "Understand CI/CD fundamentals and implement automated deployments with GitHub Actions",
     required: true
-  },
-  {
-    id: "objects",
-    title: "Objects",
-    description: "Organizing related data and behavior",
-    required: true
-  },
-  {
-    id: "functions",
-    title: "Functions",
-    description: "Creating reusable code blocks",
-    required: true
-  },
-  {
-    id: "modules",
-    title: "Modules",
-    description:
-      "Building maintainable applications by organizing code across multiple files",
-    required: true
-  },
-  // Optional sections
-  {
-    id: "html-css",
-    title: "HTML and CSS",
-    description: "Learn the fundamentals of web page structure and styling",
-    required: true
-  },
-  {
-    id: "leonids",
-    title: "Leonid's Toys",
-    optional: true,
-    description:
-      "Practice Javascript concepts by manipulating the inventory for Leonid's Toy Shoppe",
-  },
-  {
-    id: "daily-notes",
-    title: "Daily Notes",
-    optional: true,
-    description: "Practice Javascript by building a note taking application",
-  },
-  {
-    id: "assessment",
-    title: "Flower Shop", // Renamed from "Self-Assessment"
-    optional: true, // Now marked as optional
-    description: "Practice your JavaScript skills by building a flower shop application",
-  },
-  {
-    id: 'workshops',
-    title: 'Workshops',
-    description: 'Various workshops as supplemental course content.',
-    optional: true,
   }
 ];
 

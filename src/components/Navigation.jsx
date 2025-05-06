@@ -355,12 +355,6 @@ function Navigation() {
   return (
     <nav css={navStyles}>
       {/* Required Sections */}
-      <div className="required-work-header">
-        <h3>Required Work</h3>
-        <p className="additional-work-description">
-          These sections are required to complete the Foundations Course
-        </p>
-      </div>
       <div className="section-group required-sections">
         {requiredSections.map(renderSection)}
       </div>

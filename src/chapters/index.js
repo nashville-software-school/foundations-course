@@ -1,42 +1,24 @@
-import { leonidsChapters } from "./projects";
-import { gettingStartedChapters } from './getting-started'
-import { variablesChapters } from './variables'
-import { arrayChapters } from './arrays'
-import { objectChapters } from './objects'
-import { functionChapters } from './functions'
-import { htmlCssChapters } from './html-css'
-import { workshopChapters } from './workshops'
-import { projects } from './assessments'
+import { cloudFundamentalsChapters } from './cloud-fundamentals';
+import { awsS3HostingChapters } from './aws-s3-hosting';
+import { introToCicdChapters } from './intro-to-cicd';
 
 // Helper function to add requiresAuth flag based on section
 const addAuthRequirement = (chapter) => ({
   ...chapter,
-  requiresAuth: ["variables-and-values", "arrays", "objects", "functions", "modules"].includes(
+  requiresAuth: ["cloud-fundamentals", "aws-s3-hosting", "intro-to-cicd"].includes(
     chapter.sectionId
   ),
 });
 
 // Apply requiresAuth to all chapters
-const protectedLeonidsChapters = leonidsChapters.map(addAuthRequirement);
-const protectedVariablesChapters = variablesChapters.map(addAuthRequirement)
-const protectedArrayChapters = arrayChapters.map(addAuthRequirement)
-const protectedObjectChapters = objectChapters.map(addAuthRequirement)
-const protectedFunctionChapters = functionChapters.map(addAuthRequirement)
-const protectedWorkshopChapters = workshopChapters.map(addAuthRequirement)
-const protectedAssessments = projects.map(addAuthRequirement)
-const protectedHtmlCssChapters = htmlCssChapters.map(addAuthRequirement)
-
+const protectedCloudFundamentalsChapters = cloudFundamentalsChapters.map(addAuthRequirement);
+const protectedAwsS3HostingChapters = awsS3HostingChapters.map(addAuthRequirement);
+const protectedIntroToCicdChapters = introToCicdChapters.map(addAuthRequirement);
 
 export const chapters = [
-  ...gettingStartedChapters,
-  ...protectedVariablesChapters,
-  ...protectedArrayChapters,
-  ...protectedObjectChapters,
-  ...protectedFunctionChapters,
-  ...protectedHtmlCssChapters,
-  ...protectedLeonidsChapters,
-  ...protectedAssessments,
-  ...protectedWorkshopChapters
+  ...protectedCloudFundamentalsChapters,
+  ...protectedAwsS3HostingChapters,
+  ...protectedIntroToCicdChapters
 ]
 
 /**
