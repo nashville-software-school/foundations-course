@@ -74,7 +74,7 @@ function IntroPage() {
     console.log('After markIntroAsSeen call');
 
     // Add a URL parameter to indicate the user has seen the intro
-    navigate('/github-account?hasSeenIntro=true');
+    navigate('/aws-account?hasSeenIntro=true');
   }
 
   const handlePlayVideo = () => {
@@ -83,65 +83,9 @@ function IntroPage() {
 
   return (
     <div className="intro-page">
-      <div className="floating-element float-1">{'{ }'}</div>
-      <div className="floating-element float-2">{'function()'}</div>
-      <div className="floating-element float-3">{'const'}</div>
-      <div className="floating-element float-4">{'return'}</div>
-      <div className="floating-element float-5">{'Set()'}</div>
-      <div className="floating-element float-6">{'Map()'}</div>
-
       <div className={`intro-content-container ${isLoaded ? 'animate-in' : ''}`}>
         <div className="intro-header animate-item" style={{ animationDelay: '0.3s' }}>
-          <h1 className="intro-title">Nashville Software School Foundations Course</h1>
-          <p className="intro-subtitle">Your journey to becoming a software developer starts here</p>
-        </div>
-
-
-        <div className="features-container">
-          <div className="features-list animate-item" style={{ animationDelay: '0.9s' }}>
-            <FeatureItem
-              icon={<FaCode />}
-              title="Interactive Learning"
-              description="Practice coding directly in your browser with our built-in code editor"
-              delay={0.1}
-            />
-            <FeatureItem
-              icon={<FaBookOpen />}
-              title="Structured Curriculum"
-              description="Progress through carefully designed sections and chapters"
-              delay={0.2}
-            />
-            <FeatureItem
-              icon={<FaChartLine />}
-              title="Track Your Progress"
-              description="See your advancement through the course with our progress tracking system"
-              child={<div className="progress-bar-container">
-                <div className="progress-bar">
-                  <div className="progress-bar-fill"></div>
-                </div>
-              </div>}
-              delay={0.3}
-            />
-          </div>
-        </div>
-
-
-        <div className="video-container animate-item" style={{ animationDelay: '0.7s' }}>
-          {!videoPlaying && (
-            <div className="video-overlay" onClick={handlePlayVideo}>
-              <div className="play-button">
-                <div className="play-button-triangle"></div>
-              </div>
-            </div>
-          )}
-
-
-          <iframe
-            src="https://www.loom.com/embed/a7602b99d3844b0cb393715ac0e18971?sid=32f93162-2754-4077-8ee6-ea9d4c52c31d"
-            title="Course Introduction Video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+          <h1 className="intro-title">Nashville Software School Cloud Course</h1>
         </div>
 
         <button

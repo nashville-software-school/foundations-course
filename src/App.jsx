@@ -42,7 +42,7 @@ function IntroRedirect() {
 
   console.log('Redirecting to main content')
   // If hasSeenIntroParam is true, preserve it when redirecting
-  return <Navigate to={hasSeenIntroParam ? "/github-account?hasSeenIntro=true" : "/github-account"} replace />
+  return <Navigate to={hasSeenIntroParam ? "/aws-account?hasSeenIntro=true" : "/aws-account"} replace />
 }
 
 function App() {
