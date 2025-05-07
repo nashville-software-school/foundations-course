@@ -1,4 +1,4 @@
-# JavaScript Foundations Course
+# JavaScript Cloud Course
 
 A comprehensive, interactive learning platform for JavaScript fundamentals, designed with a progressive chapter-based structure to build skills from the ground up.
 
@@ -14,7 +14,7 @@ A comprehensive, interactive learning platform for JavaScript fundamentals, desi
 
 ## Purpose and Overview
 
-The JavaScript Foundations Course is an interactive learning platform designed to teach JavaScript fundamentals through structured, hands-on exercises. This application provides:
+The Cloud Course is an interactive learning platform designed to teach Cloud fundamentals through structured, hands-on exercises. This application provides:
 
 - **Organized Learning Path**: A progressive curriculum that builds skills step-by-step
 - **Interactive Exercises**: Code exercises with real-time feedback
@@ -329,7 +329,7 @@ This architecture separates sensitive credentials from the client-side code whil
 3. Follow the instruction in that README to set up the local `.env` file with the Github OAuth app info and port number _(e.g. 3003)_. Allow origin will be the local domain of the client app.
 4. Run `npm run start` to start the simple CORS Proxy.
 
-### Foundations Course
+### Cloud Course
 
 To set up the project for local development:
 
@@ -364,10 +364,6 @@ To set up the project for local development:
    ```
 
 The application will be available at http://localhost:5173/intro-to-cloud-student-facing/
-
-## Contributing
-
-Contributions to the JavaScript Foundations Course are welcome! Here's how you can contribute:
 
 ### Adding or Modifying Chapters
 
