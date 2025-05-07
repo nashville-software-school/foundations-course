@@ -420,8 +420,8 @@
     .intro-content-container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        padding: 0 0 15rem 0;
+        justify-content: top;
+        padding: 0;
     }
 
     .intro-content, .video-container {
