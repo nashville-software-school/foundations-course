@@ -140,9 +140,6 @@ function Layout() {
         <div className="app-name">
           Nashville Software School: Introduction to the Cloud 
         </div>
-        <div className="auth-container">
-          <AuthButton />
-        </div>
       </header>
       <div className="content-area">
         <nav className={`nav-sidebar ${isNavExpanded ? 'expanded' : 'collapsed'}`}>
