@@ -47,7 +47,7 @@ function IntroRedirect() {
 
 function App() {
   return (
-    <Router basename="/cloud-course">
+    <Router basename="/intro-to-cloud-student-facing/">
       <AuthProvider>
         <LearnerProgressProvider>
           <ChapterProvider>

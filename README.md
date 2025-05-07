@@ -335,8 +335,8 @@ To set up the project for local development:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/nashville-software-school/cloud-course
-   cd cloud-course
+   git clone https://github.com/nashville-software-school/intro-to-cloud-student-facing/
+   cd intro-to-cloud-student-facing/
    ```
 
 2. **Install dependencies**:
@@ -363,7 +363,7 @@ To set up the project for local development:
    npm start
    ```
 
-The application will be available at http://localhost:5173/cloud-course/
+The application will be available at http://localhost:5173/intro-to-cloud-student-facing/
 
 ## Contributing
 
