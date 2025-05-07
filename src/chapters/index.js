@@ -2,23 +2,11 @@ import { cloudFundamentalsChapters } from './cloud-fundamentals';
 import { awsS3HostingChapters } from './aws-s3-hosting';
 import { introToCicdChapters } from './intro-to-cicd';
 
-// Helper function to add requiresAuth flag based on section
-const addAuthRequirement = (chapter) => ({
-  ...chapter,
-  requiresAuth: ["cloud-fundamentals", "aws-s3-hosting", "intro-to-cicd"].includes(
-    chapter.sectionId
-  ),
-});
-
-// Apply requiresAuth to all chapters
-const protectedCloudFundamentalsChapters = cloudFundamentalsChapters.map(addAuthRequirement);
-const protectedAwsS3HostingChapters = awsS3HostingChapters.map(addAuthRequirement);
-const protectedIntroToCicdChapters = introToCicdChapters.map(addAuthRequirement);
 
 export const chapters = [
-  ...protectedCloudFundamentalsChapters,
-  ...protectedAwsS3HostingChapters,
-  ...protectedIntroToCicdChapters
+  ...cloudFundamentalsChapters,
+  ...awsS3HostingChapters,
+  ...introToCicdChapters
 ]
 
 /**
