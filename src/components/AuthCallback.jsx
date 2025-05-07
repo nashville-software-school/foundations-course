@@ -35,8 +35,8 @@ export const AuthCallback = () => {
                 console.log('Starting OAuth token exchange with code');
 
                 // In dev mode, we get the base from vite.config.js
-                // In production, we need to handle the base path '/cloud-course/'
-                const base = import.meta.env.BASE_URL || '/cloud-course/';
+                // In production, we need to handle the base path '//intro-to-cloud-student-facing//'
+                const base = import.meta.env.BASE_URL || '/intro-to-cloud-student-facing/';
 
                 // Remove trailing slash if present for consistency
                 const basePath = base.endsWith('/') ? base.slice(0, -1) : base;

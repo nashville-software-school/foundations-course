@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-    base: '/cloud-course/',
+    base: '/intro-to-cloud-student-facing/',
     plugins: [
       react({
         jsxImportSource: '@emotion/react',
