@@ -7,21 +7,21 @@ export const sections = [
   // Module 1: Cloud Fundamentals
   {
     id: "cloud-fundamentals",
-    title: "Module 1: Cloud Fundamentals",
+    title: "Cloud Fundamentals",
     description: "Understanding cloud computing concepts, benefits, and AWS account setup",
     required: true
   },
   // Module 2: AWS S3 for Static Website Hosting
   {
     id: "aws-s3-hosting",
-    title: "Module 2: AWS S3 for Static Website Hosting",
+    title: "AWS S3 for Static Website Hosting",
     description: "Learn to use S3 for object storage and hosting static Next.js applications",
     required: true
   },
   // Module 3: Introduction to CI/CD
   {
     id: "intro-to-cicd",
-    title: "Module 3: Introduction to CI/CD",
+    title: "Introduction to CI/CD",
     description: "Understand CI/CD fundamentals and implement automated deployments with GitHub Actions",
     required: true
   }
