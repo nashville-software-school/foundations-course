@@ -53,7 +53,14 @@ console.log(\`Total area of first floor: \${livingRoom + kitchen + office + powd
 
 You are going to practice adding and subtracting variables again, but this time, the output will be more readable.
 
-Try it in the editor!
+When you run your code, it should look exactly like this. Notice that each sentence ends with a period, and each sentence is on a new line. You will need to use the backtick character to format the output:
+
+\`\`\`html
+Our combined monthly income is 9506.
+Our total monthly expenses are 3128.
+Our net monthly income is 6378.
+\`\`\`
+
 `,
   exercise: {
     starterCode: `// Monthly income
@@ -84,7 +91,10 @@ const healthInsurance = 508
 
 const statement = \`Our combined monthly income is \${myIncome + spouseIncome}.
 Our total monthly expenses are \${phoneBill + mortgage + carInsurance + healthInsurance}.
-Our net monthly income is \${(myIncome + spouseIncome) - (phoneBill + mortgage + carInsurance + healthInsurance)}.\``,
+Our net monthly income is \${(myIncome + spouseIncome) - (phoneBill + mortgage + carInsurance + healthInsurance)}.\`
+
+console.log(statement)
+`,
     tests: [
       {
         name: "Multi-line Format",
@@ -99,9 +109,9 @@ Our net monthly income is \${(myIncome + spouseIncome) - (phoneBill + mortgage +
         name: "Calculations",
         test: (code) => {
           const res = new Function(code + '\n  return statement;')();
-          return new TestResult({passed:res.includes('9506') &&
-            res.includes('3128') &&
-            res.includes('6378')});
+          return new TestResult({passed:res.includes('Our combined monthly income is 9506.') &&
+            res.includes('Our total monthly expenses are 3128.') &&
+            res.includes('Our net monthly income is 6378.')});
         },
         message: "Make sure to calculate total income and expenses correctly"
       }
