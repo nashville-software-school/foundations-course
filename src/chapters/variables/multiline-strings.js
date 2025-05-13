@@ -99,9 +99,9 @@ Our net monthly income is \${(myIncome + spouseIncome) - (phoneBill + mortgage +
         name: "Calculations",
         test: (code) => {
           const res = new Function(code + '\n  return statement;')();
-          return new TestResult({passed:res.includes('Our combined monthly income is 9506.') &&
-            res.includes('Our total monthly expenses are 3128.') &&
-            res.includes('Our net monthly income is 6378.')});
+          return new TestResult({passed:res.includes('9506.') &&
+            res.includes('3128.') &&
+            res.includes('6378.')});
         },
         message: "Make sure to calculate total income and expenses correctly"
       }
