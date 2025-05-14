@@ -7,6 +7,8 @@ export const s3FundamentalsChapter = {
 
 Amazon Simple Storage Service (S3) is an object storage service that offers industry-leading scalability, data availability, security, and performance. It's one of AWS's oldest and most widely used services, launched in 2006.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/cfHdaWVIbUA?si=H6rOI9qhbotl1rYd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ### Key Features of S3
 
 - **Unlimited storage**: Store as much data as you want without worrying about capacity planning
