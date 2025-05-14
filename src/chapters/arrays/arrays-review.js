@@ -42,7 +42,7 @@ Correctly categorize each expense and put the amount spent in the correct target
 * If the vendor contains the sub-string of "Utility" place the expense amount in the \`utilities\` array.
 * If the vendor contains the sub-string of "Groceries" or the sub-string of "Restaurant" place the expense amount in the \`food\` array.
 * If the vendor contains the sub-string of "Lyft" or the sub-string of "Uber" place the expense amount in the \`travel\` array.
-* If the expense amount is greater than 100.00, place the expense amount in the \`largePurchases\` array.
+* Regardless if the expense falls into another category, if the expense amount is greater than 100.00, place the expense amount in the \`largePurchases\` array. This means that the expense amount can be in more than one category.
 
 ### Task 2
 
