@@ -25,9 +25,9 @@ You will be using the following concepts in this exercise:
 
 You inherited a collection of family photos from your grandparents. They are currently stored in several envelopes of varying sizes. You decide that you have three options.
 
-1. If there are more than 110 photos, then you decide that you need to purchase a large photo album and put them in it.
-2. If there are less than 110, but 50 or more, you will purchase a shoe box and put all of the photos in it.
-3. If there are less than 50, you will keep them in envelopes.
+1. If there are more than 110 photos, then you decide that you need to purchase a **Photo Album** and put them in it.
+2. If there are less than 110, but 50 or more, you will purchase a **Shoe Box** and put all of the photos in it.
+3. If there are less than 50, you will keep them in **Envelopes**.
 
 \`\`\`js
 let photoStorage = "Envelopes"
