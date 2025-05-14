@@ -7,6 +7,9 @@ export const whatIsCloudChapter = {
 
 Cloud computing is the delivery of computing services—including servers, storage, databases, networking, software, analytics, and intelligence—over the Internet ("the cloud") to offer faster innovation, flexible resources, and economies of scale.
 
+Cloud computing explained in 2 minutes:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/N0SYCyS2xZA?si=uMdCmKlztP75bk70" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 Key characteristics of cloud computing include:
 
 - **On-demand self-service**: Users can provision computing capabilities as needed without requiring human interaction with service providers.
@@ -27,6 +30,9 @@ Key characteristics of cloud computing include:
 | Dedicated resources | Shared resources (multi-tenancy) |
 
 ## Types of Cloud Services
+
+There are three main types of cloud services:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JoCFfTOtq4w?si=neC-72HoH6GqNEXA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### Infrastructure as a Service (IaaS)
 - Provides virtualized computing resources
@@ -50,6 +56,9 @@ Key characteristics of cloud computing include:
 - Use case: When you need ready-made applications without development or hosting concerns
 
 ## Major Cloud Providers Overview
+
+The major providers:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4AVQchL9tTo?si=VG53FRQfL4dT5Xwo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### Amazon Web Services (AWS)
 - Launched in 2006, the first major cloud provider

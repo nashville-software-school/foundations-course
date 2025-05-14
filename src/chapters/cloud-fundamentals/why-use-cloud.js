@@ -6,6 +6,8 @@ export const whyUseCloudChapter = {
   content: `## Benefits of Cloud Computing
 
 Cloud computing has transformed how businesses and developers approach IT infrastructure and application development. Here are the key benefits that make cloud computing an attractive option:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/p1Nr03gtkyU?si=cora-8cg0_2kg0hB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 
 ### Cost Efficiency and Scalability
 

@@ -1,9 +1,13 @@
 import { s3FundamentalsChapter } from './s3-fundamentals';
 import { hostingNextjsChapter } from './hosting-nextjs';
+import { cloudfrontFundamentalsChapter } from './cloudfront-fundamentals';
+import { s3HostingGlossaryChapter } from './glossary';
 
 export const awsS3HostingChapters = [
   s3FundamentalsChapter,
-  hostingNextjsChapter
+  hostingNextjsChapter,
+  cloudfrontFundamentalsChapter,
+  s3HostingGlossaryChapter
 ];
 
 /**

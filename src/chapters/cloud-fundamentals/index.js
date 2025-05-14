@@ -1,11 +1,13 @@
 import { whatIsCloudChapter } from './what-is-cloud';
 import { whyUseCloudChapter } from './why-use-cloud';
 import { awsAccountSetupChapter } from './aws-account-setup';
+import { cloudFundamentalsGlossaryChapter } from './glossary';
 
 export const cloudFundamentalsChapters = [
   whatIsCloudChapter,
   whyUseCloudChapter,
-  awsAccountSetupChapter
+  awsAccountSetupChapter,
+  cloudFundamentalsGlossaryChapter
 ];
 
 /**
