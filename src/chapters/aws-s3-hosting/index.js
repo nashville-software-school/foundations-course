@@ -1,11 +1,9 @@
 import { clientRepoSetupChapter } from "./client-repo-setup"
 import { s3FundamentalsChapter } from "./s3-fundamentals"
-import { hostingNextjsChapter } from "./hosting-nextjs"
 
 export const awsS3HostingChapters = [
   clientRepoSetupChapter,
   s3FundamentalsChapter,
-  hostingNextjsChapter,
 ]
 
 /**
