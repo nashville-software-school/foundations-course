@@ -1,8 +1,8 @@
 export const s3FundamentalsChapter = {
-  id: 's3-fundamentals',
-  title: 'S3 Fundamentals',
-  sectionId: 'aws-s3-hosting',
-  previousChapterId: null,
+  id: "s3-fundamentals",
+  title: "S3 Fundamentals",
+  sectionId: "aws-s3-hosting",
+  previousChapterId: "client-repo-setup",
   content: `## What is S3 (Simple Storage Service)?
 
 Amazon Simple Storage Service (S3) is an object storage service that offers industry-leading scalability, data availability, security, and performance. It's one of AWS's oldest and most widely used services, launched in 2006.
@@ -50,25 +50,54 @@ Object storage manages data as objects rather than as files or blocks. Each obje
 
 ## Creating and Configuring S3 Buckets
 
-### Creating an S3 Bucket
+### 1. Creating an S3 Bucket
 
-1. Sign in to the AWS Management Console
-2. Navigate to the S3 service
-3. Click "Create bucket"
-4. Choose a unique bucket name:
-   - Must be globally unique across all AWS accounts
-   - Must be 3-63 characters long
-   - Can only contain lowercase letters, numbers, dots, and hyphens
-   - Must start with a letter or number
-5. Select a region:
-   - Choose a region close to your users for better performance
-   - Consider compliance requirements for data storage location
-6. Configure bucket options:
-   - Block all public access (recommended for most cases)
-   - Bucket versioning (enables keeping multiple versions of objects)
-   - Server-side encryption (encrypts objects automatically)
-   - Object lock (prevents objects from being deleted)
-7. Review and create the bucket
+1. Navigate to the **[S3 Console](https://us-east-2.console.aws.amazon.com/s3/get-started?region=us-east-2)**
+2. Click **Create bucket**
+3. Create a unique bucket name:
+   - Set the name to \`rock-of-ages-frontend-origin-[your first, middle, and last name initials]\`
+   - The bucket name *must* be globally unique, so if adding your initials does not create a unique bucket, add more characters. 
+   - The bucket name can only contain lowercase letters, numbers, dots, and hyphens
+4. Confirm the region:
+   - Make sure \`us-east-2\` (Ohio) is selected
+5. *Un*check: ☐ **Block all public access**
+   - Acknowledge the warning
+6. Scroll past the remaining configurations
+7. Click **Create bucket**
+
+### 2. Enable Static Website Hosting
+
+1. Open the bucket
+2. Go to the **Properties** tab
+3. Scroll to **Static website hosting**
+4. Click **Edit**
+5. Enable hosting: ☑︎ **Enabled**
+6. Hosting type: **Host a static website**
+7. Index document: \`index.html\`
+8. Error document: \`index.html\`
+9. Click **Save changes**
+
+### 3. Set Public Read Bucket Policy
+
+1. Go to the **Permissions** tab → **Bucket policy** → Click **Edit**, then paste:
+
+\`\`\`json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowPublicRead",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::your-bucket-name-here/*"
+    }
+  ]
+}
+\`\`\`
+2. In the pasted json, replace \`your-bucket-here\` with your bucket name. (ex. *rock-of-ages-frontend-origin-vbf*)
+3. Click **Save changes**
+
 
 ### S3 Storage Classes
 
@@ -187,5 +216,5 @@ Example use case: Allowing a user to upload a profile picture directly to S3 wit
 8. Set up a lifecycle rule to move objects to S3 Standard-IA after 30 days
 
 In the next chapter, we'll learn how to use S3 to host a static Next.js website.`,
-  exercise: null
-};
+  exercise: null,
+}
