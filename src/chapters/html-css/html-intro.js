@@ -143,7 +143,7 @@ Create a page with the following elements, in the following order:
   <li>An article element that contains:</li>
   <ul>
     <li>An h2 with the text "Nashville Software School"</li>
-    <li>A section that contains any text you want about attending NSS</li>
+    <li>A section with a single paragraph (&lt;p&gt;) that contains any text you want about attending NSS</li>
     <li>Another section that contains:</li>
     <ul>
       <li>A paragraph with the text "I learned the following skills"</li>
@@ -179,7 +179,6 @@ Create a page with the following elements, in the following order:
   line-height: 1.6;
 }
 
-/* Add your styles here */
 `
     },
     solution: {
@@ -212,34 +211,12 @@ Create a page with the following elements, in the following order:
   </article>
 </body>
 </html>`,
-      'styles.css': `/* Basic styles */
-body {
+      'styles.css': `body {
   font-family: Arial, sans-serif;
-  margin: 20px;
+  margin: 2rem;
   line-height: 1.6;
 }
 
-h1 {
-  color: #2c3e50;
-}
-
-h2 {
-  color: #3498db;
-}
-
-article {
-  border: 1px solid #e0e0e0;
-  padding: 15px;
-  border-radius: 5px;
-}
-
-section {
-  margin: 15px 0;
-}
-
-ol {
-  color: #34495e;
-}
 `
     },
     tests: [
@@ -253,7 +230,7 @@ ol {
 
             // Check for h1 with correct text
             const h1 = doc.querySelector('h1');
-            const hasCorrectH1 = h1 !== null && h1.textContent === "How I Became A Software Developer";
+            const hasCorrectH1 = h1 !== null && h1.textContent.trim() === "How I Became A Software Developer";
 
             // Check for article
             const article = doc.querySelector('article');
@@ -261,7 +238,7 @@ ol {
 
             // Check for h2 inside article with correct text
             const h2 = article?.querySelector('h2');
-            const hasCorrectH2 = h2 !== null && h2.textContent === "Nashville Software School";
+            const hasCorrectH2 = h2 !== null && h2.textContent.trim() === "Nashville Software School";
 
             // Check for sections inside article
             const sections = article?.querySelectorAll('section');
@@ -269,7 +246,7 @@ ol {
 
             // Check for paragraph in the second section
             const sectionParagraph = sections?.[1]?.querySelector('p');
-            const hasCorrectParagraph = sectionParagraph !== null && sectionParagraph.textContent === "I learned the following skills";
+            const hasCorrectParagraph = sectionParagraph !== null && sectionParagraph.textContent.trim() === "I learned the following skills";
 
             // Check for ordered list in the second section
             const ol = sections?.[1]?.querySelector('ol');
