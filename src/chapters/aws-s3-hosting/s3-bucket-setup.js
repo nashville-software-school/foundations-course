@@ -6,7 +6,8 @@ export const s3BucketSetupChapter = {
   content: `## Creating and Configuring S3 Buckets
 
 ### 1. Creating an S3 Bucket
-
+[NOTE: The steps here are perfect]
+[TODO: Add beginner-friendly explanation of the "what" and "why" here]
 1. Navigate to the **[S3 Console](https://us-east-2.console.aws.amazon.com/s3/get-started?region=us-east-2)**
 2. Click **Create bucket**
 3. Create a unique bucket name:
@@ -21,7 +22,8 @@ export const s3BucketSetupChapter = {
 7. Click **Create bucket**
 
 ### 2. Enable Static Website Hosting
-
+[NOTE: The steps here are perfect]
+[TODO: Add beginner-friendly explanation of the "what" and "why" here]
 1. Open the bucket
 2. Go to the **Properties** tab
 3. Scroll to **Static website hosting**
@@ -33,7 +35,8 @@ export const s3BucketSetupChapter = {
 9. Click **Save changes**
 
 ### 3. Set Public Read Bucket Policy
-
+[NOTE: The steps here are perfect]
+[TODO: Add beginner-friendly explanation of the "what" and "why" here]
 1. Go to the **Permissions** tab → **Bucket policy** → Click **Edit**, then paste:
 
 \`\`\`json
@@ -53,7 +56,9 @@ export const s3BucketSetupChapter = {
 2. In the pasted json, replace \`your-bucket-here\` with your bucket name. (ex. *rock-of-ages-frontend-origin-vbf*)
 3. Click **Save changes**
 
-TODO: Complete the following instructions:
+[TODO: Complete the following instructions by adding formatting and fleshing out the wording of each step. The steps are correct and are all accounted for, they just need to be written better.]
+[TODO: Add beginner-friendly explanation of the "what" and "why" for all of the following]
+
 Open the repo in your terminal and run \`npm run build\` to create the list [briefly explain what the dist folder is/is for]
 
 Click on Objects
