@@ -1,8 +1,8 @@
-export const s3FundamentalsChapter = {
-  id: "s3-fundamentals",
-  title: "S3 Fundamentals",
+export const s3BucketSetupChapter = {
+  id: "s3-bucket-setup",
+  title: "Setting up the S3 Bucket",
   sectionId: "aws-s3-hosting",
-  previousChapterId: "client-repo-setup",
+  previousChapterId: "s3-fundamentals",
   content: `## Creating and Configuring S3 Buckets
 
 ### 1. Creating an S3 Bucket
