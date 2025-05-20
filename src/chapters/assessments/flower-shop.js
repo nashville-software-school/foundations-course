@@ -1,3 +1,5 @@
+import { TestResult } from "../../utils/test_utils";
+
 export const flowerShopId = {
     id: "flower-shop",
     title: "Finding the Flowers",
@@ -68,7 +70,7 @@ If you cannot make the code work, make sure you do the three projects in this bo
 
 If you have already done all three projects, but still can't figure out how to make the test pass, sit with a member of the coaching team to help strengthen your knowledge and understanding of the concepts and get your code on the right track.`,
     exercise: {
-      starterCode: `
+        starterCode: `
 const flowers = [
     {
         id: 1,
@@ -223,7 +225,7 @@ const flowersAsHTML = () => {
     */
     return flowersHTMLString  // Do not modify
 }`,
-      solution: `
+        solution: `
 const flowers = [
     {
         id: 1,
@@ -419,108 +421,141 @@ const flowersAsHTML = () => {
 
     return flowersHTMLString  // Do not modify
 }`,
-      tests: [
-        {
-            name: "inexpensiveFlowers is array",
-            test: (code) => {
-                try {
-                    const cheap = new Function(code + '\n return inexpensiveFlowers()')()
-                    return Array.isArray(cheap);
-                } catch {
-                    return false;
-                }
-            },
-            message: "The inexpensiveFlowers function did not return an array.Did you modify code that you should not have?",
-        },
-        {
-            name: "inexpensiveFlowers has 6 items",
-            test: (code) => {
-                try {
-                    const cheap = new Function(code + '\n return inexpensiveFlowers()')()
-                    console.log(cheap,"cheapcheapcheap")
-                    return cheap.length === 6;
-                } catch {
-                    return false;
-                }
-            },
-            message: "The test code expected that 6 flowers should be be the array of inexpensive flowers. There were not the expected number of items in the array. Make sure that you have an \`if\` condition that is checking the price property of each flower, and that only flowers whose price is < 2.00 are being added.",
-        },
-        {
-            name: "First item in inexpensiveFlowers return should be an object.",
-            test: (code) => {
-                try {
-                    const cheap = new Function(code + '\n return inexpensiveFlowers()')()
-                    return cheap.length > 0 && Object.prototype.toString.call(cheap[0]) === "[object Object]";
-                } catch {
-                    return false;
-                }
-            },
-            message: "The test code expected that the array of inexpensive flowers should contain objects and not another data type like strings or numbers. Make sure that you are using the .push() method to add the entire flower object to the array, and not a specific property of the flower."
-        },
-        {
-            name:"zoneFlowers should return 4 items",
-            test: (code) => {
-                try {
-                    const zones = new Function(code + '\n return zoneFlowers()')()
-                    return zones.length === 4;
-                } catch {
-                    return false;
-                }
-            },
-            message: `The test code expected that 4 flowers should be be the array of flowers zoned to 3 and 8. There were unexpected number of items in the array.`
-        },
-        {
-            name:"First item in zoneFlowers return should be an object.",
-            test: (code) => {
-                try {
-                    const zones = new Function(code + '\n return zoneFlowers()')()
-                    return zones.length > 0 && Object.prototype.toString.call(zones[0]) === "[object Object]";
-                } catch {
-                    return false;
-                }
-            },
-            message: "The test code expected that the array of zoned flowers should contain objects and not another data type like strings or numbers. Make sure that you are using the .push() method to add the entire flower object to the array, and not a specific property of the flower."
-        },
-        {
-            name:"orangeFlowers should return 5 items.",
-            test: (code) => {
-                try {
-                    const orange = new Function(code + '\n return orangeFlowers()')()
-                    return orange.length === 5;
-                } catch {
-                    return false;
-                }
-            },
-            message: "The test code expected that 5 flowers should be be the array of orange flowers. There were unexpected number of items in the array. Make sure that you have an `if` condition that is checking if the colors property array includes the string of Orange."
-        },
-        {
-            name:"First item in orangeFlowers return should be an object.",
-            test: (code) => {
-                try {
-                    const orange = new Function(code + '\n return orangeFlowers()')()
-                    return orange.length > 0 && Object.prototype.toString.call(orange[0]) === "[object Object]";
-                } catch {
-                    return false;
-                }
-            },
-            message: "The test code expected that 5 flowers should be be the array of orange flowers. There were unexpected number of  items in the array.Make sure that you have an `if` condition that is checking if the colors property array includes the string of Orange"
-        },
-        {
-            name:"htmlRepresentations return correct HTML.",
-            test: (code) => {
-                try {
-                    const htmlRepresentations = new Function(code + '\n return flowersAsHTML()')()
-                    const htmlContainsArticleTags = htmlRepresentations.match(/article/g)?.length / 2 || 0
-                    const htmlContainsSectionTags = htmlRepresentations.match(/section/g)?.length / 2 || 0
-                    const htmlContainsDivTags = htmlRepresentations.match(/div/g)?.length / 2 || 0
+        tests: [
+            {
+                name: "inexpensiveFlowers is array",
+                test: (code) => {
+                    try {
+                        const cheap = new Function(code + '\n return inexpensiveFlowers()')()
+                        const result = new TestResult({
+                            passed: Array.isArray(cheap)
+                        })
+                        result.addMessage(!result.passed ? "The inexpensiveFlowers function did not return an array.Did you modify code that you should not have?" : null)
+                        return result;
 
-                    return htmlContainsArticleTags === 9 && htmlContainsSectionTags === 41 && htmlContainsDivTags === 51;
-                } catch {
-                    return false;
-                }
+                    } catch (e) {
+                        return new TestResult({passed:false,message:e.message})
+                    }
+                },
+                message: "The inexpensiveFlowers function did not return an array.Did you modify code that you should not have?",
             },
-            message: "The test code expected that 9 <article> elements should be in the HTML representation. There were unexpected number of articles in the string. The test code expected that 41 <section> elements should be in the HTML representation. There were unexpected number of sections in the string. The test code expected that 51 <div> elements should be in the HTML representation. There were unexpected number of divs in the string."
-        },
-      ],
+            {
+                name: "inexpensiveFlowers has 6 items",
+                test: (code) => {
+                    try {
+                        const cheap = new Function(code + '\n return inexpensiveFlowers()')()
+                        const result = new TestResult({
+                            passed: cheap.length === 6
+                        })
+                        result.addMessage(!result.passed ? "The test code expected that 6 flowers should be be the array of inexpensive flowers. There were not the expected number of items in the array. Make sure that you have an `if` condition that is checking the price property of each flower, and that only flowers whose price is < 2.00 are being added." : null)
+
+                        return result;
+                    } catch (e) {
+                        return new TestResult({passed:false,message:e.message})
+                    }
+                },
+                message: "The test code expected that 6 flowers should be be the array of inexpensive flowers. There were not the expected number of items in the array. Make sure that you have an \`if\` condition that is checking the price property of each flower, and that only flowers whose price is < 2.00 are being added.",
+            },
+            {
+                name: "First item in inexpensiveFlowers return should be an object.",
+                test: (code) => {
+                    try {
+                        const cheap = new Function(code + '\n return inexpensiveFlowers()')()
+                        const result = new TestResult({
+                            passed: cheap.length > 0 && Object.prototype.toString.call(cheap[0]) === "[object Object]"
+                        })
+                        result.addMessage(!result.passed ? "The test code expected that the array of inexpensive flowers should contain objects and not another data type like strings or numbers. Make sure that you are using the .push() method to add the entire flower object to the array, and not a specific property of the flower." : null)
+                        return result;
+                    } catch (e) {
+                        return new TestResult({passed:false,message:e.message})
+                    }
+                },
+                message: "The test code expected that the array of inexpensive flowers should contain objects and not another data type like strings or numbers. Make sure that you are using the .push() method to add the entire flower object to the array, and not a specific property of the flower."
+            },
+            {
+                name: "zoneFlowers should return 4 items",
+                test: (code) => {
+                    try {
+                        const zones = new Function(code + '\n return zoneFlowers()')()
+                        const result = new TestResult({
+                            passed: zones.length === 4
+                        })
+                        result.addMessage(!result.passed ? "The test code expected that 4 flowers should be be the array of flowers zoned to 3 and 8. There were unexpected number of items in the array." : null)
+                        return result;
+                    } catch (e) {
+                        return new TestResult({passed:false,message:e.message})
+                    }
+                },
+                message: `The test code expected that 4 flowers should be be the array of flowers zoned to 3 and 8. There were unexpected number of items in the array.`
+            },
+            {
+                name: "First item in zoneFlowers return should be an object.",
+                test: (code) => {
+                    try {
+                        const zones = new Function(code + '\n return zoneFlowers()')()
+                        const result = new TestResult({
+                            passed: zones.length > 0 && Object.prototype.toString.call(zones[0]) === "[object Object]"
+                        })
+                        result.addMessage(!result.passed ? "The test code expected that the array of zoned flowers should contain objects and not another data type like strings or numbers. Make sure that you are using the .push() method to add the entire flower object to the array, and not a specific property of the flower." : null)
+                        return result;
+                    } catch (e) {
+                        return new TestResult({passed:false,message:e.message})
+                    }
+                },
+                message: "The test code expected that the array of zoned flowers should contain objects and not another data type like strings or numbers. Make sure that you are using the .push() method to add the entire flower object to the array, and not a specific property of the flower."
+            },
+            {
+                name: "orangeFlowers should return 5 items.",
+                test: (code) => {
+                    try {
+                        const orange = new Function(code + '\n return orangeFlowers()')()
+                        const result = new TestResult({
+                            passed: orange.length === 5
+                        })
+                        result.addMessage(!result.passed ? "The test code expected that 5 flowers should be be the array of orange flowers. There were unexpected number of items in the array. Make sure that you have an `if` condition that is checking if the colors property array includes the string of Orange." : null)
+                        return result;
+                    } catch (e) {
+                        return new TestResult({passed:false,message:e.message})
+                    }
+                },
+                message: "The test code expected that 5 flowers should be be the array of orange flowers. There were unexpected number of items in the array. Make sure that you have an `if` condition that is checking if the colors property array includes the string of Orange."
+            },
+            {
+                name: "First item in orangeFlowers return should be an object.",
+                test: (code) => {
+                    try {
+                        const orange = new Function(code + '\n return orangeFlowers()')()
+                        const result = new TestResult({
+                            passed: orange.length > 0 && Object.prototype.toString.call(orange[0]) === "[object Object]"
+                        })
+                        result.addMessage(!result.passed ? "The test code expected that the array of orange flowers should contain objects and not another data type like strings or numbers. Make sure that you are using the .push() method to add the entire flower object to the array, and not a specific property of the flower." : null)
+                        return result;
+                    } catch (e) {
+                        return new TestResult({passed:false,message:e.message})
+                    }
+                },
+                message: "The test code expected that 5 flowers should be be the array of orange flowers. There were unexpected number of  items in the array.Make sure that you have an `if` condition that is checking if the colors property array includes the string of Orange"
+            },
+            {
+                name: "htmlRepresentations return correct HTML.",
+                test: (code) => {
+                    try {
+                        const htmlRepresentations = new Function(code + '\n return flowersAsHTML()')()
+                        const htmlContainsArticleTags = htmlRepresentations.match(/article/g)?.length / 2 || 0
+                        const htmlContainsSectionTags = htmlRepresentations.match(/section/g)?.length / 2 || 0
+                        const htmlContainsDivTags = htmlRepresentations.match(/div/g)?.length / 2 || 0
+                        const result = new TestResult({
+                            passed: htmlContainsArticleTags === 9 && htmlContainsSectionTags === 41 && htmlContainsDivTags === 51
+                        })
+                        result.addMessage(!result.passed ? "The test code expected that 9 <article> elements should be in the HTML representation. There were unexpected number of articles in the string. The test code expected that 41 <section> elements should be in the HTML representation. There were unexpected number of sections in the string. The test code expected that 51 <div> elements should be in the HTML representation. There were unexpected number of divs in the string." : null)
+
+                        return result;
+                    } catch (e) {
+                        return new TestResult({passed:false,message:e.message})
+                    }
+                },
+                message: "The test code expected that 9 <article> elements should be in the HTML representation. There were unexpected number of articles in the string. The test code expected that 41 <section> elements should be in the HTML representation. There were unexpected number of sections in the string. The test code expected that 51 <div> elements should be in the HTML representation. There were unexpected number of divs in the string."
+            },
+        ],
     },
-  };
+};
