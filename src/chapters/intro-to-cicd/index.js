@@ -1,11 +1,13 @@
 import { cicdFundamentalsChapter } from './cicd-fundamentals';
 import { githubActionsBasicsChapter } from './github-actions-basics';
 import { deploymentPipelineChapter } from './deployment-pipeline';
+import { cicdGlossaryChapter } from './glossary';
 
 export const introToCicdChapters = [
   cicdFundamentalsChapter,
   githubActionsBasicsChapter,
-  deploymentPipelineChapter
+  deploymentPipelineChapter,
+  cicdGlossaryChapter
 ];
 
 /**
