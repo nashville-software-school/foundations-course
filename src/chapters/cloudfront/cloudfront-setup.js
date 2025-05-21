@@ -12,7 +12,7 @@ Now that we understand what CloudFront is and how it works, let's create our own
 1. Visit the **[CloudFront Console](https://console.aws.amazon.com/cloudfront)**
 2. Click **Create Distribution**
 
-**What's happening here?** You're accessing AWS's content delivery network service to create a new distribution. A distribution is CloudFront's term for a configuration that tells AWS exactly how you want your website content delivered to users around the world - which files to serve, from where, and how to optimize them.
+💡 **What's happening here?** You're accessing AWS's content delivery network service to create a new distribution. A distribution is CloudFront's term for a configuration that tells AWS exactly how you want your website content delivered to users around the world - which files to serve, from where, and how to optimize them.
 
 ### 2. Configure the Origin
 
@@ -26,7 +26,7 @@ The origin is where CloudFront will fetch your website files from - in our case,
 5. Make sure **Enable Origin Shield** is set to **No**
    - Origin Shield is an additional caching layer that costs extra and isn't needed for our simple setup
 
-**What's happening here?** You're telling CloudFront where to find your website files and how to retrieve them. The "Use website endpoint" option is crucial because it ensures CloudFront treats your S3 bucket as a website that can handle routing (not just a file storage system). The HTTP protocol setting controls how CloudFront communicates with your S3 bucket, while Origin Shield would add an extra caching layer between CloudFront and S3 that we don't need for this project.
+💡 **What's happening here?** You're telling CloudFront where to find your website files and how to retrieve them. The "Use website endpoint" option is crucial because it ensures CloudFront treats your S3 bucket as a website that can handle routing (not just a file storage system). The HTTP protocol setting controls how CloudFront communicates with your S3 bucket, while Origin Shield would add an extra caching layer between CloudFront and S3 that we don't need for this project.
 
 ### 3. Configure Default Cache Behavior
 
@@ -41,7 +41,7 @@ These settings control how CloudFront handles requests for your content.
 4. **Cache Policy**: Leave as **CachingOptimized**
    - This uses AWS's recommended caching settings for static content
 
-**What's happening here?** You're configuring how CloudFront handles user requests and optimizes your content. Compression automatically reduces file sizes (like zipping files) which makes your website load faster. The cache policy determines how long CloudFront stores your files at edge locations (data centers near major population centers around the world) before checking your S3 bucket for updates.
+💡 **What's happening here?** You're configuring how CloudFront handles user requests and optimizes your content. Compression automatically reduces file sizes (like zipping files) which makes your website load faster. The cache policy determines how long CloudFront stores your files at edge locations (data centers near major population centers around the world) before checking your S3 bucket for updates.
 
 ### 4. Configure Web Application Firewall (WAF)
 
@@ -49,7 +49,7 @@ For this workshop, we'll keep things simple and not enable additional security f
 
 1. Select **Do not enable security protections**
 
-**What's happening here?** WAF (Web Application Firewall) provides additional security filtering to block malicious traffic before it reaches your website. For a simple static website like ours, CloudFront's built-in security features are sufficient, so we're skipping this extra layer to keep things simple and avoid additional costs.
+💡 **What's happening here?** WAF (Web Application Firewall) provides additional security filtering to block malicious traffic before it reaches your website. For a simple static website like ours, CloudFront's built-in security features are sufficient, so we're skipping this extra layer to keep things simple and avoid additional costs.
 
 ### 5. Configure Distribution Settings
 
@@ -62,7 +62,7 @@ These settings control the global reach and domain setup for your distribution.
 
 3. Click **Create Distribution**
 
-**What's happening here?** You're choosing the geographic scope of your CDN and any custom domain settings. CloudFront has edge locations (data centers) all over the world, but using all of them costs more. By selecting "US, Canada and Europe," you're telling CloudFront to only use edge locations in those regions, which covers most users while keeping costs lower. The CNAME field is for custom domains - since we're using CloudFront's provided domain for now, we leave this blank.
+💡 **What's happening here?** You're choosing the geographic scope of your CDN and any custom domain settings. CloudFront has edge locations (data centers) all over the world, but using all of them costs more. By selecting "US, Canada and Europe," you're telling CloudFront to only use edge locations in those regions, which covers most users while keeping costs lower. The CNAME field is for custom domains - since we're using CloudFront's provided domain for now, we leave this blank.
 
 ### 6. Wait for Distribution to Deploy
 
@@ -70,7 +70,7 @@ These settings control the global reach and domain setup for your distribution.
 2. You'll be automatically taken to your distribution's details page
 3. The status will show "Deploying" during this time, but you can actually test your site even while it's still deploying
 
-**What's happening here?** AWS is configuring your content across its global network of edge locations. This process takes time because CloudFront is literally copying your website configuration to dozens of data centers worldwide. Even though it shows "Deploying," the basic functionality often works before the process is 100% complete.
+💡 **What's happening here?** AWS is configuring your content across its global network of edge locations. This process takes time because CloudFront is literally copying your website configuration to dozens of data centers worldwide. Even though it shows "Deploying," the basic functionality often works before the process is 100% complete.
 
 ### 7. Access Your Site via CloudFront
 
