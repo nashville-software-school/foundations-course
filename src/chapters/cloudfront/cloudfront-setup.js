@@ -104,7 +104,7 @@ This architecture gives you several key benefits:
 - **Reduced load**: Your S3 bucket doesn't have to handle all user requests directly
 - **Optimized delivery**: Files are compressed and delivered efficiently
 
-**Real-world example**: If a user in Tokyo and a user in New York both visit your website, the Tokyo user gets content from an Asian edge location while the New York user gets it from a North American edge location - both getting fast local performance even though your S3 bucket is only in the us-east-2 (Ohio) region.
+**Real-world example**: If a user in Amsterdam and a user in New York both visit your website, the Amsterdam user gets content from a European edge location while the New York user gets it from a North American edge location - both experiencing fast local performance even though your S3 bucket is only in the us-east-2 (Ohio) region.
 
 ## What We've Accomplished
 
