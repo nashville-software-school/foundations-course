@@ -4,6 +4,13 @@
  */
 
 export const sections = [
+  // Module 0: Intro th the course
+  {
+    id: "introduction",
+    title: "Introduction",
+    description: "A concise introduction to the course, outlining the learning objectives, delivery format, and the foundational AWS architecture will build by the end.",
+    required: true
+  },
   // Module 1: Cloud Fundamentals
   {
     id: "cloud-fundamentals",

@@ -2,8 +2,10 @@ import { cloudFundamentalsChapters } from "./cloud-fundamentals"
 import { awsS3HostingChapters } from "./aws-s3-hosting"
 import { introToCicdChapters } from "./intro-to-cicd"
 import { cloudfrontChapters } from "./cloudfront"
+import { introductionChapters } from "./introduction"
 
 export const chapters = [
+  ...introductionChapters,
   ...cloudFundamentalsChapters,
   ...awsS3HostingChapters,
   ...cloudfrontChapters,
