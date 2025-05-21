@@ -1,4 +1,5 @@
 import { clientRepoSetupChapter } from "./client-repo-setup"
+import { s3GlossaryChapter } from "./glossary"
 import { s3BucketSetupChapter } from "./s3-bucket-setup"
 import { s3FundamentalsChapter } from "./s3-fundamentals"
 
@@ -6,6 +7,7 @@ export const awsS3HostingChapters = [
   clientRepoSetupChapter,
   s3FundamentalsChapter,
   s3BucketSetupChapter,
+  s3GlossaryChapter,
 ]
 
 /**

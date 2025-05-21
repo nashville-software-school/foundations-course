@@ -1,9 +1,11 @@
 import { cloudfrontFundamentalsChapter } from "./cloudfront-fundamentals"
 import { cloudfrontSetupChapter } from "./cloudfront-setup"
+import { cloudfrontGlossaryChapter } from "./glossary"
 
 export const cloudfrontChapters = [
   cloudfrontFundamentalsChapter,
   cloudfrontSetupChapter,
+  cloudfrontGlossaryChapter,
 ]
 
 /**
