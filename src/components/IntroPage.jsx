@@ -74,7 +74,7 @@ function IntroPage() {
     console.log('After markIntroAsSeen call');
 
     // Add a URL parameter to indicate the user has seen the intro
-    navigate('/aws-account?hasSeenIntro=true');
+    navigate('introduction?hasSeenIntro=true');
   }
 
   const handlePlayVideo = () => {
