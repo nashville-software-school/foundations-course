@@ -300,11 +300,13 @@ function Navigation() {
             {sectionChapters.map((chapter, index) => {
               const status = getChapterStatus(chapter.id)
               const isProtected = chapter.requiresAuth && !isAuthenticated
+              console.log("location.pathname",location.pathname)
+              console.log("location.chapter.id",chapter.id)
               return (
                 <li key={chapter.id} className="chapter-item">
                   <Link
                     to={isProtected ? '/login' : chapter.id}
-                    className={`chapter-link ${status} ${location.pathname === chapter.id ? 'active' : ''
+                    className={`chapter-link ${status} ${location.pathname?.slice(1) === chapter.id ? 'active' : ''
                       } ${isProtected ? 'protected' : ''}`}
                   >
                     <span className="chapter-number">{index + 1}</span>
