@@ -3,20 +3,28 @@ export const awsAccountSetupChapter = {
   title: 'AWS Account Setup',
   sectionId: 'cloud-fundamentals',
   previousChapterId: 'why-use-cloud',
-  content: `In this chapter, we'll walk through the process of creating an AWS account, understanding the AWS Free Tier, navigating the AWS Management Console, and learning about AWS regions and availability zones.
+  content: `
+  # WIP
+You 
 
-## Creating an AWS Account
+  You should have gotten an email few days before the start of the course about 
+titled Invitation to join AWS IAM Identity Center
+This invitation is good for 7 days.
+Your Username is listed inthe email 
+Your AWS access portal URL:
+https://nss-se.awsapps.com/start/
+add image on how to access 
+this is your student AWS account for the duration of the class 
+it has access to these services will be using during the class: 
+AmazonS3FullAccess, CloudFrontFullAccess, AmazonEC2FullAccess, AmazonRDSFullAccess
+Please check in with the instructor before you spin up resources opurside of class 
+Something about deleting resources after the class iis done
 
-To get started with AWS, you'll need to create an account. Follow these steps:
-
-1. **Visit the AWS homepage**: Go to [aws.amazon.com](https://aws.amazon.com)
-
-2. **Click "Create an AWS Account"**: This button is usually in the top-right corner of the page
-
-3. **Provide your email address and account name**: 
-   - Use a professional email address
-   - Choose an account name (often your company or project name)
-
+If you did
+# END WIP
+  
+  
+  
 4. **Create a password**: Choose a strong, unique password
 
 5. **Provide contact information**:
