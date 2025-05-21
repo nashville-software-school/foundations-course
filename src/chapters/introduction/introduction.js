@@ -28,7 +28,6 @@ You’ll build a working vocabulary of cloud-related terms so you can talk tech 
 
 ## The diagram below show our goal: a cloud-powered masterpiece you’ll soon command. 🚀
 <img width=700 src="${diagramImg}"/>
----
 
 ## 🗓️ Course Structure
 

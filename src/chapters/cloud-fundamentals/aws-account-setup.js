@@ -1,117 +1,97 @@
+import awsEml from "./aws_email.png";
+import accSelect from "./account_select.png";
 export const awsAccountSetupChapter = {
   id: 'aws-account-setup',
   title: 'AWS Account Setup',
   sectionId: 'cloud-fundamentals',
   previousChapterId: 'why-use-cloud',
   content: `
-  # WIP
-You 
+You should have an email titled:
 
-  You should have gotten an email few days before the start of the course about 
-titled Invitation to join AWS IAM Identity Center
-This invitation is good for 7 days.
-Your Username is listed inthe email 
-Your AWS access portal URL:
-https://nss-se.awsapps.com/start/
-add image on how to access 
-this is your student AWS account for the duration of the class 
-it has access to these services will be using during the class: 
-AmazonS3FullAccess, CloudFrontFullAccess, AmazonEC2FullAccess, AmazonRDSFullAccess
-Please check in with the instructor before you spin up resources opurside of class 
-Something about deleting resources after the class iis done
+> **"Invitation to join AWS IAM Identity Center"**
 
-If you did
-# END WIP
-  
-  
-  
-4. **Create a password**: Choose a strong, unique password
+<img width=700 src="${awsEml}"/>
 
-5. **Provide contact information**:
-   - Your name
-   - Company name (if applicable)
-   - Phone number
-   - Address
+- 🕒 **This invitation is valid for 7 days** — be sure to activate it promptly.
+- 📧 **Your username** is listed in that email.
+- 🔗 **Your AWS access portal URL**:  
+  [https://nss-se.awsapps.com/start/](https://nss-se.awsapps.com/start/)
 
-6. **Add payment information**:
-   - AWS requires a credit card even for the free tier
-   - Your card will only be charged if you exceed free tier limits
-   - Consider setting up billing alerts (we'll cover this later)
+---
 
-7. **Verify your identity**:
-   - AWS will call or text the phone number you provided with a verification code
+### 🖼️ How to Access AWS
 
-8. **Choose a support plan**:
-   - For beginners, the free "Basic Support" plan is sufficient
-   - You can upgrade later if needed
+- Follow the email instructions to provision your account and set a strong password.  
+- Once you're logged in, you'll see a screen like this:
+<img width="700" src="${accSelect}" />
 
-9. **Complete registration and access your account**
+- Click the triangle to reveal your available options,  
+then select the **\`intro_to_cloud\`** link
 
-> **Important**: After creating your account, set up Multi-Factor Authentication (MFA) for the root user to enhance security. We'll cover this in the security best practices section.
+At this point, you are now in your **student AWS account**.
 
-## Understanding the AWS Free Tier
+> 🧾 All resources you create here are **yours** and are **not shared** with other students.  
+> 👨‍🏫 Your instructor can access your account if support is needed.
 
-AWS offers a Free Tier to help new users explore services without incurring significant costs. There are three types of free tier offers:
+---
 
-### 1. 12 Months Free
-- Available for 12 months following your initial sign-up date
-- Includes popular services like:
-  - Amazon EC2 (750 hours per month of t2.micro or t3.micro instance)
-  - Amazon S3 (5GB of standard storage)
-  - Amazon RDS (750 hours of db.t2.micro database usage)
+### 🎓 About This Account
 
-### 2. Always Free
-- Services that are always free within certain limits
-- Examples include:
-  - AWS Lambda (1 million free requests per month)
-  - Amazon DynamoDB (25GB of storage)
-  - Amazon CloudFront (1TB of data transfer out)
+This is your **student AWS account** for the duration of the course.  
+It includes access to the following AWS services:
 
-### 3. Trials
-- Short-term free trials that start when you begin using the service
-- Examples include Amazon Inspector, Amazon Lightsail, and more
+- \`AmazonS3FullAccess\`
+- \`CloudFrontFullAccess\`
+- \`AmazonEC2FullAccess\`
+- \`AmazonRDSFullAccess\`
 
-> **Cost Management Tip**: Set up AWS Budgets to create alerts when your usage approaches free tier limits. Go to the Billing Dashboard → Budgets → Create budget.
+> 🚨 **Please check in with your instructor before launching any resources outside of class.**  
+> 🧹 Don’t forget to **delete your resources** at the end of the course (your instructor will show you how!).  
 
-## AWS Management Console Navigation
+> NSS will delete resources after the course is over — **please do not expect anything to stick around**.  
+> This is partly how we’re able to **keep this course free**.
 
-The AWS Management Console is your central interface for accessing and managing AWS services.
+
+### ❓Trouble Logging In?
+
+If you didn’t receive the email or are having trouble accessing your account,  
+please reach out to your instructor **via Slack as soon as possible**.
+
+--- 
 
 ### Key Areas of the Console
 
 1. **Navigation Bar**:
    - **Services dropdown**: Access all AWS services
    - **Search bar**: Quickly find services, features, or documentation
-   - **Region selector**: Change your current AWS region
-   - **Account information**: Access account settings and billing
-   - **Support**: Get help and support resources
+   - **Region selector**: Change your current AWS region (use us-east2 Ohio)
 
 2. **Recently Visited Services**: Quick access to services you've recently used
 
-3. **Resource Groups**: Organize and manage resources across services
+<iframe width="560" height="315" src="https://www.youtube.com/embed/i331jNgsL_4?si=53Zsbmz3XprkTsx7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-4. **AWS Health Dashboard**: View service health and your account's health events
+--- 
 
-### Essential Services for Beginners
+### Services covered in class
 
-- **IAM (Identity and Access Management)**: Manage users and permissions
-- **EC2 (Elastic Compute Cloud)**: Virtual servers in the cloud
-- **S3 (Simple Storage Service)**: Object storage service
-- **RDS (Relational Database Service)**: Managed database service
-- **Lambda**: Serverless compute service
-- **CloudWatch**: Monitoring and observability service
-- **CloudFormation**: Infrastructure as code service
+- **S3 (Simple Storage Service)**: Object storage service  
+- **CloudFront**: Global content delivery network (CDN) that caches and serves content closer to users for faster access  
+- **EC2 (Elastic Compute Cloud)**: Scalable virtual servers in the cloud for running applications  
+- **RDS (Relational Database Service)**: Managed relational database service supporting engines like MySQL, PostgreSQL, and more  
 
 ## AWS Regions and Availability Zones
 
 Understanding AWS's global infrastructure is crucial for designing resilient and performant applications.
+
+Watch this short video about Regions and availability zones.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Fi1KaVrWYTE?si=aI0l2L-qAGkhKQ5p" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### Regions
 
 A **Region** is a physical location around the world where AWS clusters data centers. Each region is completely independent and isolated from other regions.
 
 Key points about regions:
-- Currently, AWS has 25+ regions worldwide
+- Currently, AWS has 34+ regions worldwide
 - Each region has a name (e.g., us-east-1, eu-west-2)
 - Not all services are available in all regions
 - Data stored in a region stays in that region unless you explicitly move it
@@ -143,14 +123,12 @@ In addition to regions and AZs, AWS has **Edge Locations** that are part of Amaz
 
 ## Hands-on Exercise: Exploring the AWS Console
 
-1. Log in to your AWS account at [console.aws.amazon.com](https://console.aws.amazon.com)
-2. Identify your current region in the top-right corner
+1. Log in to your AWS account 
+2. Identify your current region in the top-right corner (use us-east-2 Ohio for the course)
 3. Change to a different region and note any differences
 4. Use the Services dropdown to navigate to the S3 service
-5. Use the search bar to find the "IAM" service
-6. Explore the AWS Health Dashboard
-7. Visit the Billing Dashboard to review your Free Tier usage
 
-In the next module, we'll dive deeper into AWS S3 and learn how to host a static website.`,
+In the next module, we'll dive deeper into AWS S3 and learn how to 
+host a static website.`,
   exercise: null
 };
