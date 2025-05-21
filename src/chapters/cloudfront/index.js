@@ -1,6 +1,10 @@
 import { cloudfrontFundamentalsChapter } from "./cloudfront-fundamentals"
+import { cloudfrontSetupChapter } from "./cloudfront-setup"
 
-export const cloudfrontChapters = [cloudfrontFundamentalsChapter]
+export const cloudfrontChapters = [
+  cloudfrontFundamentalsChapter,
+  cloudfrontSetupChapter,
+]
 
 /**
  * Get a chapter by its ID
