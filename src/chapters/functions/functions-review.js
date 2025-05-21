@@ -432,7 +432,9 @@ console.log(interaction);
                     try {
                         // Check if the code uses a loop in greetPeople
                         const passed = (studentCode.includes('for (') ||
+                                studentCode.includes('for(') ||
                                 studentCode.includes('while (') ||
+                                studentCode.includes('while(') ||
                                 studentCode.includes('forEach(')) &&
                                studentCode.includes('push(');
                         return new TestResult({passed});
