@@ -5,11 +5,9 @@ export const introductionChapter = {
   sectionId: 'introduction',
   previousChapterId: null,
   content: `
-# Welcome to the Cloud Course 🌩️
+Welcome to the **Intro to Cloud** course! By the end of this workshop, you'll understand key cloud concepts, gain hands-on experience deploying a front-end app to the cloud, 
+and confidently discuss terms like **CI/CD**, **S3**, and **CloudFront**.
 
-Welcome to the **Intro to Cloud** course! By the end of this workshop series, you'll understand key cloud concepts, gain hands-on experience deploying a front-end app to the cloud, and confidently discuss terms like **CI/CD**, **S3**, and **CloudFront**.
-
----
 
 ## 📝 Summary
 
