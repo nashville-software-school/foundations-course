@@ -161,7 +161,7 @@ export const functionsLoopsChapter = {
   4. Return the final total
   `,
     exercise: {
-        starterCode: `const calculateCartTotal = () => {
+        starterCode: `const calculateCartTotal = (prices) => {
       // 1. Create a variable to store the total, starting at 0
 
       // 2. Loop through all prices in the array and add each to total
