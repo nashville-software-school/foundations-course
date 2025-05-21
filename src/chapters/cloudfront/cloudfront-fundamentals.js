@@ -1,8 +1,8 @@
 export const cloudfrontFundamentalsChapter = {
-  id: 'cloudfront-fundamentals',
-  title: 'CloudFront Fundamentals',
-  sectionId: 'aws-s3-hosting',
-  previousChapterId: 'hosting-nextjs',
+  id: "cloudfront-fundamentals",
+  title: "CloudFront Fundamentals",
+  sectionId: "cloudfront",
+  previousChapterId: null,
   content: `## What is Amazon CloudFront?
 
 Amazon CloudFront is a fast content delivery network (CDN) service that securely delivers data, videos, applications, and APIs to customers globally with low latency and high transfer speeds. CloudFront works seamlessly with other AWS services like S3, EC2, and Elastic Load Balancing, as well as with non-AWS origin servers.
@@ -245,5 +245,5 @@ CloudFront provides several security features to protect your content and applic
 10. **Use Lambda@Edge or CloudFront Functions** for customized content delivery
 
 In the next chapter, we'll explore how to automate the deployment of your website to S3 and CloudFront using CI/CD with GitHub Actions.`,
-  exercise: null
-};
+  exercise: null,
+}
