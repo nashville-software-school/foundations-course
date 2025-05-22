@@ -21,6 +21,10 @@ Let's start by understanding what CloudFront is and why it's valuable for your w
 
 ## What is CloudFront?
 
+The video below is a great introduction to AWS CloudFront service. Take time to watch the video but do not follow along. You will follow step-by-step instructions for creating your own distribution for the Rock of Ages client in the next chapter. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OS5yTttzARE?si=sJmWEFxpDO2CskOk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 Amazon CloudFront is a **Content Delivery Network (CDN)** - a system of distributed servers that deliver web content to users based on their geographic location. 
 
 Your S3 bucket stores your website's files in a single region (us-east-2/Ohio). Without CloudFront, every visitor to your site connects to that Ohio region to get your content, regardless of whether they're in California, Canada, or Croatia.
