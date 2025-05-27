@@ -5,17 +5,17 @@ export const githubActionsBasicsChapter = {
   previousChapterId: 'cicd-fundamentals',
   content: `## What are GitHub Actions?
 
-GitHub Actions is a CI/CD platform that allows you to automate your software development workflows directly in your GitHub repository. With GitHub Actions, you can build, test, and deploy your code right from GitHub, as well as automate other tasks like issue triage, dependency updates, and more.
+GitHub Actions is a CI/CD platform that allows you to automate your software development workflows 
+directly in your GitHub repository. 
+With GitHub Actions, you can build, test, and deploy your code right from GitHub, as well as automate 
+other tasks like issue triage, dependency updates, and more.
 
 ### Key Features of GitHub Actions
 
 - **Integrated with GitHub**: Built directly into the GitHub platform
 - **Workflow as Code**: Define workflows using YAML files
 - **Event-driven**: Trigger workflows based on GitHub events
-- **Matrix Builds**: Test across multiple operating systems and runtime versions
 - **Reusable Actions**: Use pre-built actions from the marketplace
-- **Self-hosted Runners**: Run workflows on your own infrastructure
-- **Artifacts and Caching**: Share data between jobs and speed up workflows
 - **Secrets Management**: Securely store and use sensitive information
 
 ### GitHub Actions vs. Other CI/CD Tools
@@ -29,9 +29,10 @@ GitHub Actions is a CI/CD platform that allows you to automate your software dev
 | Marketplace | Large ecosystem | Plugin ecosystem | Orbs ecosystem | Limited marketplace |
 | Setup Complexity | Low | High | Medium | Medium |
 
-## Creating Your First Workflow File
+## Anatomy of a Workflow File
 
-GitHub Actions workflows are defined in YAML files stored in the \`.github/workflows\` directory of your repository. Let's create a simple workflow that runs whenever code is pushed to the repository.
+GitHub Actions workflows are defined in YAML files stored in the \`.github/workflows\` directory of your repository. 
+Let's examine a example workflow file that would run whenever code is pushed to the repository.
 
 ### Basic Workflow Structure
 
@@ -63,7 +64,36 @@ jobs:
       run: npm test
 \`\`\`
 
+### 🏗️ How It Works
+- 1️⃣ You push code to your GitHub repository.
+- 2️⃣ GitHub looks in .github/workflows/ for YAML files.
+- 3️⃣ For each workflow file:
+  - GitHub checks if the trigger conditions match (e.g., on: push to main).
+  - If yes, it launches a runner (like a mini virtual machine) to execute the steps.
+- 4️⃣ The runner:
+  - Reads and interprets each step (run:, uses:) 
+  - Executes them in order until done or a failure occurs.
+
+
+### Exploring a Real-World GitHub Actions Workflow in a Vite Project
+To explore a real-world example of a GitHub Actions workflow for deploying a 
+Vite-based frontend application, you can examine the [vite-deploy-demo](https://github.com/sitek94/vite-deploy-demo) 
+repository. This project demonstrates how to automate the build and deployment process 
+of a Vite app to GitHub Pages using GitHub Actions.
+
+#### 🧭 Navigating to the Actions Tab
+
+1. **Open the Repository**: Visit the [vite-deploy-demo repository](https://github.com/sitek94/vite-deploy-demo) in your web browser.
+2. **Access the Actions Tab**: At the top of the repository page, click on the **"Actions"** tab.
+3. **Explore Workflows**: Within the Actions tab, you'll see a list of workflows that have been set up for 
+the repository. Clicking on any workflow will provide details about its configuration, recent runs, and logs.
+This section is invaluable for understanding how the repository automates tasks like testing, 
+building, and deploying code using GitHub Actions.
+
+
 ### Key Components Explained
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Szykgp7yl4s?si=mMBkadxVYGr7-sZT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 1. **name**: The name of the workflow (appears in the Actions tab)
 2. **on**: Defines the events that trigger the workflow
@@ -73,21 +103,6 @@ jobs:
 6. **uses**: References a reusable action
 7. **with**: Provides inputs to an action
 8. **run**: Executes shell commands
-
-### Creating the Workflow File
-
-To add this workflow to your repository:
-
-1. Create a \`.github/workflows\` directory in your repository if it doesn't exist
-2. Create a new file, e.g., \`ci.yml\`, in that directory
-3. Add the YAML content shown above
-4. Commit and push the file to your repository
-
-Once pushed, GitHub will automatically detect the workflow file and run it according to the triggers you've defined.
-
-## Understanding Workflow Syntax
-
-Let's dive deeper into the syntax and capabilities of GitHub Actions workflows.
 
 ### Workflow Triggers
 
@@ -159,48 +174,6 @@ jobs:
         run: ./deploy.sh
 \`\`\`
 
-### Matrix Builds
-
-Matrix builds allow you to test across multiple configurations:
-
-\`\`\`yaml
-jobs:
-  test:
-    runs-on: \${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [14.x, 16.x, 18.x]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js \${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: \${{ matrix.node-version }}
-      - run: npm test
-\`\`\`
-
-### Outputs and Job Dependencies
-
-You can pass data between jobs using outputs:
-
-\`\`\`yaml
-jobs:
-  job1:
-    runs-on: ubuntu-latest
-    outputs:
-      output1: \${{ steps.step1.outputs.test }}
-    steps:
-      - id: step1
-        run: echo "test=hello" >> $GITHUB_OUTPUT
-        
-  job2:
-    runs-on: ubuntu-latest
-    needs: job1
-    steps:
-      - run: echo \${{ needs.job1.outputs.output1 }}
-\`\`\`
-
 ## Workflow Triggers and Events
 
 GitHub Actions workflows are triggered by events that occur in your repository. Understanding these events is crucial for creating effective workflows.
@@ -234,38 +207,6 @@ GitHub Actions workflows are triggered by events that occur in your repository. 
 - **schedule**: Run workflows at scheduled times using cron syntax
 - **workflow_dispatch**: Manually trigger a workflow run
 - **repository_dispatch**: Trigger a workflow from an external event
-
-### Event Filtering
-
-You can filter events based on specific conditions:
-
-\`\`\`yaml
-on:
-  push:
-    branches:
-      - main
-      - 'releases/**'
-    tags:
-      - v1.*
-    paths:
-      - 'src/**'
-      - '!**.md'
-      
-  pull_request:
-    types: [opened, synchronize]
-    branches:
-      - main
-\`\`\`
-
-### Activity Types
-
-Many events have specific activity types that you can filter on:
-
-\`\`\`yaml
-on:
-  issues:
-    types: [opened, labeled, milestoned]
-\`\`\`
 
 ### Context and Expression Syntax
 
@@ -330,19 +271,7 @@ One of the most powerful features of GitHub Actions is the ability to use pre-bu
     python-version: '3.10'
 \`\`\`
 
-#### Caching Dependencies
-
-\`\`\`yaml
-- uses: actions/cache@v3
-  with:
-    path: ~/.npm
-    key: \${{ runner.os }}-node-\${{ hashFiles('**/package-lock.json') }}
-    restore-keys: |
-      \${{ runner.os }}-node-
-\`\`\`
-
 #### Uploading Artifacts
-
 \`\`\`yaml
 - uses: actions/upload-artifact@v3
   with:
@@ -364,61 +293,41 @@ One of the most powerful features of GitHub Actions is the ability to use pre-bu
 
 You can also create your own actions:
 
-1. **JavaScript Actions**: Written in JavaScript, run directly on the runner
-2. **Docker Container Actions**: Packaged in a Docker container, more flexible
-3. **Composite Actions**: Combine multiple steps into a single action
+1. **JavaScript Actions**: Written in JavaScript, run directly on the runner inline
+  The run propertyof the action 'Run JavaScript inline' below is an example of writing custom action 
+  inline (right inside the yaml template)
+2. **JavaScript Actions**: Written in JavaScript, run directly on the runner logic specified in external js file
+  The uses property in the "Run external JavaScript action" step below illustrates how to run a custom 
+  JavaScript action defined in an external file that is part of the repository.
 
-## Hands-on Exercise: Create a Basic CI Workflow
-
-Let's create a simple CI workflow for a JavaScript project:
-
-1. Create a \`.github/workflows/ci.yml\` file in your repository
-2. Add the following content:
-
-\`\`\`yaml
-name: CI
+\`\`\`
+name: Inline JavaScript in GitHub Actions
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  test:
+  run-inline-js:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Run JavaScript inline
+      run: |
+        echo "Running inline JavaScript..."
+        node -e "console.log('Hello from inline JavaScript!');"
+    - name: Run external JavaScript action
+      uses: ./.github/actions/my-js-action
       with:
-        node-version: '16'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Lint
-      run: npm run lint
-      
-    - name: Test
-      run: npm test
-      
-    - name: Build
-      run: npm run build
-      
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: build
-        path: build/
+        example-input: "Hello, world!"
 \`\`\`
 
-3. Commit and push this file to your repository
-4. Go to the "Actions" tab in your repository to see the workflow run
+## Hands-on Exercise: Create a Basic CI Workflow
 
-In the next chapter, we'll build on this foundation to create a complete deployment pipeline for our Next.js application.`,
+In the next chapter, we'll build on this foundation to create a complete deployment pipeline for our rock of ages frontend application.`,
   exercise: null
 };
