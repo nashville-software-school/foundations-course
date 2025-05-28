@@ -42,13 +42,13 @@ By storing them as secrets, we ensure:
 1. Go to the AWS Console: (refer to "AWS Account Setup" page for login instructions)
 2. Under Users, select the \`gh_user\` (this is IAM user used for GitHub Actions)
 3. In Security credentials, create the access key:
-4. Click Create Assess key
+4. Click Create Access key
 5. Select \`Command Line Interface (CLI)\`
 6. Check \`Confirmation\` then click \`Next\`
 7. Type \`github action\` for \`Description tag value\`
 8. Click Create Access Key
 9. You will need the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from this page
-10. See precautions about this importnat sensitive password below
+10. See precautions about this important sensitive password below
 11. Identify your AWS region (e.g., \`us-east-2\`)
 12. Look up your S3 bucket name and CloudFront distribution ID
 

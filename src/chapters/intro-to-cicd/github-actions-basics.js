@@ -32,7 +32,7 @@ other tasks like issue triage, dependency updates, and more.
 ## Anatomy of a Workflow File
 
 GitHub Actions workflows are defined in YAML files stored in the \`.github/workflows\` directory of your repository. 
-Let's examine a example workflow file that would run whenever code is pushed to the repository.
+Let's examine an example workflow file that would run whenever code is pushed to the repository.
 
 ### Basic Workflow Structure
 
