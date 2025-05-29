@@ -1,22 +1,24 @@
-export const s3HostingGlossaryChapter = {
-  id: 's3-hosting-glossary',
-  title: 'S3 & Hosting Glossary',
-  sectionId: 'aws-s3-hosting',
-  previousChapterId: 'cloudfront-fundamentals',
-  content: `## S3 & Hosting Glossary
+export const s3GlossaryChapter = {
+  id: "s3-glossary",
+  title: "S3 Glossary",
+  sectionId: "aws-s3-hosting",
+  previousChapterId: "s3-bucket-setup",
+  content: `
 
 This glossary provides definitions for key terms introduced in the AWS S3 Hosting module.
 
 | Term | Description |
 |------|-------------|
-| **Object Storage** | A storage architecture that manages data as objects (containing data, metadata, and a unique identifier) rather than as files in folders or blocks in sectors. |
-| **S3 (Simple Storage Service)** | Amazon's object storage service that offers industry-leading scalability, data availability, security, and performance. |
-| **Bucket** | A container for objects stored in Amazon S3, similar to a root folder in a file system but with a globally unique name. |
-| **Object** | The fundamental entity stored in S3, consisting of data, metadata, and a key (unique identifier). |
-| **Prefix** | A logical grouping of objects within an S3 bucket, similar to a folder structure (e.g., "images/" in "bucket-name/images/photo.jpg"). |
-| **Bucket Policy** | A JSON-based access policy language document that defines permissions for an S3 bucket, controlling who can access the bucket and what actions they can perform. |
-| **Static Website Hosting** | An S3 feature that allows you to configure a bucket to serve static web content (HTML, CSS, JavaScript) directly to web browsers. |
-| **Presigned URL** | A temporary URL that grants time-limited access to a specific S3 object without requiring AWS credentials. |
-`,
-  exercise: null
-};
+| **S3 (Simple Storage Service)** | Amazon's cloud storage service that provides highly scalable and reliable object storage, perfect for hosting static websites. |
+| **Bucket** | A container for storing objects in Amazon S3. Each bucket must have a globally unique name and acts like a root folder for your files. |
+| **Object** | Any file stored in S3, along with its metadata. Can be HTML files, images, videos, or any other type of content. |
+| **Object Storage** | A storage architecture that manages files as objects containing the data, metadata, and a unique identifier, different from traditional file systems. |
+| **Static Website Hosting** | An S3 feature that allows a bucket to serve web content directly to browsers, making it possible to host websites without servers. |
+| **Bucket Policy** | A JSON document that defines permissions for an S3 bucket, controlling who can access the bucket and what actions they can perform. |
+| **Index Document** | The default webpage (usually index.html) that S3 serves when someone visits your website's root URL. |
+| **Error Document** | The webpage S3 serves when an error occurs. For single-page applications like React, this is typically also set to index.html. |
+| **Build** | The process of creating optimized, production-ready files from your source code. For React apps, this creates the dist or build folder. |
+| **Distribution Files** | The optimized files in the dist or build folder that are ready to be deployed to production. |
+| **Public Access** | The ability for anyone on the internet to read (view/download) objects from your S3 bucket. Required for website hosting. |`,
+  exercise: null,
+}

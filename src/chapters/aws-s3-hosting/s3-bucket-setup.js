@@ -29,7 +29,7 @@ Your S3 bucket will be the home for all your website files. Let's create one:
 6. Scroll past the remaining configurations (leave them at default settings)
 7. Click **Create bucket**
 
-**What's happening here?** You're creating a container in the cloud that will store all your website files. The unique name ensures nobody else's bucket will conflict with yours.
+💡 **What's happening here?** You're creating a container in the cloud that will store all your website files. The unique name ensures nobody else's bucket will conflict with yours.
 
 ### 2. Enable Static Website Hosting
 
@@ -47,7 +47,7 @@ Now we need to tell AWS that this bucket will host a website:
    - This ensures that routes handled by React Router will work correctly
 9. Click **Save changes**
 
-**What's happening here?** You're configuring your bucket to serve files as a website rather than just a file repository. Setting the index and error documents tells S3 which file to serve when someone visits your site or encounters an error.
+💡 **What's happening here?** You're configuring your bucket to serve files as a website rather than just a file repository. Setting the index and error documents tells S3 which file to serve when someone visits your site or encounters an error.
 
 ### 3. Set Public Read Bucket Policy
 
@@ -72,7 +72,7 @@ For our website to be publicly accessible, we need to set permissions:
 2. In the pasted json, replace \`your-bucket-name-here\` with your bucket name. (ex. *rock-of-ages-frontend-origin-jms*)
 3. Click **Save changes**
 
-**What's happening here?** This policy grants public read access to all files in your bucket. The asterisk in "Principal": "*" means "anyone," and the Resource path with "/*" at the end means "all files in this bucket."
+💡 **What's happening here?** This policy grants public read access to all files in your bucket. The asterisk in "Principal": "*" means "anyone," and the Resource path with "/*" at the end means "all files in this bucket."
 
 ### 4. Building and Uploading Your Website Files
 
@@ -97,7 +97,7 @@ Now let's get your React application files ready and upload them to your bucket:
    - Click **Add folder** and select the \`assets\` folder from your \`dist\` folder
    - Click **Upload**
 
-**What's happening here?** You're building an optimized version of your React application and uploading all the necessary files to your S3 bucket. These files will now be served when someone visits your website.
+💡 **What's happening here?** You're building an optimized version of your React application and uploading all the necessary files to your S3 bucket. These files will now be served when someone visits your website.
 
 ### 5. Testing Your Website
 
