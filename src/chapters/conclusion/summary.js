@@ -30,14 +30,16 @@ You should be able to answer some basic interview questions on the topics we hav
 * What is AWS?
 * What are the benefits of using cloud computing vs other deployment models?
 * Explain what an S3 bucket is.
-* What does CloudFront provide that S3 alone does not?
+* What does CloudFront provide that s3 alone does not?
 * What is a CI/CD pipeline?
 * Describe the build stage.
 
-__Dont forget!__ ClaudeAI and ChatGPT are great resources to use when prepping for interviews. Here's some sample prompts: 
+__Dont forget!__ ClaudeAI and ChatGPT are great resources to use when prepping for interviews. Here are some sample prompts: 
 
 * Give me a list of interview questions and answers for AWS cloud fundamentals
 * Can you ask each question one by one and evaluate my answers?
+
+Play around with different prompts to get more specific questions and answers about the services we have learned. 
 
 
 `,

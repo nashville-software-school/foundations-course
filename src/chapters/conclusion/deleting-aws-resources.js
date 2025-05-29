@@ -3,7 +3,7 @@ export const deletingResourcesChapter = {
   title: "Deleting AWS Resources",
   sectionId: "conclusion",
   previousChapterId: "summary",
-  content: `Amazon web services cost money and now that you have completed the course, it is time to delete the resources you've created to reduce the cost to NSS. That we have more "resources" to continue providing these workshops to future students.
+  content: `Amazon web services cost money and now that you have completed the course, it is time to delete the resources you've created in order to reduce the cost to NSS. That way we have more "resources" to continue providing these workshops to future students.
 
 ### Cloudfront Distribution
 
@@ -27,7 +27,8 @@ export const deletingResourcesChapter = {
 
 2. On the left hand side click Users.
 
-3. Select gh_user and click Delete
+3. Select gh_user and click Delete (This will render the security credentials you saved in your github secrets useless. Feel free to delete and clean those up as well.)
+
 
 `,
   exercise: null,
