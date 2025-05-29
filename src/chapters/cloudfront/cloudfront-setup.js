@@ -79,7 +79,14 @@ You can test your CloudFront distribution right away:
 1. On your distribution details page (where you're automatically taken after clicking "Create Distribution")
 2. Look on the left side under **Details**
 3. Find **Distribution domain name** - it will look like: \`dsjkhfsdjkfhdsk.cloudfront.net\`
-4. Click on this URL or copy it to visit your website
+4. **Important**: When visiting your site, use HTTP instead of HTTPS:
+   - Copy the domain name (e.g., \`dsjkhfsdjkfhdsk.cloudfront.net\`)
+   - In your browser, navigate to: \`http://dsjkhfsdjkfhdsk.cloudfront.net\` (note the **http://** prefix)
+   - Do **not** use \`https://\` for now
+
+**Why use HTTP instead of HTTPS?** While CloudFront provides HTTPS support, our Rock of Ages application connects to an API that isn't configured for HTTPS. When you try to log in using the HTTPS version of your site, your browser's security protocols will block the network call to the HTTP API, preventing login from working. By accessing your site with HTTP, both your frontend and the API use the same protocol, allowing the login functionality to work properly.
+
+**What's happening here?** You're accessing your CloudFront distribution using HTTP protocol to ensure compatibility with the application's API calls. This is a common scenario in development environments where different parts of an application may be configured with different security protocols.
 
 Congratulations! Your site is now being served through CloudFront's global content delivery network!
 
