@@ -7,6 +7,8 @@ export const cicdFundamentalsChapter = {
 
 Continuous Integration and Continuous Deployment (CI/CD) are software development practices that enable teams to deliver code changes more frequently and reliably. These practices form the backbone of modern DevOps methodologies.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JxqfiBHBzl8?si=xpZ5U8iv1AB77qMz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ### Continuous Integration (CI)
 
 **Continuous Integration** is the practice of frequently integrating code changes into a shared repository, followed by automated building and testing. The primary goals of CI are to:
@@ -157,6 +159,8 @@ The CI/CD ecosystem includes a wide range of tools that support different aspect
 
 These platforms provide end-to-end solutions for building, testing, and deploying applications:
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/a1TWV74pNh8?si=FGrEcn7-aUvdjiKS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 1. **GitHub Actions**:
    - Integrated with GitHub repositories
    - Workflow configuration in YAML
@@ -186,104 +190,6 @@ These platforms provide end-to-end solutions for building, testing, and deployin
    - Integrates with other AWS services
    - Visual pipeline editor
    - Pay-per-use pricing model
-
-### Build Tools
-
-Tools that compile code, run tests, and package applications:
-
-- **Maven/Gradle**: Java build automation
-- **npm/Yarn**: JavaScript package management
-- **Make**: General-purpose build tool
-- **MSBuild**: .NET build platform
-
-### Testing Frameworks
-
-Tools for automated testing at different levels:
-
-- **Jest/Mocha**: JavaScript testing
-- **JUnit/TestNG**: Java testing
-- **Pytest/unittest**: Python testing
-- **Selenium/Cypress**: Browser automation
-- **Postman/REST-assured**: API testing
-
-### Deployment Tools
-
-Tools that handle the deployment of applications:
-
-- **Docker**: Containerization platform
-- **Kubernetes**: Container orchestration
-- **Terraform/CloudFormation**: Infrastructure as Code
-- **Ansible/Chef/Puppet**: Configuration management
-- **Spinnaker**: Multi-cloud deployment
-
-## CI/CD Best Practices
-
-To get the most out of your CI/CD implementation, follow these best practices:
-
-### 1. Keep the Pipeline Fast
-
-- Optimize build and test processes
-- Use parallelization where possible
-- Implement caching strategies
-- Consider test pyramids (more unit tests, fewer E2E tests)
-
-### 2. Maintain a Single Source of Truth
-
-- Store all configuration in version control
-- Use Infrastructure as Code (IaC)
-- Document pipeline processes
-- Avoid manual configuration of environments
-
-### 3. Build Once, Deploy Many Times
-
-- Create immutable artifacts
-- Use the same artifact across environments
-- Avoid rebuilding for different environments
-- Tag artifacts with meaningful identifiers
-
-### 4. Automate Everything
-
-- Automate all repetitive tasks
-- Include security scanning
-- Automate quality checks
-- Implement automated rollbacks
-
-### 5. Implement Feature Flags
-
-- Decouple deployment from release
-- Control feature availability
-- Test features in production
-- Perform gradual rollouts
-
-### 6. Monitor and Measure
-
-- Track pipeline metrics
-- Monitor application performance
-- Set up alerts for failures
-- Continuously improve the process
-
-## Real-World CI/CD Examples
-
-### Example 1: Amazon
-
-- Deploys code every 11.7 seconds on average
-- Uses canary deployments to reduce risk
-- Implements automated rollbacks
-- Focuses on small, incremental changes
-
-### Example 2: Netflix
-
-- Deploys thousands of times per day
-- Uses immutable infrastructure
-- Implements chaos engineering
-- Employs sophisticated monitoring
-
-### Example 3: Etsy
-
-- Pioneered continuous deployment in e-commerce
-- Deploys 50+ times per day
-- Uses feature flags extensively
-- Emphasizes developer ownership of deployments
 
 In the next chapter, we'll dive into GitHub Actions, a powerful CI/CD platform that we'll use to build our own deployment pipeline.`,
   exercise: null
