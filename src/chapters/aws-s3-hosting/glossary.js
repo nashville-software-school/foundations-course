@@ -2,7 +2,7 @@ export const s3HostingGlossaryChapter = {
   id: 's3-hosting-glossary',
   title: 'S3 & Hosting Glossary',
   sectionId: 'aws-s3-hosting',
-  previousChapterId: 'cloudfront-fundamentals',
+  previousChapterId: 's3-bucket-setup',
   content: `## S3 & Hosting Glossary
 
 This glossary provides definitions for key terms introduced in the AWS S3 Hosting module.

@@ -1,13 +1,11 @@
-import { clientRepoSetupChapter } from "./client-repo-setup"
-import { s3BucketSetupChapter } from "./s3-bucket-setup"
-import { s3FundamentalsChapter } from "./s3-fundamentals"
-import { s3HostingGlossaryChapter } from "./glossary"
+import { summaryChapter } from "./summary"
+import { furtherLearningChapter } from "./further-learning"
+import { deletingResourcesChapter } from "./deleting-aws-resources"
 
-export const awsS3HostingChapters = [
-  clientRepoSetupChapter,
-  s3FundamentalsChapter,
-  s3BucketSetupChapter,
-  s3HostingGlossaryChapter
+export const conclusionChapters = [
+  summaryChapter,
+  furtherLearningChapter,
+  deletingResourcesChapter,  
 ]
 
 /**
@@ -16,7 +14,7 @@ export const awsS3HostingChapters = [
  * @returns {Object|undefined} The chapter object if found, undefined otherwise
  */
 export const getChapterById = (id) => {
-  return awsS3HostingChapters.find((chapter) => chapter.id === id)
+  return conclusionChapters.find((chapter) => chapter.id === id)
 }
 
 /**
@@ -24,7 +22,7 @@ export const getChapterById = (id) => {
  * @returns {string[]} Array of chapter IDs
  */
 export const getChapterIds = () => {
-  return awsS3HostingChapters.map((chapter) => chapter.id)
+  return conclusionChapters.map((chapter) => chapter.id)
 }
 
 /**
@@ -33,10 +31,10 @@ export const getChapterIds = () => {
  * @returns {Object|undefined} The next chapter object if found, undefined otherwise
  */
 export const getNextChapter = (currentChapterId) => {
-  const currentIndex = awsS3HostingChapters.findIndex(
+  const currentIndex = conclusionChapters.findIndex(
     (chapter) => chapter.id === currentChapterId
   )
-  return awsS3HostingChapters[currentIndex + 1]
+  return conclusionChapters[currentIndex + 1]
 }
 
 /**
@@ -45,8 +43,8 @@ export const getNextChapter = (currentChapterId) => {
  * @returns {Object|undefined} The previous chapter object if found, undefined otherwise
  */
 export const getPreviousChapter = (currentChapterId) => {
-  const currentIndex = awsS3HostingChapters.findIndex(
+  const currentIndex = conclusionChapters.findIndex(
     (chapter) => chapter.id === currentChapterId
   )
-  return currentIndex > 0 ? awsS3HostingChapters[currentIndex - 1] : undefined
+  return currentIndex > 0 ? conclusionChapters[currentIndex - 1] : undefined
 }
