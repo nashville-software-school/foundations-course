@@ -1,0 +1,27 @@
+- ***The Cloud*** 
+	- **Remember:** What is the cloud? What is *not* the cloud? What are the most commonly used cloud services?
+	- **Understand:** Why the cloud is needed, what it provides (in our case - OS, virtualization, hardware)
+- ***Cloud Service Tools***
+	- **Remember:** There are 100s of tools in cloud services. These are a few of the most commonly used tools. Many different cloud services will either provide their own versions of these tools or allow to to 'pick and play' which tools you wish to use
+		- *S3* (object and image storage, documents that users upload)
+		- *EC2* (virtual server in the cloud)
+		- *IAM* (roles and permissions)
+		- *Cloud Front* (AWS content delivery network, low latency access to the app)
+		- *RDS* (relational database in the cloud) 
+			- ⚠️ This is the learning objective for the possible fourth workshop. It is still undecided if workshop 4 will be implemented. 
+- ***Containerization***
+	- **Remember:** What is a container? What are the different containerization tools available (Docker)?
+	- **Understand**: What problems do containers solve?
+	- **Apply:** Create a container for the db, api, and client using Docker 
+		- *Dockerfile*: Understanding the main components
+		- *docker-compose.yml*: Understanding the main components
+		- Using the basic *docker cli commands*
+		- Knowing and using basic vocabulary for *images*, *volumes*, and *containers*
+- ***CI/CD***
+	- **Remember:** What is Continuous Integration and Continuous Deployment? 
+	- **Understand:** What problem does this solve? What benefit does this bring? What was done before this?
+	- **Apply:** Create a Github Pipeline 
+		- *Github Actions*
+			- *Build*: What does build do?
+			- *Test*: Understanding what tests are and what they provide
+			- *Deploy*: What happens when we deploy?
