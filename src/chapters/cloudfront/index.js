@@ -1,14 +1,11 @@
-import { clientRepoSetupChapter } from "./client-repo-setup"
-import { s3GlossaryChapter } from "./glossary"
-import { s3BucketSetupChapter } from "./s3-bucket-setup"
-import { s3FundamentalsChapter } from "./s3-fundamentals"
+import { cloudfrontFundamentalsChapter } from "./cloudfront-fundamentals"
+import { cloudfrontSetupChapter } from "./cloudfront-setup"
+import { cloudfrontGlossaryChapter } from "./glossary"
 
-export const awsS3HostingChapters = [
-  clientRepoSetupChapter,
-  s3FundamentalsChapter,
-  s3BucketSetupChapter,
-  s3GlossaryChapter,
-
+export const cloudfrontChapters = [
+  cloudfrontFundamentalsChapter,
+  cloudfrontSetupChapter,
+  cloudfrontGlossaryChapter,
 ]
 
 /**
@@ -17,15 +14,15 @@ export const awsS3HostingChapters = [
  * @returns {Object|undefined} The chapter object if found, undefined otherwise
  */
 export const getChapterById = (id) => {
-  return awsS3HostingChapters.find((chapter) => chapter.id === id)
+  return cloudfrontChapters.find((chapter) => chapter.id === id)
 }
 
 /**
- * Get all chapter IDs for the AWS S3 hosting section
+ * Get all chapter IDs for the cloud fundamentals section
  * @returns {string[]} Array of chapter IDs
  */
 export const getChapterIds = () => {
-  return awsS3HostingChapters.map((chapter) => chapter.id)
+  return cloudfrontChapters.map((chapter) => chapter.id)
 }
 
 /**
@@ -34,10 +31,10 @@ export const getChapterIds = () => {
  * @returns {Object|undefined} The next chapter object if found, undefined otherwise
  */
 export const getNextChapter = (currentChapterId) => {
-  const currentIndex = awsS3HostingChapters.findIndex(
+  const currentIndex = cloudfrontChapters.findIndex(
     (chapter) => chapter.id === currentChapterId
   )
-  return awsS3HostingChapters[currentIndex + 1]
+  return cloudfrontChapters[currentIndex + 1]
 }
 
 /**
@@ -46,8 +43,8 @@ export const getNextChapter = (currentChapterId) => {
  * @returns {Object|undefined} The previous chapter object if found, undefined otherwise
  */
 export const getPreviousChapter = (currentChapterId) => {
-  const currentIndex = awsS3HostingChapters.findIndex(
+  const currentIndex = cloudfrontChapters.findIndex(
     (chapter) => chapter.id === currentChapterId
   )
-  return currentIndex > 0 ? awsS3HostingChapters[currentIndex - 1] : undefined
+  return currentIndex > 0 ? cloudfrontChapters[currentIndex - 1] : undefined
 }

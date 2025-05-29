@@ -27,7 +27,14 @@ export const sections = [
       "Learn to use S3 for object storage and hosting static React applications",
     required: true,
   },
-  // Module 3: Introduction to CI/CD
+  // Module 3: CloudFront
+  {
+    id: "cloudfront",
+    title: "CloudFront",
+    description: "TBD",
+    required: true,
+  },
+  // Module 4: Introduction to CI/CD
   {
     id: "intro-to-cicd",
     title: "Introduction to CI/CD",
@@ -35,7 +42,7 @@ export const sections = [
       "Understand CI/CD fundamentals and implement automated deployments with GitHub Actions",
     required: true,
   },
-  // Module 3: Introduction to CI/CD
+  // Module 4: Conclusion
   {
     id: "conclusion",
     title: "Conclusion",

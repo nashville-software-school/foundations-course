@@ -15,13 +15,13 @@ In this workshop, you have learned how to deploy a client application to the clo
 
 By now, you should have some vocabulary and hands on experience that will be usefull during interviews with potential employers:
 
-1. **Cloud Fundamentals**: [cloud fundamentals glossary](./cloud-fundamentals-glossary)
+1. **Cloud Fundamentals**: [cloud fundamentals Glossary](./cloud-fundamentals-glossary)
 
-2. **Frontend Hosting with Amazon S3**: [s3 glossary](./s3-hosting-glossary)
+2. **Frontend Hosting with Amazon S3**: [s3 Glossary](./s3-hosting-glossary)
 
-3. **Content Delivery with CloudFront**: 
+3. **Content Delivery with CloudFront**: [CloudFront Glossary](./cloudfront-glossary)
 
-4. **Automated Deployment with GitHub Actions**: [CI/CD glossary](./cicd-glossary)
+4. **Automated Deployment with GitHub Actions**: [CI/CD Glossary](./cicd-glossary)
 
 ## Get Interview Ready!
 
