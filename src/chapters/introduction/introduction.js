@@ -41,7 +41,7 @@ You’ll build a working vocabulary of cloud-related terms so you can talk tech 
 
 ## 📚 Weekly Breakdown
 
-We will meet 4 times 
+There will be four class sessions held on Zoom.
 
 - Week 1
   - Session 1 - June 3rd Tuesday  1-3pm CDT
