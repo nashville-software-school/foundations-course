@@ -41,6 +41,16 @@ You’ll build a working vocabulary of cloud-related terms so you can talk tech 
 
 ## 📚 Weekly Breakdown
 
+We will meet 4 times 
+
+- Week 1
+  - Session 1 - June 3rd Tuesday  1-3pm CDT
+  - Session 2 - June 5th Thursday 1-3pm CDT
+
+- Week 2
+  - Session 3 - June 10th Tuesday  1-3pm CDT
+  - Session 4 - June 12th Thursday 1-3pm CDT
+
 ### Week 1
 
 #### Session 1: Cloud Fundamentals
