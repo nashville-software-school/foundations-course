@@ -180,7 +180,8 @@ console.log(schedule)`,
           catch (e) {
             return new TestResult({passed:false,message:e.message})
           }
-        }
+        },
+        message: "Make sure your output matches the expected format"
       },
       {
         name: "For..of Loop",
