@@ -42,6 +42,14 @@ export const sections = [
       "Understand CI/CD fundamentals and implement automated deployments with GitHub Actions",
     required: true,
   },
+  // Module 5: Conclusion
+  {
+    id: "conclusion",
+    title: "Conclusion",
+    description:
+      "Overview of what we have learned and further learning resources",
+    required: true,
+  },
 ]
 
 /**
