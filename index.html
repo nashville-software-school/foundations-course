@@ -15,7 +15,7 @@
           sessionStorage.removeItem('redirect');
 
           // Ensure we're in the correct basename
-          var basePath = '/intro-to-cloud-student-facing/';
+          var basePath = '/intro-to-cloud-student-facing';
           if (window.location.pathname.indexOf(basePath) === 0) {
             // Use history API to navigate to the correct route without a page reload
             var targetPath = basePath + redirect;
