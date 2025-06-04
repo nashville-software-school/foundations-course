@@ -30,13 +30,14 @@ You’ll build a working vocabulary of cloud-related terms so you can talk tech 
 ## 🗓️ Course Structure
 
 - **Live Zoom Sessions**: 2 sessions per week, each 2 hours long
-- **Slack Channel**: For discussions, announcements, and questions 
+- **Slack Channel**: For discussions, announcements 
     - Slack Channel: Join the conversation, ask questions, and stay updated.
     Look for: #cloud-deployment-fundamentals-{your cohort number} — for example, Cohort One = #cloud-deployment-fundamentals-01
 - **Session Format**:
   - **Hour 1**: Learn core concepts and collaboratively set up resources in the cloud (instructor-supported)
   - **Hour 2**: Instructor-led walkthroughs, with discussion and deeper insights
-
+- **How to reach us**
+  - Got a question? The #help channel on Slack is the perfect place to ask!
 ---
 
 ## 📚 Weekly Breakdown
