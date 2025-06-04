@@ -199,7 +199,7 @@ console.log(yearlyTotal)`,
                                 ${requiredVars.join(', ')}
                             };
                         `);
-            
+
                         const result = wrapper();
                         const testResult = new TestResult({
                             passed:true,
@@ -216,8 +216,9 @@ console.log(yearlyTotal)`,
                         }
                         if (!testResult.passed) return testResult
                         return new TestResult({passed:true});
-                    } catch {
-                        return  new TestResult({passed:false, message: "Make sure all monthly variables are named correctly and assigned numbers"})
+                    } catch (e) {
+
+                        return  new TestResult({passed:false, message: "Make sure all monthly variables are named correctly and assigned numbers. Source code error: " + e.message})
                     }
                 },
                 message: "All monthly variables must be named exactly (e.g. marchBill) and assigned a number"
@@ -242,14 +243,14 @@ console.log(yearlyTotal)`,
                   const logs = [];
                   const mockConsole = { log: (msg) => logs.push(msg) };
                   try {
-                        const yearlyTotal = 
+                        const yearlyTotal =
                         new Function( "console",code + '\n return yearlyTotal')(mockConsole)
-                        return new TestResult({passed:logs[0] === yearlyTotal}); 
+                        return new TestResult({passed:logs[0] === yearlyTotal});
                     } catch {
                     return new TestResult({passed:false})
                   }
                 },
-                message: "You should console.log(\"*** yearly total ***\")"
+                message: "You should console.log(yearlyTotal) to print the total to the console"
               },
         ]
     }

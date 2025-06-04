@@ -181,7 +181,7 @@ console.log(schedule)`,
             return new TestResult({passed:false,message:e.message})
           }
         },
-        message: "Make sure your output matches the expected format"
+        message: "Make sure your output matches the expected format of `Patient First Last has an appointment at Time` for each appointment, with each on a new line."
       },
       {
         name: "For..of Loop",
