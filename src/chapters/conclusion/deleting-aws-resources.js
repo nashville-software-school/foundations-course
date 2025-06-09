@@ -5,6 +5,8 @@ export const deletingResourcesChapter = {
   previousChapterId: "summary",
   content: `Amazon web services cost money and now that you have completed the course, it is time to delete the resources you've created in order to reduce the cost to NSS. That way we have more "resources" to continue providing these workshops to future students.
 
+## IMPORTANT! If you intend to go on to workshop 2, do not delete your cloudfront distribution and s3 bucket. Only delete the IAM user.
+
 ### Cloudfront Distribution
 
 1. In the AWS console, navigate to CloudFront. 
@@ -17,6 +19,8 @@ export const deletingResourcesChapter = {
 ### s3 Bucket
 
 1. In the AWS console, navigate to s3. 
+
+2. Selct your bucket and click empty. Follow the prompts to empty your bucket. Amazon requires the bucket to be empty before deletion.
 
 2. Select your bucket and click delete
 
