@@ -20,7 +20,7 @@ export const deletingResourcesChapter = {
 
 1. In the AWS console, navigate to s3. 
 
-2. Selct your bucket and click empty. Follow the prompts to empty your bucket. Amazon requires the bucket to be empty before deletion.
+2. Select your bucket and click empty. Follow the prompts to empty your bucket. Amazon requires the bucket to be empty before deletion.
 
 2. Select your bucket and click delete
 
