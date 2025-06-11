@@ -3,7 +3,8 @@ import { Link, useLocation } from 'react-router-dom'
 import { useChapter } from '../context/ChapterContext'
 import { useLearnerProgress } from '../context/LearnerProgressContext'
 import { useAuth } from '../context/AuthContext'
-import { sections } from '../sections'
+import { sectionsWorkshop1 } from '../sections'
+import { sectionsWorkshop2 } from '../sections'
 import { css } from '@emotion/react'
 import SectionHeader from './SectionHeader'
 
@@ -349,20 +350,25 @@ function Navigation() {
   }
 
   // Filter sections into required and optional
-  const requiredSections = sections.filter(section => section.required || (!section.optional && !section.required))
-  const optionalSections = sections.filter(section => section.optional)
+  // Workshop 1 sections
+  const requiredSections1 = sectionsWorkshop1.filter(section => section.required || (!section.optional && !section.required))
+  const optionalSections1 = sectionsWorkshop1.filter(section => section.optional)
+
+  // Workshop 2 sections
+  const requiredSections2 = sectionsWorkshop2.filter(section => section.required || (!section.optional && !section.required))
+  const optionalSections2 = sectionsWorkshop2.filter(section => section.optional)
 
   return (
     <nav css={navStyles}>
-      {/* Required Sections */}
+      {/* Required Sections Workshop 1*/}
       <div className="required-work-header">
         <h3>Workshop 1</h3>
       <div className="section-group required-sections">
-        {requiredSections.map(renderSection)}
+        {requiredSections1.map(renderSection)}
       </div>
       </div>
       {/* Optional Sections */}
-      {optionalSections.length > 0 && (
+      {optionalSections1.length > 0 && (
         <div className="section-group optional-sections">
           <div className="additional-work-header">
             <h3>Additional Work</h3>
@@ -371,7 +377,27 @@ function Navigation() {
             </p>
           </div>
 
-          {optionalSections.map(renderSection)}
+          {optionalSections1.map(renderSection)}
+        </div>
+      )}
+      {/* Required Sections Workshop 2 */}
+      <div className="required-work-header">
+        <h3>Workshop 2</h3>
+      <div className="section-group required-sections">
+        {requiredSections2.map(renderSection)}
+      </div>
+      </div>
+      {/* Optional Sections */}
+      {optionalSections2.length > 0 && (
+        <div className="section-group optional-sections">
+          <div className="additional-work-header">
+            <h3>Additional Work</h3>
+            <p className="additional-work-description">
+              The following sections are optional if you want to practice your skills
+            </p>
+          </div>
+
+          {optionalSections2.map(renderSection)}
         </div>
       )}
     </nav>

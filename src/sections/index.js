@@ -3,13 +3,15 @@
  * Each section represents a major topic area that contains related chapters.
  */
 
-export const sections = [
+//Workshop 1 sections
+export const sectionsWorkshop1 = [
   // Module 0: Intro th the course
   {
     id: "introduction",
     title: "Introduction",
     description: "A concise introduction to the course, outlining the learning objectives, delivery format, and the foundational AWS architecture will build by the end.",
-    required: true
+    required: true,
+    workshop: 1,
   },
   // Module 1: Cloud Fundamentals
   {
@@ -18,6 +20,7 @@ export const sections = [
     description:
       "Understanding cloud computing concepts, benefits, and AWS account setup",
     required: true,
+    workshop: 1,
   },
   // Module 2: AWS S3 for Static Website Hosting
   {
@@ -26,6 +29,7 @@ export const sections = [
     description:
       "Learn to use S3 for object storage and hosting static React applications",
     required: true,
+    workshop: 1,
   },
   // Module 3: CloudFront
   {
@@ -33,6 +37,7 @@ export const sections = [
     title: "CloudFront",
     description: "TBD",
     required: true,
+    workshop: 1,
   },
   // Module 4: Introduction to CI/CD
   {
@@ -41,6 +46,7 @@ export const sections = [
     description:
       "Understand CI/CD fundamentals and implement automated deployments with GitHub Actions",
     required: true,
+    workshop: 1,
   },
   // Module 5: Conclusion
   {
@@ -49,6 +55,56 @@ export const sections = [
     description:
       "Overview of what we have learned and further learning resources",
     required: true,
+    workshop: 1,
+  },
+
+]
+  //Workshop 2 sections
+  export const sectionsWorkshop2 = [
+   // Module 0: Intro to workshop 2
+  {
+    id: "intro-to-workshop2",
+    title: "Introduction",
+    description:
+      "Introduction to what we will learn in workshop 2",
+    required: true,
+    workshop: 2,
+  },
+  // Module 1: Intro to Docker
+  {
+    id: "intro-to-docker",
+    title: "Docker",
+    description:
+      "Introduction to Docker concepts, installing and running Docker locally",
+    required: true,
+    workshop: 2,
+  },
+  // Module 2: AWS CLI and intro to ECR
+  {
+    id: "aws-cli-ecr",
+    title: "AWS CLI and Amazon ECR",
+    description:
+      "Setting up CLI to use with AWS. Intro to ECR and using the CLI to push a docker image to the repository",
+    required: true,
+    workshop: 2,
+  },
+  // Module 3: AWS EC2
+  {
+    id: "ec2",
+    title: "EC2",
+    description:
+      "Running Docker on an EC2 instance",
+    required: true,
+    workshop: 2,
+  },
+  // Module 4: CICD for EC2 and Docker
+  {
+    id: "cicd-ec2-docker",
+    title: "CI/CD with Docker and EC2",
+    description:
+      "CI/CD changes building on the first workshop to deploy docker containers on EC2",
+    required: true,
+    workshop: 2,
   },
 ]
 
