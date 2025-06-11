@@ -11,7 +11,6 @@ export const sectionsWorkshop1 = [
     title: "Introduction",
     description: "A concise introduction to the course, outlining the learning objectives, delivery format, and the foundational AWS architecture will build by the end.",
     required: true,
-    workshop: 1,
   },
   // Module 1: Cloud Fundamentals
   {
@@ -20,7 +19,6 @@ export const sectionsWorkshop1 = [
     description:
       "Understanding cloud computing concepts, benefits, and AWS account setup",
     required: true,
-    workshop: 1,
   },
   // Module 2: AWS S3 for Static Website Hosting
   {
@@ -29,7 +27,6 @@ export const sectionsWorkshop1 = [
     description:
       "Learn to use S3 for object storage and hosting static React applications",
     required: true,
-    workshop: 1,
   },
   // Module 3: CloudFront
   {
@@ -37,7 +34,6 @@ export const sectionsWorkshop1 = [
     title: "CloudFront",
     description: "TBD",
     required: true,
-    workshop: 1,
   },
   // Module 4: Introduction to CI/CD
   {
@@ -46,7 +42,6 @@ export const sectionsWorkshop1 = [
     description:
       "Understand CI/CD fundamentals and implement automated deployments with GitHub Actions",
     required: true,
-    workshop: 1,
   },
   // Module 5: Conclusion
   {
@@ -55,7 +50,6 @@ export const sectionsWorkshop1 = [
     description:
       "Overview of what we have learned and further learning resources",
     required: true,
-    workshop: 1,
   },
 
 ]
@@ -68,7 +62,6 @@ export const sectionsWorkshop1 = [
     description:
       "Introduction to what we will learn in workshop 2",
     required: true,
-    workshop: 2,
   },
   // Module 1: Intro to Docker
   {
@@ -77,7 +70,6 @@ export const sectionsWorkshop1 = [
     description:
       "Introduction to Docker concepts, installing and running Docker locally",
     required: true,
-    workshop: 2,
   },
   // Module 2: AWS CLI and intro to ECR
   {
@@ -86,7 +78,6 @@ export const sectionsWorkshop1 = [
     description:
       "Setting up CLI to use with AWS. Intro to ECR and using the CLI to push a docker image to the repository",
     required: true,
-    workshop: 2,
   },
   // Module 3: AWS EC2
   {
@@ -95,7 +86,6 @@ export const sectionsWorkshop1 = [
     description:
       "Running Docker on an EC2 instance",
     required: true,
-    workshop: 2,
   },
   // Module 4: CICD for EC2 and Docker
   {
@@ -104,7 +94,6 @@ export const sectionsWorkshop1 = [
     description:
       "CI/CD changes building on the first workshop to deploy docker containers on EC2",
     required: true,
-    workshop: 2,
   },
 ]
 
