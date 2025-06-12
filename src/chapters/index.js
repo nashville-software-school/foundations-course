@@ -1,19 +1,10 @@
-import { cloudFundamentalsChapters } from "./cloud-fundamentals"
-import { awsS3HostingChapters } from "./aws-s3-hosting"
-import { introToCicdChapters } from "./intro-to-cicd"
-import { cloudfrontChapters } from "./cloudfront"
-import { introductionChapters } from "./introduction"
-import { conclusionChapters } from './conclusion';
+import { workshop1Chapters } from "./workshop1"
+import { workshop2Chapters } from "./workshop2"
 
 export const chapters = [
-  ...introductionChapters,
-  ...cloudFundamentalsChapters,
-  ...awsS3HostingChapters,
-  ...cloudfrontChapters,
-  ...introToCicdChapters,
-  ...conclusionChapters,
+  ...workshop1Chapters,
+  ...workshop2Chapters,
 ]
-
 /**
  * Helper function to get chapter by ID
  * @param {string} id - The chapter ID to find
