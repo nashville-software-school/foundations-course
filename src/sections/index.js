@@ -74,7 +74,7 @@ export const sectionsWorkshop1 = [
   // Module 2: AWS CLI and intro to ECR
   {
     id: "aws-cli-ecr",
-    title: "AWS CLI and Amazon ECR",
+    title: "Amazon ECR",
     description:
       "Setting up CLI to use with AWS. Intro to ECR and using the CLI to push a docker image to the repository",
     required: true,
