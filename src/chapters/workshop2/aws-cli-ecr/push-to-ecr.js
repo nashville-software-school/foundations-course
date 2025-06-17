@@ -23,7 +23,7 @@ Follow the prompts to set up your sso profile. You will need the values listed h
   - Name the profile after the role \`intro_to_cloud\`. 
   - There should only be one account available to you, the cli should automatically use that account number. 
 
-**What's happening here?** This is creating a local file \`~/.aws/config\` with configurations that the cli will use when accessing AWS resources. You can find that local file and take a look at the contents. 
+**What's happening here?** This is creating a local file \`~/.aws/cli/config\` with configurations that the cli will use when accessing AWS resources. You can find that local file and take a look at the contents. 
 
 
 
