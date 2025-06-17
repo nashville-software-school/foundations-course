@@ -26,13 +26,12 @@ Follow the prompts to set up your sso profile. You will need the values listed h
 **What's happening here?** This is creating a local file \`~/.aws/cli/config\` with configurations that the cli will use when accessing AWS resources. You can find that local file and take a look at the contents. 
 
 
-
-2. You may be already logged in but in case not run \`aws sso login --profile intro_to_cloud\`
+2. You may be already logged in but in case not run \`aws sso login --profile intro_to_cloud\`. After 4 hours your credentials will expire and you will need to run this login command again. 
 
 
 3. Check that your CLI is configured. Try running \`aws s3 ls --profile intro_to_cloud\`. This will list any buckets you have created in s3. 
 
-💡 **What's happening here?** When you login to AWS with SSO, whether in the browser or from the command line, AWS is using STS (Security Token Service) to give you temporary credentials so you can interact with AWS services securely without needing long-lived IAM user credentials and these credentials are good for 4 hours based on how NSS has configured the intro_to_cloud permissions set. In the case of CLI, those credentials are being provided to your local computer and automatically stored in \`~/.aws/sso/cache\`. 
+💡 **What's happening here?** When you login to AWS with SSO, whether in the browser or from the command line, AWS is using STS (Security Token Service) to give you temporary credentials so you can interact with AWS services securely without needing long-lived IAM user credentials.In the case of CLI, those credentials are being provided to your local computer and automatically stored in \`~/.aws/sso/cache\`. 
 
 💡 **Why use a session token?** Temporary credentials are typically used for federated or assumed roles, offering limited-time access and increased security.
 
