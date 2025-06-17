@@ -73,8 +73,18 @@ function IntroPage() {
     markIntroAsSeen();
     console.log('After markIntroAsSeen call');
 
+    // Get the progress state to check for last visited chapter
+    const progressData = JSON.parse(localStorage.getItem('learnerProgress') || '{}');
+    const lastVisitedChapterId = progressData.lastUpdatedExerciseId;
+
     // Add a URL parameter to indicate the user has seen the intro
-    navigate('/github-account?hasSeenIntro=true');
+    if (lastVisitedChapterId) {
+      console.log(`Navigating to last visited chapter: ${lastVisitedChapterId}`);
+      navigate(`/${lastVisitedChapterId}?hasSeenIntro=true`);
+    } else {
+      console.log('No last visited chapter found, navigating to first chapter');
+      navigate('/github-account?hasSeenIntro=true');
+    }
   }
 
   const handlePlayVideo = () => {

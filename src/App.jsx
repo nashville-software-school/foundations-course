@@ -40,7 +40,20 @@ function IntroRedirect() {
     return <Navigate to="/intro" replace />
   }
 
-  console.log('Redirecting to main content')
+  console.log('Redirecting to last visited chapter or default chapter')
+
+  // Check if there's a lastUpdatedExerciseId in the progress state
+  const lastVisitedChapterId = progress.lastUpdatedExerciseId;
+
+  // If we have a last visited chapter, redirect to it
+  if (lastVisitedChapterId) {
+    console.log(`Found last visited chapter: ${lastVisitedChapterId}`)
+    // If hasSeenIntroParam is true, preserve it when redirecting
+    return <Navigate to={hasSeenIntroParam ? `/${lastVisitedChapterId}?hasSeenIntro=true` : `/${lastVisitedChapterId}`} replace />
+  }
+
+  // Otherwise, fall back to the first chapter
+  console.log('No last visited chapter found, redirecting to first chapter')
   // If hasSeenIntroParam is true, preserve it when redirecting
   return <Navigate to={hasSeenIntroParam ? "/github-account?hasSeenIntro=true" : "/github-account"} replace />
 }
