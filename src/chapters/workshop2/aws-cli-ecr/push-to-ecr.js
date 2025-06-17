@@ -31,7 +31,7 @@ Follow the prompts to set up your sso profile. You will need the values listed h
 
 3. Check that your CLI is configured. Try running \`aws s3 ls --profile intro_to_cloud\`. This will list any buckets you have created in s3. 
 
-💡 **What's happening here?** When you login to AWS with SSO, whether in the browser or from the command line, AWS is using STS (Security Token Service) to give you temporary credentials so you can interact with AWS services securely without needing long-lived IAM user credentials.In the case of CLI, those credentials are being provided to your local computer and automatically stored in \`~/.aws/sso/cache\`. 
+💡 **What's happening here?** When you login to AWS with SSO, whether in the browser or from the command line, AWS is using STS (Security Token Service) to give you temporary credentials so you can interact with AWS services securely without needing long-lived IAM user credentials. In the case of CLI, those credentials are being provided to your local computer and automatically stored in \`~/.aws/sso/cache\`. 
 
 💡 **Why use a session token?** Temporary credentials are typically used for federated or assumed roles, offering limited-time access and increased security.
 
