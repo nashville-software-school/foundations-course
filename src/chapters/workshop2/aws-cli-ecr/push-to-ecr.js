@@ -15,38 +15,24 @@ In this guide, you'll learn how to configure your AWS CLI using temporary creden
     aws configure sso
     \`\`\`
 
-Follow the prompts to set up and name your profile (e.g., \`nss-sso\`). The region will be \`us-east-2\` and the output format will be \`json\`.
+Follow the prompts to set up your sso profile. You will need the values listed here:
+  - The start url will be \`https://nss-se.awsapps.com/start/\`
+  - Choose the \`intro_to_cloud\` role. 
+  - Set the region to \`us-east-2\`.
+  - The output format will be \`json\`.
+  - Name the profile after the role \`intro_to_cloud\`. 
+  - There should only be one account available to you, the cli should automatically use that account number. 
 
-**What's happening here?** This is creating a local file \`~/.aws/config\` with configurations that the cli will use when accessing AWS resources.
-
-
-2. Use the AWS CLI to assume the intro_to_cloud role
-
-   \`\`\`bash
-   aws sts assume-role \
-     --role-arn arn:aws:iam::[your-account-id]:role/intro_to_cloud \
-     --role-session-name tempSession \
-     --profile [your-sso-profile-name]
-   \`\`\`
-
-Get your account id by clicking your username in the top right hand corner in the AWS console to replace \`[your-account-id]\`. For \`[your-sso-profile-name]\` use the same profile name you used during the sso configuration.
-
-3. Copy the \`AccessKeyId\`, \`SecretAccessKey\`, and \`SessionToken\` from the output.
-
-4. Set them as environment variables:
-   \`\`\`bash
-   export AWS_ACCESS_KEY_ID="[AccessKeyId]"
-   export AWS_SECRET_ACCESS_KEY="[SecretAccessKey]"
-   export AWS_SESSION_TOKEN="[SessionToken]"
-   export AWS_DEFAULT_REGION="us-east-2"
-   \`\`\`
-
-This is saving these values in the current shell session's memory. These environment variables only last for your current terminal session.
+**What's happening here?** This is creating a local file \`~/.aws/config\` with configurations that the cli will use when accessing AWS resources. You can find that local file and take a look at the contents. 
 
 
-5. Check that your CLI is configured. Try running \`aws s3 ls\`. This will list any buckets you have created in s3. 
 
-💡 **What's happening here?** You're using AWS STS (Security Token Service) to get temporary credentials so you can interact with AWS services securely without needing long-lived IAM user credentials.
+2. You may be already logged in but in case not run \`aws sso login --profile intro_to_cloud\`
+
+
+3. Check that your CLI is configured. Try running \`aws s3 ls --profile intro_to_cloud\`. This will list any buckets you have created in s3. 
+
+💡 **What's happening here?** When you login to AWS with SSO, whether in the browser or from the command line, AWS is using STS (Security Token Service) to give you temporary credentials so you can interact with AWS services securely without needing long-lived IAM user credentials. In this case those credentials are being provided to your local computer and automatically stored in \`~/.aws/sso/cache\`
 
 💡 **Why use a session token?** Temporary credentials are typically used for federated or assumed roles, offering limited-time access and increased security.
 
