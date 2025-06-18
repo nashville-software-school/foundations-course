@@ -1,6 +1,8 @@
 import { dockerGlossaryChapter } from './glossary';
+import { dockerSetupChapter } from './docker-setup';
 
 export const introToDockerChapters = [
+  dockerSetupChapter,
   dockerGlossaryChapter
 ];
 
