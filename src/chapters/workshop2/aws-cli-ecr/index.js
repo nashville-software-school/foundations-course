@@ -1,7 +1,9 @@
 import { cliEcrGlossaryChapter } from './glossary';
+import { ecrSetupChapter } from './push-to-ecr';
 
 export const cliEcrChapters = [
-  cliEcrGlossaryChapter
+  cliEcrGlossaryChapter,
+  ecrSetupChapter
 ];
 
 /**
