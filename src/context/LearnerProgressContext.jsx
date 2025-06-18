@@ -5,6 +5,14 @@ import Cookies from 'js-cookie'
 
 const LearnerProgressContext = createContext()
 
+export const useProgress = () => {
+    const context = useContext(LearnerProgressContext)
+    if (!context) {
+        throw new Error('useProgress must be used within a LearnerProgressProvider')
+    }
+    return context
+}
+
 export const LearnerProgressProvider = ({ children }) => {
     const [progress, setProgress] = useState(() => {
         // Initialize from localStorage/cookies or create new manifest
@@ -57,6 +65,60 @@ export const LearnerProgressProvider = ({ children }) => {
             )
         }
     }, [progress, user]) // Added user as a dependency since it's used in sendProgressToAPI
+
+    useEffect(() => {
+        if (user && "name" in user) {
+            // GET all learner progress from the API and merge it with local progress
+            const fetchProgress = async () => {
+                const progress = {}
+                try {
+                    // Use dedicated environment variable for learning platform API
+                    // Default to localhost for development if not set
+                    const apiDomain = import.meta.env.VITE_LEARNING_PLATFORM_API || 'http://localhost:8000'
+                    const apiUrl = `${apiDomain}/foundations/${user.id}/exercises`
+
+                    const response = await fetch(apiUrl)
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch progress from API')
+                    }
+
+                    const data = await response.json()
+
+                    const exercises = {}
+                    for (const exercise of data) {
+                        const slug = exercise.slug
+
+                        // Ensure each exercise has a valid structure
+                        exercises[slug] = {
+                            attempts: exercise.attempts || 0,
+                            completed: exercise.complete || false,
+                            completedAt: exercise.completed_on || false,
+                            completedCode: exercise.completed_code || false,
+                            firstAttempt: exercise.first_attempt || null,
+                            lastAttempt: exercise.last_attempt || null,
+                            codeHashes: [],
+                            solutionShown: exercise.used_solution || false
+                        }
+                    }
+                    progress.exercises = exercises
+                    progress.hasSeenIntro = true
+                    progress.lastUpdatedExerciseId = data[data.length - 1]?.slug || null
+
+                } catch (error) {
+                    console.error('Error fetching progress from API:', error)
+                }
+
+                localStorage.setItem('learnerProgress', JSON.stringify(progress))
+                setProgress(prev => ({
+                    ...prev,
+                    ...progress,
+                    lastUpdated: new Date().toISOString()
+                }))
+            }
+
+            fetchProgress()
+        }
+    }, [])
 
     // Function to do a PUT request to the Learning Platform API. Must accept the current exercise being worked on as a parameter. The exercise is stringified and sent to the API
     const sendProgressToAPI = async (exerciseId, currentProgress) => {

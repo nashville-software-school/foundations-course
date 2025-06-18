@@ -6,6 +6,7 @@ import GlobalProgressBar from './GlobalProgressBar'
 import AuthButton from './AuthButton'
 import NavigationToggle from './NavigationToggle'
 import { css } from '@emotion/react'
+import { useProgress } from '../context/LearnerProgressContext.jsx'
 
 const layoutStyles = css`
   display: flex;
@@ -118,6 +119,7 @@ const layoutStyles = css`
 
 function Layout() {
   const [isNavExpanded, setIsNavExpanded] = useState(true);
+  const { progress } = useProgress()
 
   // Load saved state from localStorage on component mount
   useEffect(() => {

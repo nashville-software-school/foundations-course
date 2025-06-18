@@ -131,8 +131,20 @@ const random =
 const greeting =
 const sum =
 
-console.log(random, msg, number)
+console.log(random, greeting, number)
 `,
+    solution: `// Convert these traditional functions to arrow functions
+const add = (x, y) => x + y
+const greet = name => \`Hello, \${name}!\`
+const getRandomNumber = () => Math.random()
+
+// After converting, test your functions by invoking them here
+const random = getRandomNumber()
+const greeting = greet("Alice")
+const sum = add(5, 3)
+
+console.log(random, greeting, sum)`,
+    // Tests to ensure the functions are converted correctly and still work
     tests: [
       {
         name: "Convert add function",
