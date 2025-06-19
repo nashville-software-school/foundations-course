@@ -28,7 +28,7 @@ In this chapter, you’ll launch an EC2 instance, attach an IAM role that allows
 
 ### 2. Attach IAM Role to EC2 for ECR and SSM Access
 
-The instructors have alerady created a role \`Ec2AccessRole\` with the \`AmazonEC2ContainerRegistryReadOnly\` and \`AmazonSSMManagedInstanceCore\` policies, attach it to your EC2 instance:
+The instructors have already created a role \`Ec2AccessRole\` with the \`AmazonEC2ContainerRegistryReadOnly\` and \`AmazonSSMManagedInstanceCore\` policies, attach it to your EC2 instance:
 
 1. In the **EC2 Console**, go to **Instances**
 2. Select your instance
