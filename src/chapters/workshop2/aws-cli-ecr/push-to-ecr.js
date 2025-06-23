@@ -2,7 +2,7 @@ export const ecrSetupChapter = {
   id: "cli-ecr",
   title: "Pushing Docker Image to AWS ECR",
   sectionId: "aws-cli-ecr",
-  previousChapterId: null,
+  previousChapterId: "aws-cli-ecr-intro",
   content: `## Configuring AWS CLI with Session Token and Pushing Docker Image to ECR
 
 In this guide, you'll learn how to configure your AWS CLI using temporary credentials (session token), create an Amazon ECR (Elastic Container Registry) repository, and push your Docker image to it.
