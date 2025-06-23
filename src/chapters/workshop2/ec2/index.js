@@ -1,9 +1,11 @@
 import { ec2GlossaryChapter } from './glossary';
 import { ec2Chapter } from './ec2-setup';
+import { ec2FundamentalsChapter } from './ec2-fundamentals';
 
 export const ec2Chapters = [
   ec2Chapter,
   ec2GlossaryChapter, 
+  ec2FundamentalsChapter
 ];
 
 /**
