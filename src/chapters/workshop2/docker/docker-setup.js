@@ -2,7 +2,7 @@ export const dockerSetupChapter = {
   id: "docker-setup",
   title: "Run a Docker Container Locally",
   sectionId: "intro-to-docker",
-  previousChapterId: null,
+  previousChapterId: "docker-fundamentals",
   content: `## Setting Up and Running the Application Locally with Docker
 
 In this guide, you'll learn how to run your Rock of Ages application locally using Docker.
@@ -39,7 +39,7 @@ You should see output indicating the installed version.
 
 ### 3. Explore the Dockerfile
 
-Take a look and explore the Dockerfile that you will find in the rock-of-ages-api project. Remember A Dockerfile is a text file containing a set of instructions for building a Docker image. 
+Take a look and explore the Dockerfile that you will find in the rock-of-ages-api project. Remember A Dockerfile is a text file containing a set of instructions for building a Docker image. Check out the next chapter for a full breakdown of the Dockerfile. 
 
 ### 4. Build the Docker Image
 
