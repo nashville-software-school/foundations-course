@@ -24,6 +24,12 @@ export const ec2GlossaryChapter = {
 | **Terminate** | The action of permanently deleting an EC2 instance. Unlike stopping, this cannot be undone. |
 | **Stop** | A command that shuts down an instance while preserving its attached storage and configuration. |
 | **Start** | A command that powers on a stopped EC2 instance, restoring its previous state (but possibly changing the public IP). |
+| **Lambda** | A serverless compute service that lets you run code without provisioning or managing servers. You only pay for the compute time your code uses. |
+| **ECS (Elastic Container Service)** | A container orchestration service used to run and manage Docker containers at scale on AWS. |
+| **Fargate** | A serverless compute engine for ECS and EKS that allows you to run containers without managing EC2 instances. |
+| **VM (Virtual Machine)** | A software emulation of a physical computer. EC2 instances are examples of VMs running in the AWS cloud. |
+| **CPU (Central Processing Unit)** | The processing power of a virtual machine. Instance types define how many vCPUs are allocated. |
+| **Memory (RAM)** | Temporary working storage for applications running on a VM. Determines how much data can be held in memory at once. |
 
 `,
   exercise: null
