@@ -2,7 +2,7 @@ export const ec2Chapter = {
   id: "ec2-setup",
   title: "Running Docker Container from ECR on EC2",
   sectionId: "ec2",
-  previousChapterId: null,
+  previousChapterId: "ec2-fundamentals",
   content: `## Running Your Docker Image on an EC2 Instance
 
 In this chapter, you’ll launch an EC2 instance, attach an IAM role that allows ECR access, and pull and run your Docker container from ECR.
