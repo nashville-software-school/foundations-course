@@ -1,9 +1,11 @@
 import { cliEcrGlossaryChapter } from './glossary';
 import { ecrSetupChapter } from './push-to-ecr';
+import { awsCliEcrIntroChapter } from './cli-ecr-fundamentals';
 
 export const cliEcrChapters = [
   cliEcrGlossaryChapter,
-  ecrSetupChapter
+  ecrSetupChapter,
+  awsCliEcrIntroChapter
 ];
 
 /**
