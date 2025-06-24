@@ -58,6 +58,9 @@ Here's the big picture of how you'll use the AWS CLI and ECR together:
 
 Once it’s in ECR, your image is available to deploy in other AWS services like ECS or EC2.
 
+Check out this video to see a little more in depth into ECR. Again, just watch and don't follow the steps in the video. 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/H73uX0TOX9g?si=P8T9OcarwzO4R-YL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 
 ## What We’ll Do Next
 
