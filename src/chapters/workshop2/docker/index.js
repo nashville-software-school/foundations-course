@@ -1,9 +1,13 @@
 import { dockerGlossaryChapter } from './glossary';
 import { dockerSetupChapter } from './docker-setup';
+import { dockerFundamentalsChapter } from './docker-fundamentals';
+import { dockerfileBreakdownChapter } from './dockerfile-breakdown';
 
 export const introToDockerChapters = [
   dockerSetupChapter,
-  dockerGlossaryChapter
+  dockerGlossaryChapter,
+  dockerFundamentalsChapter,
+  dockerfileBreakdownChapter
 ];
 
 /**
