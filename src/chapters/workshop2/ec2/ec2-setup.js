@@ -104,7 +104,7 @@ newgrp docker
 Start your container and map port 8000 to port 80 on the instance:
 
 \`\`\`bash
-docker run -d -p 80:8000 [your_account_id].dkr.ecr.us-east-2.amazonaws.com/rock-of-ages-api:latest
+docker run -d --name rock-of-ages-api -p 80:8000 [your_account_id].dkr.ecr.us-east-2.amazonaws.com/rock-of-ages-api:latest
 \`\`\`
 
 💡 **What's happening here?** This runs the container in detached mode and makes the app accessible via HTTP on port 80 (the default web port).

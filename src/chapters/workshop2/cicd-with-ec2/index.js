@@ -1,6 +1,8 @@
+import { githubActionsChapter } from './actions-setup';
 import { cicdGlossaryChapter } from './glossary';
 
 export const ec2CicdChapters = [
+  githubActionsChapter,
   cicdGlossaryChapter
 ];
 
