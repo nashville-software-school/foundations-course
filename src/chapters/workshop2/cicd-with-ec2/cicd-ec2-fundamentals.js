@@ -7,14 +7,14 @@ export const advancedCicdWithDockerChapter = {
 
 In our earlier CI/CD workflow, we kept things simple — run tests whenever code changes, using GitHub Actions and your raw application environment.
 
-Check out the [CI/CD Fundamentals](../workshop1/intro-to-cicd/cicd-fundamentals) from the first workshop for a refresher.
+Check out the [CI/CD Fundamentals]( ./cicd-fundamentals) from the first workshop for a refresher.
 
 In this chapter, we take a **big step forward**:  separating responsibilities, containerizing the app, and introducing manual deployment control. These additions reflect what you’ll find in real-world engineering teams and production systems.
 
 
 ### 🧱 Job Separation
 
-Instead of one big job that builds, tests, and deploys, we now use **two distinct jobs**:
+Instead of one big job that builds, tests, and deploys, we will now use **two distinct jobs**:
 
 - One to run tests  
 - One to build and push the Docker image
@@ -26,7 +26,6 @@ This separation gives us:
 - 🔁 **Rerun only what’s needed**
 - 🚨 **Early failure detection**
 - 🧩 **More flexibility**
-
 
 
 ### 🖱️ Manual Deployment Workflow

@@ -1,7 +1,7 @@
 import { githubActionsChapter } from './actions-setup';
 import { cicdGlossaryChapter } from './glossary';
 import { githubActionsBreakdownChapter } from './actions-breakdown';
-import { advancedCicdWithDockerChapter } from './cicd-fundamentals';
+import { advancedCicdWithDockerChapter } from './cicd-ec2-fundamentals';
 
 export const ec2CicdChapters = [
   githubActionsChapter,
