@@ -1,4 +1,4 @@
-import diagram from "./diagram.png"
+import diagram from "../../../assets/diagram.png"
 
 export const summaryChapter = {
   id: "summary",
