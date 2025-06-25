@@ -7,8 +7,10 @@ export const githubActionsBreakdownChapter = {
 
 Here’s the full GitHub Actions YAML workflow we’ll explore:
 
+Here’s the full GitHub Actions YAML file:
+
 \`\`\`yaml
-name: Build, Test, & Push Docker Image
+name: Build & Push Docker Image
 
 on:
   push:
@@ -19,48 +21,51 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    outputs:
-      image_tag: \${{ steps.set-tag.outputs.image_tag }}
-    steps:
-      - uses: actions/checkout@v4
-      - id: set-tag
-        run: echo "image_tag=myapp:latest" >> $GITHUB_OUTPUT
-      - run: docker build -t myapp:latest .
-      - run: docker save myapp:latest -o myapp-latest.tar
-      - uses: actions/upload-artifact@v4
-        with:
-          name: docker-image
-          path: myapp-latest.tar
-
   test:
+    name: Run Tests
     runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: docker-image
-      - run: docker load -i myapp-latest.tar
-      - run: docker run --rm myapp:latest pipenv run python manage.py test
 
-  push:
-    runs-on: ubuntu-latest
-    needs: [test]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          name: docker-image
-      - run: docker load -i myapp-latest.tar
-      - uses: aws-actions/configure-aws-credentials@v3
+          python-version: '3.11'
+
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Run tests
+        run: pipenv run python manage.py test
+
+
+  build-and-push:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    needs: test  # 👈 this ensures tests must pass before this job runs
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: \${{ vars.OIDC_ROLE_TO_ASSUME }}
           aws-region: \${{ vars.AWS_REGION }}
-      - uses: aws-actions/amazon-ecr-login@v2
-      - run: |
+
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & push Docker image
+        run: |
           IMAGE="\${{ vars.ECR_REGISTRY }}/\${{ vars.ECR_REPOSITORY }}:latest"
-          docker tag myapp:latest "$IMAGE"
+          docker build -t "$IMAGE" .
           docker push "$IMAGE"
 \`\`\`
 
@@ -89,60 +94,36 @@ permissions:
 These permissions allow GitHub to authenticate with AWS via OIDC (OpenID Connect) and read repo contents.
 
 
-## 🛠️ Job 1: Build
+### 🧪 \`test\` Job
 
-### Build and Save the Docker Image
+Runs first to verify code:
 
-- **Checks out the code** using \`actions/checkout\`
-- **Builds the Docker image** with \`docker build -t myapp:latest .\`
-- **Saves it as a .tar file** with \`docker save\`
-- **Uploads the image** as an artifact for later jobs to consume
+- Checks out your code
+- Sets up Python and Pipenv
+- Installs dependencies
+- Runs tests using Django’s built-in test runner
 
+If any of these steps fail, the Docker build is skipped.
 
-## ✅ Job 2: Test
+---
 
-### Run Tests *Inside* the Docker Container
+### 🐳 \`build-and-push\` Job
 
-- **Downloads the image artifact**
-- **Loads it into Docker** with \`docker load\`
-- **Runs Django tests inside the container** using:
-  \`\`\`bash
-  docker run --rm myapp:latest pipenv run python manage.py test
-  \`\`\`
+Runs only if tests pass:
 
-If tests fail, the workflow stops here — no pushing.
+- Assumes an IAM role securely using OIDC
+- Logs in to your Amazon ECR registry
+- Builds your Docker image using the local Dockerfile
+- Tags it and pushes to ECR as \`latest\`
 
+---
 
-## 🚀 Job 3: Push
+## ✅ Why This Pattern Works
 
-### Push to Amazon ECR
-
-- **Checks out the code (optional)** for access to project files
-- **Downloads and loads the Docker image again**
-- **Assumes an AWS role** using \`configure-aws-credentials\`
-- **Logs into ECR**
-- **Tags and pushes the image** to the appropriate ECR repository
-
-
-## 📦 Artifact Passing
-
-Because GitHub-hosted runners don't share images between jobs, we:
-- Save the image in \`build\`
-- Reuse it in both \`test\` and \`push\` using \`actions/upload-artifact\` and \`download-artifact\`
-
-This enables true separation of concerns while retaining performance and traceability.
-
-
-## 🧠 Recap: What This Workflow Does
-
-This GitHub Actions workflow sets up a robust, production-friendly pipeline:
-
-- ✅ Builds your Docker image once
-- ✅ Runs Django tests inside the container
-- ✅ Only pushes the image if all tests pass
-- ✅ Splits each stage into clear, modular jobs for better control and visibility
-
-This pattern is ideal for modern containerized CI/CD pipelines — especially when publishing to AWS ECR.
+- **Early feedback**: Test failures stop the workflow early
+- **Efficient**: Avoids unnecessary Docker builds
+- **Secure**: No secrets in the repo — uses federated identity
+- **AWS-compatible**: Clean, tagged images are pushed to ECR
 
 ## 🚀 Manual Deployment to EC2
 

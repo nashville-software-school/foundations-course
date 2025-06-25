@@ -69,7 +69,7 @@ testBuildPush.yml
 * Paste this workflow template into testBuildPush.yml
 
 \`\`\`yaml
-name: Build, Test, & Push Docker Image
+name: Build & Push Docker Image
 
 on:
   push:
@@ -80,66 +80,37 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: Build Docker Image
-    runs-on: ubuntu-latest
-
-    outputs:
-      image_tag: \${{ steps.set-tag.outputs.image_tag }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set image tag
-        id: set-tag
-        run: echo "image_tag=myapp:latest" >> $GITHUB_OUTPUT
-
-      - name: Build Docker image
-        run: docker build -t myapp:latest .
-
-      - name: Save Docker image as artifact
-        run: docker save myapp:latest -o myapp-latest.tar
-
-      - name: Upload Docker image artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: docker-image
-          path: myapp-latest.tar
-
   test:
-    name: Test Docker Image
+    name: Run Tests
     runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Download Docker image artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: docker-image
-
-      - name: Load Docker image
-        run: docker load -i myapp-latest.tar
-
-      - name: Run tests inside Docker container
-        run: docker run --rm myapp:latest pipenv run python manage.py test
-
-  push:
-    name: Push Docker Image
-    runs-on: ubuntu-latest
-    needs: [test]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download Docker image artifact
-        uses: actions/download-artifact@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          name: docker-image
+          python-version: '3.11'
 
-      - name: Load Docker image
-        run: docker load -i myapp-latest.tar
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Run tests
+        run: pipenv run python manage.py test
+
+
+  build-and-push:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    needs: test  # 👈 this ensures tests must pass before this job runs
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
@@ -150,11 +121,12 @@ jobs:
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Tag and push Docker image to ECR
+      - name: Build & push Docker image
         run: |
           IMAGE="\${{ vars.ECR_REGISTRY }}/\${{ vars.ECR_REPOSITORY }}:latest"
-          docker tag myapp:latest "$IMAGE"
+          docker build -t "$IMAGE" .
           docker push "$IMAGE"
+
 
 \`\`\`
 
