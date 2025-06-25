@@ -1,8 +1,8 @@
 export const githubActionsChapter = {
   id: 'ec2-action',
-  title: 'Automating CI/CD for Rock of Ages Backend with GitHub Actions',
+  title: 'Github Actions Setup for Rock Of Ages API',
   sectionId: 'cicd-ec2-docker',
-  previousChapterId: null,
+  previousChapterId: 'advanced-cicd-docker',
   content: `In this chapter, we’ll build a complete CI/CD pipeline using GitHub Actions to automatically deploy our Rock of Ages backend API to AWS EC2. This pipeline will:
 
 * Run tests 
@@ -102,6 +102,7 @@ jobs:
       - name: Run tests
         run: pipenv run python manage.py test
 
+
   build-and-push:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
@@ -125,6 +126,8 @@ jobs:
           IMAGE="\${{ vars.ECR_REGISTRY }}/\${{ vars.ECR_REPOSITORY }}:latest"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
+
+
 \`\`\`
 
 #### What’s happening here?
