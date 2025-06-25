@@ -39,30 +39,27 @@ export const introductionWorkshop2Chapter = {
   
   - Week 2
     - Session 3 - July 8th Tuesday  1-3pm CDT
-    - Session 4 - July 10th Thursday 1-3pm CDT
   
   ### Week 1
   
-  #### Session 1: Docker
+  #### Session 1: Docker, AWS CLI, and ECR
   - What is Docker?
   - Why Use Docker?
   - Run Docker Locally
-  
-  #### Session 2: AWS CLI and ECR 
   - AWS CLI setup
   - What is ECR?
   - Push Docker image to ECR
   
-  ### Week 2
-  
-  #### Session 3: Deploying to EC2
+  #### Session 2: Deploying to EC2
   - What is EC2?
   - Spinning up an EC2 instance
   - Pulling Docker image from ECR to EC2
   - Running Docker container in EC2
   - Key Vocabulary
   
-  #### Session 4: CI/CD in Action
+  ### Week 2
+  
+  #### Session 3: CI/CD in Action
   - Different CI/CD workflows and job handling
   - GitHub Actions for manual triggers 
   - Build a complete deployment pipeline for EC2 
