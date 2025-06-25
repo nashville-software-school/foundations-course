@@ -1,8 +1,8 @@
 export const githubActionsChapter = {
   id: 'ec2-action',
-  title: 'Automating CI/CD for Rock of Ages Backend with GitHub Actions',
+  title: 'Github Actions Setup for Rock Of Ages API',
   sectionId: 'cicd-ec2-docker',
-  previousChapterId: null,
+  previousChapterId: 'advanced-cicd-docker',
   content: `In this chapter, we’ll build a complete CI/CD pipeline using GitHub Actions to automatically deploy our Rock of Ages backend API to AWS EC2. This pipeline will:
 
 * Run tests 
@@ -69,7 +69,7 @@ testBuildPush.yml
 * Paste this workflow template into testBuildPush.yml
 
 \`\`\`yaml
-name: Build & Push Docker Image
+name: Build, Test, & Push Docker Image
 
 on:
   push:
@@ -80,36 +80,66 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    name: Run Tests
+  build:
+    name: Build Docker Image
     runs-on: ubuntu-latest
+
+    outputs:
+      image_tag: \${{ steps.set-tag.outputs.image_tag }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set image tag
+        id: set-tag
+        run: echo "image_tag=myapp:latest" >> $GITHUB_OUTPUT
+
+      - name: Build Docker image
+        run: docker build -t myapp:latest .
+
+      - name: Save Docker image as artifact
+        run: docker save myapp:latest -o myapp-latest.tar
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
         with:
-          python-version: '3.11'
+          name: docker-image
+          path: myapp-latest.tar
 
-      - name: Install pipenv
-        run: pip install pipenv
-
-      - name: Install dependencies
-        run: pipenv install --dev
-
-      - name: Run tests
-        run: pipenv run python manage.py test
-
-  build-and-push:
-    name: Build & Push Docker Image
+  test:
+    name: Test Docker Image
     runs-on: ubuntu-latest
-    needs: test  # 👈 this ensures tests must pass before this job runs
+    needs: build
+
+    steps:
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+
+      - name: Load Docker image
+        run: docker load -i myapp-latest.tar
+
+      - name: Run tests inside Docker container
+        run: docker run --rm myapp:latest pipenv run python manage.py test
+
+  push:
+    name: Push Docker Image
+    runs-on: ubuntu-latest
+    needs: [test]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+
+      - name: Load Docker image
+        run: docker load -i myapp-latest.tar
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
@@ -120,11 +150,12 @@ jobs:
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build & push Docker image
+      - name: Tag and push Docker image to ECR
         run: |
           IMAGE="\${{ vars.ECR_REGISTRY }}/\${{ vars.ECR_REPOSITORY }}:latest"
-          docker build -t "$IMAGE" .
+          docker tag myapp:latest "$IMAGE"
           docker push "$IMAGE"
+
 \`\`\`
 
 #### What’s happening here?
