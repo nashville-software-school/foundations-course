@@ -10,18 +10,13 @@ In this chapter, you’ll launch an EC2 instance, attach an IAM role that allows
 
 ### 1. Set Up an EC2 Instance
 
-1. From the **EC2 dashboard**, click **Launch Instance**
+1. From the **EC2 dashboard** in the aws console, click **Launch Instance**
 2. Give your instance a tag (e.g., \`Name: rock-of-ages-instance\`)
 3. Choose the **Amazon Linux 2 AMI**
 4. Select **t2.micro** as the instance type (free tier eligible)
-5. Proceed **without a key pair** (for demo/testing purposes)
-6. Under **Network settings**, click **Edit security groups**
-7. Click **Add security group rule**
-8. Set:
-   - **Type**: HTTP
-   - **Port range**: 80
-   - **Source**: Anywhere (0.0.0.0/0)
-9. Leave the remaining settings at default and click **Launch Instance**
+5. Under Key pair select the dropdown and clidk **proceed without a key pair** (for demo/testing purposes)
+6. Under **Network settings**, select **Allow SSH traffic from** and **Allow HTTP traffic from the internet** 
+7. Leave the remaining settings at default and click **Launch Instance**
 
 💡 **What's happening here?** You're creating a virtual server (EC2) to host your Docker container. Amazon Linux 2 is a lightweight OS with Docker support, and t2.micro is a cost-effective choice for development. Adding a security group rule for port 80 allows your app to receive web traffic from the internet.
 
@@ -34,7 +29,7 @@ The instructors have already created a role \`Ec2AccessRole\` with the \`AmazonE
 2. Select your instance
 3. In the **Actions** dropdown, choose:  
    **Security > Modify IAM Role**
-4. In the dialog, select \`Ec2AccessRole\`
+4. In the dialog, select \`Ec2AccessRoleInstanceProfile\`
 5. Click **Update IAM Role**
 
 💡 **What's happening here?** You're granting your EC2 instance permission to pull Docker images from ECR. This removes the need to manually manage credentials on the instance. The role uses a trust relationship to allow EC2 to assume it and access ECR on your behalf. The SSM policy will allow your github actions to run commands on your instance for our next CICD chapter. 
@@ -43,9 +38,9 @@ The instructors have already created a role \`Ec2AccessRole\` with the \`AmazonE
 ### 3. Install Docker and Run the Container on EC2
 
 1. In the **EC2 Console**, select your instance and click **Connect**
-2. Choose the **EC2 Instance Connect (browser-based shell)** option
+2. Leave default settings and click **Connect**
 
-Then run the following commands in the terminal:
+You will see a terminal for your ec2 instance in the browser. In that terminal run the following commands:
 
 #### Update system packages
 \`\`\`bash
@@ -113,7 +108,7 @@ docker run -d --name rock-of-ages-api -p 80:8000 [your_account_id].dkr.ecr.us-ea
 ### 6. Test the Container in Your Browser
 
 1. In the **EC2 Console**, select your instance
-2. Copy the **Public IPv4 DNS** or IP address
+2. Copy the **Public DNS** 
 3. Open Postman or your browser and go to:  
    \`http://<your-ec2-public-dns>\`
 
@@ -130,6 +125,7 @@ In this chapter, you've:
 - Installed Docker and authenticated with ECR
 - Pulled and ran your Docker container on EC2
 
-You’ve now deployed a containerized application on a live AWS server — powered by EC2 and ECR 🚀`,
+You’ve now deployed a containerized application on a live AWS server — powered by EC2 and ECR 🚀. 
+Now feel free to update your front end application to use the new URL. Update VITE_API_URL in the .env file in rock-of-ages-client. Then you can either follow the steps from the workshop 1 CICD chapter to automate the deployment or update your S3 files manually. Go to the cloudfront url to confirm the application is working with the new backend.`,
   exercise: null,
 }

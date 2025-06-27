@@ -27,7 +27,7 @@ The instructors have already created an IAM role \`github_oidc\` with all of the
                     "token.actions.githubusercontent.com:sub": "repo:JaneDoe/*"
                 }\`
 4. Replace \`JaneDoe\` with your github username and click update policy
-5. Grab the ARN for the github_oidc role. This will get stored in github variables 
+5. Grab the ARN for the github_oidc role. Save this to use in the next steps. 
 
 #### What’s happening here?
 
@@ -42,11 +42,11 @@ Because your github_oidc role ARN is not sensitive we can use github variables r
 
 | Name                         | Value                               |
 | ---------------------------- | ----------------------------------- |
-| \`EC2_INSTANCE_ID\`            | Your Ec2 Instance Id                |
-| \`ECR_REGISTRY\`               | Your ECR Registry                   |
+| \`EC2_INSTANCE_ID\`            | Your Ec2 Instance Id (find in ec2 console under instances) |
+| \`ECR_REGISTRY\`               | \`[your-aws-account-id].dkr.ecr.us-east-2.amazonaws.com\` replace [your-aws-account-id]|
 | \`AWS_REGION\`                 | Your AWS region (e.g., \`us-east-2\`) |
 | \`ECR_REPOSITORY\`             | Your repository (e.g. \`rock-of-ages-api\`) |
-| \`OIDC_ROLE_TO_ASSUME\`        | github_oidc role ARN                |
+| \`OIDC_ROLE_TO_ASSUME\`        | github_oidc role ARN               |
 
 ## Creating the CI/CD Workflow
 
@@ -54,10 +54,10 @@ Now that we’ve prepared the AWS credentials and planned our deployment steps, 
 
 ### 1. Create a Test/Build/Push Workflow File in Your Repository
 
-* In your local repository, create a directory:
+* In your local repository, create a directory with:
 
 \`\`\`
-.github/workflows/
+mkdir -p .github/workflows
 \`\`\`
 
 * Inside this directory, create a new file named:
@@ -172,11 +172,11 @@ jobs:
 
       - name: Trigger remote deployment on EC2 via SSM
         run: |
-          aws ssm send-command \
-          --instance-ids "\${{ vars.EC2_INSTANCE_ID }}" \
-          --document-name "AWS-RunShellScript" \
-          --comment "Manual deploy from GitHub Actions" \
-          --parameters '{"commands":["IMAGE=\"\${{ vars.ECR_REGISTRY }}/\${{ vars.ECR_REPOSITORY }}:latest\"","docker pull \"$IMAGE\"","docker stop rock-of-ages-api || true","docker rm rock-of-ages-api || true","docker run -d --name rock-of-ages-api -p 80:8000 \"$IMAGE\""]}' \
+          aws ssm send-command \\
+          --instance-ids "\${{ vars.EC2_INSTANCE_ID }}" \\
+          --document-name "AWS-RunShellScript" \\
+          --comment "Manual deploy from GitHub Actions" \\
+          --parameters '{"commands":["IMAGE=\"\${{ vars.ECR_REGISTRY }}/\${{ vars.ECR_REPOSITORY }}:latest\"","docker pull \\"$IMAGE\\"","docker stop rock-of-ages-api || true","docker rm rock-of-ages-api || true","docker run -d --name rock-of-ages-api -p 80:8000 \\"$IMAGE\\""]}' \\
           --region \${{ vars.AWS_REGION }}
 \`\`\`
 
@@ -207,7 +207,7 @@ Pushing to main will trigger the \`testBuildPush.yml\` workflow. This won't depl
 * Click the **Actions** tab.
 * On the left hand side you will see "All Workflows" and underneath you will see "Build and Push Docker Image" and "Deploy to EC2"
 * Click Build and Push Docker Image. You'll notice that the test and build steps are split into multiple jobs. Click on the jobs to monitor the steps.
-* Once the test/build/push jobs are successful, go back to Actions and click "Deploy to EC2". On the right-hand side, click the button "Run Workflow". This will trigger the deploy steps
+* Once the test/build/push jobs are successful, go back to Actions and click "Deploy to EC2". On the right-hand side, click the button "Run Workflow". This will trigger the deploy steps. You may need to refresh the page to see that the workflow was triggered.
 * Monitor and troubleshoot workflows as needed.
 
 ### 5. Confirm deployment
