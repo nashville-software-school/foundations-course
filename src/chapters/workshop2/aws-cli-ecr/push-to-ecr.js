@@ -39,10 +39,10 @@ Run:
 
 This tells your terminal session to point to your newly created credentials 
 
-3. You may be already logged in but in case not run \`aws sso login --profile intro_to_cloud\`. After 4 hours your credentials will expire and you will need to run this login command again. 
+3. You may be already logged in but in case not run \`aws sso login \`. After 4 hours your credentials will expire and you will need to run this login command again. 
 
 
-4. Check that your CLI is configured. Try running \`aws s3 ls --profile intro_to_cloud\`. This will list any buckets you have created in s3. 
+4. Check that your CLI is configured. Try running \`aws s3 ls \`. This will list any buckets you have created in s3. 
 
 💡 **What's happening here?** When you login to AWS with SSO, whether in the browser or from the command line, AWS is using STS (Security Token Service) to give you temporary credentials so you can interact with AWS services securely without needing long-lived IAM user credentials. In the case of CLI, those credentials are being provided to your local computer and automatically stored in \`~/.aws/sso/cache\`. 
 
