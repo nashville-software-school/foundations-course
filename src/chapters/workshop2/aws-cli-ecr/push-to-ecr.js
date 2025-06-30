@@ -34,12 +34,12 @@ Follow the prompts to set up your sso profile. You will need the values listed h
 
 Run:
 \`\`\`bash
-AWS_PROFILE=intro_to_cloud
+export AWS_PROFILE=intro_to_cloud
 \`\`\`
 
-This tells your terminal session to point to your newly created credentials 
+This tells your terminal session to point to your newly created credentials and erases the need to add a --profile flag to the end of each command
 
-**Tip** Alternatively you can navigate to your .aws/cli/config file and change [profile intro_to_cloud] to [default]. This erases the need to run \`AWS_PROFILE=intro_to_cloud\` in the terminal and is an ok solution if you are just working with one AWS account. If you are ever working with multiple accounts with multiple cli profile configurations then having named profiles is necessary. In the case of multiple profiles it's always a good idea to verify you are currently using the desired one with \`echo $AWS_PROFILE\`.  
+**Tip** Alternatively you can navigate to your .aws/cli/config file and change [profile intro_to_cloud] to [default]. This erases the need to run \`export AWS_PROFILE=intro_to_cloud\` in the terminal and is an ok solution if you are just working with one AWS account. If you are ever working with multiple accounts with multiple cli profile configurations then having named profiles is necessary. In the case of multiple profiles it's always a good idea to verify you are currently using the desired one with \`echo $AWS_PROFILE\`.  
 
 3. You may be already logged in but in case not run \`aws sso login \`. After 4 hours your credentials will expire and you will need to run this login command again. 
 
