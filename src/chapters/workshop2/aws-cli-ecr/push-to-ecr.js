@@ -9,14 +9,21 @@ In this guide, you'll learn how to configure your AWS CLI using temporary creden
 
 ### 1. Configure AWS CLI Using Session Token
 
-1. Configure your AWS CLI profile
+1. Install the aws cli:
+  -For mac users: \`brew install awscli\`
+  -For windows users [Downnload the installer from aws](https://awscli.amazonaws.com/AWSCLIV2.msi)
+  -Check that the cli is installed with \`aws --version\` 
+
+2. Configure your AWS CLI profile. You can run this from any directory in your terminal.
 
     \`\`\`bash
     aws configure sso
     \`\`\`
 
 Follow the prompts to set up your sso profile. You will need the values listed here:
-  - The start url will be \`https://nss-se.awsapps.com/start/\`
+  - You can name the session anything eg \`workshop2-session\`
+  - If promted for Sso registration scopes just press enter
+  - The start url will be \`https://nss-se.awsapps.com/start/\` (This will redirect you to aws login in the browser. Login and and click allow access)
   - Choose the \`intro_to_cloud\` role. 
   - Set the region to \`us-east-2\`.
   - The output format will be \`json\`.
@@ -25,11 +32,19 @@ Follow the prompts to set up your sso profile. You will need the values listed h
 
 **What's happening here?** This is creating a local file \`~/.aws/cli/config\` with configurations that the cli will use when accessing AWS resources. You can find that local file and take a look at the contents. 
 
+Run:
+\`\`\`bash
+AWS_PROFILE=intro_to_cloud
+\`\`\`
 
-2. You may be already logged in but in case not run \`aws sso login --profile intro_to_cloud\`. After 4 hours your credentials will expire and you will need to run this login command again. 
+This tells your terminal session to point to your newly created credentials 
+
+**Tip** Alternatively you can navigate to your .aws/cli/config file and change [profile intro_to_cloud] to [default]. This erases the need to run \`AWS_PROFILE=intro_to_cloud\` in the terminal and is an ok solution if you are just working with one AWS account. If you are ever working with multiple accounts with multiple cli profile configurations then having named profiles is necessary. In the case of multiple profiles it's always a good idea to verify you are currently using the desired one with \`echo $AWS_PROFILE\`.  
+
+3. You may be already logged in but in case not run \`aws sso login \`. After 4 hours your credentials will expire and you will need to run this login command again. 
 
 
-3. Check that your CLI is configured. Try running \`aws s3 ls --profile intro_to_cloud\`. This will list any buckets you have created in s3. 
+4. Check that your CLI is configured. Try running \`aws s3 ls \`. This will list any buckets you have created in s3. 
 
 💡 **What's happening here?** When you login to AWS with SSO, whether in the browser or from the command line, AWS is using STS (Security Token Service) to give you temporary credentials so you can interact with AWS services securely without needing long-lived IAM user credentials. In the case of CLI, those credentials are being provided to your local computer and automatically stored in \`~/.aws/sso/cache\`. 
 
@@ -62,9 +77,12 @@ Navigate to your rock-of-ages-api project directory, then run the following comm
 
 
 1. Build the image
+
 \`\`\`bash
-docker build -t rock-of-ages-api .
+docker build --platform linux/amd64 -t rock-of-ages-api .
 \`\`\`
+
+Adding --platform linux/amd64 ensures that the docker image will be compatible with our ec2 instance later on no matter what operating system your computer is using.
 
 2. Tag the image with the ECR repo URI
 \`\`\`bash

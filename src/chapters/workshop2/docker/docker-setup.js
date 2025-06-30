@@ -15,12 +15,7 @@ We'll start by forking and cloning the API repository:
 2. Click the **Fork** button in the top-right corner of the page to create your own copy
 3. After forking, navigate to your forked repository
 4. Click the **Code** button and copy the URL (choose SSH or HTTPS)
-5. Open your terminal and run:
-
-\`\`\`bash
-git clone https://github.com/your-username/rock-of-ages-api.git
-cd rock-of-ages-api
-\`\`\`
+5. Open your terminal and clone the repository with \`git clone\` plus the url from the previous step.
 
 
 ### 2. Ensure You Have Docker Installed
@@ -29,6 +24,7 @@ Before proceeding, make sure Docker is installed on your machine:
 
 - Download Docker Desktop from [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
 - Follow the installation instructions for your operating system
+- Open the docker application to see the docker desktop console. You will be able to see images and containers that you run locally here. You can also start and stop containers using this console for future reference but we will focus on using the command line for the rest of these instructions. 
 - After installing, verify Docker is running by typing:
 
 \`\`\`bash
@@ -36,6 +32,7 @@ docker --version
 \`\`\`
 
 You should see output indicating the installed version.
+If you see any errors such as ERROR: Cannot connect to the Docker daemon. Navigate to applications to open docker and view the docker desktop console. Doing this usually resolves this error when you run the command again.
 
 ### 3. Explore the Dockerfile
 
@@ -63,12 +60,13 @@ docker run -p 8000:8000 rock-of-ages-app
 
 - This maps port 8000 on your computer to port 8000 in the container
 - You should now be able to visit [http://localhost:8000](http://localhost:8000) to see your application running
+- Alternatively you can test the application in postman. You can find instructions on testing in postman in the api's ReadMe
 
 💡 **What's happening here?** The container is now running your app, and Docker is forwarding traffic from your browser to the app inside the container using port mapping. Port mapping allows containers to communicate with the outside world by directing network traffic from a host port to a container port. If you notice in the Dockerfile it has \`EXPOSE 8000\`. This is the typical port to expose for Django applications. 
 
 ### 6. Stopping and Restarting
 
-To stop your Docker container, press \`Ctrl + C\` in the terminal where it's running.
+Press \`Ctrl + C\` in the terminal where it's running. This only removes docker from the foreground. The container will still be running and postman requests should stil work.
 
 To see all running containers:
 
@@ -76,7 +74,7 @@ To see all running containers:
 docker ps
 \`\`\`
 
-To stop a container manually:
+To stop a container:
 
 \`\`\`bash
 docker stop [container_id]
@@ -85,10 +83,11 @@ docker stop [container_id]
 To start a stopped container again:
 
 \`\`\`bash
-docker start [container_id]
+docker start -a [container_id]
 \`\`\`
 
 Replace \`[container_id]\` with the actual ID shown by \`docker ps -a\`.
+Including the -a flag tells docker to run the container in the foreground so you can see the output logs. Alternatively you can omit the flag to run the container in the background to free up use of your terminal.
 
 Feel free to explore all the docker commands in [Dockerdocs](https://docs.docker.com/reference/cli/docker/)
 
