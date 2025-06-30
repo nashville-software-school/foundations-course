@@ -1,5 +1,5 @@
 import { githubActionsChapter } from './actions-setup';
-import { cicdGlossaryChapter } from './glossary';
+import { cicdGlossaryChapter } from './work2-cicd-glossary';
 import { githubActionsBreakdownChapter } from './actions-breakdown';
 import { advancedCicdWithDockerChapter } from './cicd-ec2-fundamentals';
 
