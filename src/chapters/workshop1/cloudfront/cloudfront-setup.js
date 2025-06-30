@@ -1,3 +1,5 @@
+import diagram from "./cloudfront-s3-diagram.png"
+
 export const cloudfrontSetupChapter = {
   id: "cloudfront-setup",
   title: "CloudFront Setup",
@@ -94,7 +96,7 @@ Congratulations! Your site is now being served through CloudFront's global conte
 
 Below is a detailed diagram showing how all the pieces of your architecture work together:
 
-![](https://nss-workshops.github.io/intro-to-cloud-student-facing/assets/cloudfront-s3-diagram.png)
+<img width=900 src="${diagram}"/>
 
 **How Your Architecture Works:**
 
