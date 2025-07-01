@@ -1,4 +1,4 @@
-import { dockerGlossaryChapter } from './glossary';
+import { dockerGlossaryChapter } from './docker-glossary';
 import { dockerSetupChapter } from './docker-setup';
 import { dockerFundamentalsChapter } from './docker-fundamentals';
 import { dockerfileBreakdownChapter } from './dockerfile-breakdown';
