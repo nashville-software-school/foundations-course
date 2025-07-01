@@ -301,7 +301,8 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
       }
 
       // Track attempt before running tests, passing the code
-      trackAttempt(chapterId, currentChapter.title, currentCode)
+      // Set sendToAPI to true to send the update to the API when "Run Tests" is clicked
+      trackAttempt(chapterId, currentChapter.title, currentCode, true)
 
       const results = chapterContent.exercise.tests.map(test => {
         // For single-file exercises, pass just the code
@@ -458,11 +459,12 @@ const ChapterContent = ({ currentChapter, chapterContent, onPrevious, onNext, ge
               files={files}
               onChange={handleFilesChange}
               onRun={() => {
-                // Track attempt when running HTML/CSS code
+                // Track attempt when running HTML/CSS code, but don't send to API
+                // (API updates will only happen when "Run Tests" is clicked)
                 const userFiles = Object.fromEntries(
                   Object.entries(files).filter(([filename]) => !filename.includes('solution'))
                 );
-                trackAttempt(chapterId, currentChapter.title, JSON.stringify(userFiles));
+                trackAttempt(chapterId, currentChapter.title, JSON.stringify(userFiles), false);
               }}
               autoRun={true} // Explicitly set autoRun to true
             />

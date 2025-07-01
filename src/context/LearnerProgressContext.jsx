@@ -23,7 +23,8 @@ export const LearnerProgressProvider = ({ children }) => {
         const defaultState = {
             exercises: {},
             hasSeenIntro: hasSeenIntroCookie === 'true',  // Check cookie first
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString(),
+            shouldSendToAPI: false // New flag to control API updates
         }
 
         // If we have stored data in localStorage, use it but prioritize the cookie for hasSeenIntro
@@ -31,7 +32,8 @@ export const LearnerProgressProvider = ({ children }) => {
             const parsedStored = JSON.parse(stored)
             return {
                 ...parsedStored,
-                hasSeenIntro: hasSeenIntroCookie === 'true' || parsedStored.hasSeenIntro
+                hasSeenIntro: hasSeenIntroCookie === 'true' || parsedStored.hasSeenIntro,
+                shouldSendToAPI: false // Initialize to false when loading from storage
             }
         }
 
@@ -56,13 +58,20 @@ export const LearnerProgressProvider = ({ children }) => {
         console.log('Verified localStorage data:', savedData.length)
         console.log('Verified cookie value:', cookieValue)
 
-        // Only send progress to API if lastUpdatedExerciseId exists
-        if (progress.lastUpdatedExerciseId && progress.exercises[progress.lastUpdatedExerciseId]) {
+        // Only send progress to API if shouldSendToAPI flag is true and lastUpdatedExerciseId exists
+        if (progress.shouldSendToAPI && progress.lastUpdatedExerciseId &&
+            progress.exercises[progress.lastUpdatedExerciseId]) {
             console.log('Sending progress for exercise:', progress.lastUpdatedExerciseId)
             sendProgressToAPI(
                 progress.lastUpdatedExerciseId,
                 progress.exercises[progress.lastUpdatedExerciseId]
             )
+
+            // Reset the flag after sending to API
+            setProgress(prev => ({
+                ...prev,
+                shouldSendToAPI: false
+            }))
         }
     }, [progress, user]) // Added user as a dependency since it's used in sendProgressToAPI
 
@@ -88,12 +97,70 @@ export const LearnerProgressProvider = ({ children }) => {
                     for (const exercise of data) {
                         const slug = exercise.slug
 
+                        // Extract the completed code using regex patterns instead of JSON parsing
+                        let parsedCompletedCode = false;
+                        if (exercise.completed_code) {
+                            try {
+                                const completedCode = exercise.completed_code;
+
+                                // Check if it's a single-file code format: {'code': '...'}
+                                const codeMatch = completedCode.match(/{'code': '([\s\S]*?)'}/);
+                                if (codeMatch && codeMatch[1]) {
+                                    // It's a single-file format
+                                    parsedCompletedCode = {
+                                        code: codeMatch[1].replace(/\\n/g, '\n')
+                                                         .replace(/\\'/g, "'")
+                                                         .replace(/\\"/g, '"')
+                                                         .replace(/\\\\/g, '\\')
+                                    };
+                                    console.log('Extracted single-file code successfully');
+                                }
+                                // Check if it's a multi-file format: {'files': {...}}
+                                else if (completedCode.includes("{'files':")) {
+                                    // Extract the files object content
+                                    parsedCompletedCode = { files: {} };
+
+                                    // Use regex to find all file entries
+                                    const filePattern = /'([^']+)': '([\s\S]*?)(?:(?<!\\)'(?:,|\}))/g;
+                                    let match;
+
+                                    // Create a copy of the string to work with
+                                    let fileContent = completedCode;
+
+                                    // Remove the outer {'files': and trailing }
+                                    fileContent = fileContent.replace(/^{'files': {/, '').replace(/}}$/, '}');
+
+                                    // Find all file matches
+                                    while ((match = filePattern.exec(fileContent + "'")) !== null) {
+                                        const fileName = match[1];
+                                        let fileCode = match[2];
+
+                                        // Unescape the content
+                                        fileCode = fileCode.replace(/\\n/g, '\n')
+                                                          .replace(/\\'/g, "'")
+                                                          .replace(/\\"/g, '"')
+                                                          .replace(/\\\\/g, '\\');
+
+                                        parsedCompletedCode.files[fileName] = fileCode;
+                                    }
+
+                                    console.log('Extracted multi-file code successfully:',
+                                                Object.keys(parsedCompletedCode.files));
+                                }
+                                else {
+                                    console.warn('Unrecognized completed_code format:', completedCode);
+                                }
+                            } catch (error) {
+                                console.error('Error extracting completed_code:', error);
+                            }
+                        }
+
                         // Ensure each exercise has a valid structure
                         exercises[slug] = {
                             attempts: exercise.attempts || 0,
                             completed: exercise.complete || false,
                             completedAt: exercise.completed_on || false,
-                            completedCode: exercise.completed_code || false,
+                            completedCode: parsedCompletedCode,
                             firstAttempt: exercise.first_attempt || null,
                             lastAttempt: exercise.last_attempt || null,
                             codeHashes: [],
@@ -183,7 +250,7 @@ export const LearnerProgressProvider = ({ children }) => {
         return hash.toString()
     }
 
-    const trackAttempt = (exerciseId, chapterTitle, code) => {
+    const trackAttempt = (exerciseId, chapterTitle, code, sendToAPI = false) => {
         return setProgress(prev => {
             const exercise = prev.exercises[exerciseId] || {
                 attempts: 0,
@@ -222,7 +289,8 @@ export const LearnerProgressProvider = ({ children }) => {
                     }
                 },
                 lastUpdated: new Date().toISOString(),
-                lastUpdatedExerciseId: exerciseId
+                lastUpdatedExerciseId: exerciseId,
+                shouldSendToAPI: sendToAPI // Set the flag based on the parameter
             }
 
             return newState
@@ -252,7 +320,8 @@ export const LearnerProgressProvider = ({ children }) => {
                     }
                 },
                 lastUpdated: new Date().toISOString(),
-                lastUpdatedExerciseId: exerciseId
+                lastUpdatedExerciseId: exerciseId,
+                shouldSendToAPI: true // Always send solution shown events to API
             }
         })
     }
@@ -280,7 +349,8 @@ export const LearnerProgressProvider = ({ children }) => {
                     }
                 },
                 lastUpdated: new Date().toISOString(),
-                lastUpdatedExerciseId: exerciseId // Add this to track which exercise was completed
+                lastUpdatedExerciseId: exerciseId, // Add this to track which exercise was completed
+                shouldSendToAPI: true // Always send completion events to API
             }
         })
     }
