@@ -95,6 +95,14 @@ export const sectionsWorkshop1 = [
       "CI/CD changes building on the first workshop to deploy docker containers on EC2",
     required: true,
   },
+  // Module 5: Conclusion
+  {
+    id: "workshop2-conclusion",
+    title: "Conclusion",
+    description:
+      "Overview of what we have learned and further learning resources",
+    required: true,
+  },
 ]
 
 /**

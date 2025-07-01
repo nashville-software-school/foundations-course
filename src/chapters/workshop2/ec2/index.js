@@ -1,4 +1,4 @@
-import { ec2GlossaryChapter } from './glossary';
+import { ec2GlossaryChapter } from './ec2-glossary';
 import { ec2Chapter } from './ec2-setup';
 import { ec2FundamentalsChapter } from './ec2-fundamentals';
 
