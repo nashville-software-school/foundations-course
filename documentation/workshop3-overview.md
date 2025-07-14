@@ -106,6 +106,17 @@ Next, you'll configure your Rock of Ages API to connect to this database instead
 
 Before setting up your API, let's understand what changed when we moved from a local SQLite database to a cloud PostgreSQL database. This will help you understand why each piece is necessary and how they work together.
 
+## Get the Repository First
+
+To follow along with the explanations below, clone the Rock of Ages API repository:
+
+```bash
+git clone https://github.com/YOUR-INSTRUCTOR-REPO/rock-of-ages-api-rds.git
+cd rock-of-ages-api-rds
+```
+
+Open this repository in your code editor so you can examine the files as we discuss them.
+
 ## The Big Picture: What Changed?
 
 **Before (SQLite):**
@@ -123,6 +134,8 @@ Let's examine each change we made to support this transition.
 ## 1. New Dependency: PostgreSQL Adapter
 
 ### What Changed in Pipfile
+Open the `Pipfile` in your repository and look for these additions:
+
 ```toml
 [packages]
 django = "*"
@@ -148,6 +161,8 @@ python-dotenv = "*"    # ← This line was added
 ## 2. Database Configuration Changes
 
 ### What Changed in settings.py
+
+Open `rockproject/settings.py` in your repository and examine the database configuration:
 
 **Before (SQLite):**
 ```python
@@ -193,6 +208,8 @@ DATABASES = {
 
 ### What are .env.example and .env files?
 
+Look at the `.env.example` file in your repository:
+
 **`.env.example`** (included in the repository):
 ```bash
 # Database Configuration
@@ -203,7 +220,7 @@ DB_HOST=rock-of-ages-db.c9xexample.us-east-2.rds.amazonaws.com
 DB_PORT=5432
 ```
 
-**`.env`** (you create this with your actual values):
+**`.env`** (you'll create this with your actual values):
 ```bash
 # Database Configuration  
 DB_NAME=rockofages
@@ -235,6 +252,8 @@ DB_PORT=5432
 ## 5. Database Setup Script: seed_database.sh
 
 ### What This Script Does
+
+Open the `seed_database.sh` file in your repository and examine its contents:
 
 ```bash
 #!/bin/bash
@@ -303,7 +322,7 @@ Each step depends on the previous one:
 
 ### How Docker Uses This Script
 
-The Docker container automatically runs this script when it starts up:
+Look at the `Dockerfile` in your repository and find this line at the bottom:
 ```dockerfile
 CMD pipenv run bash -c "./seed_database.sh && python manage.py runserver 0.0.0.0:8000"
 ```
@@ -366,7 +385,6 @@ Understanding these connections will help you understand how modern cloud applic
 ## Next Steps
 
 Now that you understand what changed and why, you're ready to configure your own API to connect to your RDS database. Each step in the setup process will make more sense because you understand the purpose behind each component.
-
 "********************************************************************************************************************"
 
 # Setting up Rock of Ages API with RDS Database
@@ -382,14 +400,19 @@ Before starting, make sure you have:
 - ✅ Docker installed on your computer
 - ✅ Yaak (or similar API testing tool) installed
 
-## Step 1: Clone and Setup the Repository
+## Step 1: Get the Repository
 
-### Get the Repository
-1. Clone the Rock of Ages API repository:
-   ```bash
-   git clone https://github.com/YOUR-INSTRUCTOR-REPO/rock-of-ages-api-rds.git
-   cd rock-of-ages-api-rds
-   ```
+### Clone the Repository
+Since you've already cloned the repository in the previous chapter, navigate to it:
+```bash
+cd rock-of-ages-api-rds
+```
+
+If you skipped the previous chapter, clone it now:
+```bash
+git clone https://github.com/YOUR-INSTRUCTOR-REPO/rock-of-ages-api-rds.git
+cd rock-of-ages-api-rds
+```
 
 ## Step 2: Configure Database Connection
 
