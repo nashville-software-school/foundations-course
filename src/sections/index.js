@@ -9,7 +9,8 @@ export const sectionsWorkshop1 = [
   {
     id: "introduction",
     title: "Introduction",
-    description: "A concise introduction to the course, outlining the learning objectives, delivery format, and the foundational AWS architecture will build by the end.",
+    description:
+      "A concise introduction to the course, outlining the learning objectives, delivery format, and the foundational AWS architecture will build by the end.",
     required: true,
   },
   // Module 1: Cloud Fundamentals
@@ -51,16 +52,14 @@ export const sectionsWorkshop1 = [
       "Overview of what we have learned and further learning resources",
     required: true,
   },
-
 ]
-  //Workshop 2 sections
-  export const sectionsWorkshop2 = [
-   // Module 0: Intro to workshop 2
+//Workshop 2 sections
+export const sectionsWorkshop2 = [
+  // Module 0: Intro to workshop 2
   {
     id: "intro-to-workshop2",
     title: "Introduction",
-    description:
-      "Introduction to what we will learn in workshop 2",
+    description: "Introduction to what we will learn in workshop 2",
     required: true,
   },
   // Module 1: Intro to Docker
@@ -83,8 +82,7 @@ export const sectionsWorkshop1 = [
   {
     id: "ec2",
     title: "EC2",
-    description:
-      "Running Docker on an EC2 instance",
+    description: "Running Docker on an EC2 instance",
     required: true,
   },
   // Module 4: CICD for EC2 and Docker
@@ -98,6 +96,31 @@ export const sectionsWorkshop1 = [
   // Module 5: Conclusion
   {
     id: "workshop2-conclusion",
+    title: "Conclusion",
+    description:
+      "Overview of what we have learned and further learning resources",
+    required: true,
+  },
+]
+//Workshop 3 sections
+export const sectionsWorkshop3 = [
+  // Module 0: Intro to workshop 3
+  {
+    id: "intro-to-workshop3",
+    title: "Introduction",
+    description: "Introduction to what we will learn in workshop 3",
+    required: true,
+  },
+  // Module 1: TBD
+  {
+    id: "rds",
+    title: "RDS",
+    description: "Introduction to AWS RDS and our updated API repository",
+    required: true,
+  },
+  // Module TBD: Conclusion
+  {
+    id: "workshop3-conclusion",
     title: "Conclusion",
     description:
       "Overview of what we have learned and further learning resources",

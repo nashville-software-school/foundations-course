@@ -1,9 +1,11 @@
 import { workshop1Chapters } from "./workshop1"
 import { workshop2Chapters } from "./workshop2"
+import { workshop3Chapters } from "./workshop3"
 
 export const chapters = [
   ...workshop1Chapters,
   ...workshop2Chapters,
+  ...workshop3Chapters
 ]
 /**
  * Helper function to get chapter by ID
