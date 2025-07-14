@@ -12,7 +12,7 @@ export const workshop2ConclusionChapters = [
  * @returns {Object|undefined} The chapter object if found, undefined otherwise
  */
 export const getChapterById = (id) => {
-  return introToDockerChapters.find(chapter => chapter.id === id);
+  return workshop2ConclusionChapters.find(chapter => chapter.id === id);
 };
 
 /**
@@ -20,7 +20,7 @@ export const getChapterById = (id) => {
  * @returns {string[]} Array of chapter IDs
  */
 export const getChapterIds = () => {
-  return introToDockerChapters.map(chapter => chapter.id);
+  return workshop2ConclusionChapters.map(chapter => chapter.id);
 };
 
 /**
@@ -29,8 +29,8 @@ export const getChapterIds = () => {
  * @returns {Object|undefined} The next chapter object if found, undefined otherwise
  */
 export const getNextChapter = (currentChapterId) => {
-  const currentIndex = introToDockerChapters.findIndex(chapter => chapter.id === currentChapterId);
-  return introToDockerChapters[currentIndex + 1];
+  const currentIndex = workshop2ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
+  return workshop2ConclusionChapters[currentIndex + 1];
 };
 
 /**
@@ -39,6 +39,6 @@ export const getNextChapter = (currentChapterId) => {
  * @returns {Object|undefined} The previous chapter object if found, undefined otherwise
  */
 export const getPreviousChapter = (currentChapterId) => {
-  const currentIndex = introToDOckerChapters.findIndex(chapter => chapter.id === currentChapterId);
-  return currentIndex > 0 ? introToDockerChapters[currentIndex - 1] : undefined;
+  const currentIndex = workshop2ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
+  return currentIndex > 0 ? workshop2ConclusionChapters[currentIndex - 1] : undefined;
 };
