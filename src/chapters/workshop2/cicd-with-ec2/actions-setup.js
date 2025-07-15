@@ -176,7 +176,7 @@ jobs:
           --instance-ids "\${{ vars.EC2_INSTANCE_ID }}" \\
           --document-name "AWS-RunShellScript" \\
           --comment "Manual deploy from GitHub Actions" \\
-          --parameters '{"commands":["IMAGE=\"\${{ vars.ECR_REGISTRY }}/\${{ vars.ECR_REPOSITORY }}:latest\"","docker pull \\"$IMAGE\\"","docker stop rock-of-ages-api || true","docker rm rock-of-ages-api || true","docker run -d --name rock-of-ages-api -p 80:8000 \\"$IMAGE\\""]}' \\
+          --parameters '{"commands":["IMAGE=\\"\${{ vars.ECR_REGISTRY }}/\${{ vars.ECR_REPOSITORY }}:latest\\"","docker pull \\"$IMAGE\\"","docker stop rock-of-ages-api || true","docker rm rock-of-ages-api || true","docker run -d --name rock-of-ages-api -p 80:8000 \\"$IMAGE\\""]}' \\
           --region \${{ vars.AWS_REGION }}
 \`\`\`
 
