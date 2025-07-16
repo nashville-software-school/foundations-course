@@ -1,4 +1,6 @@
-import diagramImg from "./arch_diagram.png";
+import diagramImg from "../../../assets/arch_diagram.png";
+
+
 export const introductionChapter = {
   id: 'introduction',
   title: 'Introduction to the course',
