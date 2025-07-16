@@ -101,6 +101,7 @@ Fill out the database creation form with these settings:
 
 **Templates:**
 - Select **Free tier** (this ensures you stay within free usage limits)
+(This was not an option in templates. I selected dev/test)
 
 **Settings:**
 - **DB instance identifier**: `rock-of-ages-db`
