@@ -305,40 +305,27 @@ DB_PORT=5432
 
 ### Update Your Dockerfile
 
-**Why these changes are needed:**
+**Why this change is needed:**
 Your Docker container needs PostgreSQL client libraries to communicate with the database. This is like installing the right drivers for a printer - without them, your application can't talk to PostgreSQL.
 
-Edit your `Dockerfile` to handle the new dependencies:
+**The only change needed:** Add `libpq-dev` to your existing system dependencies.
 
+Find this section in your existing `Dockerfile`:
 ```dockerfile
-FROM python:3.11-slim
-
-WORKDIR /app
-
-# Install system dependencies for PostgreSQL
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy dependency files
-COPY Pipfile Pipfile.lock ./
-
-# Install Python dependencies
-RUN pip install pipenv && pipenv install --system
-
-# Copy application code
-COPY . .
-
-# Make seed script executable
-RUN chmod +x seed_database.sh
-
-# Expose port
-EXPOSE 8000
-
-# Run database setup and start server
-CMD pipenv run bash -c "./seed_database.sh && python manage.py runserver 0.0.0.0:8000"
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  gcc \
+  && rm -rf /var/lib/apt/lists/*
 ```
+
+**Replace it with:**
+```dockerfile
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  gcc \
+  libpq-dev \
+  && rm -rf /var/lib/apt/lists/*
+```
+
+**That's it!** All other parts of your Dockerfile remain exactly the same. The `libpq-dev` package provides the PostgreSQL client libraries that `psycopg2-binary` needs to connect to your RDS database.
 
 ### Update Your Database Seed Script
 
