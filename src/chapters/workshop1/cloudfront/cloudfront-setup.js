@@ -1,4 +1,5 @@
-import diagram from "./cloudfront-s3-diagram.png"
+import diagram from "../../../assets/cloudfront-s3-diagram.png"
+
 
 export const cloudfrontSetupChapter = {
   id: "cloudfront-setup",
