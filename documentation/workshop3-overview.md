@@ -103,13 +103,17 @@ Fill out the database creation form with these settings:
 - Select **Free tier** (this ensures you stay within free usage limits)
 (This was not an option in templates. I selected dev/test)
 
+**Availability and Durability**
+- Select **Single-AZ DB instance deployment**
+
 **Settings:**
 - **DB instance identifier**: `rock-of-ages-db`
 - **Master username**: `rockadmin`
-- **Master password**: Create a secure password and **write it down** - you'll need it later!
+- **Master password**: Select **Self manged** Create a secure password and **write it down** - you'll need it later!
 - **Confirm password**: Re-enter your password
 
-**DB Instance Class:**
+**DB Instance Configuration:**
+- Select **Burstable classes**
 - **DB instance class**: `db.t4g.micro` (this is free tier eligible)
 
 **Storage:**
@@ -119,21 +123,24 @@ Fill out the database creation form with these settings:
 - **Maximum storage threshold**: 100 GB
 
 **Connectivity:**
+- Select **Don't Connect to an EC2 compute resource**
 - **Virtual Private Cloud (VPC)**: Use default VPC
 - **Subnet group**: default
 - **Public access**: **Yes** (normally you wouldn't do this in production, but it's needed for this course)
 - **VPC security group**: Create new
 - **New VPC security group name**: `rock-of-ages-db-sg`
-- **Database port**: 5432 (default PostgreSQL port)
+- **Database port**: 5432 (default PostgreSQL port) should be default under **Additional configuration**
 
 **Database Authentication:**
 - **Database authentication options**: Password authentication
+
+**Additional monitoring settings**
+- Uncheck **Enable Enhanced Monitoring**
 
 **Additional Configuration:**
 - Click **Additional configuration** to expand
 - **Initial database name**: `rockofages` (no spaces or hyphens)
 - **Backup retention period**: 1 day
-- **Enable Enhanced monitoring**: Optional (you can leave unchecked to save costs)
 
 ### Create the Database
 1. Review your settings
@@ -236,7 +243,7 @@ Edit `rockproject/settings.py` to support PostgreSQL and environment variables:
 **Add these imports at the top:**
 ```python
 from pathlib import Path
-import os
+import os # ← Add this line
 from dotenv import load_dotenv  # ← Add this line
 
 # Load environment variables from .env file
