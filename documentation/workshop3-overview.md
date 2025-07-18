@@ -779,3 +779,522 @@ While you created RDS manually, in larger organizations this would be defined in
 Your container can now communicate with external services (RDS) while remaining portable and isolated.
 
 In the next section, you'll set up a local development environment that mimics this production architecture using Docker containers and networks.
+
+# Part 2: Local Development with Docker Network
+
+In this section, you'll set up a local development environment that mirrors your production architecture. Instead of running your API, database, and client separately on your machine, you'll run all three as connected Docker containers.
+
+## What You're Building
+
+You'll create a complete containerized development environment:
+- **React Client Container**: Your frontend application
+- **Django API Container**: Your backend API (same as production)
+- **PostgreSQL Database Container**: Local database for development
+
+**The Goal**: Mimic your production environment locally while maintaining a great development experience.
+
+## Why Containerize Your Development Environment?
+
+### The Traditional Development Problem
+
+**Before containerization**, new team members faced this setup process:
+1. Install specific Node.js version for React
+2. Install specific Python version for Django
+3. Install PostgreSQL database locally
+4. Configure database connection settings
+5. Install system dependencies (different per OS)
+6. Deal with version conflicts between projects
+7. Hope everything works together
+
+**Result**: "It works on my machine" syndrome and hours of setup time.
+
+### The Container Solution
+
+**With containerized development**:
+1. Clone repository
+2. Run one command to start everything
+3. Identical environment for every team member
+4. No local software installation required
+5. Easy to reset or experiment
+
+**Result**: Consistent, predictable development environment that mirrors production.
+
+### Real-World Examples
+
+**This approach is becoming standard practice**:
+- **GitHub Codespaces**: Built on Dev Containers technology for cloud development
+- **Microsoft**: Created and actively promotes Dev Containers for development teams
+- **Open source projects**: Many use Dev Containers for contributor onboarding (like VS Code itself)
+- **Enterprise teams**: Increasingly adopting containerized development for consistency
+
+---
+
+## Understanding Docker Networks
+
+Before we build our environment, let's understand how containers communicate with each other.
+
+### Container Isolation by Default
+
+Each Docker container is isolated - it can't see or talk to other containers by default. This is like having separate apartments in a building with no way to visit each other.
+
+```bash
+# These containers CAN'T communicate
+docker run --name api-container django-api
+docker run --name db-container postgres
+```
+
+### Docker Networks: Connecting Containers
+
+A Docker network is like adding a hallway between apartments - containers can now find and talk to each other using their names.
+
+```bash
+# Create a network
+docker network create my-app-network
+
+# Containers on the same network CAN communicate
+docker run --name api-container --network my-app-network django-api
+docker run --name db-container --network my-app-network postgres
+```
+
+### Container-to-Container Communication
+
+Within a Docker network, containers can reach each other using **container names as hostnames**:
+
+```python
+# In your API container
+DATABASE_HOST = "db-container"  # Not "localhost"!
+```
+
+**Important**: Your React app code runs in the browser, not in the container. Therefore it still uses `localhost` to reach the API. Only server-to-server communication uses container names.
+
+---
+
+## Step 1: Set Up Docker Network
+
+### Create the Network
+```bash
+# Create a custom network for our containers
+docker network create rock-of-ages-network
+```
+
+### Verify Network Creation
+```bash
+# List all networks
+docker network ls
+
+# You should see your new network listed
+```
+
+**Understanding networks**: This network acts like a private virtual network where your containers can find each other by name, just like computers on an office network.
+
+---
+
+## Step 2: Set Up PostgreSQL Database Container
+
+Instead of using AWS RDS for local development, you'll run PostgreSQL in a container. This gives you a clean, isolated database that's easy to reset and experiment with, completely separate from your production data.
+
+### Run PostgreSQL Container
+```bash
+docker run -d \
+  --name postgres-db \
+  --network rock-of-ages-network \
+  -e POSTGRES_DB=rockofages \
+  -e POSTGRES_USER=rockadmin \
+  -e POSTGRES_PASSWORD=localpassword123 \
+  -p 5432:5432 \
+  postgres:15
+```
+
+**Understanding this command**:
+- `-d`: Run in background (detached)
+- `--name postgres-db`: Container name (other containers will use this to connect)
+- `--network rock-of-ages-network`: Connect to our custom network
+- `-e`: Set environment variables for database configuration
+- `-p 5432:5432`: Map port 5432 to your host (for database tools)
+- `postgres:15`: Use PostgreSQL version 15 image
+
+**About the environment variables**:
+These `-e` flags are **defining new values** that configure how PostgreSQL sets itself up:
+- `POSTGRES_DB=rockofages`: **Creates** a database named "rockofages" 
+- `POSTGRES_USER=rockadmin`: **Creates** a user named "rockadmin"
+- `POSTGRES_PASSWORD=localpassword123`: **Sets** the password for that user
+
+**Can you change these values?** Yes! You can name them whatever you want - you're creating the database configuration, not referencing something that already exists. Just make sure when we create the API's `.env.local` file in the next step, it uses the same values you define here.
+
+### Verify Database is Running
+```bash
+# Check container status
+docker ps
+
+# Check database logs
+docker logs postgres-db
+```
+
+**Expected output from `docker logs postgres-db`:**
+```
+The files belonging to this database system will be owned by user "postgres"...
+PostgreSQL init process complete; ready for start up.
+
+2024-01-15 10:30:45.123 UTC [1] LOG:  starting PostgreSQL 15.5 on x86_64-pc-linux-gnu
+2024-01-15 10:30:45.124 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2024-01-15 10:30:45.125 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2024-01-15 10:30:45.128 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2024-01-15 10:30:45.135 UTC [56] LOG:  database system is ready to accept connections
+```
+
+**✅ Look for these success indicators:**
+- "PostgreSQL init process complete; ready for start up"
+- "database system is ready to accept connections"
+- No error messages about failed connections or authentication
+
+---
+
+## Step 3: Set Up API Container for Local Development
+
+Your API container needs to connect to the local PostgreSQL container instead of AWS RDS.
+
+### Create Local Environment File
+Create `.env.local` in your API repository:
+
+```bash
+# Database Configuration for Local Development
+DB_NAME=rockofages
+DB_USER=rockadmin
+DB_PASSWORD=localpassword123
+DB_HOST=postgres-db  # ← Container name, not localhost!
+DB_PORT=5432
+```
+
+**Key Point**: Notice `DB_HOST=postgres-db` - this is how containers communicate within the network.
+
+### Build and Run API Container
+```bash
+# Make sure you're in your API repository directory
+cd path/to/your/rock-of-ages-api
+
+# Build the API image (if you haven't already)
+docker build -t rock-of-ages-api .
+
+# Run API container connected to the network
+docker run -d \
+  --name api-container \
+  --network rock-of-ages-network \
+  --env-file .env.local \
+  -p 8000:8000 \
+  rock-of-ages-api
+```
+
+### Verify API Connection
+```bash
+# Check API container logs
+docker logs api-container
+
+# You should see successful database connection and setup
+# Test API endpoint
+curl http://localhost:8000/rocks
+```
+
+---
+
+## Step 4: Set Up React Client Container
+
+Now containerize your React client to complete the development environment.
+
+### Create React Client Dockerfile
+In your React client repository, create a `Dockerfile`:
+
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Start development server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
+```
+
+**Understanding this Dockerfile**:
+- `node:18-alpine`: Lightweight Node.js runtime
+- `--host 0.0.0.0`: Allows connections from outside the container
+- `--port 3000`: Explicit port configuration
+
+### Create Local Environment for Client
+Create `.env.local` in your React client repository:
+
+```bash
+# API Configuration for Local Development
+VITE_API_URL=http://localhost:8000
+```
+
+**Important**: The React client still uses `localhost:8000` because the JavaScript runs in your browser, not inside the container.
+
+### Build and Run Client Container
+```bash
+# Navigate to your React client repository
+cd path/to/your/rock-of-ages-client
+
+# Build the client image
+docker build -t rock-of-ages-client .
+
+# Run client container
+docker run -d \
+  --name client-container \
+  --network rock-of-ages-network \
+  --env-file .env.local \
+  -p 3000:3000 \
+  rock-of-ages-client
+```
+
+---
+
+## Step 5: Set Up Development Container (VS Code)
+
+To make development easier, we'll use VS Code's Dev Containers extension, which lets you develop inside the container with full debugging support.
+
+### Install Dev Containers Extension
+1. Open VS Code
+2. Go to Extensions (Ctrl+Shift+X)
+3. Search for "Dev Containers" by Microsoft
+4. Install the extension
+
+### Create Dev Container Configuration
+In your API repository, create `.devcontainer/devcontainer.json`:
+
+```json
+{
+  "name": "Rock of Ages API Development",
+  "dockerComposeFile": "../docker-compose.dev.yml",
+  "service": "api",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.debugpy",
+        "ms-python.pylint"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python"
+      }
+    }
+  },
+  "postCreateCommand": "pipenv install",
+  "forwardPorts": [8000, 5432]
+}
+```
+
+### Create Development Docker Compose
+Create `docker-compose.dev.yml` in your API repository:
+
+```yaml
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: rockofages
+      POSTGRES_USER: rockadmin
+      POSTGRES_PASSWORD: localpassword123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: api-container
+    environment:
+      DB_NAME: rockofages
+      DB_USER: rockadmin
+      DB_PASSWORD: localpassword123
+      DB_HOST: postgres
+      DB_PORT: 5432
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+      - /app/.venv
+
+volumes:
+  postgres_data:
+```
+
+### Open in Dev Container
+1. Open your API repository in VS Code
+2. VS Code will detect the Dev Container configuration
+3. Click "Reopen in Container" when prompted
+4. VS Code will build and start your development environment
+
+---
+
+## Step 6: Test Your Complete Environment
+
+### Verify All Containers are Running
+```bash
+# Check all containers
+docker ps
+
+# You should see:
+# - postgres-db
+# - api-container  
+# - client-container
+```
+
+### Test the Full Application Flow
+
+**1. Test Database Connection**
+```bash
+# Connect to database directly
+docker exec -it postgres-db psql -U rockadmin -d rockofages
+
+# Run test query
+SELECT * FROM rockapi_rock;
+```
+
+**2. Test API Endpoints**
+```bash
+# Test unauthenticated endpoint
+curl http://localhost:8000/rocks
+
+# Should return authentication error (expected)
+```
+
+**3. Test React Client**
+- Open browser to `http://localhost:3000`
+- Try to register a new user
+- Try to view rocks
+
+**4. Test Development Debugging**
+- Set breakpoint in VS Code (in Dev Container)
+- Set breakpoint in browser DevTools
+- Trigger a request and watch both breakpoints hit
+
+---
+
+## Understanding the Complete Architecture
+
+### Network Communication Flow
+```
+Browser → localhost:3000 → Client Container
+Browser → localhost:8000 → API Container → postgres-db:5432 → Database Container
+```
+
+### Development vs Production
+**Development (what you just built)**:
+```
+Client Container ←→ Docker Network ←→ API Container ←→ Database Container
+```
+
+**Production (from Part 1)**:
+```
+S3 + CloudFront ←→ Internet ←→ EC2 (API Container) ←→ RDS Database
+```
+
+**Key Insight**: Your development environment now mirrors production architecture!
+
+---
+
+## Benefits You've Achieved
+
+### 1. Team Onboarding
+**Before**: "Here's a 20-step setup guide, good luck!"
+**Now**: "Clone the repo, click 'Reopen in Container', start coding!"
+
+### 2. Environment Consistency
+- Same database version everywhere
+- Same Python version everywhere
+- Same Node.js version everywhere
+- Same dependencies everywhere
+
+### 3. Easy Experimentation
+```bash
+# Try different database version
+docker run postgres:13 --name postgres-test
+
+# Reset entire environment
+docker-compose down && docker-compose up
+
+# Clean slate development
+docker-compose down -v  # Removes all data
+```
+
+### 4. Professional Development Workflow
+- Full debugging capabilities
+- Hot reload and live development
+- Database inspection tools
+- Realistic production environment
+
+### 5. Isolation and Cleanup
+- No conflicts with other projects
+- Easy to remove everything: `docker-compose down`
+- No leftover processes or files on your system
+
+---
+
+## Troubleshooting Common Issues
+
+### Container Won't Start
+```bash
+# Check container logs
+docker logs container-name
+
+# Check if port is already in use
+docker ps
+netstat -an | grep :8000
+```
+
+### Database Connection Issues
+```bash
+# Verify database is running
+docker exec -it postgres-db psql -U rockadmin -d rockofages
+
+# Check if API can reach database
+docker exec -it api-container ping postgres-db
+```
+
+### Client Can't Reach API
+- Verify API is running on port 8000
+- Check that VITE_API_URL uses `localhost:8000` (not container name)
+- Confirm both containers are on the same network
+
+### Dev Container Issues
+- Ensure Docker is running
+- Try "Rebuild Container" command in VS Code
+- Check `.devcontainer/devcontainer.json` syntax
+
+---
+
+## What You've Accomplished
+
+You now have:
+- ✅ Complete containerized development environment
+- ✅ All services communicating via Docker network
+- ✅ Professional development setup with VS Code Dev Containers
+- ✅ Easy debugging across all services
+- ✅ Environment that mirrors production architecture
+- ✅ Simple onboarding process for new team members
+
+## Key Learning Concepts
+
+**1. Container Networking**: How containers communicate using names as hostnames
+**2. Development Environment Architecture**: Mirroring production locally
+**3. Container Orchestration**: Managing multiple connected services
+**4. Modern Development Workflows**: Using Dev Containers for consistent development
+**5. Environment Isolation**: Benefits of containerized development
+
+In the next section (Part 3), you'll learn how Docker Compose simplifies managing this multi-container environment and makes it even easier to work with.
