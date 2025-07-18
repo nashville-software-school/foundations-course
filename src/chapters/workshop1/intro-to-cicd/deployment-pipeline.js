@@ -1,4 +1,4 @@
-import ghAction from "./gh_action.jpg";
+import ghAction from "../../../assets/gh_action.jpg";
 export const deploymentPipelineChapter = {
   id: 'deployment-pipeline',
   title: 'Automating CI/CD for Rock of Ages Frontend with GitHub Actions',
