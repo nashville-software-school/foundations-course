@@ -1,7 +1,9 @@
 import { workshop3RDSSetupChapter } from "./rds-setup";
+import { workshop3RDSDeployChapter } from "./deploy-rds";
 
 export const introToRDSChapters = [
-  workshop3RDSSetupChapter
+  workshop3RDSSetupChapter,
+  workshop3RDSDeployChapter
 ];
 
 /**

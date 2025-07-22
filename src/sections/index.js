@@ -118,13 +118,6 @@ export const sectionsWorkshop3 = [
     description: "Introduction to AWS RDS and our updated API repository",
     required: true,
   },
-  // Module 2: rds with cicd
-  {
-    id: "cicd-rds",
-    title: "RDS with Github Actions",
-    description: "Deploying your RDS integrated API to EC2",
-    required: true,
-  },
   // Module TBD: Conclusion
   {
     id: "workshop3-conclusion",

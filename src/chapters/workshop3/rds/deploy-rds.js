@@ -1,8 +1,8 @@
 export const workshop3RDSDeployChapter = {
   id: "workshop3-rds-deploy",
   title: "RDS Deployment To EC2",
-  sectionId: "cicd-rds",
-  previousChapterId: null,
+  sectionId: "rds",
+  previousChapterId: "workshop3-rds-setup",
   content: `
 Now that your API is connecting to RDS and working locally, lets make some changes to the github actions and deploy our API to the ec2 instance we created in workshop 2. 
 
