@@ -1,14 +1,91 @@
+# Workshop 3 Overview
+
+## Outline
+
+### Part 1: Cloud Database (RDS)
+
+- Set up AWS RDS PostgreSQL instance
+- Modify API to connect to RDS instead of SQLite
+- Update GitHub Actions and secrets for RDS connection
+- Deploy updated API to EC2
+
+### Part 2: Local Development with Docker Network
+
+- **Why**: Mimic production environment locally
+- Containerize React client (development server)
+- Run all three containers in a Docker network
+- Learn container-to-container communication
+- Manual container orchestration
+
+### Part 3: Docker Compose Optimization
+
+- **Why**: Simplify the multi-container setup
+- Convert manual Docker network to docker-compose.yml
+- One command to start entire development environment
+- Learn benefits of orchestration tools
+
+## Key Learning Objectives
+### Database in the Cloud:
+
+- RDS setup and configuration
+- Environment variables for database connection
+- Separating development and production databases
+
+### Container Networking:
+
+- Docker networks for multi-container apps
+- Container-to-container communication
+- Port mapping vs internal networking
+
+### Development Environment:
+
+- Mimicking production in development
+- Container orchestration concepts
+- Docker Compose benefits and usage
+
+
+
 # Draft Chapters
 
-# Setting up AWS RDS PostgreSQL Database
+# Part 1: Cloud Database with AWS RDS
 
-In this section, you'll create a managed PostgreSQL database using Amazon RDS (Relational Database Service). This database will store all the data for your Rock of Ages API.
+In this section, you'll create a managed PostgreSQL database using Amazon RDS and update your existing Rock of Ages API to use it instead of SQLite. You'll also update your deployment pipeline to work with the cloud database.
 
 ## What You're Building
 
-Instead of using a local SQLite database file, you'll create a PostgreSQL database that runs in the AWS cloud. This demonstrates how real-world applications separate their database from their application code for better scalability and reliability.
+You'll transition from a local SQLite database to a production-ready PostgreSQL database running in AWS. This demonstrates how real-world applications separate their database layer from their application code for better scalability, reliability, and team collaboration.
 
-## Step 1: Create RDS Database Instance
+**Before (SQLite):**
+- Database was a single file (`db.sqlite3`) stored locally
+- No network connection needed
+- Simple setup, but not suitable for production
+- Can't be shared between team members or environments
+
+**After (PostgreSQL on RDS):**
+- Database runs on AWS servers
+- Requires network connection and authentication
+- More complex setup, but production-ready and scalable
+- Can be accessed by multiple applications and team members
+
+## Why This Change Matters
+
+### The Problem with SQLite in Production
+While SQLite works great for development, it has limitations:
+- **File-based**: Database is tied to one machine
+- **Single Writer**: Only one process can write at a time
+- **No Remote Access**: Can't connect from different servers
+- **Limited Concurrency**: Not suitable for multiple users
+
+### The Benefits of RDS PostgreSQL
+- **Managed Service**: AWS handles backups, updates, and maintenance
+- **Scalable**: Can handle thousands of concurrent connections
+- **Reliable**: Built-in redundancy and automatic failover
+- **Secure**: Network isolation and encryption
+- **Professional**: Used by companies like Instagram, Spotify, and Reddit
+
+---
+
+## Step 1: Create AWS RDS PostgreSQL Database
 
 ### Navigate to RDS Console
 1. Log in to your AWS account
@@ -24,14 +101,19 @@ Fill out the database creation form with these settings:
 
 **Templates:**
 - Select **Free tier** (this ensures you stay within free usage limits)
+(This was not an option in templates. I selected dev/test)
+
+**Availability and Durability**
+- Select **Single-AZ DB instance deployment**
 
 **Settings:**
 - **DB instance identifier**: `rock-of-ages-db`
 - **Master username**: `rockadmin`
-- **Master password**: Create a secure password and **write it down** - you'll need it later!
+- **Master password**: Select **Self manged** Create a secure password and **write it down** - you'll need it later!
 - **Confirm password**: Re-enter your password
 
-**DB Instance Class:**
+**DB Instance Configuration:**
+- Select **Burstable classes**
 - **DB instance class**: `db.t4g.micro` (this is free tier eligible)
 
 **Storage:**
@@ -41,30 +123,32 @@ Fill out the database creation form with these settings:
 - **Maximum storage threshold**: 100 GB
 
 **Connectivity:**
+- Select **Don't Connect to an EC2 compute resource**
 - **Virtual Private Cloud (VPC)**: Use default VPC
 - **Subnet group**: default
 - **Public access**: **Yes** (normally you wouldn't do this in production, but it's needed for this course)
 - **VPC security group**: Create new
 - **New VPC security group name**: `rock-of-ages-db-sg`
-- **Database port**: 5432 (default PostgreSQL port)
+- **Database port**: 5432 (default PostgreSQL port) should be default under **Additional configuration**
 
 **Database Authentication:**
 - **Database authentication options**: Password authentication
+
+**Additional monitoring settings**
+- Uncheck **Enable Enhanced Monitoring**
 
 **Additional Configuration:**
 - Click **Additional configuration** to expand
 - **Initial database name**: `rockofages` (no spaces or hyphens)
 - **Backup retention period**: 1 day
-- **Enable Enhanced monitoring**: Optional (you can leave unchecked to save costs)
 
 ### Create the Database
 1. Review your settings
 2. Click **Create database**
 3. Wait for the database status to show **Available** (this takes 5-10 minutes)
 
-## Step 2: Configure Security Group
-
-Your database needs to allow connections from the internet (normally not recommended, but necessary for this course).
+### Configure Security Group
+Your database needs to allow connections from your EC2 instance and your local development machine.
 
 1. While your database is being created, go to **EC2 Console** → **Security Groups**
 2. Find the security group that was created for your database (should be named `rock-of-ages-db-sg`)
@@ -76,8 +160,7 @@ Your database needs to allow connections from the internet (normally not recomme
    - **Description**: "Allow PostgreSQL connections for Rock of Ages course"
 5. Click **Save rules**
 
-## Step 3: Get Your Database Connection Information
-
+### Get Your Database Connection Information
 Once your RDS instance shows **Available** status:
 
 1. Click on your database instance (`rock-of-ages-db`)
@@ -85,58 +168,45 @@ Once your RDS instance shows **Available** status:
    - It will look like: `rock-of-ages-db.c9xkv8example.us-east-2.rds.amazonaws.com`
    - **Save this endpoint** - you'll need it for your API configuration
 
-## What You've Accomplished
+---
 
-You now have:
-- ✅ A PostgreSQL database running in AWS
-- ✅ Proper security group configuration for connections
-- ✅ Database endpoint URL for your application to connect
+## Step 2: Update Your Existing API Repository
 
-**Keep handy for the next section:**
-- Database endpoint URL
-- Master password you created
-- Database name: `rockofages`
-- Username: `rockadmin`
+Now you'll modify your existing Rock of Ages API repository to support PostgreSQL instead of SQLite. This involves several key changes that demonstrate how applications adapt to different database systems.
 
-Next, you'll configure your Rock of Ages API to connect to this database instead of using a local SQLite file.
+### Understanding the Required Changes
 
-"********************************************************************************************************************"
+When moving from SQLite to PostgreSQL, we need to make several modifications:
 
-# Understanding the API Changes for Cloud Database
+1. **Database Adapter**: Django needs a "translator" to speak PostgreSQL
+2. **Connection Settings**: Network connection instead of file path
+3. **Environment Variables**: Secure handling of database credentials
+4. **Container Dependencies**: PostgreSQL client libraries
 
-Before setting up your API, let's understand what changed when we moved from a local SQLite database to a cloud PostgreSQL database. This will help you understand why each piece is necessary and how they work together.
+Let's examine each change and understand why it's necessary.
 
-## Get the Repository First
-
-To follow along with the explanations below, clone the Rock of Ages API repository:
-
+### Navigate to Your API Repository
 ```bash
-git clone https://github.com/YOUR-INSTRUCTOR-REPO/rock-of-ages-api-rds.git
-cd rock-of-ages-api-rds
+# Navigate to your existing API repository from Workshop 2
+cd path/to/your/rock-of-ages-api
 ```
 
-Open this repository in your code editor so you can examine the files as we discuss them.
+### Update Dependencies (Pipfile)
 
-## The Big Picture: What Changed?
+**Why we need new dependencies:**
+- **`psycopg2-binary`**: This is like a translator between Django (Python) and PostgreSQL. Django can talk to SQLite out of the box, but needs this special adapter for PostgreSQL.
+- **`python-dotenv`**: Helps us securely manage sensitive information like passwords by loading them from `.env` files.
 
-**Before (SQLite):**
-- Database was a single file (`db.sqlite3`) stored locally
-- No network connection needed
-- Simple setup, but not suitable for production
+**Real-world analogy**: If Django speaks English and PostgreSQL speaks French, `psycopg2-binary` is the translator that allows them to communicate.
 
-**After (PostgreSQL on RDS):**
-- Database runs on AWS servers
-- Requires network connection and authentication
-- More complex setup, but production-ready and scalable
-
-Let's examine each change we made to support this transition.
-
-## 1. New Dependency: PostgreSQL Adapter
-
-### What Changed in Pipfile
-Open the `Pipfile` in your repository and look for these additions:
+Edit your `Pipfile` to add PostgreSQL support:
 
 ```toml
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
 [packages]
 django = "*"
 autopep8 = "*"
@@ -144,58 +214,22 @@ pylint = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
 pylint-django = "*"
-psycopg2-binary = "*"  # ← This line was added
-python-dotenv = "*"    # ← This line was added
+psycopg2-binary = "*"  # ← Add this line
+python-dotenv = "*"    # ← Add this line
+
+[dev-packages]
+
+[requires]
+python_version = "*"
 ```
 
-### Why This Change Was Needed
+### Update Django Settings
 
-**The Problem**: Django can talk to SQLite out of the box, but it needs a special "adapter" to communicate with PostgreSQL.
+**Why these changes are needed:**
 
-**The Solution**: 
-- **`psycopg2-binary`**: This is like a translator between Django (Python) and PostgreSQL
-- **`python-dotenv`**: This helps us securely manage sensitive information like passwords
+**SQLite** just needed to know where the database file was stored on your computer.
 
-**Real-world analogy**: If Django speaks English and PostgreSQL speaks French, `psycopg2-binary` is the translator that allows them to communicate.
-
-## 2. Database Configuration Changes
-
-### What Changed in settings.py
-
-Open `rockproject/settings.py` in your repository and examine the database configuration:
-
-**Before (SQLite):**
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',  # Just a file path
-    }
-}
-```
-
-**After (PostgreSQL):**
-```python
-from dotenv import load_dotenv
-load_dotenv()  # Load environment variables from .env file
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # Different database type
-        'NAME': os.getenv('DB_NAME', 'rockofages'),     # Database name
-        'USER': os.getenv('DB_USER', 'rockadmin'),      # Username 
-        'PASSWORD': os.getenv('DB_PASSWORD'),           # Password
-        'HOST': os.getenv('DB_HOST'),                   # Server address
-        'PORT': os.getenv('DB_PORT', '5432'),          # Port number
-    }
-}
-```
-
-### Why This Change Was Needed
-
-**SQLite**: Just needed to know where the database file was stored on your computer.
-
-**PostgreSQL**: Needs to know how to connect over the internet:
+**PostgreSQL** needs to know how to connect over the internet:
 - **Where** is the database? (HOST)
 - **What port** should I connect to? (PORT)
 - **Who** am I? (USER)
@@ -204,33 +238,34 @@ DATABASES = {
 
 **Security Note**: We use `os.getenv()` instead of hardcoding values because database passwords should never be stored directly in code files.
 
-## 3. Environment Variables: Keeping Secrets Safe
+Edit `rockproject/settings.py` to support PostgreSQL and environment variables:
 
-### What are .env.example and .env files?
+**Add these imports at the top:**
+```python
+from pathlib import Path
+import os # ← Add this line
+from dotenv import load_dotenv  # ← Add this line
 
-Look at the `.env.example` file in your repository:
-
-**`.env.example`** (included in the repository):
-```bash
-# Database Configuration
-DB_NAME=rockofages
-DB_USER=rockadmin
-DB_PASSWORD=your-secure-password-here
-DB_HOST=rock-of-ages-db.c9xexample.us-east-2.rds.amazonaws.com
-DB_PORT=5432
+# Load environment variables from .env file
+load_dotenv()  # ← Add this line
 ```
 
-**`.env`** (you'll create this with your actual values):
-```bash
-# Database Configuration  
-DB_NAME=rockofages
-DB_USER=rockadmin
-DB_PASSWORD=MyActualPassword123!
-DB_HOST=rock-of-ages-db.c9xkv8actual.us-east-2.rds.amazonaws.com
-DB_PORT=5432
+**Replace the DATABASES configuration:**
+```python
+# Database Configuration for RDS PostgreSQL
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',  # ← Changed from sqlite3
+        'NAME': os.getenv('DB_NAME', 'rockofages'),
+        'USER': os.getenv('DB_USER', 'rockadmin'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT', '5432'),
+    }
+}
 ```
 
-### Why Use Environment Variables?
+### Environment Variables: Keeping Secrets Safe
 
 **The Problem**: Database passwords are sensitive information that shouldn't be:
 - Stored in code files
@@ -249,11 +284,73 @@ DB_PORT=5432
 
 **Real-world analogy**: It's like having a locked box (`.env` file) for your house key (database password), instead of leaving the key under a rock (in your code) where anyone can find it.
 
-## 5. Database Setup Script: seed_database.sh
+### Create Environment Variables Template
+Create a `.env.example` file in your repository root:
 
-### What This Script Does
+```bash
+# Database Configuration
+DB_NAME=rockofages
+DB_USER=rockadmin
+DB_PASSWORD=your-secure-password-here
+DB_HOST=rock-of-ages-db.c9xkv8example.us-east-2.rds.amazonaws.com
+DB_PORT=5432
+```
 
-Open the `seed_database.sh` file in your repository and examine its contents:
+### Create Your Local Environment File
+```bash
+# Copy the example to create your actual .env file
+cp .env.example .env
+```
+
+Edit the `.env` file with your actual RDS information:
+```bash
+DB_NAME=rockofages
+DB_USER=rockadmin
+DB_PASSWORD=YourActualRDSPassword123!  # ← Use your actual password
+DB_HOST=rock-of-ages-db.c9xkv8actual.us-east-2.rds.amazonaws.com  # ← Use your actual endpoint
+DB_PORT=5432
+```
+
+### Update Your Dockerfile
+
+**Why this change is needed:**
+Your Docker container needs PostgreSQL client libraries to communicate with the database. This is like installing the right drivers for a printer - without them, your application can't talk to PostgreSQL.
+
+**The only change needed:** Add `libpq-dev` to your existing system dependencies.
+
+Find this section in your existing `Dockerfile`:
+```dockerfile
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  gcc \
+  && rm -rf /var/lib/apt/lists/*
+```
+
+**Replace it with:**
+```dockerfile
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  gcc \
+  libpq-dev \
+  && rm -rf /var/lib/apt/lists/*
+```
+
+**That's it!** All other parts of your Dockerfile remain exactly the same. The `libpq-dev` package provides the PostgreSQL client libraries that `psycopg2-binary` needs to connect to your RDS database.
+
+### Update Your Database Seed Script
+
+**Understanding the seed script:**
+This script automates the process of setting up your database tables and loading sample data. Think of it like moving into a new house - you need to build the rooms (create tables) before you can put furniture in them (load data).
+
+**Why this order matters:**
+```
+Environment Variables → Database Connection → Table Structure → Sample Data
+```
+
+Each step depends on the previous one:
+- Can't connect without credentials
+- Can't add data without tables
+- Can't create app tables without Django's foundation tables
+
+Edit `seed_database.sh` to load environment variables:
 
 ```bash
 #!/bin/bash
@@ -287,7 +384,7 @@ python3 manage.py loaddata rocks
 echo "✅ Database setup complete!"
 ```
 
-### How Each Step Works
+**How each step works:**
 
 **1. Loading Environment Variables (`source .env`)**
 - Makes your database connection info available to Django
@@ -309,155 +406,132 @@ echo "✅ Database setup complete!"
 - Puts sample data into your tables
 - Like furnishing the rooms with sample furniture
 
-### Why This Order Matters
+---
 
-```
-Environment Variables → Database Connection → Table Structure → Sample Data
-```
+## Step 3: Update GitHub Secrets for RDS
 
-Each step depends on the previous one:
-- Can't connect without credentials
-- Can't add data without tables
-- Can't create app tables without Django's foundation tables
+Your deployment pipeline needs access to your RDS database. You'll add database connection information as GitHub secrets.
 
-### How Docker Uses This Script
+### Understanding GitHub Secrets in CI/CD
 
-Look at the `Dockerfile` in your repository and find this line at the bottom:
-```dockerfile
-CMD pipenv run bash -c "./seed_database.sh && python manage.py runserver 0.0.0.0:8000"
-```
+**The Challenge**: Your application running on EC2 needs to connect to your RDS database, but you can't hardcode database passwords in your code or GitHub Actions workflow files.
 
-This means when you start the container:
-1. It sets up the database automatically
-2. Then starts the API server
-3. Your API is ready to use immediately
+**The Solution**: GitHub Secrets provide a secure way to store sensitive information that your workflows can access but remain hidden from anyone viewing your repository.
 
-## 6. Containerization: Why Docker?
+**How it works in our deployment**:
+1. GitHub Actions reads secrets during deployment
+2. Passes them as environment variables to your container
+3. Your application uses these environment variables to connect to RDS
+4. Database passwords never appear in logs or code
 
-### The Problem with Traditional Setup
-Without containers, every developer needs to:
-- Install the correct Python version
-- Install all the right packages (Django, psycopg2, etc.)
-- Deal with version conflicts between projects
-- Troubleshoot environment-specific issues
+### Add Database Secrets to GitHub
+1. Go to your API repository on GitHub
+2. Click **Settings** → **Secrets and variables** → **Actions**
+3. Click **New repository secret** and add each of these:
 
-### The Container Solution
-With Docker:
-- All dependencies are packaged together
-- Same environment everywhere (your laptop, AWS, teammate's computer)
-- "It works on my machine" = "It works everywhere"
+**Secret Name:** `DB_NAME`  
+**Secret Value:** `rockofages`
 
-### How Our Dockerfile Works
-```dockerfile
-FROM python:latest
-# ... setup steps ...
-CMD pipenv run bash -c "./seed_database.sh && python manage.py runserver 0.0.0.0:8000"
-```
+**Secret Name:** `DB_USER`  
+**Secret Value:** `rockadmin`
 
-When you run the container:
-1. **Automatic Setup**: Database tables and data are created automatically
-2. **Clean Environment**: No conflicts with other Python projects on your machine
-3. **Production Ready**: Same container can be deployed to AWS
+**Secret Name:** `DB_PASSWORD`  
+**Secret Value:** `YourActualRDSPassword123!` (your actual password)
 
-## How Everything Connects
+**Secret Name:** `DB_HOST`  
+**Secret Value:** `rock-of-ages-db.c9xkv8actual.us-east-2.rds.amazonaws.com` (your actual endpoint)
 
-Here's the complete flow of how all these pieces work together:
+**Secret Name:** `DB_PORT`  
+**Secret Value:** `5432`
 
-```
-1. .env file → Contains your database credentials
-2. settings.py → Reads .env and configures Django to use PostgreSQL
-3. psycopg2-binary → Allows Django to communicate with PostgreSQL
-4. Docker container → Packages everything together with dependencies
-5. seed_database.sh → Creates tables and loads sample data (runs automatically)
-6. Django app → Serves API requests from the containerized environment
+### Your secrets should now include:
+- AWS_ACCOUNT_ID (from Workshop 2)
+- AWS_REGION (from Workshop 2)
+- DB_NAME (new)
+- DB_USER (new)
+- DB_PASSWORD (new)
+- DB_HOST (new)
+- DB_PORT (new)
+
+---
+
+## Step 4: Update GitHub Actions Workflow
+
+Edit your existing `.github/workflows/deploy.yml` to pass database environment variables to your container. You only need to modify the **last command** in the SSM send-command.
+
+**Find this line in your existing deploy.yml:**
+```yaml
+"docker run -d --name rock-of-ages-api -p 80:8000 \"$IMAGE\""
 ```
 
-**Real-world analogy**: 
-- `.env` = Your ID and keys
-- `settings.py` = GPS directions to the database
-- `psycopg2-binary` = The vehicle that gets you there
-- **Docker container** = A fully equipped mobile office that works anywhere
-- `seed_database.sh` = Setting up your workspace automatically when you arrive
-- Django app = Doing your actual work from your mobile office
+**Replace it with:**
+```yaml
+"docker run -d --name rock-of-ages-api -p 80:8000 \
+  -e DB_NAME=${{ secrets.DB_NAME }} \
+  -e DB_USER=${{ secrets.DB_USER }} \
+  -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+  -e DB_HOST=${{ secrets.DB_HOST }} \
+  -e DB_PORT=${{ secrets.DB_PORT }} \
+  \"$IMAGE\""
+```
 
-Understanding these connections will help you understand how modern cloud applications use containers to ensure consistency across different environments - a key principle in DevOps and cloud deployment.
+**Your complete deploy.yml should look like this:**
+```yaml
+name: Deploy to EC2
 
-## Next Steps
+on:
+  workflow_dispatch:  # Manual only
 
-Now that you understand what changed and why, you're ready to configure your own API to connect to your RDS database. Each step in the setup process will make more sense because you understand the purpose behind each component.
-"********************************************************************************************************************"
+permissions:
+  id-token: write
+  contents: read
 
-# Setting up Rock of Ages API with RDS Database
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-Now that you understand how the API was modified to work with PostgreSQL, let's get it running with your AWS RDS database.
+    steps:
+      - uses: actions/checkout@v4
 
-## Prerequisites
+      - uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ vars.OIDC_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.AWS_REGION }}
 
-Before starting, make sure you have:
-- ✅ Created an RDS PostgreSQL database (from previous section)
-- ✅ Your database endpoint URL 
-- ✅ Your database password
-- ✅ Docker installed on your computer
-- ✅ Yaak (or similar API testing tool) installed
+      - uses: aws-actions/amazon-ecr-login@v2
 
-## Step 1: Get the Repository
+      - name: Trigger remote deployment on EC2 via SSM
+        run: |
+          aws ssm send-command \
+          --instance-ids "${{ vars.EC2_INSTANCE_ID }}" \
+          --document-name "AWS-RunShellScript" \
+          --comment "Manual deploy from GitHub Actions" \
+          --parameters '{"commands":["IMAGE=\"${{ vars.ECR_REGISTRY }}/${{ vars.ECR_REPOSITORY }}:latest\"","docker pull \"$IMAGE\"","docker stop rock-of-ages-api || true","docker rm rock-of-ages-api || true","docker run -d --name rock-of-ages-api -p 80:8000 -e DB_NAME=${{ secrets.DB_NAME }} -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_HOST=${{ secrets.DB_HOST }} -e DB_PORT=${{ secrets.DB_PORT }} \"$IMAGE\""]}' \
+          --region ${{ vars.AWS_REGION }}
+```
 
-### Clone the Repository
-Since you've already cloned the repository in the previous chapter, navigate to it:
+**Key changes:**
+- Added `-e` flags to pass database environment variables to the container
+- Container now receives all database connection information from GitHub secrets
+- All other parts of your existing workflow remain unchanged
+
+---
+
+## Step 5: Test Locally with Docker
+
+Before deploying, test your changes locally using the same containerized approach you'll use in production.
+
+### Build the Updated Container
 ```bash
-cd rock-of-ages-api-rds
-```
-
-If you skipped the previous chapter, clone it now:
-```bash
-git clone https://github.com/YOUR-INSTRUCTOR-REPO/rock-of-ages-api-rds.git
-cd rock-of-ages-api-rds
-```
-
-## Step 2: Configure Database Connection
-
-### Create Your Environment File
-1. Copy the example environment file:
-   ```bash
-   cp .env.example .env
-   ```
-
-2. Open the `.env` file in your code editor and replace the placeholder values with your actual RDS information:
-   ```bash
-   DB_NAME=rockofages
-   DB_USER=rockadmin
-   DB_PASSWORD=your-actual-password-here  # ← Replace with your RDS password
-   DB_HOST=your-rds-endpoint.amazonaws.com  # ← Replace with your RDS endpoint
-   DB_PORT=5432
-   ```
-
-### Example of what your .env should look like:
-```bash
-DB_NAME=rockofages
-DB_USER=rockadmin  
-DB_PASSWORD=MySecurePassword123!
-DB_HOST=rock-of-ages-db.c9xkv8example.us-east-2.rds.amazonaws.com
-DB_PORT=5432
-```
-
-## Step 3: Build and Run the Docker Container
-
-### Build the Container
-```bash
+# Build the container with PostgreSQL support
 docker build -t rock-of-ages-api .
 ```
 
-This creates a Docker image with all the necessary dependencies (Python, Django, PostgreSQL adapter, etc.).
-
-### Run the Container
+### Run Container with Database Connection
 ```bash
+# Run with environment file (container handles all dependencies)
 docker run --env-file .env -p 8000:8000 rock-of-ages-api
 ```
-
-**What this command does:**
-- `--env-file .env`: Loads your database connection info into the container
-- `-p 8000:8000`: Maps port 8000 from the container to your computer
-- `rock-of-ages-api`: The name of the Docker image we just built
 
 **Expected output:**
 ```
@@ -473,20 +547,98 @@ Starting development server at http://0.0.0.0:8000/
 Quit the server with CONTROL-C.
 ```
 
-**If you see this output, everything worked!** The container:
-1. ✅ Connected to your RDS database
-2. ✅ Created all necessary tables
-3. ✅ Loaded sample data (users, rock types, rocks)
-4. ✅ Started the API server
+**✅ If you see this output, everything worked!** The container:
+1. Connected to your RDS database
+2. Created all necessary tables
+3. Loaded sample data (users, rock types, rocks)
+4. Started the API server
 
-## Step 4: Test Your API with Yaak
+### Test Database Connection Directly
 
-Now let's verify everything is working by testing your API endpoints using Yaak.
+Before testing through the API, let's verify the database setup by connecting directly to your RDS instance. This helps you understand what's happening "under the hood" and gives you valuable database inspection skills.
 
-### Test 1: Check API Health (Unauthenticated)
-**Purpose**: Verify the API is running and connected to the database.
+**Why test the database directly?**
+- **Debugging**: When APIs fail, you can check if the problem is in the database or application layer
+- **Data Verification**: Confirm that migrations and seed data loaded correctly
+- **Professional Skill**: Database inspection is a common developer task
+- **Understanding**: See the actual tables and data your API is working with
 
-1. **Open Yaak** and create a new request
+#### Install PostgreSQL Explorer Extension
+
+1. **Open VS Code**
+2. **Go to Extensions** (Ctrl+Shift+X or Cmd+Shift+X)
+3. **Search for** "PostgreSQL" by Chris Kolkman
+4. **Install** the PostgreSQL extension
+
+#### Connect to Your RDS Database
+
+1. **Open VS Code Command Palette** (Ctrl+Shift+P or Cmd+Shift+P)
+2. **Type**: "PostgreSQL: New Connection"
+3. **Fill in connection details**:
+   - **Hostname**: Your RDS endpoint (from your .env file)
+   - **User**: `rockadmin`
+   - **Password**: Your RDS password
+   - **Port**: `5432`
+   - **Database**: `rockofages`
+   - **SSL**: `require`
+
+#### Explore Your Database
+
+Once connected, you should see your database in the PostgreSQL Explorer panel. Expand the sections to see:
+
+**📁 Schemas → public → Tables**
+- `auth_user` (Django users)
+- `authtoken_token` (API authentication tokens)
+- `rockapi_type` (Rock types: Igneous, Metamorphic, etc.)
+- `rockapi_rock` (Individual rocks with owners)
+
+#### Run Test Queries
+
+Right-click on your database connection and select "New Query" to run these verification queries:
+
+**1. Check all rock types:**
+```sql
+SELECT * FROM rockapi_type;
+```
+**Expected result:** 5 rock types (Metamorphic, Igneous, Sedimentary, Shale, Basalt)
+
+**2. Check all rocks with their types and owners:**
+```sql
+SELECT 
+    r.name as rock_name,
+    r.weight,
+    t.label as rock_type,
+    u.first_name,
+    u.last_name
+FROM rockapi_rock r
+JOIN rockapi_type t ON r.type_id = t.id
+JOIN auth_user u ON r.user_id = u.id;
+```
+**Expected result:** 3 rocks owned by John Doe and Jane Smith
+
+**3. Count total records:**
+```sql
+SELECT 
+    (SELECT COUNT(*) FROM rockapi_rock) as total_rocks,
+    (SELECT COUNT(*) FROM rockapi_type) as total_types,
+    (SELECT COUNT(*) FROM auth_user) as total_users;
+```
+**Expected result:** 3 rocks, 5 types, 2 users
+
+**✅ If you see the expected data, your database setup is perfect!**
+
+**Understanding what you're seeing:**
+- **Django tables**: Tables starting with `auth_` are Django's built-in user management
+- **Your app tables**: Tables starting with `rockapi_` are from your Rock of Ages models
+- **Relationships**: The JOIN queries show how your data connects across tables
+- **Data integrity**: All foreign key relationships are working correctly
+
+### Test with Yaak
+
+Now test your API to ensure it's correctly reading from the database:
+
+**Test 1: Check API Health (Unauthenticated)**
+1. Open Yaak and create a new request
 2. **Method**: GET
 3. **URL**: `http://localhost:8000/rocks`
 4. **Send the request**
@@ -497,21 +649,13 @@ Now let's verify everything is working by testing your API endpoints using Yaak.
   "detail": "Authentication credentials were not provided."
 }
 ```
+**✅ This confirms:** API is running and database connection works
 
-**✅ This is good!** It means:
-- Your API is running
-- The database connection works
-- Authentication is properly configured
-
-### Test 2: Register a New User
-**Purpose**: Test user creation and get an authentication token.
-
-1. **Create a new request in Yaak**
-2. **Method**: POST
-3. **URL**: `http://localhost:8000/register`
-4. **Headers**: 
-   - Content-Type: `application/json`
-5. **Body** (JSON):
+**Test 2: Register a New User**
+1. **Method**: POST
+2. **URL**: `http://localhost:8000/register`
+3. **Headers**: Content-Type: `application/json`
+4. **Body** (JSON):
    ```json
    {
      "email": "test@example.com",
@@ -520,7 +664,6 @@ Now let's verify everything is working by testing your API endpoints using Yaak.
      "last_name": "User"
    }
    ```
-6. **Send the request**
 
 **Expected Response:**
 ```json
@@ -528,18 +671,17 @@ Now let's verify everything is working by testing your API endpoints using Yaak.
   "token": "abc123def456..."
 }
 ```
+**✅ Save this token** for the next test.
 
-**✅ Save this token!** You'll need it for the next test.
+**💡 Database verification**: After registering, you can run this query in VS Code to see your new user:
+```sql
+SELECT * FROM auth_user ORDER BY date_joined DESC LIMIT 1;
+```
 
-### Test 3: Get Rocks with Authentication
-**Purpose**: Test authenticated requests and verify sample data was loaded.
-
-1. **Create a new request in Yaak**
-2. **Method**: GET
-3. **URL**: `http://localhost:8000/rocks`
-4. **Headers**:
-   - Authorization: `Token abc123def456...` (use your actual token from Test 2)
-5. **Send the request**
+**Test 3: Get Rocks with Authentication**
+1. **Method**: GET
+2. **URL**: `http://localhost:8000/rocks`
+3. **Headers**: Authorization: `Token abc123def456...` (use your actual token)
 
 **Expected Response:**
 ```json
@@ -548,134 +690,100 @@ Now let's verify everything is working by testing your API endpoints using Yaak.
     "id": 1,
     "name": "Ernestina",
     "weight": "1.30",
-    "type": {
-      "label": "Sedimentary"
-    },
-    "user": {
-      "first_name": "Jane",
-      "last_name": "Smith"
-    }
+    "type": {"label": "Sedimentary"},
+    "user": {"first_name": "Jane", "last_name": "Smith"}
   },
-  {
-    "id": 2,
-    "name": "Orpha", 
-    "weight": "0.50",
-    "type": {
-      "label": "Metamorphic"
-    },
-    "user": {
-      "first_name": "John",
-      "last_name": "Doe"
-    }
-  },
-  {
-    "id": 3,
-    "name": "Sasha",
-    "weight": "0.29", 
-    "type": {
-      "label": "Basalt"
-    },
-    "user": {
-      "first_name": "Jane",
-      "last_name": "Smith"
-    }
-  }
+  // ... more rocks
 ]
 ```
+**✅ Success!** You should see 3 sample rocks from your RDS database.
 
-**✅ Success!** You should see 3 sample rocks with their types and owners.
+### Understanding the Complete Flow
 
-### Test 4: Get Rock Types
-**Purpose**: Verify all seed data loaded correctly.
+You've now tested your application at multiple levels:
 
-1. **Create a new request in Yaak**
-2. **Method**: GET  
-3. **URL**: `http://localhost:8000/types`
-4. **Headers**:
-   - Authorization: `Token abc123def456...` (your token)
-5. **Send the request**
+1. **Database Level**: Direct SQL queries confirmed data exists
+2. **Application Level**: API endpoints confirmed Django can read the data
+3. **Integration Level**: Full request/response cycle works end-to-end
 
-**Expected Response:**
-```json
-[
-  {
-    "id": 1,
-    "label": "Metamorphic"
-  },
-  {
-    "id": 2, 
-    "label": "Igneous"
-  },
-  {
-    "id": 3,
-    "label": "Sedimentary"
-  },
-  {
-    "id": 4,
-    "label": "Shale"
-  },
-  {
-    "id": 5,
-    "label": "Basalt"
-  }
-]
+This multi-layer testing approach is exactly how professional developers verify their applications work correctly.
+
+---
+
+## Step 6: Deploy to Production
+
+### Commit and Push Your Changes
+```bash
+git add .
+git commit -m "Add PostgreSQL support and RDS integration"
+git push origin main
 ```
 
-**✅ Perfect!** All 5 rock types are loaded.
+### Trigger Deployment
+1. Go to your repository on GitHub
+2. Click **Actions** tab
+3. Click **Deploy to EC2** workflow
+4. Click **Run workflow** → **Run workflow**
 
-## Understanding What You Just Tested
+### Verify Deployment
+- Check that the workflow completes successfully
+- Test your live API endpoint with Yaak
+- Verify your React client can still connect to the API
 
-Through these Yaak tests, you verified:
-
-1. **Container Startup**: The Docker container started successfully
-2. **Database Connection**: Your API connected to AWS RDS PostgreSQL
-3. **Table Creation**: Django migrations created all necessary tables
-4. **Data Loading**: Sample users, tokens, types, and rocks were loaded
-5. **Authentication**: Token-based authentication is working
-6. **API Functionality**: All endpoints are responding correctly
-
-This is exactly how your React frontend will interact with the API!
-
-## Troubleshooting Common Issues
-
-### Container won't start / Database connection errors
-**Error messages like**: "Connection refused", "Authentication failed", "Host not found"
-
-**Solutions**:
-1. **Check your .env file**: Ensure no extra spaces, correct endpoint URL, correct password
-2. **Verify RDS status**: Your RDS instance must show "Available" in AWS Console
-3. **Check security group**: Ensure port 5432 is open (see RDS setup instructions)
-4. **Restart container**: Stop with `Ctrl+C` and run the docker run command again
-
-### "No module named 'psycopg2'" or similar Python errors
-**This should not happen with containers**, but if it does:
-- Rebuild the container: `docker build -t rock-of-ages-api .`
-- Check your Dockerfile is unchanged from the repository
-
-### API returns 500 errors in Yaak
-- Check the container logs for Django error messages
-- Verify your database contains the expected tables and data
-- Ensure you're using the correct token format: `Token abc123...`
-
-### Can't connect to localhost:8000
-- Ensure the container is running (you should see the Django server output)
-- Verify you used `-p 8000:8000` in your docker run command
-- Try `http://127.0.0.1:8000` instead of `http://localhost:8000`
+---
 
 ## What You've Accomplished
 
 You now have:
-- ✅ Django API running in a Docker container
-- ✅ Connected to AWS RDS PostgreSQL database
-- ✅ Database tables created and populated with sample data
-- ✅ Verified API functionality with Yaak testing
-- ✅ Authentication system working with token-based access
+- ✅ PostgreSQL database running in AWS RDS
+- ✅ Updated API code to support PostgreSQL
+- ✅ Environment variables for secure database configuration
+- ✅ Updated GitHub Actions pipeline for database integration
+- ✅ Production deployment using cloud database
 
-Your API is now running in a containerized, cloud-ready configuration that demonstrates modern application architecture with proper separation between application and data layers.
+## Understanding Your New Architecture
 
-## Next Steps
+Let's examine what you've built and why it's significant:
 
-In the next section, you'll:
-1. Deploy this containerized API to AWS using ECS (Elastic Container Service)
-2. Connect your React frontend to the cloud-hosted API
-3. Set up automated deployments with GitHub Actions
+### Database Separation
+**Before**: Your application and database were tightly coupled - if your server went down, you lost everything.
+
+**Now**: Your database runs independently from your application. This means:
+- **Scalability**: Multiple application servers can connect to the same database
+- **Reliability**: Database survives even if application servers crash
+- **Team Collaboration**: Developers can connect to shared development databases
+- **Backup & Recovery**: AWS handles automated backups and point-in-time recovery
+
+### Environment Configuration
+You've implemented a professional pattern for managing configuration:
+- **Development**: Uses local `.env` file
+- **Production**: Uses GitHub Secrets → Environment Variables
+- **Security**: Passwords never appear in code or logs
+- **Flexibility**: Easy to change database settings without code changes
+
+### Production Architecture
+Your setup now mirrors real-world application deployments:
+```
+GitHub → GitHub Actions → ECR → EC2 (API Container) → RDS (Database)
+```
+
+This is the same pattern used by companies like:
+- **Spotify**: Microservices connecting to managed databases
+- **Netflix**: Containerized applications with cloud databases  
+- **Airbnb**: APIs deployed to containers with separate data layer
+
+## Key Learning Concepts
+
+**1. Database as a Service (DBaaS)**
+RDS is an example of "Database as a Service" - you get a production-ready database without managing servers, updates, or backups.
+
+**2. The Twelve-Factor App**
+Your environment variable usage follows the [Twelve-Factor App methodology](https://12factor.net/), a set of best practices for building modern applications.
+
+**3. Infrastructure as Code**
+While you created RDS manually, in larger organizations this would be defined in code using tools like Terraform (which you'll see later).
+
+**4. Container Networking**
+Your container can now communicate with external services (RDS) while remaining portable and isolated.
+
+In the next section, you'll set up a local development environment that mimics this production architecture using Docker containers and networks.

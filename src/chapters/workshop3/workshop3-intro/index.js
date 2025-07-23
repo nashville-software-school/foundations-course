@@ -28,7 +28,7 @@ export const getChapterIds = () => {
  */
 export const getNextChapter = (currentChapterId) => {
   const currentIndex = introToWorkshop3Chapters.findIndex(chapter => chapter.id === currentChapterId);
-  return introToWorkshop2Chapters[currentIndex + 1];
+  return introToWorkshop3Chapters[currentIndex + 1];
 };
 
 /**
