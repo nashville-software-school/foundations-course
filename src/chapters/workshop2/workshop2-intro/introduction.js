@@ -5,8 +5,7 @@ export const introductionWorkshop2Chapter = {
   title: 'Introduction to Docker and EC2',
   sectionId: 'intro-to-workshop2',
   previousChapterId: null,
-  content: `## Welcome to the second workshop of **Intro to Cloud** course! By the end of this workshop, you'll understand basic docker concepts, gain hands-on experience deploying a back-end API to the cloud using an EC2 instance, 
-  and confidently discuss terms like **container**, **virtualization**, and **EC2**.
+  content: `## Welcome to the second workshop of **Intro to Cloud** course! By the end of this workshop, you'll understand basic docker concepts, gain hands-on experience deploying a back-end API to the cloud using an EC2 instance, and confidently discuss terms like **container**, **virtualization**, and **EC2**.
   
   
   ## 📝 Summary
