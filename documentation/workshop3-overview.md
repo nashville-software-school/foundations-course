@@ -313,11 +313,47 @@ Quit the server with CONTROL-C.
 - No error messages about SSL or authentication failures
 
 **🚨 Troubleshooting**: If you see an RDS endpoint (like `rock-of-ages-db.xyz123.us-east-2.rds.amazonaws.com`) in the database connection, your container is using the wrong environment variables. Make sure you:
-1. Added SSL options to your `settings.py`
+1. Added SSL options to your `settings.py` (from Part 1)
 2. Created the `.env.local` file with the correct values  
 3. Used `--env-file .env.local` in your docker run command
 4. The `.env.local` file has `DB_HOST=postgres-db` (not your RDS endpoint)
-5. Rebuilt your Docker image after changing `settings.py`
+5. Rebuilt your Docker image after any changes: `docker build -t rock-of-ages-api .`
+
+**🔥 Nuclear Option - Complete Environment Reset**: If you're still seeing RDS connections or other strange caching issues, completely wipe your Docker environment and rebuild everything:
+
+```bash
+# Stop and remove ALL containers, remove ALL images, and clean networks
+docker stop $(docker ps -aq) && docker rm $(docker ps -aq) && docker rmi -f $(docker images -q)
+docker network prune -f
+
+# Now rebuild everything from scratch:
+# 1. Recreate the network
+docker network create rock-of-ages-network
+
+# 2. Start PostgreSQL container
+docker run -d \
+  --name postgres-db \
+  --network rock-of-ages-network \
+  -e POSTGRES_DB=rockofages \
+  -e POSTGRES_USER=rockadmin \
+  -e POSTGRES_PASSWORD=localpassword123 \
+  -p 5432:5432 \
+  postgres:15
+
+# 3. Rebuild and run API container
+docker build -t rock-of-ages-api .
+docker run -d \
+  --name api-container \
+  --network rock-of-ages-network \
+  --env-file .env.local \
+  -p 8000:8000 \
+  rock-of-ages-api
+
+# 4. Check the logs
+docker logs api-container
+```
+
+This nuclear option removes all Docker containers, images, and networks, forcing everything to rebuild from scratch. Sometimes Docker caches old images or configurations, and this completely clears that cache.
 
 ---
 
