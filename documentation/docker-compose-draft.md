@@ -164,10 +164,11 @@ services:
       - "8000:8000"
     volumes:
       - ./rock-of-ages-api:/app
+      - /app/.venv  # Preserve the virtual environment
     depends_on:
       postgres-db:
         condition: service_healthy
-    command: python manage.py runserver 0.0.0.0:8000
+    command: pipenv run python manage.py runserver 0.0.0.0:8000
 
   # React Client Service
   client:
@@ -217,8 +218,10 @@ Let's break down what each section does:
 - `context:` - Where to find the Dockerfile
 - `env_file:` - Loads environment variables from a file
 - `volumes:` - **Key feature!** Mounts your code directory into the container
+  - `./rock-of-ages-api:/app` - Maps your local API code to `/app` in the container
+  - `/app/.venv` - Preserves the pipenv virtual environment (prevents override)
 - `depends_on:` - Ensures database is healthy before starting
-- `command:` - Overrides the default command for development
+- `command:` - Uses pipenv to run Django with the correct Python environment
 
 **client service:**
 - Similar to API service but for React
@@ -257,6 +260,32 @@ That's it! This single command:
 - Builds images if needed
 - Starts all containers in the correct order
 - Shows combined logs from all services
+
+### Troubleshooting: ModuleNotFoundError
+
+If you see an error like `ModuleNotFoundError: No module named 'django'`, this is because the volume mount is overriding the virtual environment. Here's how to fix it:
+
+**Option 1 - Rebuild without cache:**
+```bash
+# Stop everything
+docker compose down
+
+# Rebuild without using cache
+docker compose build --no-cache
+
+# Start again
+docker compose up
+```
+
+**Option 2 - Install dependencies inside the running container:**
+```bash
+# While containers are running, in a new terminal:
+docker compose exec api pipenv install
+
+# This installs the dependencies in the mounted volume
+```
+
+**Why this happens**: The Rock of Ages API uses pipenv to create a virtual environment at `.venv` inside the container. When we mount our local code as a volume, it can override this directory. The `- /app/.venv` line in the volumes section prevents this, but sometimes you need to rebuild to get everything synced properly.
 
 ### Step 5: Run in Background Mode
 
