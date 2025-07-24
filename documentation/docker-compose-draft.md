@@ -195,6 +195,35 @@ networks:
     name: rock-of-ages-network
 ```
 
+### Step 4: Create Environment Files
+
+Before running Docker Compose, you need to create environment files for both the API and client.
+
+**Create `.env.local` in your `rock-of-ages-api` directory:**
+
+```bash
+# rock-of-ages-api/.env.local
+DB_NAME=rockofages
+DB_USER=rockadmin
+DB_PASSWORD=localpassword123
+DB_HOST=postgres-db
+DB_PORT=5432
+SSLMODE=disable
+```
+
+**Create `.env.local` in your `rock-of-ages-client` directory:**
+
+```bash
+# rock-of-ages-client/.env.local
+VITE_API_URL=http://localhost:8000
+```
+
+**Important**: These files must:
+- Be named exactly `.env.local` (with the leading dot)
+- Be in the correct directories
+- Have no quotes around values
+- Have no spaces around = signs
+
 ### Understanding the Docker Compose File
 
 Let's break down what each section does:
@@ -248,7 +277,9 @@ Let's break down what each section does:
 
 ## Running Your Docker Compose Setup
 
-### Step 4: Start Everything with One Command
+### Step 5: Start Everything with One Command
+
+Make sure you've created the `.env.local` files in both the API and client directories (see Step 4), then:
 
 ```bash
 # From the rock-of-ages-development directory
@@ -261,7 +292,9 @@ That's it! This single command:
 - Starts all containers in the correct order
 - Shows combined logs from all services
 
-### Troubleshooting: ModuleNotFoundError
+### Troubleshooting Common Issues
+
+#### Issue 1: ModuleNotFoundError
 
 If you see an error like `ModuleNotFoundError: No module named 'django'`, this is because the volume mount is overriding the virtual environment. Here's how to fix it:
 
@@ -286,6 +319,51 @@ docker compose exec api pipenv install
 ```
 
 **Why this happens**: The Rock of Ages API uses pipenv to create a virtual environment at `.venv` inside the container. When we mount our local code as a volume, it can override this directory. The `- /app/.venv` line in the volumes section prevents this, but sometimes you need to rebuild to get everything synced properly.
+
+#### Issue 2: Password Authentication Failed
+
+If you see `password authentication failed for user "rockadmin"`, this is usually because PostgreSQL already has a volume with different credentials. Here's how to fix it:
+
+**Solution 1 - Remove the existing PostgreSQL volume (easiest):**
+```bash
+# Stop all containers
+docker compose down
+
+# Remove the PostgreSQL volume (this will delete any data!)
+docker volume rm rock-of-ages-development_postgres_data
+
+# Start fresh
+docker compose up
+```
+
+**Solution 2 - Check your .env.local file:**
+
+Make sure your `.env.local` file in the `rock-of-ages-api` directory has the correct database credentials matching your docker-compose.yml:
+
+```bash
+# rock-of-ages-api/.env.local
+DB_NAME=rockofages
+DB_USER=rockadmin
+DB_PASSWORD=localpassword123
+DB_HOST=postgres-db
+DB_PORT=5432
+SSLMODE=disable
+```
+
+**Important checks:**
+- The file must be named exactly `.env.local` (with the leading dot)
+- The file must be in your `rock-of-ages-api` directory
+- The password must match what's in docker-compose.yml
+- No quotes around the values
+- No spaces around the = signs
+
+**Solution 3 - Complete reset:**
+```bash
+# Nuclear option - remove everything and start fresh
+docker compose down -v  # -v removes volumes too
+docker compose build --no-cache
+docker compose up
+```
 
 ### Step 5: Run in Background Mode
 
