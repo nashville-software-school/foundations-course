@@ -83,6 +83,29 @@ Docker Compose works best when all related services are organized under a single
 - Easy volume mounting for development
 - Single command to manage everything
 
+## Clean Slate: Remove Existing Containers
+
+Before we set up Docker Compose, let's clean up all the containers, images, and networks from the previous section to avoid any conflicts:
+
+```bash
+# Stop and remove ALL containers
+docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+
+# Remove ALL images
+docker rmi -f $(docker images -q)
+
+# Remove all custom networks
+docker network prune -f
+```
+
+**What this does:**
+- Stops any running containers
+- Removes all containers (running or stopped)
+- Deletes all Docker images from your system
+- Removes custom networks like `rock-of-ages-network`
+
+This gives you a completely clean Docker environment to start fresh with Docker Compose.
+
 ## Setting Up Your Project Structure
 
 Let's organize your repositories properly for Docker Compose:
@@ -100,22 +123,27 @@ cd rock-of-ages-development
 Move (don't copy) your existing repositories into this directory:
 
 ```bash
-# Move your API repository
+# Move your API repository (use YOUR actual repo name)
 mv ~/path/to/your/rock-of-ages-api ./
 
-# Move your client repository  
+# Move your client repository (use YOUR actual repo name)
 mv ~/path/to/your/rock-of-ages-client ./
 ```
+
+**Important**: Use your actual repository names! They might be:
+- `rock-of-ages-api-yourname`
+- `yourname-rock-api`
+- etc.
 
 Your structure should now look like:
 ```
 rock-of-ages-development/
-├── rock-of-ages-api/
+├── your-api-repo-name/
 │   ├── Dockerfile
 │   ├── manage.py
 │   ├── requirements.txt
 │   └── ... (other API files)
-└── rock-of-ages-client/
+└── your-client-repo-name/
     ├── Dockerfile
     ├── package.json
     ├── src/
@@ -155,33 +183,33 @@ services:
   # Django API Service
   api:
     build: 
-      context: ./rock-of-ages-api
+      context: ./your-api-repo-name  # CHANGE THIS to your actual repo name
       dockerfile: Dockerfile
     container_name: api-container
     env_file:
-      - ./rock-of-ages-api/.env.local
+      - ./your-api-repo-name/.env.local  # CHANGE THIS to your actual repo name
     ports:
       - "8000:8000"
     volumes:
-      - ./rock-of-ages-api:/app
+      - ./your-api-repo-name:/app  # CHANGE THIS to your actual repo name
       - /app/.venv  # Preserve the virtual environment
     depends_on:
       postgres-db:
         condition: service_healthy
-    command: pipenv run python manage.py runserver 0.0.0.0:8000
+    command: pipenv run bash -c "./seed_database.sh && python manage.py runserver 0.0.0.0:8000"
 
   # React Client Service
   client:
     build:
-      context: ./rock-of-ages-client
+      context: ./your-client-repo-name  # CHANGE THIS to your actual repo name
       dockerfile: Dockerfile
     container_name: client-container
     env_file:
-      - ./rock-of-ages-client/.env.local
+      - ./your-client-repo-name/.env.local  # CHANGE THIS to your actual repo name
     ports:
       - "3000:3000"
     volumes:
-      - ./rock-of-ages-client:/app
+      - ./your-client-repo-name:/app  # CHANGE THIS to your actual repo name
       - /app/node_modules
     depends_on:
       - api
@@ -195,14 +223,22 @@ networks:
     name: rock-of-ages-network
 ```
 
-### Step 4: Create Environment Files
+**⚠️ IMPORTANT**: 
+1. Replace `your-api-repo-name` with your actual API repository folder name (4 places)
+2. Replace `your-client-repo-name` with your actual client repository folder name (4 places)
+3. Make sure the PostgreSQL environment values match what's in your existing `.env.local` file!
 
-Before running Docker Compose, you need to create environment files for both the API and client.
+### Step 4: Verify Your Environment Files
 
-**Create `.env.local` in your `rock-of-ages-api` directory:**
+Before running Docker Compose, confirm that your `.env.local` files still exist from the previous section:
 
+**Check your API's `.env.local` file:**
 ```bash
-# rock-of-ages-api/.env.local
+cat ./your-api-repo-name/.env.local
+```
+
+It should contain:
+```
 DB_NAME=rockofages
 DB_USER=rockadmin
 DB_PASSWORD=localpassword123
@@ -211,22 +247,21 @@ DB_PORT=5432
 SSLMODE=disable
 ```
 
-**Create `.env.local` in your `rock-of-ages-client` directory:**
-
+**Check your client's `.env.local` file:**
 ```bash
-# rock-of-ages-client/.env.local
+cat ./your-client-repo-name/.env.local
+```
+
+It should contain:
+```
 VITE_API_URL=http://localhost:8000
 ```
 
-**Important**: These files must:
-- Be named exactly `.env.local` (with the leading dot)
-- Be in the correct directories
-- Have no quotes around values
-- Have no spaces around = signs
+**Critical**: The database values in your `.env.local` MUST match what you put in the docker-compose.yml file!
 
 ### Understanding the Docker Compose File
 
-Let's break down what each section does:
+Let's break down what each section does and compare it to the manual commands you used before:
 
 **version: '3.8'**
 - Specifies the Docker Compose file format version
@@ -238,48 +273,35 @@ Let's break down what each section does:
 
 **postgres-db service:**
 - `image: postgres:15` - Uses the official PostgreSQL image
-- `environment:` - Sets database configuration (same as our -e flags)
-- `volumes:` - Persists database data between container restarts
-- `healthcheck:` - Ensures database is ready before starting dependent services
+- **Previously**: You ran `docker run -d --name postgres-db --network rock-of-ages-network -e POSTGRES_DB=rockofages -e POSTGRES_USER=rockadmin -e POSTGRES_PASSWORD=localpassword123 -p 5432:5432 postgres:15`
+- **Now**: All those flags are organized clearly in the YAML file
+- `healthcheck:` - Ensures database is ready before starting dependent services (NEW feature!)
 
 **api service:**
-- `build:` - Builds from your Dockerfile instead of using an image
-- `context:` - Where to find the Dockerfile
-- `env_file:` - Loads environment variables from a file
-- `volumes:` - **Key feature!** Mounts your code directory into the container
-  - `./rock-of-ages-api:/app` - Maps your local API code to `/app` in the container
-  - `/app/.venv` - Preserves the pipenv virtual environment (prevents override)
-- `depends_on:` - Ensures database is healthy before starting
-- `command:` - Uses pipenv to run Django with the correct Python environment
+- **Previously**: You ran `docker build -t rock-of-ages-api .` then `docker run -d --name api-container --network rock-of-ages-network --env-file .env.local -p 8000:8000 rock-of-ages-api`
+- **Now**: Build and run configuration is declared in one place
+- `volumes:` - **Game changer!** Your local code is mounted into the container
+- `depends_on:` - Waits for database to be healthy before starting
+- `command:` - This is what actually starts your Django server! When this runs, your API is live at localhost:8000
 
 **client service:**
-- Similar to API service but for React
-- `- /app/node_modules` - Prevents overwriting container's node_modules
+- **Previously**: You built and ran with multiple commands
+- **Now**: Everything is defined declaratively
+- `command:` - This starts your React development server! When this runs, your app is live at localhost:3000
 
-**volumes:**
-- `postgres_data:` - Named volume for database persistence
+**Key Improvements Over Manual Setup**
 
-**networks:**
-- Automatically creates a network for all services
-- Services can reach each other by name (postgres-db, api, client)
-
-### Key Improvements Over Manual Setup
-
-1. **Volume Mounts**: The `volumes:` sections mount your local code into the containers. When you change code, the changes appear instantly inside the container!
-
-2. **Automatic Networking**: No need to manually create networks - Docker Compose handles it
-
-3. **Dependency Management**: `depends_on` ensures services start in the right order
-
-4. **Health Checks**: Services wait for dependencies to be truly ready, not just started
-
-5. **Named Volumes**: Database data persists between container restarts
+1. **One Network**: No need to manually create with `docker network create`
+2. **Automatic Building**: No separate `docker build` commands
+3. **Health Checks**: Services wait for dependencies to be truly ready
+4. **Volume Mounts**: Code changes appear instantly without rebuilding
+5. **Single Command**: Replace 10+ commands with just `docker compose up`
 
 ## Running Your Docker Compose Setup
 
 ### Step 5: Start Everything with One Command
 
-Make sure you've created the `.env.local` files in both the API and client directories (see Step 4), then:
+Make sure you've verified your `.env.local` files exist (see Step 4), then:
 
 ```bash
 # From the rock-of-ages-development directory
@@ -287,85 +309,70 @@ docker compose up
 ```
 
 That's it! This single command:
-- Creates the network
-- Builds images if needed
+- Creates the network automatically
+- Builds images if needed  
 - Starts all containers in the correct order
 - Shows combined logs from all services
 
-### Troubleshooting Common Issues
+### Expected Output
 
-#### Issue 1: ModuleNotFoundError
+You should see output similar to this:
+```
+[+] Running 4/4
+ ⠿ Network rock-of-ages-network        Created
+ ⠿ Container postgres-db               Started
+ ⠿ Container api-container             Started
+ ⠿ Container client-container          Started
 
-If you see an error like `ModuleNotFoundError: No module named 'django'`, this is because the volume mount is overriding the virtual environment. Here's how to fix it:
-
-**Option 1 - Rebuild without cache:**
-```bash
-# Stop everything
-docker compose down
-
-# Rebuild without using cache
-docker compose build --no-cache
-
-# Start again
-docker compose up
+postgres-db       | PostgreSQL init process complete; ready for start up.
+postgres-db       | LOG:  database system is ready to accept connections
+api-container     | 🔗 Database connection: postgres-db:5432/rockofages
+api-container     | 👤 Database user: rockadmin
+api-container     | ✅ Database setup complete!
+api-container     | Django version 5.0.1, using settings 'rockproject.settings'
+api-container     | Starting development server at http://0.0.0.0:8000/
+api-container     | Quit the server with CONTROL-C.
+client-container  | VITE v4.4.9  ready in 543 ms
+client-container  | ➜  Local:   http://localhost:3000/
+client-container  | ➜  Network: http://0.0.0.0:3000/
 ```
 
-**Option 2 - Install dependencies inside the running container:**
-```bash
-# While containers are running, in a new terminal:
-docker compose exec api pipenv install
+**✅ Success indicators:**
+- All containers show "Started"
+- PostgreSQL: "ready to accept connections"
+- API: "Starting development server at http://0.0.0.0:8000/"
+- Client: "ready" and showing localhost:3000
 
-# This installs the dependencies in the mounted volume
+## Quick Verification Test
+
+Let's verify everything is working correctly before moving on:
+
+### 1. Test the Database
+In a new terminal (keep docker compose running):
+```bash
+docker exec -it postgres-db psql -U rockadmin -d rockofages
 ```
 
-**Why this happens**: The Rock of Ages API uses pipenv to create a virtual environment at `.venv` inside the container. When we mount our local code as a volume, it can override this directory. The `- /app/.venv` line in the volumes section prevents this, but sometimes you need to rebuild to get everything synced properly.
-
-#### Issue 2: Password Authentication Failed
-
-If you see `password authentication failed for user "rockadmin"`, this is usually because PostgreSQL already has a volume with different credentials. Here's how to fix it:
-
-**Solution 1 - Remove the existing PostgreSQL volume (easiest):**
-```bash
-# Stop all containers
-docker compose down
-
-# Remove the PostgreSQL volume (this will delete any data!)
-docker volume rm rock-of-ages-development_postgres_data
-
-# Start fresh
-docker compose up
+Run this query:
+```sql
+SELECT COUNT(*) FROM rockapi_rock;
 ```
 
-**Solution 2 - Check your .env.local file:**
+You should see 3 rocks. Type `\q` to exit.
 
-Make sure your `.env.local` file in the `rock-of-ages-api` directory has the correct database credentials matching your docker-compose.yml:
+**2. Test The API and React Client**
+- Open your browser to \`http://localhost:3000\`
+- You should see the Rock of Ages application
+- **Open Developer Tools** and go to the **Network** tab
+- Try to register a new user account
+- **In the Network tab**, confirm that API calls are going to \`localhost:8000\` (not your EC2 instance)
+- Login and try to view the rocks collection
+- Test adding a rock to your collection
+- **Verify in Network tab** that all API requests show \`localhost:8000\` as the target
 
-```bash
-# rock-of-ages-api/.env.local
-DB_NAME=rockofages
-DB_USER=rockadmin
-DB_PASSWORD=localpassword123
-DB_HOST=postgres-db
-DB_PORT=5432
-SSLMODE=disable
-```
+**If all three tests pass, your Docker Compose environment is working perfectly!**
 
-**Important checks:**
-- The file must be named exactly `.env.local` (with the leading dot)
-- The file must be in your `rock-of-ages-api` directory
-- The password must match what's in docker-compose.yml
-- No quotes around the values
-- No spaces around the = signs
-
-**Solution 3 - Complete reset:**
-```bash
-# Nuclear option - remove everything and start fresh
-docker compose down -v  # -v removes volumes too
-docker compose build --no-cache
-docker compose up
-```
-
-### Step 5: Run in Background Mode
+### Step 6: Run in Background Mode
 
 If you prefer to run everything in the background:
 
@@ -380,40 +387,61 @@ docker compose logs -f
 
 ### Useful Docker Compose Commands
 
+Here are the most helpful commands with real-world scenarios:
+
 **Stop everything:**
 ```bash
 docker compose down
 ```
+*When to use*: End of your work day, switching to a different project, or when you need to free up system resources.
 
-**Rebuild images (after Dockerfile changes):**
+**Rebuild images:**
 ```bash
 docker compose build
 ```
+*When to use*: After updating your Dockerfile, adding new dependencies to requirements.txt or package.json, or when Docker seems to be using an old cached version.
 
 **Restart a specific service:**
 ```bash
 docker compose restart api
 ```
+*When to use*: The API crashed or is acting weird, you've made configuration changes that require a restart, or you want to clear the application's memory.
 
 **View logs for a specific service:**
 ```bash
 docker compose logs client
+docker compose logs api -f  # -f follows the logs in real-time
 ```
+*When to use*: Debugging why the React app won't compile, checking API error messages, or monitoring database queries.
 
 **Run a command in a service:**
 ```bash
-# Access the database
-docker compose exec postgres-db psql -U rockadmin -d rockofages
+# Run Django migrations after adding a new model
+docker compose exec api pipenv run python manage.py makemigrations
+docker compose exec api pipenv run python manage.py migrate
 
-# Run Django migrations
-docker compose exec api python manage.py migrate
+# Access the Django shell for debugging
+docker compose exec api pipenv run python manage.py shell
+
+# Install a new npm package in the client
+docker compose exec client npm install axios
+
+# Access the database directly
+docker compose exec postgres-db psql -U rockadmin -d rockofages
 ```
+*When to use*: Running migrations after model changes, debugging data issues, adding new dependencies, or running one-off scripts.
+
+**View running containers:**
+```bash
+docker compose ps
+```
+*When to use*: Checking which services are running, verifying all containers started successfully, or getting container names for other commands.
 
 ## Setting Up VS Code Dev Containers
 
 Now let's add the final piece: seamless debugging and development inside your containers.
 
-### Step 6: Install Dev Containers Extension
+### Step 7: Install Dev Containers Extension
 
 1. Open VS Code
 2. Go to Extensions (Cmd/Ctrl + Shift + X)
@@ -429,15 +457,82 @@ The Dev Containers extension allows VS Code to:
 - Access terminals inside containers
 - Use all VS Code features as if running locally
 
-This means you get full IntelliSense, debugging, and all your favorite extensions working inside the container environment!
+### Step 8: Create Dev Container Configuration
+
+For the Rock of Ages API, we need to create a configuration file that tells VS Code how to connect to our running container.
+
+In your API repository, create a `.devcontainer` folder and add a `devcontainer.json` file:
+
+```bash
+# From your rock-of-ages-development directory
+mkdir ./your-api-repo-name/.devcontainer
+```
+
+Create `./your-api-repo-name/.devcontainer/devcontainer.json`:
+
+```json
+{
+  "name": "Rock of Ages API",
+  "dockerComposeFile": "../../docker-compose.yml",
+  "service": "api",
+  "workspaceFolder": "/app",
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/app/.venv/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true
+      }
+    }
+  },
+  "postCreateCommand": "pipenv install --dev",
+  "remoteUser": "root"
+}
+```
+
+### Step 9: Open in Dev Container
+
+1. Make sure your Docker Compose stack is running (`docker compose up`)
+2. Open VS Code
+3. Open your API repository folder
+4. You'll see a popup: "Folder contains a Dev Container configuration file. Reopen folder to develop in a container"
+5. Click "Reopen in Container"
+6. VS Code will restart and connect to your running API container
+
+**Alternative method:**
+1. Press F1 or Cmd/Ctrl + Shift + P
+2. Type "Dev Containers: Open Folder in Container"
+3. Select your API repository
+
+### Step 10: Test Debugging with Dev Containers
+
+Now let's test that debugging works inside the container:
+
+1. In VS Code (now connected to the container), open `rockapi/views/rock_view.py`
+2. Find the `list` method
+3. Click in the gutter next to `rocks = Rock.objects.all()` to set a breakpoint (red dot appears)
+4. In your browser, navigate to http://localhost:3000
+5. Login and click "All Rocks"
+6. VS Code should stop at your breakpoint!
+7. You can now:
+   - Inspect variables
+   - Step through code
+   - Use the Debug Console
+   - Everything works as if running locally!
 
 ## Testing Hot Reload and Debugging
 
-### Step 7: Experience the Magic
+### Step 11: Experience the Magic
 
 Let's add a simple feature to see hot reloading in action. We'll add the ability to favorite rocks.
 
-**API Change** - Add to `rock-of-ages-api/rockapi/models/rock.py`:
+**API Change** - Add to `rockapi/models/rock.py`:
 
 ```python
 class Rock(models.Model):
@@ -449,10 +544,16 @@ class Rock(models.Model):
     favorited_by = models.ManyToManyField(User, related_name='favorite_rocks', blank=True)
 ```
 
-**Client Change** - Add to `rock-of-ages-client/src/components/RockCard.jsx`:
+After saving, you'll need to run migrations since you changed the model:
+```bash
+docker compose exec api pipenv run python manage.py makemigrations
+docker compose exec api pipenv run python manage.py migrate
+```
+
+**Client Change** - Add to your React component that displays rocks:
 
 ```jsx
-// Add this inside your RockCard component
+// Add this inside your rock display component
 const [isFavorited, setIsFavorited] = useState(false);
 
 const toggleFavorite = async () => {
@@ -483,17 +584,9 @@ const toggleFavorite = async () => {
 
 **The Magic Moment:**
 1. Save these files
-2. Watch your terminal - Django automatically reloads!
-3. Refresh your browser - React updates automatically!
+2. Watch your terminal - Django automatically detects the model change!
+3. The React dev server hot reloads instantly!
 4. No rebuilding, no restarting containers!
-
-### Setting a Breakpoint in VS Code
-
-1. Click the Dev Containers icon in the bottom-left corner of VS Code
-2. Select "Attach to Running Container" → "api-container"
-3. Open any Python file and click in the gutter to set a breakpoint
-4. Make an API request from your browser
-5. VS Code stops at your breakpoint with full debugging capabilities!
 
 ## Summary: Your New Development Workflow
 
@@ -506,7 +599,7 @@ You've transformed from this:
 To this:
 - `docker compose up` to start everything
 - Instant hot reload on code changes
-- Full debugging with breakpoints
+- Full debugging with breakpoints in VS Code
 - Professional development environment
 
 With Docker Compose and Dev Containers, you now have:
