@@ -111,11 +111,18 @@ export const sectionsWorkshop3 = [
     description: "Introduction to what we will learn in workshop 3",
     required: true,
   },
-  // Module 1: TBD
+  // Module 1: RDS
   {
     id: "rds",
     title: "RDS",
     description: "Introduction to AWS RDS and our updated API repository",
+    required: true,
+  },
+  // Module 2: Docker Network
+  {
+    id: "docker-network",
+    title: "Docker Network",
+    description: "Setting up the Docker Network for local development",
     required: true,
   },
   // Module TBD: Conclusion
