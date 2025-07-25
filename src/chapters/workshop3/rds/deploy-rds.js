@@ -6,22 +6,24 @@ export const workshop3RDSDeployChapter = {
   content: `
 
 
-## Update GitHub Secrets
+## Update GitHub Secrets 
 
-In GitHub → Repo → Settings → Secrets → Actions, add:
-- DB_NAME
-- DB_USER
-- DB_PASSWORD
-- DB_HOST
-- DB_PORT
+In GitHub → Repo → Settings → Secrets → Actions, add each secret and value:
+- DB_NAME: rockofages
+- DB_USER: rockadmin
+- DB_PASSWORD: your password
+- DB_HOST: your db endpoint saved from earlier
+- DB_PORT: 5432
 
-These will have the same values you provided in the .env file. Leave the github variables you configured in workshop 2. The actions will use those as well as these new secrets.  
+ Leave the github variables you configured in workshop 2. The actions will use those as well as these new secrets.  
 
 
 ##  Deploy to Production
 This follows the same steps from the CICD Chapter in workshop 2
 
 ### Push Code
+in rock-of-ages-api terminal
+
 \`\`\`bash
 git add .
 git commit -m "Add PostgreSQL support and RDS integration"
@@ -29,9 +31,10 @@ git push origin main
 \`\`\`
 
 ### Trigger Deployment in GitHub
-1. Go to GitHub → Actions
+1. Go to GitHub → Actions tab
 2. Verify that Build & Push Docker Image workflow is successful
-3. Run "Deploy to EC2" workflow
+3. Click actions tab again
+4. Run "Deploy to EC2" workflow
 
 ---
 
@@ -55,14 +58,14 @@ Before testing through the API, let's verify the database setup by connecting di
 #### Connect to Your RDS Database
 
 1. **Open VS Code Command Palette** (Ctrl+Shift+P or Cmd+Shift+P)
-2. **Type**: "PostgreSQL: New Connection"
+2. **Type**: "PostgreSQL: Add Connection"
 3. **Fill in connection details**:
-   - **Hostname**: Your RDS endpoint (from your .env file)
+   - **Hostname**: Your RDS endpoint 
    - **User**: \`rockadmin\`
    - **Password**: Your RDS password
    - **Port**: \`5432\`
-   - **Database**: \`rockofages\`
-   - **SSL**: \`require\`
+   - **Database display**: \`rockofages\`
+   - **SSL**: \`Use Secure Connection\`
 
 #### Explore Your Database
 
@@ -79,9 +82,13 @@ Once connected, you should see your database in the PostgreSQL Explorer panel. E
 Right-click on your database connection and select "New Query" to run these verification queries:
 
 **1. Check all rock types:**
+
+paste this in VsCode
 \`\`\`sql
 SELECT * FROM rockapi_type;
 \`\`\`
+
+Right click on the query and click **run query**
 **Expected result:** 5 rock types (Metamorphic, Igneous, Sedimentary, Shale, Basalt)
 
 **2. Check all rocks with their types and owners:**
@@ -115,17 +122,21 @@ SELECT
 - **Relationships**: The JOIN queries show how your data connects across tables
 - **Data integrity**: All foreign key relationships are working correctly
 
+💡 **What's happening here?** When you deployed your API to your EC2 instance, the Docker CMD command automatically ran the seed database script which ran migrations and inserted seed data in your new database upon running the Docker container. These SQL queries verify that your ec2 instance was able to connect to and seed your database.
+
+
+
+
 ---
 
-## Test with Yaak
+## Test with Yaak or Postman
 
 Now test your API to ensure it's correctly reading from the database:
 
 **Test: Register a New User**
 1. **Method**: POST
 2. **URL**: \`http://<your-ec2-endpoint>/register\`
-3. **Headers**: Content-Type: \`application/json\`
-4. **Body** (JSON):
+3. **Body** (JSON):
    \`\`\`json
    {
      "email": "test@example.com",
