@@ -106,6 +106,18 @@ docker network prune -f
 
 This gives you a completely clean Docker environment to start fresh with Docker Compose.
 
+#### ⚠️ **Receiving an error?**
+If you see this error: 
+```bash
+"docker stop" requires at least 1 argument.
+See 'docker stop --help'.
+
+Usage:  docker stop [OPTIONS] CONTAINER [CONTAINER...]
+
+Stop one or more running containers
+```
+This just means you don't have any containers running currently. Go ahead and move on to the next command.
+
 ## Setting Up Your Project Structure
 
 Let's organize your repositories properly for Docker Compose:
