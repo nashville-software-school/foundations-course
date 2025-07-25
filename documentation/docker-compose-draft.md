@@ -208,7 +208,7 @@ services:
     depends_on:
       postgres-db:
         condition: service_healthy
-    command: sleep infinity
+    command: pipenv run bash -c "./seed_database.sh && python manage.py runserver 0.0.0.0:8000"
 
   # React Client Service
   client:
@@ -223,8 +223,6 @@ services:
     volumes:
       - ./your-client-repo-name:/app  # CHANGE THIS to your actual repo name
       - /app/node_modules
-    depends_on:
-      - api
     command: npm run dev -- --host 0.0.0.0 --port 3000
 
 volumes:
@@ -240,7 +238,7 @@ networks:
 2. Replace `your-client-repo-name` with your actual client repository folder name (4 places)
 3. Make sure the PostgreSQL environment values match what's in your existing `.env.local` file!
 
-**Notice the API command**: We're using `command: sleep infinity` instead of starting Django automatically. This keeps the container running but leaves port 8000 free for our debugging setup.
+**Notice the API command**: We're using the full Django startup command including database seeding. This means when you run `docker compose up`, you get a complete working application immediately!
 
 ### Step 4: Verify Your Environment Files
 
@@ -296,7 +294,7 @@ Let's break down what each section does and compare it to the manual commands yo
 - **Now**: Build and run configuration is declared in one place
 - `volumes:` - **Game changer!** Your local code is mounted into the container
 - `depends_on:` - Waits for database to be healthy before starting
-- `command: sleep infinity` - Keeps container alive but doesn't start Django (we'll control that for debugging)
+- `command:` - Automatically seeds the database and starts Django server
 
 **client service:**
 - **Previously**: You built and ran with multiple commands
@@ -319,7 +317,7 @@ Make sure you've verified your `.env.local` files exist (see Step 4), then:
 
 ```bash
 # From the rock-of-ages-development directory
-docker compose up -d
+docker compose up
 ```
 
 That's it! This single command:
@@ -357,9 +355,9 @@ client-container  | ➜  Network: http://0.0.0.0:3000/
 - API: "Starting development server at http://0.0.0.0:8000/"
 - Client: "ready" and showing localhost:3000
 
-## Quick Verification Test
+## Complete Application Testing
 
-Let's verify everything is working correctly before moving on:
+Let's verify that your entire full-stack application is working perfectly:
 
 ### 1. Test the Database
 In a new terminal (keep docker compose running):
@@ -372,19 +370,21 @@ Run this query:
 SELECT COUNT(*) FROM rockapi_rock;
 ```
 
-You should see 3 rocks. Type `\q` to exit.
+You should see 3 rocks (from the seed data). Type `\q` to exit.
 
-**2. Test The API and React Client**
-- Open your browser to \`http://localhost:3000\`
-- You should see the Rock of Ages application
+### 2. Test The Complete Application Flow
+- **Open your browser** to `http://localhost:3000`
+- **You should see** the Rock of Ages application
 - **Open Developer Tools** and go to the **Network** tab
-- Try to register a new user account
-- **In the Network tab**, confirm that API calls are going to \`localhost:8000\` (not your EC2 instance)
-- Login and try to view the rocks collection
-- Test adding a rock to your collection
-- **Verify in Network tab** that all API requests show \`localhost:8000\` as the target
+- **Try to register** a new user account
+- **In the Network tab**, confirm that API calls are going to `localhost:8000` 
+- **Login** and try to view the rocks collection
+- **Test adding** a rock to your collection  
+- **Verify in Network tab** that all API requests show `localhost:8000` as the target
 
-**If all three tests pass, your Docker Compose environment is working perfectly!**
+**🎉 If all tests pass, your complete Docker Compose environment is working perfectly!**
+
+You now have a **professional full-stack development environment** that starts with a single command!
 
 ### Step 6: Run in Background Mode
 
@@ -453,7 +453,31 @@ docker compose ps
 
 ## Setting Up VS Code Dev Containers
 
-Now let's add the final piece: seamless debugging and development inside your containers. This is where the real magic happens!
+Now let's add the final piece: seamless debugging and development inside your containers. This is where the real professional development magic happens!
+
+## Understanding Development vs. Debugging Workflows
+
+Your Docker Compose setup now gives you **two powerful workflows**:
+
+### **Full-Stack Development Workflow** (Default)
+Perfect for:
+- 👥 **Team members** working on frontend, design, or testing
+- 🚀 **Quick demos** or stakeholder reviews  
+- 🔍 **Integration testing** of the complete application
+- 📱 **Client-focused development** where you just need the API running
+
+**Command**: `docker compose up` → Everything starts automatically!
+
+### **API Debugging Workflow** (Advanced)
+Perfect for:
+- 🐛 **Backend developers** who need to debug API logic
+- 🔬 **Investigating complex issues** with breakpoints and variable inspection
+- 🎯 **Precise development** with step-through debugging
+- 🛠️ **Advanced troubleshooting** of business logic
+
+**Commands**: `docker compose up postgres-db client` + VS Code Dev Container → Selective control!
+
+Let's set up the debugging workflow:
 
 ### What We're About to Achieve
 
@@ -507,7 +531,7 @@ Create `./your-api-repo-name/.devcontainer/devcontainer.json`:
   "dockerComposeFile": "../../docker-compose.yml",
   "service": "api",
   "workspaceFolder": "/app",
-  "features": {},
+  "overrideCommand": true,
   "customizations": {
     "vscode": {
       "extensions": [
@@ -532,27 +556,36 @@ Create `./your-api-repo-name/.devcontainer/devcontainer.json`:
   "python.pythonPath": "/usr/local/bin/python"
   }
 }
-
 ```
 
 **Key settings explained:**
 - `"dockerComposeFile": "../../docker-compose.yml"` - Points to your compose file
 - `"service": "api"` - Connects to the API container
-- `"overrideCommand": true` - Prevents the `sleep infinity` command from interfering
+- `"overrideCommand": true` - **Critical!** This prevents the automatic Django startup from docker-compose.yml, giving you control
 - `"workspaceFolder": "/app"` - Sets the working directory inside the container
 
-### Step 8: Open Your API in the Dev Container
+### Step 8: Start the Debugging Environment
 
-1. **Make sure Docker Compose is running**: `docker compose up -d`
-2. **Open VS Code** 
-3. **Open your API repository folder** (the individual API repo, not the parent directory)
-4. **You'll see a popup**: "Folder contains a Dev Container configuration file. Reopen folder to develop in a container"
-5. **Click "Reopen in Container"**
+For debugging, we want to start only the infrastructure (database and client) and control the API ourselves:
 
-**Alternative method:**
-1. Press F1 or Cmd/Ctrl + Shift + P
-2. Type "Dev Containers: Open Folder in Container"
-3. Select your API repository
+1. **Stop your full stack** if it's running:
+   ```bash
+   docker compose down
+   ```
+
+2. **Start only database and client**:
+   ```bash
+   docker compose up postgres-db client
+   ```
+   
+   This gives you:
+   - ✅ Database running and ready
+   - ✅ React client running at localhost:3000  
+   - ❌ No competing Django process on port 8000
+
+3. **Open VS Code** and open your **individual API repository folder** (not the parent directory)
+
+4. **Click "Reopen in Container"** when prompted, or use F1 → "Dev Containers: Open Folder in Container"
 
 ### What Happens Next
 
@@ -648,11 +681,11 @@ With the execution paused at your breakpoint, you can:
 
 This is **exactly the same debugging experience** as local development, but running inside your containerized environment!
 
-### Step 12: Experience Hot Reload
+### Step 13: Experience Code Changes
 
-Let's verify that code changes work instantly:
+Let's test how code changes work in the debugging environment:
 
-1. **With the debugger still running**, open `rockapi/views/rock_view.py`
+1. **With the debugger running**, open `rockapi/views/rock_view.py`
 2. **Add a print statement** in the `list` method:
    ```python
    def list(self, request):
@@ -662,10 +695,12 @@ Let's verify that code changes work instantly:
        # rest of your existing code
    ```
 3. **Save the file**
-4. **In your browser**, refresh the rocks page
-5. **Check the DEBUG CONSOLE** in VS Code - you should see your print statement immediately!
+4. **Stop the debugger** (Ctrl+C or click the stop button in VS Code)
+5. **Press F5 again** to restart with your changes
+6. **In your browser**, navigate to the rocks page
+7. **Check the Integrated Terminal** in VS Code - you should see your print statement!
 
-**No rebuilding, no restarting containers, no waiting** - just instant feedback!
+**Important Note**: When debugging with `--noreload`, Django doesn't automatically restart when files change. This ensures stable debugging connections, but you'll need to manually restart (F5) to see code changes.
 
 ## Comparing Your Workflows
 
