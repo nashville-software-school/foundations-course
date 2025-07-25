@@ -6,7 +6,7 @@ export const workshop3RDSSetupChapter = {
   content: `
 ## Step 1: Create AWS RDS PostgreSQL Database
 
-### Navigate to RDS Console
+### Navigate to RDS Console (Aurora and RDS)
 1. Log in to your AWS account
 2. Go to the [RDS Console](https://console.aws.amazon.com/rds/)
 3. Click **Create database**
@@ -16,7 +16,7 @@ Fill out the database creation form with these settings:
 
 **Engine Options:**
 - **Engine type**: PostgreSQL
-- **Version**: PostgreSQL 15.x (use the default recommended version)
+- **Version**: Use the default recommended version
 
 **Templates:**
 - Select **Free tier** (if not available, select **Dev/Test**)
@@ -31,7 +31,7 @@ Fill out the database creation form with these settings:
 - **Confirm password**: Re-enter your password
 
 **DB Instance Configuration:**
-- **DB instance class**: \`db.t4g.micro\` (free tier eligible)
+- **Burstable classes**: \`db.t4g.micro\` (free tier eligible)
 
 **Storage:**
 - **Storage type**: General Purpose SSD (gp2)
@@ -41,26 +41,31 @@ Fill out the database creation form with these settings:
 
 **Connectivity:**
 - **Don't connect to an EC2 compute resource**
+- **Network Type**: IPv4
 - **VPC**: default
 - **Subnet group**: default
 - **Public access**: Yes (for course use)
 - **VPC security group**: Create new
 - **Group name**: \`rock-of-ages-db-sg\`
+- **Availability Zone**: no preference (make sure you are already in Ohio at the top of the console)
 - **Port**: 5432
 
 **Authentication:**
 - Password authentication
 
 **Monitoring:**
-- Disable Enhanced Monitoring
+- Leave default settings
+- **Additional Monitoring Settings**: Disable Enhanced Monitoring
 
 **Additional Configuration:**
 - **Initial DB name**: \`rockofages\`
 - **Backup retention period**: 1 day
+- Leave everything else default 
 
 ### Create the Database
 1. Click **Create database**
-2. Wait for status to become **Available**
+2. While the database is provisioning go on to the next step
+
 
 ### Configure Security Group
 1. Go to **EC2 Console** → **Security Groups**
@@ -72,8 +77,10 @@ Fill out the database creation form with these settings:
     - Description: "Allow PostgreSQL connections for Rock of Ages course"
 
 ### Get Connection Info
-1. Click your DB instance
-2. Copy the **Endpoint** under **Connectivity & security**
+1. Go back to RDS console
+2. Wait for the status of your database to become **Available**
+3. Click your DB instance
+4. Copy the **Endpoint** under **Connectivity & security**
 
 ---
 
@@ -99,7 +106,6 @@ cd path/to/rock-of-ages-api
 
 **Why we need new dependencies:**
 - **\`psycopg2-binary\`**: This is like a translator between Django (Python) and PostgreSQL. Django can talk to SQLite out of the box, but needs this special adapter for PostgreSQL.
-- **\`python-dotenv\`**: Helps us securely manage sensitive information like passwords by loading them from \`.env\` files.
 
 **Real-world analogy**: If Django speaks English and PostgreSQL speaks French, \`psycopg2-binary\` is the translator that allows them to communicate.
 
@@ -119,7 +125,6 @@ djangorestframework = "*"
 django-cors-headers = "*"
 pylint-django = "*"
 psycopg2-binary = "*"  # ← Add this line
-python-dotenv = "*"    # ← Add this line
 
 [dev-packages]
 
@@ -146,7 +151,7 @@ Edit \`rockproject/settings.py\` to support PostgreSQL:
 **Add these imports at the top:**
 \`\`\`python
 from pathlib import Path
-import os
+import os # ← Add this line
 
 \`\`\`
 Scroll down and replace \`DATABASES\` with:
@@ -191,7 +196,7 @@ DATABASES = {
 This script automates the process of setting up your database tables and loading sample data. Think of it like moving into a new house - you need to build the rooms (create tables) before you can put furniture in them (load data).
 
 
-Replace \`seed_database.sh\` to remove references to sqllite:
+Replace the entire contents of \`seed_database.sh\` to remove references to sqlite:
 
 \`\`\`bash
 #!/bin/bash
@@ -221,7 +226,7 @@ echo "✅ Database setup complete!"
 \`\`\`
 
 ### Update tests
-In \`rockapi/test.py\` replace the tests with 
+In \`rockapi/test.py\` replace the entire file with 
 
 \`\`\`python
 from django.test import SimpleTestCase
@@ -250,7 +255,7 @@ This is only getting updated because the old tests relied on the sqlite database
 
 ### Update GitHub Actions
 
-Replace \`.github/workflows/deploy.yml\` with:
+In \`.github/workflows/deploy.yml\` replace the whole file with:
 
 \`\`\`yaml
 name: Deploy to EC2
