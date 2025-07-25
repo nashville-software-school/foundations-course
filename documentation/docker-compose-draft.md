@@ -196,7 +196,7 @@ services:
     depends_on:
       postgres-db:
         condition: service_healthy
-    command: pipenv run bash -c "./seed_database.sh && python manage.py runserver 0.0.0.0:8000"
+    command: sleep infinity
 
   # React Client Service
   client:
@@ -227,6 +227,8 @@ networks:
 1. Replace `your-api-repo-name` with your actual API repository folder name (4 places)
 2. Replace `your-client-repo-name` with your actual client repository folder name (4 places)
 3. Make sure the PostgreSQL environment values match what's in your existing `.env.local` file!
+
+**Notice the API command**: We're using `command: sleep infinity` instead of starting Django automatically. This keeps the container running but leaves port 8000 free for our debugging setup.
 
 ### Step 4: Verify Your Environment Files
 
@@ -282,7 +284,7 @@ Let's break down what each section does and compare it to the manual commands yo
 - **Now**: Build and run configuration is declared in one place
 - `volumes:` - **Game changer!** Your local code is mounted into the container
 - `depends_on:` - Waits for database to be healthy before starting
-- `command:` - This is what actually starts your Django server! When this runs, your API is live at localhost:8000
+- `command: sleep infinity` - Keeps container alive but doesn't start Django (we'll control that for debugging)
 
 **client service:**
 - **Previously**: You built and ran with multiple commands
@@ -305,7 +307,7 @@ Make sure you've verified your `.env.local` files exist (see Step 4), then:
 
 ```bash
 # From the rock-of-ages-development directory
-docker compose up
+docker compose up -d
 ```
 
 That's it! This single command:
@@ -439,29 +441,46 @@ docker compose ps
 
 ## Setting Up VS Code Dev Containers
 
-Now let's add the final piece: seamless debugging and development inside your containers.
+Now let's add the final piece: seamless debugging and development inside your containers. This is where the real magic happens!
 
-### Step 7: Install Dev Containers Extension
+### What We're About to Achieve
+
+By the end of this section, you'll be able to:
+- ✅ Set breakpoints in your Django code by clicking in VS Code
+- ✅ Step through your code line by line 
+- ✅ Inspect variables and see their values in real-time
+- ✅ Use all of VS Code's debugging features inside the container
+- ✅ Get hot reload for code changes without rebuilding anything
+
+### Step 6: Install Dev Containers Extension
 
 1. Open VS Code
 2. Go to Extensions (Cmd/Ctrl + Shift + X)
 3. Search for "Dev Containers"
 4. Install the official Microsoft extension "Dev Containers"
 
-### What Dev Containers Will Do For Us
+### Understanding How Dev Containers Work
 
-The Dev Containers extension allows VS Code to:
-- Open your project inside the running container
-- Use the container's Python/Node environment
-- Set breakpoints that work inside containers
-- Access terminals inside containers
-- Use all VS Code features as if running locally
+Here's the key insight: **Dev Containers move your VS Code development environment inside the container**.
 
-### Step 8: Create Dev Container Configuration
+**Without Dev Containers:**
+```
+Your Computer: VS Code + Python Debugger
+     ↕ (barrier)
+Container: Django App + Python Runtime
+```
 
-For the Rock of Ages API, we need to create a configuration file that tells VS Code how to connect to our running container.
+**With Dev Containers:**
+```
+Your Computer: VS Code UI only
+Container: VS Code Server + Python Debugger + Django App + Python Runtime
+```
 
-In your API repository, create a `.devcontainer` folder and add a `devcontainer.json` file:
+This means you get the exact same debugging experience as local development, but everything runs in your containerized environment!
+
+### Step 7: Create Dev Container Configuration
+
+We need to tell VS Code how to connect to our API container. In your API repository, create the configuration:
 
 ```bash
 # From your rock-of-ages-development directory
@@ -492,121 +511,183 @@ Create `./your-api-repo-name/.devcontainer/devcontainer.json`:
     }
   },
   "postCreateCommand": "pipenv install --dev",
-  "remoteUser": "root"
+  "remoteUser": "root",
+  "runArgs": [
+    "--cap-add=SYS_PTRACE",
+    "--security-opt", "seccomp=unconfined"
+  ],
+  "settings": {
+  "python.pythonPath": "/usr/local/bin/python"
+  }
 }
+
 ```
 
-### Step 9: Open in Dev Container
+**Key settings explained:**
+- `"dockerComposeFile": "../../docker-compose.yml"` - Points to your compose file
+- `"service": "api"` - Connects to the API container
+- `"overrideCommand": true` - Prevents the `sleep infinity` command from interfering
+- `"workspaceFolder": "/app"` - Sets the working directory inside the container
 
-1. Make sure your Docker Compose stack is running (`docker compose up`)
-2. Open VS Code
-3. Open your API repository folder
-4. You'll see a popup: "Folder contains a Dev Container configuration file. Reopen folder to develop in a container"
-5. Click "Reopen in Container"
-6. VS Code will restart and connect to your running API container
+### Step 8: Open Your API in the Dev Container
+
+1. **Make sure Docker Compose is running**: `docker compose up -d`
+2. **Open VS Code** 
+3. **Open your API repository folder** (the individual API repo, not the parent directory)
+4. **You'll see a popup**: "Folder contains a Dev Container configuration file. Reopen folder to develop in a container"
+5. **Click "Reopen in Container"**
 
 **Alternative method:**
 1. Press F1 or Cmd/Ctrl + Shift + P
 2. Type "Dev Containers: Open Folder in Container"
 3. Select your API repository
 
-### Step 10: Test Debugging with Dev Containers
+### What Happens Next
 
-Now let's test that debugging works inside the container:
+VS Code will:
+1. Connect to your running API container
+2. Install the VS Code server inside the container
+3. Install Python extensions
+4. Run `pipenv install --dev` to set up development dependencies
+5. Give you a terminal that's inside the container
 
-1. In VS Code (now connected to the container), open `rockapi/views/rock_view.py`
-2. Find the `list` method
-3. Click in the gutter next to `rocks = Rock.objects.all()` to set a breakpoint (red dot appears)
-4. In your browser, navigate to http://localhost:3000
-5. Login and click "All Rocks"
-6. VS Code should stop at your breakpoint!
-7. You can now:
-   - Inspect variables
-   - Step through code
-   - Use the Debug Console
-   - Everything works as if running locally!
-
-## Testing Hot Reload and Debugging
-
-### Step 11: Experience the Magic
-
-Let's add a simple feature to see hot reloading in action. We'll add the ability to favorite rocks.
-
-**API Change** - Add to `rockapi/models/rock.py`:
-
-```python
-class Rock(models.Model):
-    name = models.CharField(max_length=100)
-    weight = models.FloatField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rocks')
-    type = models.ForeignKey(RockType, on_delete=models.CASCADE, related_name='rocks')
-    # Add this new field
-    favorited_by = models.ManyToManyField(User, related_name='favorite_rocks', blank=True)
+You'll see output like:
+```
+[7177 ms] Start: Run in container: /bin/sh -c pipenv install --dev
+Installing dependencies from Pipfile.lock...
+Done. Press any key to close the terminal.
 ```
 
-After saving, you'll need to run migrations since you changed the model:
-```bash
-docker compose exec api pipenv run python manage.py makemigrations
-docker compose exec api pipenv run python manage.py migrate
+**Important**: You might see a popup about port forwarding (like port 5474) - this is normal VS Code communication. Just dismiss it.
+
+### Step 9: Set Up Django Debugging
+
+Now we need to configure VS Code to debug Django properly. Create a debug configuration in your API repository:
+
+**Create `.vscode/launch.json` in your API repo:**
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Django: Debug Server",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": ["runserver", "0.0.0.0:8000", "--noreload"],
+            "django": true,
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+                "DJANGO_SETTINGS_MODULE": "rockproject.settings"
+            }
+        }
+    ]
+}
 ```
 
-**Client Change** - Add to your React component that displays rocks:
+**What this configuration does:**
+- `"program": "${workspaceFolder}/manage.py"` - Tells VS Code to run Django's manage.py
+- `"args": ["runserver", "0.0.0.0:8000", "--noreload"]` - Starts the development server
+- `"--noreload"` - Prevents Django from restarting (which can interfere with debugging)
+- `"django": true` - Enables Django-specific debugging features
 
-```jsx
-// Add this inside your rock display component
-const [isFavorited, setIsFavorited] = useState(false);
+### Step 10: Start Debugging Django
 
-const toggleFavorite = async () => {
-  try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/rocks/${rock.id}/favorite`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Token ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    if (response.ok) {
-      setIsFavorited(!isFavorited);
-    }
-  } catch (error) {
-    console.error('Error favoriting rock:', error);
-  }
-};
+Here's the moment of truth! We'll start our Django app with the debugger:
 
-// Add this to your JSX
-<button 
-  onClick={toggleFavorite} 
-  className={`favorite-btn ${isFavorited ? 'favorited' : ''}`}
->
-  {isFavorited ? '❤️' : '🤍'}
-</button>
-```
+1. **In VS Code** (now connected to the container), press **F5** 
+   
+   OR
+   
+   Go to the **Run and Debug** panel (Ctrl+Shift+D), select "Django: Debug Server", and click the green play button
 
-**The Magic Moment:**
-1. Save these files
-2. Watch your terminal - Django automatically detects the model change!
-3. The React dev server hot reloads instantly!
-4. No rebuilding, no restarting containers!
+2. **You should see Django start** in the **DEBUG CONSOLE** (not the regular terminal):
+   ```
+   Django version 5.2.4, using settings 'rockproject.settings'
+   Starting development server at http://0.0.0.0:8000/
+   Quit the server with CONTROL-C.
+   ```
 
-## Summary: Your New Development Workflow
+3. **Notice the debug toolbar** at the top of VS Code - this means the debugger is active!
 
-You've transformed from this:
-- 10+ commands to see code changes
-- Manual container management
-- No debugging capability
-- Fragile, error-prone setup
+### Step 11: Test Your First Breakpoint
 
-To this:
-- `docker compose up` to start everything
-- Instant hot reload on code changes
-- Full debugging with breakpoints in VS Code
-- Professional development environment
+Time for the magic moment:
 
-With Docker Compose and Dev Containers, you now have:
-- **One command** to rule them all
-- **Live code updates** without rebuilding
-- **Integrated debugging** that just works
-- **Consistent environment** for your entire team
-- **Production-like architecture** running locally
+1. **Open `rockapi/views/rock_view.py`** in VS Code
+2. **Find the `list` method** (this handles GET requests to `/rocks`)
+3. **Place a breakpoint** next to the line `rocks = Rock.objects.all()` 
+4. **Open your browser** to `http://localhost:3000`
+5. **Login** and **click "All Rocks"**
+6. **VS Code should immediately pause** at your breakpoint! 🎉
 
-This is the same development workflow used by professional teams at companies like Microsoft, Google, and Netflix. You're not just learning tools - you're adopting industry best practices that will serve you throughout your career!
+### What You Can Do Now
+
+With the execution paused at your breakpoint, you can:
+
+- **Inspect variables**: Hover over `rocks` to see its value
+- **Use the Debug Console**: Type `print(rocks.count())` to run Python expressions
+- **Step through code**: Use F10 to step over lines, F11 to step into functions
+- **View the call stack**: See exactly how your code was reached
+- **Add watch expressions**: Monitor variables as you step through code
+
+This is **exactly the same debugging experience** as local development, but running inside your containerized environment!
+
+### Step 12: Experience Hot Reload
+
+Let's verify that code changes work instantly:
+
+1. **With the debugger still running**, open `rockapi/views/rock_view.py`
+2. **Add a print statement** in the `list` method:
+   ```python
+   def list(self, request):
+       """Handle GET requests to get all rocks"""
+       print("🔍 DEBUG: Fetching rocks from containerized database!")
+       rocks = Rock.objects.all()
+       # rest of your existing code
+   ```
+3. **Save the file**
+4. **In your browser**, refresh the rocks page
+5. **Check the DEBUG CONSOLE** in VS Code - you should see your print statement immediately!
+
+**No rebuilding, no restarting containers, no waiting** - just instant feedback!
+
+## Comparing Your Workflows
+
+### Before Docker Compose + Dev Containers:
+- ❌ 10+ commands to see code changes
+- ❌ Manual container management  
+- ❌ Print statements for debugging
+- ❌ Fragile, error-prone setup
+
+### After Docker Compose + Dev Containers:
+- ✅ `docker compose up -d` + `F5` to start debugging
+- ✅ Full debugging with breakpoints, variable inspection, step-through
+- ✅ Identical setup for every team member
+- ✅ Production-like architecture running locally
+
+## Summary: Your Professional Development Environment
+
+Congratulations! You've just set up the same development workflow used by professional teams at major tech companies. You now have:
+
+### **One Command to Rule Them All**
+`docker compose up -d` starts your entire development infrastructure - database, API container, and client - with perfect networking and dependency management.
+
+### **Integrated Debugging That Just Works**
+Press F5 in VS Code and get full debugging capabilities: breakpoints, variable inspection, step-through debugging, and the debug console - all running inside your containerized environment.
+
+### **Live Code Updates Without Rebuilding**
+Save a Python file and see changes instantly. No rebuilding images, no restarting containers, no waiting around.
+
+### **Consistent Environment for Your Entire Team**
+Every developer gets the exact same Python version, Django version, PostgreSQL version, and system dependencies. Zero "works on my machine" issues.
+
+### **Production-Like Architecture Running Locally**
+Your development environment mirrors your production setup - containerized API connecting to a database - but with complete safety and isolation from production data.
+
+This isn't just about learning tools - you're adopting industry best practices that will serve you throughout your career.
+
+**Welcome to professional containerized development!** 🚀
