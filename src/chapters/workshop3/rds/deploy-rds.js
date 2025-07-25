@@ -9,7 +9,7 @@ export const workshop3RDSDeployChapter = {
 ## Update GitHub Secrets 
 
 In GitHub → Repo → Settings → Secrets → Actions, add each secret and value:
-- DB_NAME: rock-of-ages-db
+- DB_NAME: rockofages
 - DB_USER: rockadmin
 - DB_PASSWORD: your password
 - DB_HOST: your db endpoint saved from earlier
