@@ -2,7 +2,7 @@ export const workshop3RDSSetupChapter = {
   id: "workshop3-rds-setup",
   title: "RDS Setup",
   sectionId: "rds",
-  previousChapterId: null,
+  previousChapterId: "workshop3-rds-learning",
   content: `
 ## Step 1: Create AWS RDS PostgreSQL Database
 

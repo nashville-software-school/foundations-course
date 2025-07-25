@@ -1,9 +1,13 @@
 import { workshop3RDSSetupChapter } from "./rds-setup";
 import { workshop3RDSDeployChapter } from "./deploy-rds";
+import { workshop3RDSLearningChapter } from "./rds-info";
+import { rdsAndStorageGlossaryChapter } from "./rds-glossary";
 
 export const introToRDSChapters = [
   workshop3RDSSetupChapter,
-  workshop3RDSDeployChapter
+  workshop3RDSDeployChapter,
+  workshop3RDSLearningChapter,
+  rdsAndStorageGlossaryChapter
 ];
 
 /**
