@@ -1,6 +1,14 @@
+import { workshop3DevContainersSetupChapter } from "./dev-containers-setup"
+import { workshop3DCSetupChapter } from "./docker-compose-setup"
+import { dockerComposeGlossaryChapter } from "./glossary"
 import { workshop3IntroToDCChapter } from "./intro-to-docker-compose"
 
-export const workshop3DockerComposeChapters = [workshop3IntroToDCChapter]
+export const workshop3DockerComposeChapters = [
+  workshop3IntroToDCChapter,
+  workshop3DCSetupChapter,
+  workshop3DevContainersSetupChapter,
+  dockerComposeGlossaryChapter,
+]
 
 /**
  * Get a chapter by its ID
