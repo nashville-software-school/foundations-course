@@ -15,9 +15,9 @@ export const workshop3SummaryChapter = {
   
   By now, you should have some vocabulary and hands on experience that will be usefull during interviews with potential employers:
   
-  1. **RDS*: [RDS Glossary](./rds-glossary)
+  1. **RDS**: [RDS Glossary](./rds-glossary)
   
-  2. **Docker Networking **: [Docker Networking](./network-glossary)
+  2. **Docker Networking**: [Docker Networking](./network-glossary)
   
   3. **Docker Compose**: [Docker Compose](TBA)
   
@@ -27,7 +27,7 @@ export const workshop3SummaryChapter = {
   You should be able to answer some basic interview questions on the topics we have learned. For example:
   
   * What is RDS?
-  * Why use a relational database compared to other storage options?
+  * When would you use a relational database compared to other storage options?
   * What is Docker Networking?
   * What is Docker Compose?
   
