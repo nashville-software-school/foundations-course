@@ -1,4 +1,5 @@
 import { workshop3IntroToDNChapter } from "./intro-to-docker-network"
+import { dockerNetworkGlossaryChapter } from "./network-glossary"
 import { workshop3SettingUpDNChapter } from "./setting-up-docker-network"
 import { workshop3UnderstandingDNChapter } from "./understanding-docker-network"
 
@@ -6,6 +7,7 @@ export const workshop3DockerNetworkChapters = [
   workshop3IntroToDNChapter,
   workshop3SettingUpDNChapter,
   workshop3UnderstandingDNChapter,
+  dockerNetworkGlossaryChapter
 ]
 
 /**
