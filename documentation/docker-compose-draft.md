@@ -41,11 +41,18 @@ That's **10 commands** just to see a simple code change!
 
 ### Scenario 2: Debugging Your Feature
 
-There's a bug in your new favorite rocks feature. You want to place a breakpoint in the API code to see exactly what's happening. Here's your current process:
+There's a bug in your new favorite rocks feature. Here's your current debugging options with the manual setup:
 
+**Option 1: Print Statements**
+1. Add `print()` statements to your Python code
+2. Stop, remove, rebuild, and restart the API container (5 commands)
+3. Check the logs: `docker logs api-container`
+4. Repeat for each debugging iteration
+
+**Option 2: Terminal-Based Debugging**
 1. Stop the API container: `docker stop api-container`
-2. Remove it: `docker rm api-container`
-3. Run the container in interactive mode with modified command:
+2. Remove it: `docker rm api-container` 
+3. Run with Python debugger: 
    ```bash
    docker run -it \
      --name api-container \
@@ -55,10 +62,10 @@ There's a bug in your new favorite rocks feature. You want to place a breakpoint
      rock-of-ages-api \
      python -m pdb manage.py runserver 0.0.0.0:8000
    ```
-4. Navigate to the breakpoint in the debugger
-5. When done debugging, you need to stop, remove, and restart normally
+4. Use terminal commands like `n`, `s`, `pp rocks` to navigate (no VS Code breakpoints!)
+5. When done, stop, remove, and restart normally
 
-**The frustration is real**: No hot reloading, no easy debugging, constant container management.
+**The frustration is real**: No VS Code debugging, no breakpoints, mostly print statements and terminal-only debugging tools.
 
 ### Why No Hot Reload in Manual Setup?
 
