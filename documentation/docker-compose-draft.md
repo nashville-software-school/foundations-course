@@ -60,6 +60,17 @@ There's a bug in your new favorite rocks feature. You want to place a breakpoint
 
 **The frustration is real**: No hot reloading, no easy debugging, constant container management.
 
+### Why No Hot Reload in Manual Setup?
+
+The manual Docker network setup has a critical limitation: **no volume mounts between your host machine and containers**.
+
+**What this means:**
+- Your code changes stay on your host machine
+- The container runs the code that was copied during `docker build`
+- The running container has no knowledge of your file changes
+
+**For both API and Client**: To see any code changes, you must stop, remove, rebuild, and restart containers - that's why you need those 10 commands every time!
+
 ## Enter Docker Compose
 
 Docker Compose is about to transform your development experience from frustrating to delightful. Instead of managing individual containers with lengthy commands, you'll define your entire multi-container application in a single YAML file and control everything with simple commands.
@@ -307,8 +318,24 @@ Let's break down what each section does and compare it to the manual commands yo
 1. **One Network**: No need to manually create with `docker network create`
 2. **Automatic Building**: No separate `docker build` commands
 3. **Health Checks**: Services wait for dependencies to be truly ready
-4. **Volume Mounts**: Code changes appear instantly without rebuilding
+4. **Volume Mounts**: **Game changer!** Live code synchronization enables hot reload
 5. **Single Command**: Replace 10+ commands with just `docker compose up`
+
+### The Magic of Volume Mounts
+
+Volume mounts are what make hot reload possible:
+
+```yaml
+volumes:
+  - ./your-client-repo-name:/app  # Host code → Container code (live sync)
+  - ./your-api-repo-name:/app     # Host code → Container code (live sync)
+```
+
+**How this works:**
+- **Edit a React file** on your host → Volume mount reflects change in container → Vite dev server detects change → **Instant hot reload in browser!**
+- **Edit a Python file** on your host → Volume mount reflects change in container → Django dev server detects change and restarts → **New code is live immediately!**
+
+**No rebuilding, no restarting containers, no waiting around** - just save and see your changes!
 
 ## Running Your Docker Compose Setup
 
@@ -693,7 +720,15 @@ This is **exactly the same debugging experience** as local development, but runn
 
 ### Step 13: Experience Code Changes
 
-Let's test how code changes work in the debugging environment:
+Let's test how code changes work in the debugging environment and understand the difference between debugging and regular development:
+
+#### Understanding Hot Reload vs. Debugging
+
+**Important Distinction:**
+- **Regular development**: Hot reload works perfectly with Docker Compose volume mounts
+- **Debugging mode**: Hot reload is intentionally disabled for stable debugging connections
+
+#### Test Code Changes in Debugging Mode:
 
 1. **Stop the debugger** (Ctrl+C or click the stop button in VS Code) 
 2. **Open** `rockapi/views/rock_view.py`
@@ -710,7 +745,12 @@ Let's test how code changes work in the debugging environment:
 6. **In your browser**, navigate to the rocks page
 7. **Check the Integrated Terminal** in VS Code - you should see your print statement!
 
-**Important Note**: When debugging with `--noreload`, Django doesn't automatically restart when files change. This ensures stable debugging connections, but you'll need to manually restart (F5) to see code changes.
+#### Why Manual Restart is Required for Debugging
+
+When debugging with `--noreload`, Django doesn't automatically restart when files change. This is **intentional**:
+
+- **Benefit**: Stable debugging connections that don't disconnect when you edit files
+- **Trade-off**: You must manually restart (F5) to see code changes
 
 ## Comparing Your Development Workflows
 
@@ -744,8 +784,8 @@ Congratulations! You've just set up the same development workflow used by profes
 ### **Integrated Debugging That Just Works**
 Press F5 in VS Code and get full debugging capabilities: breakpoints, variable inspection, step-through debugging, and the debug console - all running inside your containerized environment.
 
-### **Live Code Updates Without Rebuilding**
-Save a Javascript file and see changes instantly. No rebuilding images, no restarting containers, no waiting around.
+### **Live Code Updates With Volume Mounts**
+Docker Compose volume mounts enable true hot reload: save a React file and see instant browser updates, edit Python code and watch Django restart automatically. No rebuilding images, no restarting containers, no waiting around.
 
 ### **Consistent Environment for Your Entire Team**
 Every developer gets the exact same Python version, Django version, PostgreSQL version, and system dependencies. Zero "works on my machine" issues.
