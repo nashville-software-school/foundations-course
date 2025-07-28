@@ -6,7 +6,7 @@ Let's be honest about what you're experiencing with your current Docker network 
 
 ### Scenario 1: Making a Code Change
 
-You've just implemented a new feature to allow users to favorite other people's rocks. Here's what you need to do to see your changes:
+Let's say you've just implemented a new feature to allow users to favorite other people's rocks. Here's what you need to do to see your changes:
 
 **For the API change:**
 1. Stop the running API container: `docker stop api-container`
@@ -41,7 +41,7 @@ That's **10 commands** just to see a simple code change!
 
 ### Scenario 2: Debugging Your Feature
 
-There's a bug in your new favorite rocks feature. You want to place a breakpoint in the API code to see exactly what's happening. Here's your current process:
+Let's say there's a bug in your new favorite rocks feature. You want to place a breakpoint in the API code to see exactly what's happening. Here's your current process:
 
 1. Stop the API container: `docker stop api-container`
 2. Remove it: `docker rm api-container`
@@ -105,6 +105,8 @@ docker network prune -f
 - Removes custom networks like `rock-of-ages-network`
 
 This gives you a completely clean Docker environment to start fresh with Docker Compose.
+
+> ⚠️ **WARNING** If you have any other personal or professional docker containers on your machine they will be removed if you run these commands. 
 
 #### ⚠️ **Receiving an error?**
 If you see this error: 
@@ -377,7 +379,7 @@ You should see 3 rocks (from the seed data). Type `\q` to exit.
 - **You should see** the Rock of Ages application
 - **Open Developer Tools** and go to the **Network** tab
 - **Try to register** a new user account
-- **In the Network tab**, confirm that API calls are going to `localhost:8000` 
+- **In the Network tab**, confirm that API calls are going to `localhost:8000`
 - **Login** and try to view the rocks collection
 - **Test adding** a rock to your collection  
 - **Verify in Network tab** that all API requests show `localhost:8000` as the target
@@ -486,9 +488,10 @@ By the end of this section, you'll be able to:
 - ✅ Step through your code line by line 
 - ✅ Inspect variables and see their values in real-time
 - ✅ Use all of VS Code's debugging features inside the container
-- ✅ Get hot reload for code changes without rebuilding anything
+- ✅ Restart the debugger quickly to see code changes
 
-### Step 6: Install Dev Containers Extension
+
+### Step 7: Install Dev Containers Extension
 
 1. Open VS Code
 2. Go to Extensions (Cmd/Ctrl + Shift + X)
@@ -514,7 +517,7 @@ Container: VS Code Server + Python Debugger + Django App + Python Runtime
 
 This means you get the exact same debugging experience as local development, but everything runs in your containerized environment!
 
-### Step 7: Create Dev Container Configuration
+### Step 8: Create Dev Container Configuration
 
 We need to tell VS Code how to connect to our API container. In your API repository, create the configuration:
 
@@ -561,12 +564,12 @@ Create `./your-api-repo-name/.devcontainer/devcontainer.json`:
 **Key settings explained:**
 - `"dockerComposeFile": "../../docker-compose.yml"` - Points to your compose file
 - `"service": "api"` - Connects to the API container
-- `"overrideCommand": true` - **Critical!** This prevents the automatic Django startup from docker-compose.yml, giving you control
+- `"overrideCommand": true` - **Critical!** This prevents the automatic Django startup from docker-compose.yml, allowing you to manually start the service and attach the debug process. 
 - `"workspaceFolder": "/app"` - Sets the working directory inside the container
 
-### Step 8: Start the Debugging Environment
+### Step 9: Start the Debugging Environment
 
-For debugging, we want to start only the infrastructure (database and client) and control the API ourselves:
+For debugging, we want to start only the database and client and control the API ourselves:
 
 1. **Stop your full stack** if it's running:
    ```bash
@@ -681,12 +684,13 @@ With the execution paused at your breakpoint, you can:
 
 This is **exactly the same debugging experience** as local development, but running inside your containerized environment!
 
-### Step 13: Experience Code Changes
+### Step 12: Experience Code Changes
 
 Let's test how code changes work in the debugging environment:
 
-1. **With the debugger running**, open `rockapi/views/rock_view.py`
-2. **Add a print statement** in the `list` method:
+1. **Stop the debugger** (Ctrl+C or click the stop button in VS Code) 
+2. **Open** `rockapi/views/rock_view.py`
+3. **Add a print statement** in the `list` method:
    ```python
    def list(self, request):
        """Handle GET requests to get all rocks"""
@@ -694,14 +698,12 @@ Let's test how code changes work in the debugging environment:
        rocks = Rock.objects.all()
        # rest of your existing code
    ```
-3. **Save the file**
-4. **Stop the debugger** (Ctrl+C or click the stop button in VS Code)
+4. **Save the file**
 5. **Press F5 again** to restart with your changes
 6. **In your browser**, navigate to the rocks page
 7. **Check the Integrated Terminal** in VS Code - you should see your print statement!
 
 **Important Note**: When debugging with `--noreload`, Django doesn't automatically restart when files change. This ensures stable debugging connections, but you'll need to manually restart (F5) to see code changes.
-
 ## Comparing Your Workflows
 
 ### Before Docker Compose + Dev Containers:
@@ -711,7 +713,9 @@ Let's test how code changes work in the debugging environment:
 - ❌ Fragile, error-prone setup
 
 ### After Docker Compose + Dev Containers:
-- ✅ `docker compose up -d` + `F5` to start debugging
+- ✅ `docker compose up -d` to run all environments
+- ✅ `docker compose up postgres-db client` to start the database and client & VScode debugger to run and debug the api.
+- ✅ Instant hot reload on code changes
 - ✅ Full debugging with breakpoints, variable inspection, step-through
 - ✅ Identical setup for every team member
 - ✅ Production-like architecture running locally
@@ -727,7 +731,7 @@ Congratulations! You've just set up the same development workflow used by profes
 Press F5 in VS Code and get full debugging capabilities: breakpoints, variable inspection, step-through debugging, and the debug console - all running inside your containerized environment.
 
 ### **Live Code Updates Without Rebuilding**
-Save a Python file and see changes instantly. No rebuilding images, no restarting containers, no waiting around.
+Save a Javascript file and see changes instantly. No rebuilding images, no restarting containers, no waiting around.
 
 ### **Consistent Environment for Your Entire Team**
 Every developer gets the exact same Python version, Django version, PostgreSQL version, and system dependencies. Zero "works on my machine" issues.
@@ -735,6 +739,5 @@ Every developer gets the exact same Python version, Django version, PostgreSQL v
 ### **Production-Like Architecture Running Locally**
 Your development environment mirrors your production setup - containerized API connecting to a database - but with complete safety and isolation from production data.
 
-This isn't just about learning tools - you're adopting industry best practices that will serve you throughout your career.
-
+This isn't just about learning tools - you're adopting industry best practices that will serve you throughout your career. 
 **Welcome to professional containerized development!** 🚀
