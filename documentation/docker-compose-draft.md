@@ -6,7 +6,7 @@ Let's be honest about what you're experiencing with your current Docker network 
 
 ### Scenario 1: Making a Code Change
 
-You've just implemented a new feature to allow users to favorite other people's rocks. Here's what you need to do to see your changes:
+Let's say you've just implemented a new feature to allow users to favorite other people's rocks. Here's what you need to do to see your changes:
 
 **For the API change:**
 1. Stop the running API container: `docker stop api-container`
@@ -41,7 +41,7 @@ That's **10 commands** just to see a simple code change!
 
 ### Scenario 2: Debugging Your Feature
 
-There's a bug in your new favorite rocks feature. Here's your current debugging options with the manual setup:
+Let's say there's a bug in your new favorite rocks feature. Here's your current debugging options with the manual setup:
 
 **Option 1: Print Statements**
 1. Add `print()` statements to your Python code
@@ -123,6 +123,8 @@ docker network prune -f
 - Removes custom networks like `rock-of-ages-network`
 
 This gives you a completely clean Docker environment to start fresh with Docker Compose.
+
+> ⚠️ **WARNING** If you have any other personal or professional docker containers on your machine they will be removed if you run these commands. 
 
 #### ⚠️ **Receiving an error?**
 If you see this error: 
@@ -318,7 +320,6 @@ Let's break down what each section does and compare it to the manual commands yo
 - **Previously**: You built and ran with multiple commands
 - **Now**: Everything is defined declaratively
 - `command:` - This starts your React development server! When this runs, your app is live at localhost:3000
-- **No dependencies**: The client doesn't depend on the API, giving you more flexibility
 
 **Key Improvements Over Manual Setup**
 
