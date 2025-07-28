@@ -6,7 +6,7 @@ Let's be honest about what you're experiencing with your current Docker network 
 
 ### Scenario 1: Making a Code Change
 
-Let's say you've just implemented a new feature to allow users to favorite other people's rocks. Here's what you need to do to see your changes:
+You've just implemented a new feature to allow users to favorite other people's rocks. Here's what you need to do to see your changes:
 
 **For the API change:**
 1. Stop the running API container: `docker stop api-container`
@@ -41,7 +41,7 @@ That's **10 commands** just to see a simple code change!
 
 ### Scenario 2: Debugging Your Feature
 
-Let's say there's a bug in your new favorite rocks feature. You want to place a breakpoint in the API code to see exactly what's happening. Here's your current process:
+There's a bug in your new favorite rocks feature. You want to place a breakpoint in the API code to see exactly what's happening. Here's your current process:
 
 1. Stop the API container: `docker stop api-container`
 2. Remove it: `docker rm api-container`
@@ -105,8 +105,6 @@ docker network prune -f
 - Removes custom networks like `rock-of-ages-network`
 
 This gives you a completely clean Docker environment to start fresh with Docker Compose.
-
-> ⚠️ **WARNING** If you have any other personal or professional docker containers on your machine they will be removed if you run these commands. 
 
 #### ⚠️ **Receiving an error?**
 If you see this error: 
@@ -302,6 +300,7 @@ Let's break down what each section does and compare it to the manual commands yo
 - **Previously**: You built and ran with multiple commands
 - **Now**: Everything is defined declaratively
 - `command:` - This starts your React development server! When this runs, your app is live at localhost:3000
+- **No dependencies**: The client doesn't depend on the API, giving you more flexibility
 
 **Key Improvements Over Manual Setup**
 
@@ -326,6 +325,8 @@ That's it! This single command:
 - Creates the network automatically
 - Builds images if needed  
 - Starts all containers in the correct order
+- Seeds your database with sample data
+- Starts Django and React development servers
 - Shows combined logs from all services
 
 ### Expected Output
@@ -356,6 +357,8 @@ client-container  | ➜  Network: http://0.0.0.0:3000/
 - PostgreSQL: "ready to accept connections"
 - API: "Starting development server at http://0.0.0.0:8000/"
 - Client: "ready" and showing localhost:3000
+
+**🎉 Congratulations!** You now have a complete full-stack application running with one command!
 
 ## Complete Application Testing
 
@@ -388,9 +391,9 @@ You should see 3 rocks (from the seed data). Type `\q` to exit.
 
 You now have a **professional full-stack development environment** that starts with a single command!
 
-### Step 6: Run in Background Mode
+### Step 6: Run in Background Mode (Optional)
 
-If you prefer to run everything in the background:
+If you prefer to run everything in the background without seeing the logs:
 
 ```bash
 docker compose up -d
@@ -399,6 +402,11 @@ docker compose up -d
 To see logs when running in background:
 ```bash
 docker compose logs -f
+```
+
+To see logs for just one service:
+```bash
+docker compose logs api -f
 ```
 
 ### Useful Docker Compose Commands
@@ -489,7 +497,6 @@ By the end of this section, you'll be able to:
 - ✅ Inspect variables and see their values in real-time
 - ✅ Use all of VS Code's debugging features inside the container
 - ✅ Restart the debugger quickly to see code changes
-
 
 ### Step 7: Install Dev Containers Extension
 
@@ -608,7 +615,7 @@ Done. Press any key to close the terminal.
 
 **Important**: You might see a popup about port forwarding (like port 5474) - this is normal VS Code communication. Just dismiss it.
 
-### Step 9: Set Up Django Debugging
+### Step 10: Set Up Django Debugging
 
 Now we need to configure VS Code to debug Django properly. Create a debug configuration in your API repository:
 
@@ -642,9 +649,9 @@ Now we need to configure VS Code to debug Django properly. Create a debug config
 - `"--noreload"` - Prevents Django from restarting (which can interfere with debugging)
 - `"django": true` - Enables Django-specific debugging features
 
-### Step 10: Start Debugging Django
+### Step 11: Start Debugging Django
 
-Here's the moment of truth! We'll start our Django app with the debugger:
+Here's the moment of truth! We'll start Django with the integrated debugger:
 
 1. **In VS Code** (now connected to the container), press **F5** 
    
@@ -652,7 +659,7 @@ Here's the moment of truth! We'll start our Django app with the debugger:
    
    Go to the **Run and Debug** panel (Ctrl+Shift+D), select "Django: Debug Server", and click the green play button
 
-2. **You should see Django start** in the **DEBUG CONSOLE** (not the regular terminal):
+2. **You should see Django start** in the **Integrated Terminal**:
    ```
    Django version 5.2.4, using settings 'rockproject.settings'
    Starting development server at http://0.0.0.0:8000/
@@ -661,7 +668,7 @@ Here's the moment of truth! We'll start our Django app with the debugger:
 
 3. **Notice the debug toolbar** at the top of VS Code - this means the debugger is active!
 
-### Step 11: Test Your First Breakpoint
+### Step 12: Test Your First Breakpoint
 
 Time for the magic moment:
 
@@ -684,7 +691,7 @@ With the execution paused at your breakpoint, you can:
 
 This is **exactly the same debugging experience** as local development, but running inside your containerized environment!
 
-### Step 12: Experience Code Changes
+### Step 13: Experience Code Changes
 
 Let's test how code changes work in the debugging environment:
 
@@ -704,28 +711,35 @@ Let's test how code changes work in the debugging environment:
 7. **Check the Integrated Terminal** in VS Code - you should see your print statement!
 
 **Important Note**: When debugging with `--noreload`, Django doesn't automatically restart when files change. This ensures stable debugging connections, but you'll need to manually restart (F5) to see code changes.
-## Comparing Your Workflows
 
-### Before Docker Compose + Dev Containers:
+## Comparing Your Development Workflows
+
+### **Full-Stack Workflow** (`docker compose up`):
+- ✅ **Instant complete application** - perfect for demos, testing, frontend work
+- ✅ **Zero configuration** - just works for everyone on the team  
+- ✅ **Automatic database seeding** - fresh data every time
+- ✅ **Great for integration testing** - see how everything works together
+
+### **API Debugging Workflow** (`docker compose up postgres-db client` + Dev Container):
+- ✅ **Full debugging capabilities** - breakpoints, variable inspection, step-through
+- ✅ **Precise control** - start and stop Django exactly when you need it
+- ✅ **Perfect for backend development** - deep dive into API logic
+
+### **Before Docker Compose + Dev Containers:**
 - ❌ 10+ commands to see code changes
 - ❌ Manual container management  
 - ❌ Print statements for debugging
 - ❌ Fragile, error-prone setup
 
-### After Docker Compose + Dev Containers:
-- ✅ `docker compose up -d` to run all environments
-- ✅ `docker compose up postgres-db client` to start the database and client & VScode debugger to run and debug the api.
-- ✅ Instant hot reload on code changes
-- ✅ Full debugging with breakpoints, variable inspection, step-through
-- ✅ Identical setup for every team member
-- ✅ Production-like architecture running locally
+
+**You now have the best of both worlds!** 🎯
 
 ## Summary: Your Professional Development Environment
 
 Congratulations! You've just set up the same development workflow used by professional teams at major tech companies. You now have:
 
 ### **One Command to Rule Them All**
-`docker compose up -d` starts your entire development infrastructure - database, API container, and client - with perfect networking and dependency management.
+`docker compose up` starts your entire development infrastructure - database, API container, and client - with perfect networking and dependency management.
 
 ### **Integrated Debugging That Just Works**
 Press F5 in VS Code and get full debugging capabilities: breakpoints, variable inspection, step-through debugging, and the debug console - all running inside your containerized environment.
@@ -739,5 +753,5 @@ Every developer gets the exact same Python version, Django version, PostgreSQL v
 ### **Production-Like Architecture Running Locally**
 Your development environment mirrors your production setup - containerized API connecting to a database - but with complete safety and isolation from production data.
 
-This isn't just about learning tools - you're adopting industry best practices that will serve you throughout your career. 
+
 **Welcome to professional containerized development!** 🚀
