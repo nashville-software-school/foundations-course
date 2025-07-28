@@ -735,7 +735,25 @@ Let's test how code changes work in the debugging environment and understand the
 - **Regular development**: Hot reload works perfectly with Docker Compose volume mounts
 - **Debugging mode**: Hot reload is intentionally disabled for stable debugging connections
 
+#### Test Hot Reload with the Client First:
+
+Before testing API debugging changes, let's see Docker Compose hot reload in action:
+
+1. **Keep your debugger running** (or use the full stack with `docker compose up`)
+2. **Open any React component** in your client repository (e.g., a component in `src/components/`)
+3. **Make a visible change** - add some text or change a heading:
+   ```jsx
+   // For example, in a component:
+   <h1>Rock of Ages - Hot Reload Works! 🔥</h1>
+   ```
+4. **Save the file**
+5. **Check your browser** at `http://localhost:3000` - **The change appears instantly!**
+
+**Why this works**: Docker Compose volume mounts (`./your-client-repo-name:/app`) sync your file changes immediately to the container, and Vite's dev server detects and hot reloads automatically.
+
 #### Test Code Changes in Debugging Mode:
+
+Now let's see how API debugging handles changes differently:
 
 1. **Stop the debugger** (Ctrl+C or click the stop button in VS Code) 
 2. **Open** `rockapi/views/rock_view.py`
@@ -761,23 +779,36 @@ When debugging with `--noreload`, Django doesn't automatically restart when file
 
 ## Comparing Your Development Workflows
 
-### **Full-Stack Workflow** (`docker compose up`):
+### **Manual Docker Network Setup** (From Previous Section):
+- ❌ **No hot reload** - Code changes require stop/remove/rebuild/restart cycle for **both** API and client
+- ❌ **10+ commands** to see simple changes in either React or Django
+- ❌ **No volume mounts** - Code is static after `docker build`
+- ❌ **Terminal-only debugging** - Print statements and `pdb` commands only
+
+### **Docker Compose Full-Stack Workflow** (`docker compose up`):
+- ✅ **Perfect hot reload** - React changes appear instantly, Django restarts automatically
+- ✅ **Volume mounts enable the magic** - `./your-client-repo-name:/app` syncs files live
 - ✅ **Instant complete application** - perfect for demos, testing, frontend work
 - ✅ **Zero configuration** - just works for everyone on the team  
-- ✅ **Automatic database seeding** - fresh data every time
 - ✅ **Great for integration testing** - see how everything works together
 
-### **API Debugging Workflow** (`docker compose up postgres-db client` + Dev Container):
-- ✅ **Full debugging capabilities** - breakpoints, variable inspection, step-through
+### **Docker Compose API Debugging Workflow** (`docker compose up postgres-db client` + Dev Container):
+- ✅ **Full VS Code debugging** - breakpoints, variable inspection, step-through (thanks to Dev Containers!)
+- ✅ **Client hot reload still works** - React changes appear instantly while debugging API
 - ✅ **Precise control** - start and stop Django exactly when you need it
-- ✅ **Perfect for backend development** - deep dive into API logic
+- ⚠️ **Manual restart for API code changes** - trade-off for stable debugging connections
 
-### **Before Docker Compose + Dev Containers:**
-- ❌ 10+ commands to see code changes
-- ❌ Manual container management  
-- ❌ Print statements for debugging
-- ❌ Fragile, error-prone setup
+### **The Volume Mount Game Changer**
 
+The key difference between manual setup and Docker Compose:
+
+**Manual Setup**: Code copied once during `docker build` → Static forever
+**Docker Compose**: Live volume mounts → **Save file = Instant container update**
+
+```yaml
+volumes:
+  - ./your-client-repo-name:/app  # Live sync: Your edits → Container immediately
+```
 
 **You now have the best of both worlds!** 🎯
 
