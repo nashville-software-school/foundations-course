@@ -1,11 +1,9 @@
 export const dockerComposeGlossaryChapter = {
   id: "compose-glossary",
-  title: "Containerized Development Glossary",
+  title: "Glossary",
   sectionId: "docker-compose",
   previousChapterId: "workshop3-dev-containers-setup",
   content: `
-
-# Chapter 4: Glossary of New Terms
 
 This glossary provides definitions for key terms introduced in the Docker Compose and Dev Containers module.
 
