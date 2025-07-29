@@ -125,6 +125,12 @@ export const sectionsWorkshop3 = [
     description: "Setting up the Docker Network for local development",
     required: true,
   },
+  {
+    id: "docker-compose",
+    title: "Docker Compose",
+    description: "Setting up Docker Compose for local development",
+    required: true,
+  },
   // Module TBD: Conclusion
   {
     id: "workshop3-conclusion",

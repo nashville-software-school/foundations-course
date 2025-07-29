@@ -22,6 +22,7 @@
 - **Why**: Simplify the multi-container setup
 - Convert manual Docker network to docker-compose.yml
 - One command to start entire development environment
+- Using Dev Containers extension for debugging
 - Learn benefits of orchestration tools
 
 ## Key Learning Objectives
