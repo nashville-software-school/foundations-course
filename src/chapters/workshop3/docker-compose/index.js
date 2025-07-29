@@ -1,6 +1,6 @@
 import { workshop3DevContainersSetupChapter } from "./dev-containers-setup"
 import { workshop3DCSetupChapter } from "./docker-compose-setup"
-import { dockerComposeGlossaryChapter } from "./glossary"
+import { dockerComposeGlossaryChapter } from "./compose-glossary"
 import { workshop3IntroToDCChapter } from "./intro-to-docker-compose"
 
 export const workshop3DockerComposeChapters = [
