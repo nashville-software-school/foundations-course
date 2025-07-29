@@ -19,7 +19,7 @@ export const workshop3SummaryChapter = {
   
   2. **Docker Networking**: [Docker Networking](./network-glossary)
   
-  3. **Docker Compose**: [Docker Compose](TBA)
+  3. **Docker Compose**: [Docker Compose](./compose-glossary)
   
   
   ## Get Interview Ready!
