@@ -8,7 +8,7 @@ export const workshop3SummaryChapter = {
   previousChapterId: null,
   content: `## What You've Accomplished
   
-  In this workshop, you have learned how to set up an RDS database and update your api to connect to that database. You've also learned how Docker Networking and Docker Compose can be used to set up local development environments. 
+  In this workshop, you have learned how to set up an RDS database and update your api and github actions to connect to that database. You've also learned how Docker Networking, Docker Compose, and dev containers can be used to set up local development environments. 
   <img width=700 src="${diagram}"/>
   
   ### What You Should Know
