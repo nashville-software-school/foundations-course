@@ -1,12 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import { Link, useLocation } from 'react-router-dom'
-import { useChapter } from '../context/ChapterContext'
-import { useLearnerProgress } from '../context/LearnerProgressContext'
-import { useAuth } from '../context/AuthContext'
-import { sectionsWorkshop1 } from '../sections'
-import { sectionsWorkshop2 } from '../sections'
-import { css } from '@emotion/react'
-import SectionHeader from './SectionHeader'
+import { Link, useLocation } from "react-router-dom"
+import { useChapter } from "../context/ChapterContext"
+import { useLearnerProgress } from "../context/LearnerProgressContext"
+import { useAuth } from "../context/AuthContext"
+import { sectionsWorkshop1 } from "../sections"
+import { sectionsWorkshop2 } from "../sections"
+import { sectionsWorkshop3 } from "../sections"
+import { css } from "@emotion/react"
+import SectionHeader from "./SectionHeader"
 
 const navStyles = css`
   h2 {
@@ -23,7 +24,6 @@ const navStyles = css`
 
   .required-work-header {
     margin: 0.5rem 0 0.5rem 0;
-
   }
 
   .additional-work-header {
@@ -219,16 +219,18 @@ const groupChaptersBySection = (chapters) => {
   }, {})
 
   // Then order chapters within each section
-  Object.keys(groupedChapters).forEach(sectionId => {
+  Object.keys(groupedChapters).forEach((sectionId) => {
     const sectionChapters = groupedChapters[sectionId]
     const orderedChapters = []
 
     // Find the first chapter (no previousChapterId)
-    let currentChapter = sectionChapters.find(c => !c.previousChapterId)
+    let currentChapter = sectionChapters.find((c) => !c.previousChapterId)
 
     while (currentChapter) {
       orderedChapters.push(currentChapter)
-      currentChapter = sectionChapters.find(c => c.previousChapterId === currentChapter.id)
+      currentChapter = sectionChapters.find(
+        (c) => c.previousChapterId === currentChapter.id
+      )
     }
 
     groupedChapters[sectionId] = orderedChapters
@@ -246,25 +248,26 @@ function Navigation() {
 
   const getChapterStatus = (chapterId) => {
     const progress = getExerciseProgress(chapterId)
-    if (progress.completed) return 'completed'
-    if (progress.attempts > 0) return 'in-progress'
-    return 'not-started'
+    if (progress.completed) return "completed"
+    if (progress.attempts > 0) return "in-progress"
+    return "not-started"
   }
 
   const calculateSectionProgress = (sectionChapters) => {
     const total = sectionChapters.length
     const completed = sectionChapters.filter(
-      chapter => getExerciseProgress(chapter.id).completed
+      (chapter) => getExerciseProgress(chapter.id).completed
     ).length
     const inProgress = sectionChapters.filter(
-      chapter => !getExerciseProgress(chapter.id).completed &&
+      (chapter) =>
+        !getExerciseProgress(chapter.id).completed &&
         getExerciseProgress(chapter.id).attempts > 0
     ).length
 
     return {
       completed,
       inProgress,
-      percentage: (completed / total) * 100
+      percentage: (completed / total) * 100,
     }
   }
 
@@ -284,7 +287,9 @@ function Navigation() {
           onToggle={() => toggleSection(section.id)}
         />
 
-        <div className={`section-content ${isExpanded ? 'expanded' : 'collapsed'}`}>
+        <div
+          className={`section-content ${isExpanded ? "expanded" : "collapsed"}`}
+        >
           <div className="section-progress">
             <div className="progress-text">
               <span>{Math.round(progress.percentage)}% Complete</span>
@@ -304,41 +309,45 @@ function Navigation() {
               return (
                 <li key={chapter.id} className="chapter-item">
                   <Link
-                    to={isProtected ? '/login' : chapter.id}
-                    className={`chapter-link ${status} ${location.pathname?.slice(1) === chapter.id ? 'active' : ''
-                      } ${isProtected ? 'protected' : ''}`}
+                    to={isProtected ? "/login" : chapter.id}
+                    className={`chapter-link ${status} ${
+                      location.pathname?.slice(1) === chapter.id ? "active" : ""
+                    } ${isProtected ? "protected" : ""}`}
                   >
                     <span className="chapter-number">{index + 1}</span>
                     <span className="chapter-title">{chapter.title}</span>
                     {isProtected && <LockIcon />}
-                    {!isProtected && status !== 'not-started' ? (
+                    {!isProtected && status !== "not-started" ? (
                       <span className="status-icon">
-                        {status === 'completed' ? '✓' : '●'}
+                        {status === "completed" ? "✓" : "●"}
                       </span>
-                    ) : (!isProtected && chapter.exercise === null && (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault()
-                          trackCompletion(chapter.id)
-                        }}
-                        css={css`
-                          background: #e9ecef;
-                          border: 1px solid #dee2e6;
-                          border-radius: 4px;
-                          padding: 2px 8px;
-                          font-size: 0.8rem;
-                          cursor: pointer;
-                          color: #495057;
-                          transition: all 0.2s ease;
-                          &:hover {
-                            background: #dee2e6;
-                            border-color: #ced4da;
-                          }
-                        `}
-                      >
-                        Done
-                      </button>
-                    ))}
+                    ) : (
+                      !isProtected &&
+                      chapter.exercise === null && (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            trackCompletion(chapter.id)
+                          }}
+                          css={css`
+                            background: #e9ecef;
+                            border: 1px solid #dee2e6;
+                            border-radius: 4px;
+                            padding: 2px 8px;
+                            font-size: 0.8rem;
+                            cursor: pointer;
+                            color: #495057;
+                            transition: all 0.2s ease;
+                            &:hover {
+                              background: #dee2e6;
+                              border-color: #ced4da;
+                            }
+                          `}
+                        >
+                          Done
+                        </button>
+                      )
+                    )}
                   </Link>
                 </li>
               )
@@ -351,21 +360,37 @@ function Navigation() {
 
   // Filter sections into required and optional
   // Workshop 1 sections
-  const requiredSections1 = sectionsWorkshop1.filter(section => section.required || (!section.optional && !section.required))
-  const optionalSections1 = sectionsWorkshop1.filter(section => section.optional)
+  const requiredSections1 = sectionsWorkshop1.filter(
+    (section) => section.required || (!section.optional && !section.required)
+  )
+  const optionalSections1 = sectionsWorkshop1.filter(
+    (section) => section.optional
+  )
 
   // Workshop 2 sections
-  const requiredSections2 = sectionsWorkshop2.filter(section => section.required || (!section.optional && !section.required))
-  const optionalSections2 = sectionsWorkshop2.filter(section => section.optional)
+  const requiredSections2 = sectionsWorkshop2.filter(
+    (section) => section.required || (!section.optional && !section.required)
+  )
+  const optionalSections2 = sectionsWorkshop2.filter(
+    (section) => section.optional
+  )
+
+  // Workshop 3 sections
+  const requiredSections3 = sectionsWorkshop3.filter(
+    (section) => section.required || (!section.optional && !section.required)
+  )
+  const optionalSections3 = sectionsWorkshop3.filter(
+    (section) => section.optional
+  )
 
   return (
     <nav css={navStyles}>
       {/* Required Sections Workshop 1*/}
       <div className="required-work-header">
         <h3>Workshop 1</h3>
-      <div className="section-group required-sections">
-        {requiredSections1.map(renderSection)}
-      </div>
+        <div className="section-group required-sections">
+          {requiredSections1.map(renderSection)}
+        </div>
       </div>
       {/* Optional Sections */}
       {optionalSections1.length > 0 && (
@@ -373,7 +398,8 @@ function Navigation() {
           <div className="additional-work-header">
             <h3>Additional Work</h3>
             <p className="additional-work-description">
-              The following sections are optional if you want to practice your skills
+              The following sections are optional if you want to practice your
+              skills
             </p>
           </div>
 
@@ -383,9 +409,9 @@ function Navigation() {
       {/* Required Sections Workshop 2 */}
       <div className="required-work-header">
         <h3>Workshop 2</h3>
-      <div className="section-group required-sections">
-        {requiredSections2.map(renderSection)}
-      </div>
+        <div className="section-group required-sections">
+          {requiredSections2.map(renderSection)}
+        </div>
       </div>
       {/* Optional Sections */}
       {optionalSections2.length > 0 && (
@@ -393,11 +419,33 @@ function Navigation() {
           <div className="additional-work-header">
             <h3>Additional Work</h3>
             <p className="additional-work-description">
-              The following sections are optional if you want to practice your skills
+              The following sections are optional if you want to practice your
+              skills
             </p>
           </div>
 
           {optionalSections2.map(renderSection)}
+        </div>
+      )}
+      {/* Required Sections Workshop 3 */}
+      <div className="required-work-header">
+        <h3>Workshop 3</h3>
+        <div className="section-group required-sections">
+          {requiredSections3.map(renderSection)}
+        </div>
+      </div>
+      {/* Optional Sections */}
+      {optionalSections3.length > 0 && (
+        <div className="section-group optional-sections">
+          <div className="additional-work-header">
+            <h3>Additional Work</h3>
+            <p className="additional-work-description">
+              The following sections are optional if you want to practice your
+              skills
+            </p>
+          </div>
+
+          {optionalSections3.map(renderSection)}
         </div>
       )}
     </nav>

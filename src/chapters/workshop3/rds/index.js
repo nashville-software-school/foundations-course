@@ -1,9 +1,13 @@
-import { workshop2SummaryChapter } from "./summary";
-import { workshop2FurtherLearningChapter } from "./further-learning";
+import { workshop3RDSSetupChapter } from "./rds-setup";
+import { workshop3RDSDeployChapter } from "./deploy-rds";
+import { workshop3RDSLearningChapter } from "./rds-info";
+import { rdsAndStorageGlossaryChapter } from "./rds-glossary";
 
-export const workshop2ConclusionChapters = [
-  workshop2SummaryChapter,
-  workshop2FurtherLearningChapter
+export const introToRDSChapters = [
+  workshop3RDSSetupChapter,
+  workshop3RDSDeployChapter,
+  workshop3RDSLearningChapter,
+  rdsAndStorageGlossaryChapter
 ];
 
 /**
@@ -12,7 +16,7 @@ export const workshop2ConclusionChapters = [
  * @returns {Object|undefined} The chapter object if found, undefined otherwise
  */
 export const getChapterById = (id) => {
-  return workshop2ConclusionChapters.find(chapter => chapter.id === id);
+  return introToRDSChapters.find(chapter => chapter.id === id);
 };
 
 /**
@@ -20,7 +24,7 @@ export const getChapterById = (id) => {
  * @returns {string[]} Array of chapter IDs
  */
 export const getChapterIds = () => {
-  return workshop2ConclusionChapters.map(chapter => chapter.id);
+  return introToRDSChapters.map(chapter => chapter.id);
 };
 
 /**
@@ -29,8 +33,8 @@ export const getChapterIds = () => {
  * @returns {Object|undefined} The next chapter object if found, undefined otherwise
  */
 export const getNextChapter = (currentChapterId) => {
-  const currentIndex = workshop2ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
-  return workshop2ConclusionChapters[currentIndex + 1];
+  const currentIndex = introToRDSChapters.findIndex(chapter => chapter.id === currentChapterId);
+  return introToRDSChapters[currentIndex + 1];
 };
 
 /**
@@ -39,6 +43,6 @@ export const getNextChapter = (currentChapterId) => {
  * @returns {Object|undefined} The previous chapter object if found, undefined otherwise
  */
 export const getPreviousChapter = (currentChapterId) => {
-  const currentIndex = workshop2ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
-  return currentIndex > 0 ? workshop2ConclusionChapters[currentIndex - 1] : undefined;
+  const currentIndex = introToRDSChapters.findIndex(chapter => chapter.id === currentChapterId);
+  return currentIndex > 0 ? introToRDSChapters[currentIndex - 1] : undefined;
 };

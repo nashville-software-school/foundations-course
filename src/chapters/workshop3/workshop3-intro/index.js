@@ -1,9 +1,7 @@
-import { workshop2SummaryChapter } from "./summary";
-import { workshop2FurtherLearningChapter } from "./further-learning";
+import { introductionWorkshop3Chapter } from './introduction';
 
-export const workshop2ConclusionChapters = [
-  workshop2SummaryChapter,
-  workshop2FurtherLearningChapter
+export const introToWorkshop3Chapters = [
+  introductionWorkshop3Chapter
 ];
 
 /**
@@ -12,7 +10,7 @@ export const workshop2ConclusionChapters = [
  * @returns {Object|undefined} The chapter object if found, undefined otherwise
  */
 export const getChapterById = (id) => {
-  return workshop2ConclusionChapters.find(chapter => chapter.id === id);
+  return introToWorkshop3Chapters.find(chapter => chapter.id === id);
 };
 
 /**
@@ -20,7 +18,7 @@ export const getChapterById = (id) => {
  * @returns {string[]} Array of chapter IDs
  */
 export const getChapterIds = () => {
-  return workshop2ConclusionChapters.map(chapter => chapter.id);
+  return introToWorkshop3Chapters.map(chapter => chapter.id);
 };
 
 /**
@@ -29,8 +27,8 @@ export const getChapterIds = () => {
  * @returns {Object|undefined} The next chapter object if found, undefined otherwise
  */
 export const getNextChapter = (currentChapterId) => {
-  const currentIndex = workshop2ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
-  return workshop2ConclusionChapters[currentIndex + 1];
+  const currentIndex = introToWorkshop3Chapters.findIndex(chapter => chapter.id === currentChapterId);
+  return introToWorkshop3Chapters[currentIndex + 1];
 };
 
 /**
@@ -39,6 +37,6 @@ export const getNextChapter = (currentChapterId) => {
  * @returns {Object|undefined} The previous chapter object if found, undefined otherwise
  */
 export const getPreviousChapter = (currentChapterId) => {
-  const currentIndex = workshop2ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
-  return currentIndex > 0 ? workshop2ConclusionChapters[currentIndex - 1] : undefined;
+  const currentIndex = introToWorkshop3Chapters.findIndex(chapter => chapter.id === currentChapterId);
+  return currentIndex > 0 ? introToWorkshop3Chapters[currentIndex - 1] : undefined;
 };

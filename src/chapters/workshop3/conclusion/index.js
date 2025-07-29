@@ -1,9 +1,9 @@
-import { workshop2SummaryChapter } from "./summary";
-import { workshop2FurtherLearningChapter } from "./further-learning";
+import { workshop3SummaryChapter } from "./summary";
+import { workshop3FurtherLearningChapter } from "./further-learning";
 
-export const workshop2ConclusionChapters = [
-  workshop2SummaryChapter,
-  workshop2FurtherLearningChapter
+export const workshop3ConclusionChapters = [
+  workshop3SummaryChapter,
+  workshop3FurtherLearningChapter
 ];
 
 /**
@@ -12,7 +12,7 @@ export const workshop2ConclusionChapters = [
  * @returns {Object|undefined} The chapter object if found, undefined otherwise
  */
 export const getChapterById = (id) => {
-  return workshop2ConclusionChapters.find(chapter => chapter.id === id);
+  return workshop3ConclusionChapters.find(chapter => chapter.id === id);
 };
 
 /**
@@ -20,7 +20,7 @@ export const getChapterById = (id) => {
  * @returns {string[]} Array of chapter IDs
  */
 export const getChapterIds = () => {
-  return workshop2ConclusionChapters.map(chapter => chapter.id);
+  return workshop3ConclusionChapters.map(chapter => chapter.id);
 };
 
 /**
@@ -29,8 +29,8 @@ export const getChapterIds = () => {
  * @returns {Object|undefined} The next chapter object if found, undefined otherwise
  */
 export const getNextChapter = (currentChapterId) => {
-  const currentIndex = workshop2ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
-  return workshop2ConclusionChapters[currentIndex + 1];
+  const currentIndex = workshop3ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
+  return workshop3ConclusionChapters[currentIndex + 1];
 };
 
 /**
@@ -39,6 +39,6 @@ export const getNextChapter = (currentChapterId) => {
  * @returns {Object|undefined} The previous chapter object if found, undefined otherwise
  */
 export const getPreviousChapter = (currentChapterId) => {
-  const currentIndex = workshop2ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
-  return currentIndex > 0 ? workshop2ConclusionChapters[currentIndex - 1] : undefined;
+  const currentIndex = workshop3ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
+  return currentIndex > 0 ? workshop3ConclusionChapters[currentIndex - 1] : undefined;
 };
