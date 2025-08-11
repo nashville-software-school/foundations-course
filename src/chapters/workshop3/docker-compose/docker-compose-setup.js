@@ -106,6 +106,10 @@ services:
 
   # React Client Service
   client:
+    app:
+      environment:
+      - VITE_HMR_HOST=host.docker.internal
+      - VITE_WATCHER_POLLING=true
     build:
       context: ./your-client-repo-name  # CHANGE THIS to your actual repo name
       dockerfile: Dockerfile

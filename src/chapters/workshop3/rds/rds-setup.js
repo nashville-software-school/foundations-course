@@ -225,34 +225,6 @@ python3 manage.py loaddata rocks
 echo "✅ Database setup complete!"
 \`\`\`
 
-### Update tests
-In \`rockapi/test.py\` replace the entire file with 
-
-\`\`\`python
-from django.test import SimpleTestCase
-from rest_framework.test import APIClient
-from rest_framework import status
-
-
-class SanityTests(SimpleTestCase):
-    def setUp(self):
-        self.client = APIClient()
-
-    def test_math_still_works(self):
-        self.assertEqual(2 + 2, 4)
-
-    def test_uppercase(self):
-        self.assertEqual("rock".upper(), "ROCK")
-
-    def test_api_mock(self):
-        # This won't hit a real view, but it shows test usage
-        response = self.client.get('/fake-url')
-        self.assertIn(response.status_code, [status.HTTP_404_NOT_FOUND, status.HTTP_200_OK])
-\`\`\`
-
-This is only getting updated because the old tests relied on the sqlite database. FYI, these aren't real tests you will see on real projects its just to keep the test step working in github actions without adding extra complexity.  
-
-
 ### Update GitHub Actions
 
 In \`.github/workflows/deploy.yml\` replace the whole file with:
