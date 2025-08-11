@@ -116,15 +116,12 @@ DB_PASSWORD=localpassword123  # Simple local password
 Create \`.env.local\` in your API repository:
 
 \`\`\`bash
-# Database Configuration for Local Development
-# These values REFERENCE what we created in Step 2 when setting up the PostgreSQL container
-
-DB_NAME=rockofages           # ← References the database we CREATED with POSTGRES_DB=rockofages
-DB_USER=rockadmin           # ← References the user we CREATED with POSTGRES_USER=rockadmin  
-DB_PASSWORD=localpassword123 # ← References the password we SET with POSTGRES_PASSWORD=localpassword123
-DB_HOST=postgres-db         # ← References the container NAME we gave with --name postgres-db
-DB_PORT=5432               # ← References the standard PostgreSQL port
-SSLMODE=disable            # ← Disable SSL for local development (container doesn't support SSL)
+DB_NAME=rockofages
+DB_USER=rockadmin
+DB_PASSWORD=localpassword123
+DB_HOST=postgres-db
+DB_PORT=5432
+SSLMODE=disable
 \`\`\`
 
 **Key Points**:
