@@ -1,9 +1,13 @@
-import { workshop3SummaryChapter } from "./summary";
-import { workshop3FurtherLearningChapter } from "./further-learning";
+import { githubActionsChapter } from './actions-setup';
+import { cicdGlossaryChapter } from './cicd-ec2-glossary';
+import { githubActionsBreakdownChapter } from './actions-breakdown';
+import { advancedCicdWithDockerChapter } from './cicd-ec2-fundamentals';
 
-export const workshop3ConclusionChapters = [
-  workshop3SummaryChapter,
-  workshop3FurtherLearningChapter
+export const ec2CicdChapters = [
+  githubActionsChapter,
+  cicdGlossaryChapter,
+  githubActionsBreakdownChapter,
+  advancedCicdWithDockerChapter
 ];
 
 /**
@@ -12,7 +16,7 @@ export const workshop3ConclusionChapters = [
  * @returns {Object|undefined} The chapter object if found, undefined otherwise
  */
 export const getChapterById = (id) => {
-  return workshop3ConclusionChapters.find(chapter => chapter.id === id);
+  return ec2CicdChapters.find(chapter => chapter.id === id);
 };
 
 /**
@@ -20,7 +24,7 @@ export const getChapterById = (id) => {
  * @returns {string[]} Array of chapter IDs
  */
 export const getChapterIds = () => {
-  return workshop3ConclusionChapters.map(chapter => chapter.id);
+  return ec2CicdChapters.map(chapter => chapter.id);
 };
 
 /**
@@ -29,8 +33,8 @@ export const getChapterIds = () => {
  * @returns {Object|undefined} The next chapter object if found, undefined otherwise
  */
 export const getNextChapter = (currentChapterId) => {
-  const currentIndex = workshop3ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
-  return workshop3ConclusionChapters[currentIndex + 1];
+  const currentIndex = ec2CicdChapters.findIndex(chapter => chapter.id === currentChapterId);
+  return ec2CicdChapters[currentIndex + 1];
 };
 
 /**
@@ -39,6 +43,6 @@ export const getNextChapter = (currentChapterId) => {
  * @returns {Object|undefined} The previous chapter object if found, undefined otherwise
  */
 export const getPreviousChapter = (currentChapterId) => {
-  const currentIndex = workshop3ConclusionChapters.findIndex(chapter => chapter.id === currentChapterId);
-  return currentIndex > 0 ? workshop3ConclusionChapters[currentIndex - 1] : undefined;
+  const currentIndex = ec2CicdChapters.findIndex(chapter => chapter.id === currentChapterId);
+  return currentIndex > 0 ? ec2CicdChapters[currentIndex - 1] : undefined;
 };

@@ -1,7 +1,6 @@
-import awsEml from "../../../assets/aws_email.png";
-import accSelect from "../../../assets/account_select.png";
+import awsEml from "../../assets/aws_email.png";
+import accSelect from "../../assets/account_select.png";
 
-import diagram from "../../../assets/cloudfront-s3-diagram.png"
 export const awsAccountSetupChapter = {
   id: 'aws-account-setup',
   title: 'AWS Account Setup',

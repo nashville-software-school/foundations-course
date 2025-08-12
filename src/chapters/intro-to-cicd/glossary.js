@@ -24,6 +24,9 @@ This glossary provides definitions for key terms introduced in the CI/CD module.
 | **Cache Invalidation** | The process of telling a CDN to remove cached versions of content so users see the latest files. |
 | **Env variable** | Short for "environment variable," env variables are key-value pairs used to pass configuration settings to programs and scripts. In workflows, the env: block defines these variables for jobs or steps. Environment variables allow dynamic, reusable configurations without hardcoding values in scripts or code. They can store information or configurable parameters, and are accessed using syntax like \${{ env.VARIABLE_NAME }} or $VARIABLE_NAME. Centralizing these values improves maintainability, readability, and security.|
 
+
+## Further Learning Resources!
+As you may know by now, there are a huge number of resources available to continue learning cloud and devops technologies. A good place to start is some of the trainings offered by [Amazon Skillbuilder](https://skillbuilder.aws/getstarted). There is a paid subscription plan available but it offers many trainings for free as well.
 `,
   exercise: null
 };

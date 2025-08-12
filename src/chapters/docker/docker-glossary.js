@@ -28,6 +28,10 @@ export const dockerGlossaryChapter = {
 | **Container Registry** | A storage system for container images, such as Docker Hub, GitHub Container Registry, or Amazon ECR. |
 | **Base Image** | The starting point for a Docker image, such as \`node:alpine\` or \`ubuntu:20.04\`, which provides the OS and language runtime. |
 
+## Further Learning Resources!
+
+### Full Beginner Course on Docker
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3c-iBn73dDE?si=3xT6M9OeeScAnr_v" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 `,

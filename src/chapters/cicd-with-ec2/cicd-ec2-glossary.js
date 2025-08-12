@@ -23,6 +23,10 @@ This glossary expands on key concepts introduced in the advanced CI/CD module, p
 | **Container Registry** | A repository for storing and distributing container images (e.g., Docker Hub, AWS ECR). |
 | **Secure Deployment** | A deployment strategy that avoids static secrets, uses limited access roles, and leverages encrypted communications like SSM or OIDC. |
 
+## Further Learning Resources!
+
+### Expanding on CICD
+<iframe width="560" height="315" src="https://www.youtube.com/embed/AknbizcLq4w?si=qupUBBwHjGWjNRXe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 `,
   exercise: null
 };

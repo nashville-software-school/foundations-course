@@ -4,8 +4,8 @@
  */
 
 //Workshop 1 sections
-export const sectionsWorkshop1 = [
-  // Module 0: Intro th the course
+export const sections = [
+  // Module 0: Intro to the course
   {
     id: "introduction",
     title: "Introduction",
@@ -44,25 +44,7 @@ export const sectionsWorkshop1 = [
       "Understand CI/CD fundamentals and implement automated deployments with GitHub Actions",
     required: true,
   },
-  // Module 5: Conclusion
-  {
-    id: "conclusion",
-    title: "Conclusion",
-    description:
-      "Overview of what we have learned and further learning resources",
-    required: true,
-  },
-]
-//Workshop 2 sections
-export const sectionsWorkshop2 = [
-  // Module 0: Intro to workshop 2
-  {
-    id: "intro-to-workshop2",
-    title: "Introduction",
-    description: "Introduction to what we will learn in workshop 2",
-    required: true,
-  },
-  // Module 1: Intro to Docker
+  // Module 5: Intro to Docker
   {
     id: "intro-to-docker",
     title: "Docker",
@@ -70,7 +52,7 @@ export const sectionsWorkshop2 = [
       "Introduction to Docker concepts, installing and running Docker locally",
     required: true,
   },
-  // Module 2: AWS CLI and intro to ECR
+  // Module 6: AWS CLI and intro to ECR
   {
     id: "aws-cli-ecr",
     title: "Amazon ECR",
@@ -78,14 +60,14 @@ export const sectionsWorkshop2 = [
       "Setting up CLI to use with AWS. Intro to ECR and using the CLI to push a docker image to the repository",
     required: true,
   },
-  // Module 3: AWS EC2
+  // Module 7: AWS EC2
   {
     id: "ec2",
     title: "EC2",
     description: "Running Docker on an EC2 instance",
     required: true,
   },
-  // Module 4: CICD for EC2 and Docker
+  // Module 8: CICD for EC2 and Docker
   {
     id: "cicd-ec2-docker",
     title: "CI/CD with Docker and EC2",
@@ -93,54 +75,31 @@ export const sectionsWorkshop2 = [
       "CI/CD changes building on the first workshop to deploy docker containers on EC2",
     required: true,
   },
-  // Module 5: Conclusion
-  {
-    id: "workshop2-conclusion",
-    title: "Conclusion",
-    description:
-      "Overview of what we have learned and further learning resources",
-    required: true,
-  },
-]
-//Workshop 3 sections
-export const sectionsWorkshop3 = [
-  // Module 0: Intro to workshop 3
-  {
-    id: "intro-to-workshop3",
-    title: "Introduction",
-    description: "Introduction to what we will learn in workshop 3",
-    required: true,
-  },
-  // Module 1: RDS
+  // Module 9: RDS
   {
     id: "rds",
     title: "RDS",
     description: "Introduction to AWS RDS and our updated API repository",
     required: true,
   },
-  // Module 2: Docker Network
+  // Module 10: Docker Network
   {
     id: "docker-network",
     title: "Docker Network",
     description: "Setting up the Docker Network for local development",
-    required: true,
+    required: false,
+    optional: true
   },
+   // Module 11: Docker Compose
   {
     id: "docker-compose",
     title: "Docker Compose",
     description: "Setting up Docker Compose for local development",
-    required: true,
-  },
-  // Module TBD: Conclusion
-  {
-    id: "workshop3-conclusion",
-    title: "Conclusion",
-    description:
-      "Overview of what we have learned and further learning resources",
-    required: true,
-  },
-]
+    required: false,
+    optional: true
+  }
 
+]
 /**
  * Get a section by its ID
  * @param {string} id - The section ID to find
