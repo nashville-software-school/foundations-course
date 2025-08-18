@@ -4,7 +4,7 @@ export const introductionChapter = {
   id: 'introduction',
   title: 'Introduction to the course',
   sectionId: 'introduction',
-  previousChapterId: null,
+  previousChapterId: 'pre-requisites',
   content: `
 Welcome to the **Intro to Cloud** course! By the end of this workshop, you'll understand key cloud concepts, gain hands-on experience deploying a full stack application to the cloud, 
 and confidently discuss terms related to cloud and CICD practices. 
@@ -121,7 +121,7 @@ There will be Nine class sessions held on Zoom.
     - docker compose 
 
 ---
-    
+
 ## Course Completion Requirements
 - Attendance: 
     - Students must inform the instructor of any planned absenses. 

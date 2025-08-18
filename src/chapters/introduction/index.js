@@ -1,7 +1,9 @@
 import { introductionChapter } from "./intro-to-course";
+import { preReqChapter } from "./pre-requisites";
 
 export const introductionChapters = [
-  introductionChapter
+  introductionChapter,
+  preReqChapter 
 ];
 
 /**
