@@ -1,3 +1,4 @@
+import { introductionChapters } from "./introduction"
 import { cloudFundamentalsChapters } from "./cloud-fundamentals"
 import { awsS3HostingChapters } from "./aws-s3-hosting"
 import { introToCicdChapters } from "./intro-to-cicd"
@@ -7,10 +8,11 @@ import { cliEcrChapters } from "./aws-cli-ecr"
 import { ec2Chapters } from "./ec2"
 import { ec2CicdChapters } from "./cicd-with-ec2"
 import { introToRDSChapters } from "./rds"
-import { workshop3DockerNetworkChapters } from "./docker-network"
-import { workshop3DockerComposeChapters } from "./docker-compose"
+import { dockerNetworkChapters } from "./docker-network"
+import { dockerComposeChapters } from "./docker-compose"
 
 export const chapters = [
+  ...introductionChapters,
   ...cloudFundamentalsChapters,
   ...awsS3HostingChapters,
   ...cloudfrontChapters,
@@ -20,8 +22,8 @@ export const chapters = [
   ...ec2Chapters,
   ...ec2CicdChapters,
   ...introToRDSChapters,
-  ...workshop3DockerNetworkChapters,
-  ...workshop3DockerComposeChapters,
+  ...dockerNetworkChapters,
+  ...dockerComposeChapters,
 ]
 /**
  * Helper function to get chapter by ID

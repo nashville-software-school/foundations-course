@@ -1,12 +1,12 @@
-import { workshop3IntroToDNChapter } from "./intro-to-docker-network"
+import { introToDNChapter } from "./intro-to-docker-network"
 import { dockerNetworkGlossaryChapter } from "./network-glossary"
-import { workshop3SettingUpDNChapter } from "./setting-up-docker-network"
-import { workshop3UnderstandingDNChapter } from "./understanding-docker-network"
+import { settingUpDNChapter } from "./setting-up-docker-network"
+import { understandingDNChapter } from "./understanding-docker-network"
 
-export const workshop3DockerNetworkChapters = [
-  workshop3IntroToDNChapter,
-  workshop3SettingUpDNChapter,
-  workshop3UnderstandingDNChapter,
+export const dockerNetworkChapters = [
+  introToDNChapter,
+  settingUpDNChapter,
+  understandingDNChapter,
   dockerNetworkGlossaryChapter
 ]
 
@@ -16,7 +16,7 @@ export const workshop3DockerNetworkChapters = [
  * @returns {Object|undefined} The chapter object if found, undefined otherwise
  */
 export const getChapterById = (id) => {
-  return workshop3DockerNetworkChapters.find((chapter) => chapter.id === id)
+  return dockerNetworkChapters.find((chapter) => chapter.id === id)
 }
 
 /**
@@ -24,7 +24,7 @@ export const getChapterById = (id) => {
  * @returns {string[]} Array of chapter IDs
  */
 export const getChapterIds = () => {
-  return workshop3DockerNetworkChapters.map((chapter) => chapter.id)
+  return dockerNetworkChapters.map((chapter) => chapter.id)
 }
 
 /**
@@ -33,10 +33,10 @@ export const getChapterIds = () => {
  * @returns {Object|undefined} The next chapter object if found, undefined otherwise
  */
 export const getNextChapter = (currentChapterId) => {
-  const currentIndex = workshop3DockerNetworkChapters.findIndex(
+  const currentIndex = dockerNetworkChapters.findIndex(
     (chapter) => chapter.id === currentChapterId
   )
-  return workshop3DockerNetworkChapters[currentIndex + 1]
+  return dockerNetworkChapters[currentIndex + 1]
 }
 
 /**
@@ -45,10 +45,10 @@ export const getNextChapter = (currentChapterId) => {
  * @returns {Object|undefined} The previous chapter object if found, undefined otherwise
  */
 export const getPreviousChapter = (currentChapterId) => {
-  const currentIndex = workshop3DockerNetworkChapters.findIndex(
+  const currentIndex = dockerNetworkChapters.findIndex(
     (chapter) => chapter.id === currentChapterId
   )
   return currentIndex > 0
-    ? workshop3DockerNetworkChapters[currentIndex - 1]
+    ? dockerNetworkChapters[currentIndex - 1]
     : undefined
 }
