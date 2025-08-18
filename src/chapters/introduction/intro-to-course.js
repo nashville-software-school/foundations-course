@@ -123,11 +123,11 @@ There will be Nine class sessions held on Zoom.
 ---
 
 ## Course Completion Requirements
-- Attendance: 
-    - Students must inform the instructor of any planned absenses. 
+- Attendance:  
+    - An 80% attendance rate is expeected. Students must inform the instructor of any planned absenses. 
     - Students who miss two consecutive sessions without prior notification to the instructor will be considered dropped from the course. 
 - Final Assessment: one-on-one meeting with an instructor
-    - Students will be required to show that they have set up the necessary AWS services  
+    - Students will be required to show that they have set up the AWS services covered throughout the course. 
     - Students will answer a few "interview" questions to show that they can discuss what they've learned and use the vocabulary correctly. We are not expecting mastery just a basic understanding of the concepts. 
 
 
