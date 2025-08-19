@@ -1,4 +1,4 @@
-export const workshop3DCSetupChapter = {
+export const dockerComposeSetupChapter = {
   id: "workshop3-docker-compose-setup",
   title: "Setting up Docker Compose",
   sectionId: "docker-compose",

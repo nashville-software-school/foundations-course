@@ -1,4 +1,4 @@
-export const workshop3IntroToDNChapter = {
+export const introToDNChapter = {
   id: "workshop3-intro-to-docker-network",
   title: "Intro to Local Development with Docker",
   sectionId: "docker-network",
