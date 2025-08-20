@@ -248,26 +248,26 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: \${{ vars.OIDC_ROLE_TO_ASSUME }}
-          aws-region: \${{ vars.AWS_REGION }}
+          role-to-assume: \${{ secrets.OIDC_ROLE_TO_ASSUME }}
+          aws-region: \${{ secrets.AWS_REGION }}
 
       - uses: aws-actions/amazon-ecr-login@v2
 
       - name: Trigger remote deployment on EC2 via SSM
         run: |
           aws ssm send-command \\
-            --instance-ids "\${{ vars.EC2_INSTANCE_ID }}" \\
+            --instance-ids "\${{ secrets.EC2_INSTANCE_ID }}" \\
             --document-name "AWS-RunShellScript" \\
             --comment "Manual deploy from GitHub Actions" \\
             --parameters commands='[
-              "IMAGE=\\"\${{ vars.ECR_REGISTRY }}/\${{ vars.ECR_REPOSITORY }}:latest\\"",
-              "aws ecr get-login-password --region \${{ vars.AWS_REGION }} | docker login --username AWS --password-stdin \${{ vars.ECR_REGISTRY }}",
+              "IMAGE=\\"\${{ secrets.ECR_REGISTRY }}/\${{ secrets.ECR_REPOSITORY }}:latest\\"",
+              "aws ecr get-login-password --region \${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin \${{ secrets.ECR_REGISTRY }}",
               "docker pull \\"$IMAGE\\"",
               "docker stop rock-of-ages-api || true",
               "docker rm rock-of-ages-api || true",
               "docker run --pull always -d --name rock-of-ages-api -p 80:8000 -e DB_NAME=\${{ secrets.DB_NAME }} -e DB_USER=\${{ secrets.DB_USER }} -e DB_PASSWORD=\${{ secrets.DB_PASSWORD }} -e DB_HOST=\${{ secrets.DB_HOST }} -e DB_PORT=\${{ secrets.DB_PORT }} \\"$IMAGE\\""
             ]' \\
-            --region \${{ vars.AWS_REGION }}
+            --region \${{ secrets.AWS_REGION }}
 \`\`\`
 
 #### What’s happening here?

@@ -13,57 +13,34 @@ export const deploymentPipelineChapter = {
 * Invalidate CloudFront cache for fast delivery
 * Automatically trigger on pushes to the \`main\` branch
 
-## Setting Up AWS Credentials as GitHub Secrets
 
-Before we can deploy to AWS from GitHub Actions, we need to securely store our AWS 
-credentials as GitHub secrets.
+### Set up OIDC 
 
-### Why Are We Storing AWS Credentials as Secrets?
+OIDC stands for OpenID Connect. It is the same mechanism used when you use Google or Facebook to log into other services. You are giving your Github account permission to access services on your AWS account.  
 
-GitHub Actions workflows (like the one we’ll write) need permission to:
+The instructors have already created an IAM role \`github_oidc\` with all of the permissions github actions will require. 
 
-* Upload built files to S3
-* Invalidate CloudFront cache
+1. Go to the AWS Console and navigate to IAM 
+2. Under Roles, click \`github_oidc\` 
+3. Select the trust relationships tab and click edit trust policy. You will see:
+\`
+"StringLike": {
+                    "token.actions.githubusercontent.com:sub": "repo:JaneDoe/*"
+                }\`
+4. Replace \`JaneDoe\` with your github username and click update policy
+5. Grab the ARN for the github_oidc role. Save this to use in the next steps. 
 
-These actions require AWS credentials (\`AWS_ACCESS_KEY_ID\`, \`AWS_SECRET_ACCESS_KEY\`, etc.) 
-to authenticate with AWS. However:
+#### What’s happening here?
 
-* Embedding credentials directly in code is insecure and could leak secrets.
-* GitHub secrets allow us to inject credentials securely into workflow steps without 
-exposing them in the repository.
+This trust policy update allows GitHub Actions from your specific repository (under your GitHub username) to assume the \`github_oidc\` role in AWS. This is a key part of OIDC-based authentication.
 
-By storing them as secrets, we ensure:
-
-* Only the GitHub Actions runner has access.
-* Credentials are encrypted and managed securely by GitHub.
-
-
-#### Create AWS access key
-1. Go to the AWS Console: (refer to "AWS Account Setup" page for login instructions)
-2. Under Users, select the \`gh_user\` (this is IAM user used for GitHub Actions)
-3. In Security credentials, create the access key:
-4. Click Create Access key
-5. Select \`Command Line Interface (CLI)\`
-6. Check \`Confirmation\` then click \`Next\`
-7. Type \`github action\` for \`Description tag value\`
-8. Click Create Access Key
-9. You will need the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from this page
-10. See precautions about this important sensitive password below
-11. Identify your AWS region (e.g., \`us-east-2\`)
-12. Look up your S3 bucket name and CloudFront distribution ID
-
-### Access Key Best Practices
-While setting up access keys for GitHub Actions, it’s essential to follow best practices to ensure the security of your AWS account:
-
-- Never store access keys in plain text: Avoid placing them in code repositories, scripts, or other unsecured locations.
-- Use GitHub Secrets for storage: Store keys securely in GitHub’s encrypted Secrets to prevent exposure.
-- Disable or delete unused access keys: If an access key is no longer needed, disable or delete it immediately to reduce risk.
-- Follow least-privilege principles: Assign the IAM user only the permissions absolutely necessary for the workflow to function 
-(for example, S3 and CloudFront access).
-- Rotate access keys regularly: Periodically generate new access keys and update your GitHub Secrets to maintain security.
-- By adhering to these practices, you can protect your AWS resources from unauthorized access and ensure a secure CI/CD workflow.
 
 ### Adding Secrets to the Repository
+
+By storing variables as secrets, we ensure:
+
+  - Only the GitHub Actions runner has access.
+  - Data is encrypted and managed securely by GitHub.
 
 1. Go to your GitHub repository
 2. Click Settings > Secrets and variables > Actions
@@ -71,8 +48,7 @@ While setting up access keys for GitHub Actions, it’s essential to follow best
 
 | Name                         | Value                               |
 | ---------------------------- | ----------------------------------- |
-| \`AWS_ACCESS_KEY_ID\`          | Your AWS IAM Access Key ID          |
-| \`AWS_SECRET_ACCESS_KEY\`      | Your AWS IAM Secret Access Key      |
+| \`OIDC_ROLE_TO_ASSUME\`        | Your github_oidc role ARN         |
 | \`AWS_REGION\`                 | Your AWS region (e.g., \`us-east-2\`) |
 | \`S3_BUCKET_NAME\`             | Your S3 bucket name                 |
 | \`CLOUDFRONT_DISTRIBUTION_ID\` | Your CloudFront distribution ID     |
@@ -107,7 +83,63 @@ let’s set up the **CI/CD workflow** in our repository.
 main.yml
 \`\`\`
 
-* Paste the copied workflow template into this file.
+* Paste the following workflow template into this file.
+
+### Workflow Template
+
+\`\`\`yaml
+name: Build and Deploy Vite to S3
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read   
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: \${{ secrets.OIDC_ROLE_TO_ASSUME }}
+          aws-region: \${{ secrets.AWS_REGION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Run test coverage
+        run: npm run test:coverage
+
+      - name: Build Vite project
+        run: npm run build
+
+      - name: Deploy to S3
+        run: aws s3 sync ./dist s3://\${{ secrets.S3_BUCKET_NAME }} --delete
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id \${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
+        env:
+          AWS_REGION: \${{ secrets.AWS_REGION }}
+\`\`\`
 
 3. **Commit the Changes**
 
@@ -130,59 +162,6 @@ trigger (\`push\` to the \`main\` branch).
 * Click the **Actions** tab.
 * Watch the workflow run and check that each step completes successfully.
 
-### Workflow Template
-
-\`\`\`yaml
-name: Build and Deploy Vite to S3
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout source
-      uses: actions/checkout@v3
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Run tests
-      run: npm run test
-
-    - name: Run test coverage
-      run: npm run test:coverage
-
-    - name: Build Vite project
-      run: npm run build
-
-    - name: Deploy to S3
-      uses: jakejarvis/s3-sync-action@master
-      with:
-        args: --delete
-      env:
-        AWS_S3_BUCKET: \${{ secrets.S3_BUCKET_NAME }}
-        AWS_ACCESS_KEY_ID: \${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: \${{ secrets.AWS_REGION }}
-        SOURCE_DIR: ./dist
-
-    - name: Invalidate CloudFront Cache
-      run: |
-        aws cloudfront create-invalidation --distribution-id \${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
-      env:
-        AWS_ACCESS_KEY_ID: \${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: \${{ secrets.AWS_REGION }}
-\`\`\`
 
 ### CloudFront Cache Invalidation Explained
 
@@ -210,22 +189,6 @@ Test Failures
 
 * Check environment-specific code
 * Debug async/timing issues
-
-## Future Consideration: Using OIDC Instead of Long-Lived Keys
-
-Currently, we’re using long-lived IAM AWS access keys stored as GitHub secrets. While this works:
-
-* It requires manual key management (creation, rotation, revocation).
-* Long-lived keys pose a security risk if compromised.
-
-What’s Better?
-AWS supports OpenID Connect (OIDC) for GitHub Actions. This:
-
-* Allows GitHub’s identity to be trusted directly by AWS.
-* Removes the need to store access keys in secrets.
-* Issues temporary credentials per workflow run, with least privilege access.
-
-Why We’re Not Using OIDC Now:
-* More complex for initial setup, but worth considering for future improvement.`,
+`,
   exercise: null,
 };

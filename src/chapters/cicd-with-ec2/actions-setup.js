@@ -11,34 +11,11 @@ export const githubActionsChapter = {
 * Deploy the image to EC2 using a separate workflow with a manual trigger
 * Automatically trigger test/build/push on pushes to the \`main\` branch
 
-## Setting Up AWS Credentials as GitHub Secrets
-
-If you remember, during the first CICD chapter, you generated long term credentials and stored them as github secrets. Now you will use OpenIdConnect(OIDC) to authenticate with AWS eliminating the need for long term credential storage. Furthermore, because all of our global variables needed for this pipeline are non-sensitive, you will use github variables rather than github secrets. 
-
-#### Set up OIDC 
-
-The instructors have already created an IAM role \`github_oidc\` with all of the permissions github actions will require. 
-
-1. Go to the AWS Console and navigate to IAM 
-2. Under Roles, click \`github_oidc\` 
-3. Select the trust relationships tab and click edit trust policy. You will see:
-\`
-"StringLike": {
-                    "token.actions.githubusercontent.com:sub": "repo:JaneDoe/*"
-                }\`
-4. Replace \`JaneDoe\` with your github username and click update policy
-5. Grab the ARN for the github_oidc role. Save this to use in the next steps. 
-
-#### What’s happening here?
-
-This trust policy update allows GitHub Actions from your specific repository (under your GitHub username) to assume the \`github_oidc\` role in AWS. This is a key part of OIDC-based authentication.
-
-Because your github_oidc role ARN is not sensitive we can use github variables rather than github secrets. OIDC also eliminates the need to rotate long lived credentials.
+## Setting Up AWS info as GitHub Secrets
 
 1. Go to your GitHub repository
 2. Click Settings > Secrets and variables > Actions
-3. Click the variables
-3. Add these variables:
+3. Add these secrets:
 
 | Name                         | Value                               |
 | ---------------------------- | ----------------------------------- |
@@ -115,15 +92,15 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: \${{ vars.OIDC_ROLE_TO_ASSUME }}
-          aws-region: \${{ vars.AWS_REGION }}
+          role-to-assume: \${{ secrets.OIDC_ROLE_TO_ASSUME }}
+          aws-region: \${{ secrets.AWS_REGION }}
 
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build & push Docker image
         run: |
-          IMAGE="\${{ vars.ECR_REGISTRY }}/\${{ vars.ECR_REPOSITORY }}:latest"
+          IMAGE="\${{ secrets.ECR_REGISTRY }}/\${{ secrets.ECR_REPOSITORY }}:latest"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
 
@@ -165,19 +142,26 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: \${{ vars.OIDC_ROLE_TO_ASSUME }}
-          aws-region: \${{ vars.AWS_REGION }}
+          role-to-assume: \${{ secrets.OIDC_ROLE_TO_ASSUME }}
+          aws-region: \${{ secrets.AWS_REGION }}
 
       - uses: aws-actions/amazon-ecr-login@v2
 
       - name: Trigger remote deployment on EC2 via SSM
         run: |
           aws ssm send-command \\
-          --instance-ids "\${{ vars.EC2_INSTANCE_ID }}" \\
+          --instance-ids "\${{ secrets.EC2_INSTANCE_ID }}" \\
           --document-name "AWS-RunShellScript" \\
           --comment "Manual deploy from GitHub Actions" \\
-          --parameters '{"commands":["IMAGE=\\"\${{ vars.ECR_REGISTRY }}/\${{ vars.ECR_REPOSITORY }}:latest\\"","docker pull \\"$IMAGE\\"","docker stop rock-of-ages-api || true","docker rm rock-of-ages-api || true","docker run -d --name rock-of-ages-api -p 80:8000 \\"$IMAGE\\""]}' \\
-          --region \${{ vars.AWS_REGION }}
+          --parameters commands='[
+              "IMAGE=\\"\${{ secrets.ECR_REGISTRY }}/\${{ secrets.ECR_REPOSITORY }}:latest\\"",
+              "aws ecr get-login-password --region \${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin \${{ secrets.ECR_REGISTRY }}",
+              "docker pull \\"$IMAGE\\"",
+              "docker stop rock-of-ages-api || true",
+              "docker rm rock-of-ages-api || true",
+              "docker run --pull always -d --name rock-of-ages-api -p 80:8000 \\"$IMAGE\\""
+              ]' \\          
+          --region \${{ secrets.AWS_REGION }}
 \`\`\`
 
 #### What’s happening here?
@@ -219,7 +203,7 @@ To confirm the deployme was successful, connect into your ec2 instance and run \
 In this chapter, you've:
 
 - Updated IAM trust policy for GitHub OIDC integration
-- Configured GitHub Variables for EC2 and ECR access
+- Configured GitHub Secrets for EC2 and ECR access
 - Created a workflow to test, build, and push a Docker image on each push to \`main\`
 - Created a second workflow to manually deploy the latest image to EC2
 - Confirmed your end-to-end CI/CD pipeline is working by testing a deployed container
