@@ -17,61 +17,53 @@ Now that we understand what CloudFront is and how it works, let's create our own
 
 💡 **What's happening here?** You're accessing AWS's content delivery network service to create a new distribution. A distribution is CloudFront's term for a configuration that tells AWS exactly how you want your website content delivered to users around the world - which files to serve, from where, and how to optimize them.
 
-### 2. Configure the Origin
+### 2. Distribution Options
+
+1. Name your distribution. This can be anything, for example: rock-of-ages-distribution
+2. Select **Single website or app**
+3. Do not add a Custom Domain or Tags 
+4. Click next
+
+### 3. Specify Origin
 
 The origin is where CloudFront will fetch your website files from - in our case, your S3 bucket.
 
-1. Select **Single website or app**
-2. **Origin domain**: Select your S3 bucket from the dropdown (it should look like \`rock-of-ages-frontend-origin-jms.s3-website.us-east-2.amazonaws.com\`)
+1. Under **Origin Type** select Amazon S3
+2. **Origin**: for s3 origin click the Browse S3 button and select your S3 bucket.
 3. A yellow warning box should appear below - click the **Use website endpoint** button
-4. Select protocol: **HTTP only**
-   - This tells CloudFront to communicate with your S3 bucket using HTTP protocol
-5. Make sure **Enable Origin Shield** is set to **No**
-   - Origin Shield is an additional caching layer that costs extra and isn't needed for our simple setup
+4. Under **Settings** click Customize origin settings
+   - Make sure **Enable Origin Shield** is set to **No**
+      - Origin Shield is an additional caching layer that costs extra and isn't needed for our simple setup
+   - Select protocol: **HTTP only**
+      - This tells CloudFront to communicate with your S3 bucket using HTTP protocol
+5. Under **Cache Settings** click Customize cache settings
+   - **Viewer Protocol Policy**: **HTTP and HTTPS**
+      - This allows users to access your site with either protocol
+   - **Allowed HTTP Methods**: **GET, HEAD**
+      - These are the methods needed for serving static websites
+   - **Cache Policy**: Leave as **CachingOptimized**
+      - This uses AWS's recommended caching settings for static content
+6. Click **Next**
 
 💡 **What's happening here?** You're telling CloudFront where to find your website files and how to retrieve them. The "Use website endpoint" option is crucial because it ensures CloudFront treats your S3 bucket as a website that can handle routing (not just a file storage system). The HTTP protocol setting controls how CloudFront communicates with your S3 bucket, while Origin Shield would add an extra caching layer between CloudFront and S3 that we don't need for this project.
 
-### 3. Configure Default Cache Behavior
 
-These settings control how CloudFront handles requests for your content.
+### 4. Enable Security
 
-1. **Compress objects automatically**: ☑︎ **Yes**
-   - This makes your files smaller for faster loading
-2. **Viewer Protocol Policy**: **HTTP and HTTPS**
-   - This allows users to access your site with either protocol
-3. **Allowed HTTP Methods**: **GET, HEAD**
-   - These are the methods needed for serving static websites
-4. **Cache Policy**: Leave as **CachingOptimized**
-   - This uses AWS's recommended caching settings for static content
-
-💡 **What's happening here?** You're configuring how CloudFront handles user requests and optimizes your content. Compression automatically reduces file sizes (like zipping files) which makes your website load faster. The cache policy determines how long CloudFront stores your files at edge locations (data centers near major population centers around the world) before checking your S3 bucket for updates.
-
-### 4. Configure Web Application Firewall (WAF)
-
-For this workshop, we'll keep things simple and not enable additional security features.
-
-1. Select **Do not enable security protections**
+1. Configure Web Application Firewall (WAF): Select **Do not enable security protections**
 
 💡 **What's happening here?** WAF (Web Application Firewall) provides additional security filtering to block malicious traffic before it reaches your website. For a simple static website like ours, CloudFront's built-in security features are sufficient, so we're skipping this extra layer to keep things simple and avoid additional costs.
 
-### 5. Configure Distribution Settings
+### 5. Review and Create
 
-These settings control the global reach and domain setup for your distribution.
+1. Review your distributions settings and click **Create distribution**
 
-1. **Price Class**: Choose based on geographic reach (e.g., **Use Only US, Canada and Europe** to reduce cost)
-   - This determines which edge locations CloudFront uses
-2. **Alternate domain name (CNAME)**: Leave blank for now
-   - This is where you'd add a custom domain like \`www.mywebsite.com\` if you had one
-
-3. Click **Create Distribution**
-
-💡 **What's happening here?** You're choosing the geographic scope of your CDN and any custom domain settings. CloudFront has edge locations (data centers) all over the world, but using all of them costs more. By selecting "US, Canada and Europe," you're telling CloudFront to only use edge locations in those regions, which covers most users while keeping costs lower. The CNAME field is for custom domains - since we're using CloudFront's provided domain for now, we leave this blank.
 
 ### 6. Wait for Distribution to Deploy
 
 1. Your distribution will begin deploying immediately and take approximately **5-15 minutes** to fully complete
 2. You'll be automatically taken to your distribution's details page
-3. The status will show "Deploying" during this time, but you can actually test your site even while it's still deploying
+3. The status will show "Deploying" during this time under **Last Modified**, but you can actually test your site even while it's still deploying
 
 💡 **What's happening here?** AWS is configuring your content across its global network of edge locations. This process takes time because CloudFront is literally copying your website configuration to dozens of data centers worldwide. Even though it shows "Deploying," the basic functionality often works before the process is 100% complete.
 
