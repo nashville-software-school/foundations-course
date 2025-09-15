@@ -1,15 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import Layout from './components/Layout'
-import Chapter from './components/Chapter'
-import Login from './components/Login'
-import AuthCallback from './components/AuthCallback'
-import IntroPage from './components/IntroPage'
-import { ChapterProvider } from './context/ChapterContext'
-import { LearnerProgressProvider } from './context/LearnerProgressContext'
-import { AuthProvider } from './context/AuthContext'
-import { useLearnerProgress } from './context/LearnerProgressContext'
+import { Layout, Chapter, Login, AuthCallback, IntroPage } from '@nss-workshops/nss-core'
+import { ChapterProvider, LearnerProgressProvider, AuthProvider, useLearnerProgress } from '@nss-workshops/nss-core'
 import Cookies from 'js-cookie'
 import './App.css'
+
+import { chapters, getChapterContent } from './chapters'
+import { getSectionById, sections } from './sections'
 
 // Component to handle redirect logic based on whether user has seen intro
 function IntroRedirect() {
@@ -63,12 +59,15 @@ function App() {
     <Router basename="/foundations-course">
       <AuthProvider>
         <LearnerProgressProvider>
-          <ChapterProvider>
+          <ChapterProvider 
+            chapters={chapters} 
+            getChapterContent={getChapterContent} 
+            getSectionById={getSectionById}>
             <Routes>
               {/* Add intro page route outside of Layout */}
               <Route path="/intro" element={<IntroPage />} />
 
-              <Route path="/" element={<Layout />}>
+              <Route path="/" element={<Layout sections={sections}/>}>
                 {/* Use IntroRedirect to conditionally redirect */}
                 <Route index element={<IntroRedirect />} />
                 <Route path="login" element={<Login />} />

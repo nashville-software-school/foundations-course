@@ -1,4 +1,4 @@
-import { TestResult } from "../../utils/test_utils";
+import { TestResult } from "@nss-workshops/nss-core";
 
 export const projectRequirementsAndAlgorithmId = {
   id: "project-requirements-and-algorithm",
