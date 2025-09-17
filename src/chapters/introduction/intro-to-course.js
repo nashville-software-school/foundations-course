@@ -114,17 +114,16 @@ There will be Nine class sessions held on Zoom.
 - Testing RDS using VsCode extensions
 - Github actions and secrets updates to deploy RDS compatible API
 
-#### Session 9: Student Assessments
-- One on One assessments between instructor and each student 
-- While students are waiting for their assessment they can work on additional material:
-    - docker network
-    - docker compose 
+#### Session 9: Q and A, Assessments, and additional chapters
+- Students will work on individual assessments for course completion
+- Extra time will be spent working on docker network and docker compose additional material
+- General Q and A hangout
 
 ---
 
 ## Course Completion Requirements
 - Attendance:  
-    - An 80% attendance rate is expeected. Students must inform the instructor of any planned absenses. 
+    - An 80% attendance rate is expected. Students must inform the instructor of any planned absence. 
     - Students who miss two consecutive sessions without prior notification to the instructor will be considered dropped from the course. 
 - Final Assessment: one-on-one meeting with an instructor
     - Students will be required to show that they have set up the AWS services covered throughout the course. 
