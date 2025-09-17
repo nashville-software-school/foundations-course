@@ -349,6 +349,7 @@ To set up the project for local development:
    ```
    VITE_OAUTH_CLIENT_ID=your_github_oauth_client_id
    VITE_PROXY_DOMAIN=http://localhost:3003
+   VITE_LEARNING_PLATFORM_API=http://localhost:8000
    ```
 
 4. **Start the development server**:
