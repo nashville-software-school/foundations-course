@@ -395,6 +395,53 @@ export const LearnerProgressProvider = ({ children }) => {
         }
     }
 
+    // Get section progress - calculate completion percentage for a section
+    const getSectionProgress = (sectionId) => {
+        // Get all chapters in the section
+        const sectionChapters = chapters.filter(chapter => chapter.sectionId === sectionId)
+
+        if (sectionChapters.length === 0) {
+            return { totalChapters: 0, completedChapters: 0, percentage: 0 }
+        }
+
+        const totalChapters = sectionChapters.length
+        const completedChapters = sectionChapters.filter(chapter =>
+            progress.exercises[chapter.id]?.completed
+        ).length
+
+        const percentage = Math.round((completedChapters / totalChapters) * 100)
+
+        return {
+            totalChapters,
+            completedChapters,
+            percentage
+        }
+    }
+
+    // Check if a section is complete based on required percentage
+    const isSectionComplete = (sectionId, requiredPercentage = 100) => {
+        const sectionProgress = getSectionProgress(sectionId)
+        return sectionProgress.percentage >= requiredPercentage
+    }
+
+    // Check if prerequisites are met for a chapter
+    const checkPrerequisites = (chapter) => {
+        // If chapter has no prerequisite requirements, it's always accessible
+        if (!chapter.requiresPrerequisite) {
+            return true
+        }
+
+        const { type, sectionId, completionPercentage } = chapter.requiresPrerequisite
+
+        // Currently only supporting 'section-completion' type
+        if (type === 'section-completion') {
+            return isSectionComplete(sectionId, completionPercentage)
+        }
+
+        // Unknown prerequisite type - default to accessible
+        return true
+    }
+
     // Function to mark the intro page as seen
     const markIntroAsSeen = () => {
         console.log('markIntroAsSeen called')
@@ -422,7 +469,11 @@ export const LearnerProgressProvider = ({ children }) => {
         getExerciseProgress,
         getGlobalProgress,
         markIntroAsSeen,
-        sendProgressToAPI
+        sendProgressToAPI,
+        // Prerequisite functions
+        getSectionProgress,
+        isSectionComplete,
+        checkPrerequisites
     }
 
     return (

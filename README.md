@@ -25,7 +25,7 @@ The platform guides learners from basic JavaScript concepts through more advance
 
 ## Structure: Sections and Chapters
 
-The course is organized into logical sections, each containing multiple chapters.
+The course is organized into logical sections, each containing multiple chapters. Some sections have prerequisite requirements that must be met before access is granted.
 
 ### Sections
 
@@ -40,6 +40,12 @@ export const sections = [
     description: 'Essential setup steps to begin your learning journey'
   },
   {
+    id: 'keyboard-shortcuts',
+    title: 'Keyboard Shortcuts',
+    description: 'Essential keyboard shortcuts for efficient development',
+    prerequisites: ['getting-started'] // Requires 100% completion of Getting Started
+  },
+  {
     id: 'variables-and-values',
     title: 'Variables and Values',
     description: 'Understanding data storage and manipulation in JavaScript'
@@ -49,6 +55,23 @@ export const sections = [
 ```
 
 Each section groups related chapters together and provides a high-level organization of the curriculum.
+
+### Access Control and Prerequisites
+
+The course implements a sophisticated access control system with two types of content restrictions:
+
+#### 1. Authentication-Required Content (🔒)
+- Requires GitHub OAuth authentication
+- Indicated by a lock icon (🔒)
+- Used for tracking progress across sessions
+
+#### 2. Prerequisite-Required Content (🤔)
+- Requires completion of prerequisite sections/chapters
+- Indicated by a thinking face icon (🤔)
+- Does not require authentication
+- Unlocks automatically when prerequisites are met
+
+**Example**: The Keyboard Shortcuts section requires 100% completion of the Getting Started section before any of its chapters become accessible.
 
 ### Chapters
 
@@ -81,6 +104,95 @@ Each chapter includes:
 - **Navigation**: Links to previous and next chapters
 
 Chapters are organized in a sequence, with each chapter building on knowledge from previous ones. The application dynamically loads and displays chapters as the user navigates through the course.
+
+## Prerequisite System
+
+The course implements a flexible prerequisite system that allows sections and chapters to be locked until certain conditions are met. This system is separate from authentication and focuses on learning progression.
+
+### How Prerequisites Work
+
+Prerequisites are defined at the section level and automatically apply to all chapters within that section:
+
+```javascript
+// Example section with prerequisites
+{
+  id: 'keyboard-shortcuts',
+  title: 'Keyboard Shortcuts',
+  description: 'Essential keyboard shortcuts for efficient development',
+  prerequisites: ['getting-started'] // Array of section IDs that must be 100% complete
+}
+```
+
+### Implementation Details
+
+The prerequisite system is implemented through several key components:
+
+#### 1. Progress Tracking (`LearnerProgressContext.jsx`)
+
+```javascript
+// Check if prerequisites are met for a section
+const arePrerequisitesMet = (sectionId) => {
+  const section = sections.find(s => s.id === sectionId)
+  if (!section?.prerequisites) return true
+
+  return section.prerequisites.every(prereqSectionId => {
+    const completion = getSectionCompletionPercentage(prereqSectionId)
+    return completion >= 100
+  })
+}
+```
+
+#### 2. Chapter Access Control (`ChapterContext.jsx`)
+
+```javascript
+// Determine if a chapter is accessible
+const isChapterAccessible = (chapter) => {
+  // Check authentication requirements first
+  if (chapter.requiresAuth && !isAuthenticated) return false
+
+  // Check prerequisite requirements
+  return arePrerequisitesMet(chapter.sectionId)
+}
+```
+
+#### 3. Visual Indicators (`Navigation.jsx`)
+
+The system provides clear visual feedback:
+- **🔒 (Lock Icon)**: Authentication required
+- **🤔 (Thinking Face)**: Prerequisites not met
+- **No Icon**: Fully accessible
+
+#### 4. User Feedback
+
+When users click on prerequisite-locked content, they receive helpful tooltips explaining:
+- What prerequisites are required
+- Current progress toward meeting those prerequisites
+- Clear next steps to unlock the content
+
+### Adding Prerequisites to New Sections
+
+To add prerequisite requirements to a new section:
+
+1. **Define prerequisites in the section object**:
+   ```javascript
+   {
+     id: 'new-section',
+     title: 'New Section',
+     prerequisites: ['section-1', 'section-2'] // Must complete these first
+   }
+   ```
+
+2. **Prerequisites are automatically enforced** - no additional code needed in individual chapters
+
+3. **Visual indicators update automatically** based on the prerequisite status
+
+### Benefits of the Prerequisite System
+
+- **Progressive Learning**: Ensures students complete foundational concepts before advanced topics
+- **Flexible Configuration**: Easy to add/modify prerequisites without changing core logic
+- **Clear User Feedback**: Students always know what they need to do next
+- **Separation of Concerns**: Prerequisites are independent of authentication
+- **Real-time Updates**: Content unlocks immediately when prerequisites are met
 
 ## Testing Chapter Exercises
 
@@ -390,6 +502,35 @@ Contributions to the JavaScript Foundations Course are welcome! Here's how you c
    ```
 
 2. Import and add the chapter in `src/chapters/index.js`
+
+### Adding Sections with Prerequisites
+
+To create a new section with prerequisite requirements:
+
+1. **Add the section to `src/sections/index.js`**:
+   ```javascript
+   {
+     id: 'new-section',
+     title: 'New Section Title',
+     description: 'Description of the section',
+     prerequisites: ['prerequisite-section-id'] // Optional: sections that must be 100% complete
+   }
+   ```
+
+2. **Create chapters for the section** following the standard chapter pattern
+
+3. **Prerequisites are automatically enforced** - chapters in the section will be locked until prerequisites are met
+
+4. **Visual indicators will automatically appear** (🤔 for prerequisite-locked content)
+
+### Testing Prerequisites
+
+When working with prerequisite functionality:
+
+1. **Use the test utilities** in `src/test-prerequisites.js` for development testing
+2. **Load browser test script** from `load-test-utils.js` for interactive testing
+3. **Test various completion percentages** to ensure proper locking/unlocking behavior
+4. **Verify visual indicators** display correctly for different states
 
 ### Modifying Tests
 

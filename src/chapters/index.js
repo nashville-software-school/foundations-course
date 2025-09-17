@@ -1,5 +1,6 @@
 import { leonidsChapters } from "./projects";
 import { gettingStartedChapters } from './getting-started'
+import { keyboardShortcutsChapters } from './keyboard-shortcuts'
 import { variablesChapters } from './variables'
 import { arrayChapters } from './arrays'
 import { objectChapters } from './objects'
@@ -16,6 +17,16 @@ const addAuthRequirement = (chapter) => ({
   ),
 });
 
+// Helper function to add prerequisite requirements
+const addPrerequisiteRequirement = (chapter) => ({
+  ...chapter,
+  requiresPrerequisite: chapter.sectionId === 'keyboard-shortcuts' ? {
+    type: 'section-completion',
+    sectionId: 'getting-started',
+    completionPercentage: 100
+  } : undefined,
+});
+
 // Apply requiresAuth to all chapters
 const protectedLeonidsChapters = leonidsChapters.map(addAuthRequirement);
 const protectedVariablesChapters = variablesChapters.map(addAuthRequirement)
@@ -26,9 +37,12 @@ const protectedWorkshopChapters = workshopChapters.map(addAuthRequirement)
 const protectedAssessments = projects.map(addAuthRequirement)
 const protectedHtmlCssChapters = htmlCssChapters.map(addAuthRequirement)
 
+// Apply prerequisite requirements to keyboard shortcut chapters
+const prerequisiteKeyboardShortcutsChapters = keyboardShortcutsChapters.map(addPrerequisiteRequirement)
 
 export const chapters = [
   ...gettingStartedChapters,
+  ...prerequisiteKeyboardShortcutsChapters,
   ...protectedVariablesChapters,
   ...protectedArrayChapters,
   ...protectedObjectChapters,

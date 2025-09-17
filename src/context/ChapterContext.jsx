@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import { chapters, getChapterContent } from '../chapters'
 import { getSectionById } from '../sections'
+import { useProgress } from './LearnerProgressContext'
 
 const ChapterContext = createContext()
 
@@ -43,10 +44,18 @@ export function ChapterProvider({ children }) {
   const [currentChapter, setCurrentChapter] = useState(chapters[0])
   const [chapterContent, setChapterContent] = useState(getChapterContent(chapters[0].id))
   const [expandedSections, setExpandedSections] = useState(initialExpandedSections)
+  const { checkPrerequisites } = useProgress()
 
   const loadChapter = (chapterId) => {
     const chapter = chapters.find(c => c.id === chapterId)
     if (chapter) {
+      // Check prerequisites before loading
+      if (chapter.requiresPrerequisite && !checkPrerequisites(chapter)) {
+        console.warn(`Chapter ${chapterId} prerequisites not met`)
+        // Could show a modal or notification here in the future
+        return false
+      }
+
       setCurrentChapter(chapter)
       setChapterContent(getChapterContent(chapter.id))
       // Auto-expand the section containing the loaded chapter
@@ -55,7 +64,17 @@ export function ChapterProvider({ children }) {
         newSet.add(chapter.sectionId)
         return newSet
       })
+      return true
     }
+    return false
+  }
+
+  // Helper function to check if a chapter is accessible
+  const isChapterAccessible = (chapter) => {
+    if (!chapter.requiresPrerequisite) {
+      return true
+    }
+    return checkPrerequisites(chapter)
   }
 
   const toggleSection = (sectionId) => {
@@ -83,6 +102,7 @@ export function ChapterProvider({ children }) {
     getPreviousChapter,
     getNextChapter,
     getChaptersBySection,
+    isChapterAccessible,
     // Section information
     getCurrentSection: () => currentChapter ? getSectionById(currentChapter.sectionId) : null
   }

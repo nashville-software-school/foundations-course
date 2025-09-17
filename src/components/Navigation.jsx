@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext'
 import { sections } from '../sections'
 import { css } from '@emotion/react'
 import SectionHeader from './SectionHeader'
+import { useState, useEffect } from 'react'
 
 const navStyles = css`
   h2 {
@@ -132,6 +133,30 @@ const navStyles = css`
         font-size: 0.9rem;
       }
     }
+
+    &.prerequisite-locked {
+      opacity: 0.75;
+      background-color: #fff8e1;
+      border-color: #ffcc02;
+      color: #e65100;
+      cursor: not-allowed;
+
+      &:hover {
+        background-color: #fff3c4;
+        border-color: #ffb300;
+      }
+
+      .chapter-number {
+        background: #ffb300;
+        color: white;
+      }
+
+      .lock-icon {
+        color: #ff8f00;
+        margin-left: 0.5rem;
+        font-size: 1rem;
+      }
+    }
   }
 
   .chapter-number {
@@ -199,6 +224,59 @@ const navStyles = css`
       color: #6c757d;
     }
   }
+
+  .prerequisite-tooltip {
+    position: absolute;
+    background: #2c3e50;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    max-width: 280px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 20px;
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 6px solid #2c3e50;
+    }
+
+    .tooltip-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #ffb300;
+    }
+
+    .tooltip-progress {
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+
+      .progress-bar-small {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        margin-top: 0.25rem;
+        overflow: hidden;
+
+        .progress-fill {
+          height: 100%;
+          background: #ffb300;
+          border-radius: 2px;
+          transition: width 0.3s ease;
+        }
+      }
+    }
+  }
 `
 
 const LockIcon = () => (
@@ -206,6 +284,56 @@ const LockIcon = () => (
     🔒
   </span>
 )
+
+const PrerequisiteIcon = ({ onClick }) => (
+  <span
+    className="lock-icon"
+    role="img"
+    aria-label="Prerequisites required"
+    onClick={onClick}
+    style={{ cursor: 'pointer' }}
+  >
+    🤔
+  </span>
+)
+
+// Tooltip component for prerequisite information
+const PrerequisiteTooltip = ({ chapter, getSectionProgress, position, onClose }) => {
+  if (!chapter.requiresPrerequisite) return null
+
+  const { sectionId, completionPercentage } = chapter.requiresPrerequisite
+  const progress = getSectionProgress(sectionId)
+  const sectionName = sectionId === 'getting-started' ? 'Getting Started' : sectionId
+
+  return (
+    <div
+      className="prerequisite-tooltip"
+      style={{
+        top: position.top,
+        left: position.left,
+      }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="tooltip-title">🤔 Prerequisites Required</div>
+      <div>Complete the <strong>{sectionName}</strong> section to unlock this chapter.</div>
+      <div className="tooltip-progress">
+        <div>Progress: {progress.completedChapters}/{progress.totalChapters} chapters ({progress.percentage}%)</div>
+        <div className="progress-bar-small">
+          <div
+            className="progress-fill"
+            style={{ width: `${progress.percentage}%` }}
+          />
+        </div>
+        <div style={{ fontSize: '0.8rem', marginTop: '0.25rem', opacity: 0.8 }}>
+          {progress.percentage >= completionPercentage ?
+            '✅ Requirements met! Refresh to unlock.' :
+            `Need ${completionPercentage}% completion to unlock.`
+          }
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const groupChaptersBySection = (chapters) => {
   // First, group chapters by section
@@ -238,10 +366,17 @@ const groupChaptersBySection = (chapters) => {
 
 function Navigation() {
   const { chapters, isSectionExpanded, toggleSection } = useChapter()
-  const { getExerciseProgress, trackCompletion } = useLearnerProgress()
+  const { getExerciseProgress, trackCompletion, checkPrerequisites, getSectionProgress } = useLearnerProgress()
   const { isAuthenticated } = useAuth()
   const location = useLocation()
   const groupedChapters = groupChaptersBySection(chapters)
+
+  // State for tooltip
+  const [tooltipState, setTooltipState] = useState({
+    visible: false,
+    chapter: null,
+    position: { top: 0, left: 0 }
+  })
 
   const getChapterStatus = (chapterId) => {
     const progress = getExerciseProgress(chapterId)
@@ -266,6 +401,33 @@ function Navigation() {
       percentage: (completed / total) * 100
     }
   }
+
+  // Handle prerequisite icon click to show tooltip
+  const handlePrerequisiteClick = (event, chapter) => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    const rect = event.currentTarget.getBoundingClientRect()
+    setTooltipState({
+      visible: true,
+      chapter,
+      position: {
+        top: rect.bottom + 8,
+        left: rect.left - 120
+      }
+    })
+  }
+
+  // Close tooltip when clicking outside
+  const handleDocumentClick = () => {
+    setTooltipState(prev => ({ ...prev, visible: false }))
+  }
+
+  // Add event listener for closing tooltip
+  useEffect(() => {
+    document.addEventListener('click', handleDocumentClick)
+    return () => document.removeEventListener('click', handleDocumentClick)
+  }, [])
 
   // Helper function to render a section
   const renderSection = (section) => {
@@ -299,17 +461,31 @@ function Navigation() {
           <ul className="chapter-list">
             {sectionChapters.map((chapter, index) => {
               const status = getChapterStatus(chapter.id)
-              const isProtected = chapter.requiresAuth && !isAuthenticated
+              const isAuthProtected = chapter.requiresAuth && !isAuthenticated
+              const isPrerequisiteLocked = chapter.requiresPrerequisite && !checkPrerequisites(chapter)
+              const isProtected = isAuthProtected || isPrerequisiteLocked
+
+              // Determine the appropriate CSS class
+              let linkClass = `chapter-link ${status}`
+              if (location.pathname === chapter.id) linkClass += ' active'
+              if (isAuthProtected) linkClass += ' protected'
+              if (isPrerequisiteLocked) linkClass += ' prerequisite-locked'
+
               return (
                 <li key={chapter.id} className="chapter-item">
                   <Link
-                    to={isProtected ? '/login' : chapter.id}
-                    className={`chapter-link ${status} ${location.pathname === chapter.id ? 'active' : ''
-                      } ${isProtected ? 'protected' : ''}`}
+                    to={isProtected ? (isAuthProtected ? '/login' : '#') : chapter.id}
+                    className={linkClass}
+                    onClick={isPrerequisiteLocked ? (e) => e.preventDefault() : undefined}
                   >
                     <span className="chapter-number">{index + 1}</span>
                     <span className="chapter-title">{chapter.title}</span>
-                    {isProtected && <LockIcon />}
+                    {isAuthProtected && <LockIcon />}
+                    {isPrerequisiteLocked && (
+                      <PrerequisiteIcon
+                        onClick={(e) => handlePrerequisiteClick(e, chapter)}
+                      />
+                    )}
                     {!isProtected && status !== 'not-started' ? (
                       <span className="status-icon">
                         {status === 'completed' ? '✓' : '●'}
@@ -377,6 +553,16 @@ function Navigation() {
 
           {optionalSections.map(renderSection)}
         </div>
+      )}
+
+      {/* Render tooltip if visible */}
+      {tooltipState.visible && tooltipState.chapter && (
+        <PrerequisiteTooltip
+          chapter={tooltipState.chapter}
+          getSectionProgress={getSectionProgress}
+          position={tooltipState.position}
+          onClose={() => setTooltipState(prev => ({ ...prev, visible: false }))}
+        />
       )}
     </nav>
   )
