@@ -1,5 +1,5 @@
 import { clientRepoSetupChapter } from "./client-repo-setup"
-import { s3GlossaryChapter } from "./glossary"
+import { s3GlossaryChapter } from "./s3-hosting-glossary"
 import { s3BucketSetupChapter } from "./s3-bucket-setup"
 import { s3FundamentalsChapter } from "./s3-fundamentals"
 

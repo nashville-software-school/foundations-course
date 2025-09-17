@@ -82,6 +82,12 @@ export const sections = [
     description: "Introduction to AWS RDS and our updated API repository",
     required: true,
   },
+  {
+    id: "conclusion",
+    title: "Conclusion",
+    description: "Overview of what we've learned",
+    required: true,
+  },
   // Module 10: Docker Network
   {
     id: "docker-network",
