@@ -67,10 +67,8 @@ function App() {
               {/* Add intro page route outside of Layout */}
               <Route path="/intro" element={<IntroPage />} />
 
-              <Route path="/" element={<Layout 
-                                        sections={sections} 
-                                        courseName="Foundations Course"
-                                        doAuth={true}/>}>
+              <Route path="/" element={<Layout
+                                        sections={sections}/>}>
                 {/* Use IntroRedirect to conditionally redirect */}
                 <Route index element={<IntroRedirect />} />
                 <Route path="login" element={<Login />} />
