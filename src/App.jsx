@@ -2,7 +2,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { Layout, Chapter, Login, AuthCallback, IntroPage } from '@nss-workshops/nss-core'
 import { ChapterProvider, LearnerProgressProvider, AuthProvider, useLearnerProgress } from '@nss-workshops/nss-core'
 import Cookies from 'js-cookie'
-import { sections } from './sections'
+import { chapters, getChapterContent } from './chapters'
+import { getSectionById, sections } from './sections'
+
 import './App.css'
 
 // Component to handle redirect logic based on whether user has seen intro
@@ -44,7 +46,10 @@ function App() {
     <Router basename="/intro-to-cloud-student-facing">
       <AuthProvider>
         <LearnerProgressProvider>
-          <ChapterProvider>
+          <ChapterProvider
+              chapters={chapters} 
+              getChapterContent={getChapterContent} 
+              getSectionById={getSectionById}>
             <Routes>
               {/* Add intro page route outside of Layout */}
               <Route path="/intro" element={<IntroPage />} />
