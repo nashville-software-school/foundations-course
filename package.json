@@ -1,5 +1,5 @@
 {
-  "name": "nss-foundations",
+  "name": "nss-professional-development-workshop-cloud",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@nss-workshops/nss-core": "^0.2.0",
+    "@nss-workshops/nss-core": "^0.2.4",
     "@emotion/react": "^11.11.3",
     "@monaco-editor/react": "^4.7.0",
     "@testing-library/jest-dom": "^6.6.3",
