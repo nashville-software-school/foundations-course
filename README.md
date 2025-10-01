@@ -338,6 +338,12 @@ To set up the project for local development:
    git clone https://github.com/nashville-software-school/foundations-course
    cd foundations-course
    ```
+### 1.1 Access to GitHubs Package manager
+
+First-time setup for a project that depends on **nss-core**:
+
+- Create and set your **NPM token (`NPM_TOKEN`)** as described [here](https://github.com/NSS-Workshops/platform?tab=readme-ov-file#installation-consumer-projects-installation)
+
 
 2. **Install dependencies**:
    ```bash
