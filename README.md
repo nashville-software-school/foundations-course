@@ -39,6 +39,18 @@ Following Bloom's Taxonomy, this course focuses on:
    cd intro-to-cloud-student-facing
    ```
 
+### 1.1 Access to GitHubs Package manager
+
+First-time setup for a project that depends on **nss-core**:
+
+- Create and set your **NPM token (`NPM_TOKEN`)** as described [here](https://github.com/NSS-Workshops/platform?tab=readme-ov-file#installation-consumer-projects-installation)
+
+
+1.2. **Create environment variables**:
+   Create a `.env.local` file in the project root:
+   ```
+   VITE_LEARNING_PLATFORM_API=http://localhost:8000
+   ```
 2. **Install dependencies**:
    ```bash
    npm install
