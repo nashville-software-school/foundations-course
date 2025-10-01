@@ -61,10 +61,10 @@ export const getChaptersInSection = (sectionId) => {
 }
 
 
-function Course({config, sections, chapters}) {
+function Course({config, nav, chapters}) {
 
   const getSectionById = (id) => {
-    return sections.find((section) => section.id === id)
+    return nav.find((section) => section.id === id)
   }
 
   const getChapterContent = (id) => {
@@ -93,7 +93,7 @@ function Course({config, sections, chapters}) {
               {/* Add intro page route outside of Layout */}
               <Route path="/intro" element={<IntroPage />} />
 
-              <Route path="/" element={<Layout sections={sections}/>}>
+              <Route path="/" element={<Layout sections={nav}/>}>
                 {/* Use IntroRedirect to conditionally redirect */}
                 <Route index element={<IntroRedirect />} />
                 <Route path="login" element={<Login />} />

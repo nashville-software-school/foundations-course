@@ -6,7 +6,7 @@ import Course from './Course'
 
 function App() {
   return (
-    <Course chapters={chapters} config={config} sections={nav} />
+    <Course chapters={chapters} config={config} nav={nav} />
   )
 }
 
