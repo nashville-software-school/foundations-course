@@ -1,5 +1,4 @@
-//Workshop 1 sections
-export const sections = [
+export const nav = [
   // Module 0: Intro to the course
   {
     id: "introduction",
