@@ -1,8 +1,3 @@
-/**
- * Defines the available sections in the learning platform.
- * Each section represents a major topic area that contains related chapters.
- */
-
 //Workshop 1 sections
 export const sections = [
   // Module 0: Intro to the course
@@ -106,28 +101,3 @@ export const sections = [
   }
 
 ]
-/**
- * Get a section by its ID
- * @param {string} id - The section ID to find
- * @returns {Object|undefined} The section object if found, undefined otherwise
- */
-export const getSectionById = (id) => {
-  return sections.find((section) => section.id === id)
-}
-
-/**
- * Get all section IDs
- * @returns {string[]} Array of section IDs
- */
-export const getSectionIds = () => {
-  return sections.map((section) => section.id)
-}
-
-/**
- * Validate if a section ID exists
- * @param {string} id - The section ID to validate
- * @returns {boolean} True if the section exists, false otherwise
- */
-export const isValidSectionId = (id) => {
-  return sections.some((section) => section.id === id)
-}
