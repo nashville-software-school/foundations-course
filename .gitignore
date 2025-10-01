@@ -31,3 +31,5 @@ projectBrief.md
 .roo/
 .roomodes
 memory-bank/
+
+package-lock.json
