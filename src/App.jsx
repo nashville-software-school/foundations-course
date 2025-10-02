@@ -1,5 +1,5 @@
-import { chapters } from './content'
-import { nav } from './content/nav'
+import { chapters } from './chapters'
+import { nav } from './chapters/nav'
 import config from './config';
 
 import Course from './Course'
