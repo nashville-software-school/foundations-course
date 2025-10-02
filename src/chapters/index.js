@@ -1,72 +1,72 @@
 // Introduction chapters
-import introToCourseContent from "./introduction/intro-to-course.md?raw";
-import preRequisitesContent from "./introduction/pre-requisites.md?raw";
+import introToCourseContent from "./introduction/intro-to-course.js?raw";
+import preRequisitesContent from "./introduction/pre-requisites.js?raw";
 
 // Cloud fundamentals chapters
-import whatIsCloudContent from './cloud-fundamentals/what-is-cloud.md?raw';
-import whyUseCloudContent from './cloud-fundamentals/why-use-cloud.md?raw';
-import awsAccountSetupContent from './cloud-fundamentals/aws-account-setup.md?raw';
-import cloudFundamentalsGlossaryContent from './cloud-fundamentals/glossary.md?raw';
+import whatIsCloudContent from './cloud-fundamentals/what-is-cloud.js?raw';
+import whyUseCloudContent from './cloud-fundamentals/why-use-cloud.js?raw';
+import awsAccountSetupContent from './cloud-fundamentals/aws-account-setup.js?raw';
+import cloudFundamentalsGlossaryContent from './cloud-fundamentals/glossary.js?raw';
 
 // AWS S3 hosting chapters
-import clientRepoSetupContent from "./aws-s3-hosting/client-repo-setup.md?raw";
-import s3FundamentalsContent from "./aws-s3-hosting/s3-fundamentals.md?raw";
-import s3BucketSetupContent from "./aws-s3-hosting/s3-bucket-setup.md?raw";
-import s3HostingGlossaryContent from "./aws-s3-hosting/s3-hosting-glossary.md?raw";
+import clientRepoSetupContent from "./aws-s3-hosting/client-repo-setup.js?raw";
+import s3FundamentalsContent from "./aws-s3-hosting/s3-fundamentals.js?raw";
+import s3BucketSetupContent from "./aws-s3-hosting/s3-bucket-setup.js?raw";
+import s3HostingGlossaryContent from "./aws-s3-hosting/s3-hosting-glossary.js?raw";
 
 // CloudFront chapters
-import cloudfrontFundamentalsContent from "./cloudfront/cloudfront-fundamentals.md?raw";
-import cloudfrontSetupContent from "./cloudfront/cloudfront-setup.md?raw";
-import cloudfrontGlossaryContent from "./cloudfront/glossary.md?raw";
+import cloudfrontFundamentalsContent from "./cloudfront/cloudfront-fundamentals.js?raw";
+import cloudfrontSetupContent from "./cloudfront/cloudfront-setup.js?raw";
+import cloudfrontGlossaryContent from "./cloudfront/glossary.js?raw";
 
 // Intro to CI/CD chapters
-import cicdFundamentalsContent from './intro-to-cicd/cicd-fundamentals.md?raw';
-import githubActionsBasicsContent from './intro-to-cicd/github-actions-basics.md?raw';
-import deploymentPipelineContent from './intro-to-cicd/deployment-pipeline.md?raw';
-import cicdGlossaryContent from './intro-to-cicd/glossary.md?raw';
+import cicdFundamentalsContent from './intro-to-cicd/cicd-fundamentals.js?raw';
+import githubActionsBasicsContent from './intro-to-cicd/github-actions-basics.js?raw';
+import deploymentPipelineContent from './intro-to-cicd/deployment-pipeline.js?raw';
+import cicdGlossaryContent from './intro-to-cicd/glossary.js?raw';
 
 // Docker chapters
-import dockerSetupContent from './docker/docker-setup.md?raw';
-import dockerGlossaryContent from './docker/docker-glossary.md?raw';
-import dockerFundamentalsContent from './docker/docker-fundamentals.md?raw';
-import dockerfileBreakdownContent from './docker/dockerfile-breakdown.md?raw';
+import dockerSetupContent from './docker/docker-setup.js?raw';
+import dockerGlossaryContent from './docker/docker-glossary.js?raw';
+import dockerFundamentalsContent from './docker/docker-fundamentals.js?raw';
+import dockerfileBreakdownContent from './docker/dockerfile-breakdown.js?raw';
 
 // AWS CLI ECR chapters
-import cliEcrFundamentalsContent from "./aws-cli-ecr/cli-ecr-fundamentals.md?raw";
-import ecrGlossaryContent from './aws-cli-ecr/ecr-glossary.md?raw';
-import pushToEcrContent from './aws-cli-ecr/push-to-ecr.md?raw';
+import cliEcrFundamentalsContent from "./aws-cli-ecr/cli-ecr-fundamentals.js?raw";
+import ecrGlossaryContent from './aws-cli-ecr/ecr-glossary.js?raw';
+import pushToEcrContent from './aws-cli-ecr/push-to-ecr.js?raw';
 
 // EC2 chapters
-import ec2FundamentalsContent from './ec2/ec2-fundamentals.md?raw';
-import ec2SetupContent from './ec2/ec2-setup.md?raw';
-import ec2GlossaryContent from './ec2/ec2-glossary.md?raw';
+import ec2FundamentalsContent from './ec2/ec2-fundamentals.js?raw';
+import ec2SetupContent from './ec2/ec2-setup.js?raw';
+import ec2GlossaryContent from './ec2/ec2-glossary.js?raw';
 
 // CI/CD with EC2 chapters
-import cicdEc2FundamentalsContent from './cicd-with-ec2/cicd-ec2-fundamentals.md?raw';
-import actionsSetupContent from './cicd-with-ec2/actions-setup.md?raw';
-import actionsBreakdownContent from './cicd-with-ec2/actions-breakdown.md?raw';
-import cicdEc2GlossaryContent from './cicd-with-ec2/cicd-ec2-glossary.md?raw';
+import cicdEc2FundamentalsContent from './cicd-with-ec2/cicd-ec2-fundamentals.js?raw';
+import actionsSetupContent from './cicd-with-ec2/actions-setup.js?raw';
+import actionsBreakdownContent from './cicd-with-ec2/actions-breakdown.js?raw';
+import cicdEc2GlossaryContent from './cicd-with-ec2/cicd-ec2-glossary.js?raw';
 
 // RDS chapters
-import rdsInfoContent from "./rds/rds-info.md?raw";
-import rdsSetupContent from "./rds/rds-setup.md?raw";
-import deployRdsContent from "./rds/deploy-rds.md?raw";
-import rdsGlossaryContent from "./rds/rds-glossary.md?raw";
+import rdsInfoContent from "./rds/rds-info.js?raw";
+import rdsSetupContent from "./rds/rds-setup.js?raw";
+import deployRdsContent from "./rds/deploy-rds.js?raw";
+import rdsGlossaryContent from "./rds/rds-glossary.js?raw";
 
 // Docker Network chapters
-import introToDockerNetworkContent from "./docker-network/intro-to-docker-network.md?raw";
-import settingUpDockerNetworkContent from "./docker-network/setting-up-docker-network.md?raw";
-import understandingDockerNetworkContent from "./docker-network/understanding-docker-network.md?raw";
-import dockerNetworkGlossaryContent from "./docker-network/network-glossary.md?raw";
+import introToDockerNetworkContent from "./docker-network/intro-to-docker-network.js?raw";
+import settingUpDockerNetworkContent from "./docker-network/setting-up-docker-network.js?raw";
+import understandingDockerNetworkContent from "./docker-network/understanding-docker-network.js?raw";
+import dockerNetworkGlossaryContent from "./docker-network/network-glossary.js?raw";
 
 // Docker Compose chapters
-import introToDockerComposeContent from "./docker-compose/intro-to-docker-compose.md?raw";
-import dockerComposeSetupContent from "./docker-compose/docker-compose-setup.md?raw";
-import devContainersSetupContent from "./docker-compose/dev-containers-setup.md?raw";
-import dockerComposeGlossaryContent from "./docker-compose/compose-glossary.md?raw";
+import introToDockerComposeContent from "./docker-compose/intro-to-docker-compose.js?raw";
+import dockerComposeSetupContent from "./docker-compose/docker-compose-setup.js?raw";
+import devContainersSetupContent from "./docker-compose/dev-containers-setup.js?raw";
+import dockerComposeGlossaryContent from "./docker-compose/compose-glossary.js?raw";
 
 // Conclusion chapters
-import courseConclusionContent from "./conclusion/course-conclusion.md?raw";
+import courseConclusionContent from "./conclusion/course-conclusion.js?raw";
 
 
 /**
