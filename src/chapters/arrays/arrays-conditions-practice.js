@@ -1,4 +1,4 @@
-import { TestResult } from "../../utils/test_utils";
+import { TestResult } from "@nss-workshops/nss-core";
 
 export const arrayConditionsPracticeChapter = {
   id: 'arrays-conditions-practice',

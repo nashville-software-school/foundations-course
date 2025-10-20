@@ -9,6 +9,12 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  packages: read
+  actions: read     # <-- needed to read workflow runs/jobs
+  checks: read      # <-- needed to read check runs
+  statuses: read    # <-- needed to read commit statuses
+  pull-requests: write
+  issues: write
 
 concurrency:
   group: "pages"
@@ -28,7 +34,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@nss-workshops'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create env file
         run: |
           echo "VITE_OAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}" > .env
