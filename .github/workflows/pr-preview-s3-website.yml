@@ -1,0 +1,117 @@
+name: PR Preview to S3 Website (Vite)
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  packages: read
+  actions: read     # <-- needed to read workflow runs/jobs
+  checks: read      # <-- needed to read check runs
+  statuses: read    # <-- needed to read commit statuses
+  pull-requests: write
+  issues: write
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  build-and-deploy:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@nss-workshops'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create env file
+        run: |
+          echo "VITE_OAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}" > .env
+          echo "VITE_OAUTH_CLIENT_SECRET=${{ secrets.OAUTH_CLIENT_SECRET }}" >> .env
+          echo "VITE_PROXY_DOMAIN=https://authproxy.nss.team" >> .env
+          echo "VITE_LEARNING_PLATFORM_API=https://learningapi.nss.team" >> .env
+          echo "BASE_URL=pr-${{ github.event.pull_request.number }}" >> .env
+      - name: Install dependencies
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Vite
+        run: npm run build
+
+      - name: Configure AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Upload to S3 (prefix = pr-<num>)
+        run: |
+          set -euo pipefail
+          PR=${{ github.event.pull_request.number }}
+          aws s3 sync ./dist "s3://${{  vars.S3_BUCKET }}/pr-${PR}/" --delete --only-show-errors
+          echo "PREVIEW_URL=${{ vars.S3_WEBSITE_BASE }}/pr-${PR}/" >> "$GITHUB_ENV"
+
+      - name: Comment PR with preview URL
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = process.env.PREVIEW_URL;
+            const curlCmd = `curl -I "${url}"`;
+            const body = [
+              "🚀 **Vite Preview Deployed (S3 Website)**",
+              "",
+              `**URL:** ${url}`,
+              "",
+              "Quick check:",
+              "```bash",
+              curlCmd,
+              "```",
+              "",
+              "_Note: S3 website endpoints are HTTP-only. Add CloudFront later if you need HTTPS._"
+            ].join("\n");
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+  cleanup:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Delete S3 prefix
+        run: |
+          set -euo pipefail
+          PR=${{ github.event.pull_request.number }}
+          aws s3 rm "s3://${{ vars.S3_BUCKET }}/pr-${PR}/" --recursive --only-show-errors
+          echo "PREVIEW_URL=${{ vars.S3_WEBSITE_BASE }}/pr-${PR}/" >> "$GITHUB_ENV"
+
+      - name: Comment PR with cleanup confirmation
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = process.env.PREVIEW_URL;
+            const body = `🧹 **Preview deleted** for this PR.\n\n(removed content behind: ${url})`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });

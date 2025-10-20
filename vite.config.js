@@ -17,9 +17,11 @@ export default defineConfig(({ mode }) => {
     console.warn('WARNING: Missing environment variables. OAuth authentication may not work properly.');
     console.warn('Make sure you have VITE_OAUTH_CLIENT_ID and VITE_PROXY_DOMAIN in your .env.local file');
   }
+  let baseUrl = env.BASE_URL ? env.BASE_URL : 'foundations-course';
+  console.log("baseUrl: ",baseUrl);
 
   return {
-    base: '/foundations-course/',
+    base: `/${baseUrl}/`,
     plugins: [
       react({
         jsxImportSource: '@emotion/react',
@@ -35,18 +37,5 @@ export default defineConfig(({ mode }) => {
       'process.env.VITE_PROXY_DOMAIN': JSON.stringify(env.VITE_PROXY_DOMAIN),
       'process.env.VITE_LEARNING_PLATFORM_API': JSON.stringify(env.VITE_LEARNING_PLATFORM_API),
     },
-    // Environment Variables:
-    // Vite automatically loads env files in the following order:
-    // 1. .env                # loaded in all cases
-    // 2. .env.local         # loaded in all cases, ignored by git
-    // 3. .env.[mode]        # only loaded in specified mode
-    // 4. .env.[mode].local  # only loaded in specified mode, ignored by git
-    //
-    // Only variables prefixed with VITE_ are exposed to your code
-    // via import.meta.env.VITE_*
-    //
-    // Example:
-    // VITE_OAUTH_CLIENT_ID in .env.local becomes available as
-    // import.meta.env.VITE_OAUTH_CLIENT_ID in your code
   }
 })
