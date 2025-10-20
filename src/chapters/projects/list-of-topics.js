@@ -1,4 +1,4 @@
-import { TestResult } from "../../utils/test_utils";
+import { TestResult } from "@nss-workshops/nss-core";
 
 export const listOfTopicsId = {
     id: "list-of-topics",
