@@ -1,4 +1,5 @@
-/* Reset default styles */
+@import "@nss-workshops/nss-core/styles.css";
+
 #root {
   width: 100%;
   height: 100vh;

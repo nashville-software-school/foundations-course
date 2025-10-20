@@ -6,6 +6,6 @@ const config = {
     import.meta.env.VITE_LEARNING_PLATFORM_API,
   courseName: "Foundations Course",
   doAuth: true,
+  globalProgress:'true'
 };
-
 export default config;
