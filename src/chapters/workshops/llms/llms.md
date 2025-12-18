@@ -1,14 +1,15 @@
-## Concepts We Will Cover
+## Concepts that will help us level up
 
-If you have spent any time around AI discussions you have likely heard terms like these used-often loosely, sometimes incorrectly. This section clarifies what we mean by them and how they fit together.
-
-During this deep dive, we will explore the topics below with the overarching goal of gaining a deeper understanding of the technology and becoming more competent, confident users of it.
+We will explore the topics below with the overarching goal of gaining a deeper understanding of the technology and becoming more competent, confident masters of it.
 
 - **Machine Learning (ML)**
   What ML actually is, why it’s the core process behind LLMs and many AI systems, how models learn patterns from data rather than being explicitly programmed.
 
 - **Large Language Models (LLMs)**  
   What makes a model "large," what problems these models are designed to solve, and what they fundamentally are *and are not*.
+
+- **Transformers**  
+  The core neural architecture that powers modern LLMs, why it replaced older sequential models, and how it enables massive parallelization.
 
 - **Model Training**  
   What does it mean to train an LLM, how is it trained, the difference between pre-training and fine-tuning, and why training efficiency-not just model size-enabled modern systems to exist.
@@ -21,15 +22,6 @@ During this deep dive, we will explore the topics below with the overarching goa
 
 - **Hallucinations**  
   Why LLMs sometimes generate confident but incorrect information, and how this behavior follows directly from next-token prediction.
-
-- **Transformers**  
-  The core neural architecture that powers modern LLMs, why it replaced older sequential models, and how it enables massive parallelization.
-
-- **Encoder–Decoder vs Decoder-Only Models**  
-  The architectural distinction between classic transformer designs and modern generative models like GPT, and why this matters for generation versus understanding tasks.
-
-- **Attention and Attention Heads**  
-  How self-attention allows models to assign context-dependent meaning to words, and why multiple attention heads are necessary to capture linguistic nuance.
 
 By the end of this discussion, these terms should no longer feel like opaque buzzwords. Instead, they will form a coherent mental model that explains how LLMs behave, where their limits come from, and how to use them effectively and responsibly.
 
@@ -66,38 +58,37 @@ Language models are a class of machine learning models. Instead of relying on ha
   * Emergent
   * Not directly traceable to rules
 
+<img width="80%" src="./ml.png" alt="ML"/>
+
 Traditional software follows rules we write; machine learning systems infer patterns we don’t explicitly control.
 
 ## Large Language Models (LLMs)
 
-Our goal is to develop intuition about the mechanics beneath the surface of these systems, knowing their limitations like hallucinations, bias, boundaries of alignment, context window size, or training data constraints makes one a more effective user.
+LLM is a Machine Learning model trained on massive amounts of text to predict the next token, using learned patterns in language to generate and reason over text.
 
-## The Core Insight: LLMs Are Advanced Autocomplete
+LLMs Are Advanced Autocomplete
 
 At their foundation, large language models perform one task:
-
 > **Given a sequence of tokens, predict the most likely next token.**
-
-That’s it.
 
 They are statistical machines trained to model probability distributions over language. 
 Everything else: summarization, code generation, analysis-emerges from this single mechanism at scale.
 
-## The Five Core Ingredients of Modern LLMs
+## Transformers
 
-Modern LLMs rely on five key components:
+Generative models like ChatGPT, Claude, and Gemini are all large language models (LLMs) built on an architecture called the transformer. Transformers solved several major limitations of earlier language models-most notably by processing text in parallel, which made possible scale possible. Their self-attention, allows the model to relate words across a sentence or document and correctly resolve meaning. 
 
-1. **Massive datasets** (the "large" in LLM)
-2. **Transformer architecture** (parallel processing)
-3. **Pre-training** (learning raw statistical structure)
-4. **Fine-tuning & instruction training**
-5. **Alignment layers** (e.g., RLHF)
+Example: 
+```The trophy doesn’t fit in the suitcase because it is too small.```
 
-Each component contributes directly to scale, performance, and usability.
-
-
+Self-attention helps the model correctly understand that “it” refers to the suitcase, not the trophy,
 
 ## Step 1: Tokenization - Translating Language into Numbers
+
+**Notebook Companion**
+[Google colab Notebook](https://colab.research.google.com/drive/15L_FmXiHN_JGUzHGCt2asj2wpxMXi44G?usp=sharing)
+
+<img width="80%" src="./tokenization.png" alt="Tokenize"/>
 
 LLMs operate purely on numbers. The first step in every prompt is **tokenization**.
 
@@ -107,9 +98,11 @@ A **token** is the basic unit of language processed by the model. Tokens can be:
 - Subwords (`run` in `running`)
 - Punctuation or symbols
 
-Each token is mapped to a numeric ID.
+The model’s vocabulary is broken into tokens, covering words and word fragments from all the languages it was exposed to during training. Each token is assigned a numeric ID.
 
-### Why Subword Tokenization Exists
+### Subword Tokenization
+
+One token does not always align perfectly with words, below we will see why. 
 
 Early approaches failed:
 
@@ -141,7 +134,7 @@ Here’s a **clean, augmented version** of your section with an explanation of *
 
 Token IDs are just numbers. Meaning comes from embeddings!
 
-Each token is mapped to a vector, a long list of numbers—that represents its meaning. You can think of this vector as coordinates on a large map called the latent space.
+Each token is mapped to a vector, a long list of numbers-that represents its meaning. You can think of this vector as coordinates on a large map called the latent space.
 
 These vectors are stored in a table where:
 
@@ -217,220 +210,204 @@ token 537 (king)  →  [ 0.21, -0.93, 0.44, ... ]
 
 <img width="80%" src="./embeddings.png" alt="Embeddings"/>
 
-## Step 3: Positional Encoding - Restoring Word Order
-
-Transformers process all tokens **in parallel**, which removes sequence order.
-
-**Positional encodings** solve this by adding a position-specific vector to each token embedding.
-
-### Why It Matters
-
-- Enables understanding of word order
-- Defines the **maximum context window**
-- Beyond this limit, coherence degrades
-
-Your context window is literally how far positional encoding can track relationships.
-
 When an open source model makes their weights public, part of this includes the token embedding matrix we discussed where rows are the token ids columns are the learned dimensions.
 
-## Step 4: The Transformer Block
 
-Modern generative models (GPT-style) use a **decoder-only transformer** composed of stacked transformer blocks.
+## Model Training
+Large language models operate in two distinct phases: **training**, where the model learns patterns from data, and **inference**, where it applies those learned patterns to generate responses.
 
-Each block consists of:
 
-1. Input embeddings
-2. Positional encodings
-3. **Self-attention**
-4. **Feed-forward network**
-5. Residual connections & layer normalization
+<img width="80%" src="./train.png" alt="Training"/>
 
+**Training:** the model learns its parameters by repeatedly predicting the next token on large datasets, comparing predictions to the true tokens, and updating weights via. In this phase the model is being built.
 
+**Inference:** the trained model is frozen and used to generate outputs by repeatedly predicting the next token from the given context, without updating its weights. The model is being used by end users.
 
-## Self-Attention: Contextual Meaning
+Training an LLM means teaching it to predict the next token by exposing it to massive amounts of text and adjusting its internal parameters (weights) based on prediction errors.
 
-Self-attention determines how each word relates to every other word.
+**What are "weights"?** An LLM contains billions of numerical parameters called weights. These include:
+* The embedding matrix (token vectors we discussed earlier)
+* Weights in the transformer layers (attention mechanisms, feed-forward networks)
+* Output layer weights (for predicting the next token)
 
-Each token produces three vectors:
+All of these numbers get adjusted during training to improve predictions.
 
-- **Query (Q)** - what the word is looking for
-- **Key (K)** - what the word offers
-- **Value (V)** - the information it provides
+### What Happens During Training
 
-Relevance is computed using **dot products** between queries and keys, normalized via **softmax**, and applied to values.
+The model processes billions of text sequences. For each sequence:
 
-### Multi-Head Attention
+1. **Input**: A sequence of tokens (e.g., "The cat sat on the")
+2. **Prediction**: The model predicts the next token (e.g., "mat")
+3. **Comparison**: The prediction is compared to the actual next token
+4. **Adjustment**: If wrong, the model's weights are adjusted to make the correct prediction more likely next time
 
-Rather than one attention pass, models run many in parallel:
+This process repeats trillions of times across the entire training dataset.
 
-- Grammar
-- Long-range references
-- Sentiment
-- Semantic structure
+### The Role of Tokens and Embeddings
 
-Modern models use dozens or hundreds of attention heads.
+Training fundamentally operates on numerical representations:
 
+* **Tokenization** converts text into token IDs
+* **Embedding lookup** maps each token ID to its vector representation
+* The model processes these embedding vectors through transformer layers
+* **Weight updates** adjust both the transformer parameters *and* the embedding matrix itself
 
+As training progresses, the embedding vectors learn to capture semantic meaning. Words with similar meanings naturally cluster together in the embedding space because they appear in similar contexts.
 
-## Feed-Forward Networks: Dense Knowledge Storage
+## Bias
 
-After attention, each token passes through a feed-forward network:
+Bias in LLMs is not a bug to be fixed-it's an inherent consequence of learning from human-generated data. Understanding where bias comes from helps us use these models more responsibly.
 
-- Expands dimensionality (e.g., 512 → 2048)
-- Applies non-linear activation (e.g., GELU)
-- Contracts back to original size
+<img width="80%" src="./bias.png" alt="Bias"/>
 
-This layer stores abstract patterns and learned knowledge.
+### Where Bias Enters the Model
 
+**Training Data Reflects Human Bias**
 
+LLMs learn from text written by humans, which contains:
+* Historical prejudices and stereotypes
+* Cultural assumptions and norms
+* Representation imbalances (some groups are overrepresented, others underrepresented)
+* Controversial or harmful viewpoints that exist in public discourse
 
-## Scaling Deep: Residuals & Layer Normalization
+If the training data contains patterns like "doctors are men" or "nurses are women," the model will learn and reproduce these associations.
 
-Stacking many transformer blocks introduces training instability.
+**Optimization Objectives Create Bias**
 
-Two mechanisms enable depth:
+The model is trained to predict the *most likely* next token based on patterns in its training data. This means:
+* Common patterns are reinforced
+* Rare perspectives are underweighted
+* The model favors "typical" responses over diverse ones
 
-### Residual Connections
-- Skip connections allow gradients to flow backward
-- Prevent vanishing gradients
+### Why Bias Cannot Be Fully "Removed"
 
-### Layer Normalization
-- Stabilizes activations within each token
-- Enables deep stacking
+**Language Itself Encodes Bias**
 
-Together, they allow models to scale to dozens or hundreds of layers.
+Bias is woven into the fabric of language:
+* Word associations reflect societal patterns
+* Context determines meaning, and context carries cultural assumptions
+* "Neutral" language is often impossible-word choice always carries connotations
 
+**The Prediction Objective Requires Patterns**
 
+To predict the next token, the model *must* learn statistical patterns from its training data. You cannot separate "good patterns" (grammar, facts) from "bad patterns" (stereotypes) without fundamentally changing how the model works.
 
-## Output Layer: Choosing the Next Token
+**Be Aware of Bias in Outputs**
+* LLMs may generate stereotypical associations
+* Default responses may reflect majority perspectives
+* Historical biases may appear in generated content
 
-After the final transformer block:
+**Use Prompting to Mitigate**
+* Request diverse perspectives explicitly
+* Ask for balanced viewpoints
+* Specify the context and audience
+* Challenge assumptions in follow-up prompts
 
-1. A linear layer maps vectors to vocabulary size
-2. Outputs **logits** (raw scores)
-3. Softmax converts logits into probabilities
+**Understand the Limitations**
+* No LLM is "unbiased"-all reflect their training data
+* Alignment reduces harmful outputs but doesn't eliminate underlying patterns
+* Critical evaluation of outputs is always necessary
 
-This produces a probability distribution over all possible next tokens.
+Bias is a feature of learning from human data, not a temporary flaw. Effective use requires awareness, not assumption of neutrality.
 
+## Hallucinations
 
+Hallucinations occur when an LLM generates plausible-sounding but factually incorrect information. This isn't a malfunction-it's a direct consequence of how these models work.
 
-## Inference: Autoregressive Generation
 
-Generation proceeds one token at a time:
+<img width="80%" src="./hallucinate.png" alt="Hallucinations"/>
 
-1. Entire prompt is processed
-2. Only the **last token’s** probability distribution is used
-3. Selected token is appended
-4. The entire sequence is re-processed
+### Why Hallucinations Happen
 
-### Implications
+**The Model Must Always Predict Something**
 
-- Latency grows linearly with context size
-- Long conversations slow responses
-- Regenerating answers may differ due to sampling
+Given a prompt, the LLM *must* generate a next token. It cannot say "I don't know" unless it has learned that as a valid response pattern. When uncertain, it still produces the most probable token based on patterns, even if that token is factually wrong.
 
-### Sampling Strategies
+**Plausibility ≠ Accuracy**
 
-- **Greedy**: highest-probability token (deterministic)
-- **Temperature**: introduces randomness
-- Higher temperature = more creativity, higher hallucination risk
+The model is trained to generate *likely* sequences, not *true* sequences:
+* It learns what "sounds right" based on training data patterns
+* Grammatically correct and contextually coherent text can be completely false
+* The model has no mechanism to verify facts-it only predicts tokens
 
+**Pattern Completion Over Fact Retrieval**
 
+LLMs don't "look up" information-they complete patterns:
+* If the prompt resembles patterns in training data, the model continues that pattern
+* If the prompt is novel or ambiguous, the model fills gaps with plausible-sounding content
+* The model cannot distinguish between "I learned this fact" and "this sounds like something I learned"
 
-## Training Efficiency: Why Transformers Scaled
+### Common Hallucination Scenarios
 
-Training uses **causal masking** to prevent future token access.
+**Fabricated Details**
 
-This enables:
+When asked for specific information (dates, names, statistics), the model may:
+* Generate plausible but incorrect numbers
+* Invent citations or sources
+* Create realistic-sounding but false details
 
-- Parallel prediction of thousands of next tokens
-- Single backpropagation step per segment
-- Massive GPU-level parallelism
+### Why This Is Fundamental, Not Fixable
+LLMs are trained to minimize prediction error on their training data, not to maximize factual accuracy. The training objective is:
 
-This architectural efficiency is what made modern LLMs feasible.
+> "Given this context, what token comes next?"
 
+Not:
 
+> "Given this context, what is the true answer?"
 
-## From Base Models to Instruct Models
 
-### Base Model
-- Trained on raw internet text
-- Learns grammar and facts
-- No instruction following
+### Mitigation Strategies
 
-### Instruct Model
-- Fine-tuned on curated prompt-response pairs
-- Learns how to behave
-- Optimized for user interaction
+**Grounding with External Information**
 
+Provide factual context in your prompt:
+* Include relevant documents or data
+* Cite specific sources
+* Give the model concrete information to work from
 
+**Retrieval-Augmented Generation (RAG)**
 
-## Alignment & RLHF
+Systems that combine LLMs with search:
+* Retrieve relevant documents first
+* Provide them as context to the model
+* Ground responses in retrieved information
 
-Alignment ensures models are:
+**Verification and Cross-Checking**
 
-- Helpful
-- Honest
-- Harmless
+* Treat LLM outputs as drafts, not facts
+* Verify important claims independently
+* Use multiple sources for critical information
+* Be especially skeptical of specific details (dates, numbers, citations)
 
-### Reinforcement Learning from Human Feedback (RLHF)
+**Prompt for Uncertainty**
 
-1. Humans rank model outputs
-2. A **reward model** learns preferences
-3. The LLM is optimized to maximize reward
+* Ask the model to express confidence levels
+* Request caveats and limitations
+* Encourage "I don't know" responses when appropriate
 
-This is behavioral conditioning layered atop statistical prediction.
+### Practical Implications
 
+**Use Cases Matter**
 
+* Creative writing: Hallucinations may be acceptable or even desirable
+* Factual research: Hallucinations are dangerous-verification is essential
+* Code generation: Hallucinations can create subtle bugs
 
-## Hallucinations: A Predictable Failure Mode
+**Trust but Verify**
 
-Hallucinations arise because:
+* LLMs are powerful tools for drafting, brainstorming, and exploration
+* They are not reliable sources of truth without verification
+* The more critical the application, the more verification is needed
 
-- The model must always predict a next token
-- Uncertainty still forces selection
-- Plausibility ≠ factual accuracy
+Hallucinations are not a temporary limitation-they are a fundamental consequence of next-token prediction. Understanding this helps you use LLMs effectively within their actual capabilities.
 
-This is not a bug-it’s a consequence of the objective function.
+## Context Window
 
+In a chat conversation, each user message and each model response is serialized into a single growing sequence of tokens. Every new turn is appended to the end of this sequence, along with special tokens or markers that indicate roles (user, assistant, system). When the model generates the next token, it takes the entire current token sequence within the context window, converts it into embeddings, and runs self-attention across all of those tokens at once. 
 
+<img width="80%" src="./context.png" alt="context window"/>
 
-## Retrieval-Augmented Generation (RAG)
-
-RAG grounds outputs in verified data.
-
-### Three Steps
-
-1. **Retrieve** relevant documents via embeddings
-2. **Augment** the prompt with retrieved content
-3. **Generate** constrained output
-
-### Trade-Offs
-
-- Added latency
-- Depends on retrieval quality
-- Poor data can cause misinformation
-
-RAG shifts trust from the model to the data pipeline.
-
-
-
-## Final Takeaway
-
-LLMs are purely statistical systems predicting the next token.
-
-Yet, when scaled with sufficient data, depth, and architectural design, they produce outputs that resemble reasoning, creativity, and synthesis.
-
-The open question remains:
-
-> Can reasoning emerge purely from correlation at scale?
-
-That question defines the current frontier of AI-and evolves with every token generated.
-
-# References
-## Notebook 
-
-[Google colab Notebook](https://colab.research.google.com/drive/15L_FmXiHN_JGUzHGCt2asj2wpxMXi44G?usp=sharing)
+The probability distribution for the next token is computed conditioned on every prior token still in the window, which is why earlier parts of the conversation can influence tone, facts, and constraints-until they fall out of the context window and are no longer included in the attention computation.
 
 ## Bias
 <iframe width="560" height="315" src="https://www.youtube.com/embed/OhCzX0iLnOc?si=vdqgKJmBWxKH6C89" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -446,3 +423,6 @@ That question defines the current frontier of AI-and evolves with every token ge
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0TiJ9c9rzZA?si=0zSv1PavXfLn9pjs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ISPId9Lhc1g?si=bkpfo6bIvvVB0xf8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+## Context Window
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Z0GWWTHpcik?si=T4_9-Y3vIynxeVWL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

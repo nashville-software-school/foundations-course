@@ -1,5 +1,4 @@
 import content from "./llms.md?raw";
-import content2 from "./llms2.md?raw";
 
 export default {
     id: "llms",
@@ -8,5 +7,5 @@ export default {
     previousChapterId: "primitive-vs-reference",
     nextChapterId: null,
     sectionId: "workshops",
-    content: `${content} ${content2}`
+    content
 }
