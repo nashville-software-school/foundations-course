@@ -1,4 +1,3 @@
-import js from "@eslint/js";
 import jsMemImg from "./js_mem.png";
 
 export const primitiveVsReferenceChapter = {
@@ -7,7 +6,7 @@ export const primitiveVsReferenceChapter = {
   path: "/primitive-vs-reference",
   sectionId: "workshops",
   previousChapterId: null,
-  nextChapterId: null,
+  nextChapterId: "llms",
   content: `Welcome aboard! You’re about to embark on a journey through **JavaScript’s memory universe** with some legendary astronauts. Each stop will take
   us dr into **primitive planets, reference black holes, cloning technology, and type transformation!
 
