@@ -1,4 +1,4 @@
-import { primitiveVsReferenceChapter } from './primitive_reference/primitive-vs-reference.js'
+import { primitiveVsReferenceChapter } from './primitive_reference/primitive-vs-reference.jsx'
 
 export const workshopChapters = [
     primitiveVsReferenceChapter
