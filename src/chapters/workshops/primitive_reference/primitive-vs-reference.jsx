@@ -1,5 +1,161 @@
-import js from "@eslint/js";
 import jsMemImg from "./js_mem.png";
+import { Checkpoint, QUESTION_TYPES } from "@nss-workshops/nss-core";
+
+const questions = [
+  {
+    type: QUESTION_TYPES.CHECKBOX,
+    questionJsx: (
+      <p>
+        Which of the following are JavaScript primitive types? Choose all that apply.
+      </p>
+    ),
+    answers: [
+      "number",
+      "object",
+      "string",
+      "function",
+      "array",
+      "boolean",
+      "null"
+    ],
+    correctAnswers: [0, 2, 5, 6],
+    explanation: (
+      <ul>
+        <li><strong>number:</strong> ✅ Correct — Primitive type stored by value.</li>
+        <li><strong>object:</strong> ❌ Incorrect — This is a reference type.</li>
+        <li><strong>string:</strong> ✅ Correct — Primitive type stored by value.</li>
+        <li><strong>function:</strong> ❌ Incorrect — This is a reference type.</li>
+        <li><strong>array:</strong> ❌ Incorrect — This is a reference type (arrays are objects).</li>
+        <li><strong>boolean:</strong> ✅ Correct — Primitive type stored by value.</li>
+        <li><strong>null:</strong> ✅ Correct — Primitive type (special value).</li>
+      </ul>
+    )
+  },
+    {
+    type: QUESTION_TYPES.CHECKBOX,
+    questionJsx: (
+      <p>
+        Which of these values is a reference type in JavaScript? Choose all that apply.
+      </p>
+    ),
+    answers: [
+      "42",
+      '{ name: "Saturn" }',
+      '"Hello, World!"',
+      "true",
+      "[1,2,3]"
+    ],
+    correctAnswers: [1, 4],
+    explanation: (
+      <ul>
+        <li><strong>42:</strong> ❌ Incorrect — This is a number (primitive type).</li>
+        <li><strong>{`{ name: "Saturn" }`}:</strong> ✅ Correct — This is an object (reference type).</li>
+        <li><strong>"Hello, World!":</strong> ❌ Incorrect — This is a string (primitive type).</li>
+        <li><strong>true:</strong> ❌ Incorrect — This is a boolean (primitive type).</li>
+        <li><strong>[1,2,3]:</strong> ✅ Correct — This is an array (reference type).</li>
+      </ul>
+    )
+  },
+    {
+    type: QUESTION_TYPES.RADIO,
+    questionJsx: (
+      <p>
+        What happens when you copy a reference type in JavaScript?
+        <pre><code>{`// Create an object (reference type)
+let planetA = { name: "Saturn" };
+// Copy the reference
+let planetB = planetA;`}</code></pre>
+      </p>
+    ),
+    answers: [
+      "A completely new independent copy is created",
+      "Both variables planetA and planetB point to the same memory location",
+      "JavaScript randomly decides what to do"
+    ],
+    correctAnswer: 1,
+    explanation: (
+      <ul>
+        <li><strong>A completely new independent copy is created:</strong> ❌ Incorrect — Reference types are copied by reference, not by value.</li>
+        <li><strong>Both variables planetA and planetB point to the same memory location:</strong> ✅ Correct — When you copy a reference type, both variables point to the same object in memory.</li>
+        <li><strong>JavaScript randomly decides what to do:</strong> ❌ Incorrect — JavaScript has consistent, predictable behavior for reference types.</li>
+      </ul>
+    )
+  },
+  {
+    type: QUESTION_TYPES.CHECKBOX,
+    questionJsx: (
+      <p>
+        Which JavaScript method creates a true deep copy of an object?
+      </p>
+    ),
+    answers: [
+      "{ ...obj }",
+      "structuredClone(obj)",
+      "JSON.parse(JSON.stringify(obj))",
+      "copy = obj"
+    ],
+    correctAnswers: [1,2],
+    explanation: (
+      <ul>
+        <li><strong>{`{ ...obj }`}:</strong> ❌ Incorrect — The spread operator creates a shallow copy, not a deep copy.</li>
+        <li><strong>structuredClone(obj):</strong> ✅ Correct — This method creates a true deep copy of an object.</li>
+        <li><strong>JSON.parse(JSON.stringify(obj)):</strong> ✅ Correct — This technique creates a deep copy (though it has limitations with functions and special objects).</li>
+        <li><strong>copy = obj:</strong> ❌ Incorrect — This just copies the reference, not the object itself.</li>
+      </ul>
+    )
+  },
+  {
+    type: QUESTION_TYPES.CHECKBOX,
+    questionJsx: (
+      <p>
+        Which JavaScript method converts the string "42" into the number 42?
+      </p>
+    ),
+    answers: [
+      'parseInt("42")',
+      'Number("42")',
+      '42 = "42"'
+    ],
+    correctAnswers: [0, 1],
+    explanation: (
+      <ul>
+        <li><strong>parseInt(&quot;42&quot;):</strong> ✅ Correct — Converts a string to an integer number.</li>
+        <li><strong>Number(&quot;42&quot;):</strong> ✅ Correct — Converts a string to a number.</li>
+        <li><strong>42 = &quot;42&quot;:</strong> ❌ Incorrect — This is invalid syntax and would cause an error.</li>
+      </ul>
+    )
+  },
+  {
+    type: QUESTION_TYPES.CHECKBOX,
+    questionJsx: (
+      <p>
+        Which of the following values require a deep copy to avoid shared references? Choose all that apply.
+      </p>
+    ),
+    answers: [
+      "[ { id: 1 } ]",
+      "null",
+      '"Hello"',
+      "{ theme: { mode: true } }",
+      "boolean",
+      "function"
+    ],
+    correctAnswers: [0, 3, 5],
+    explanation: (
+      <ul>
+        <li><strong>[ {`{ id: 1 }`} ]:</strong> ✅ Correct — Array containing an object requires deep copy to avoid shared references.</li>
+        <li><strong>null:</strong> ❌ Incorrect — Primitive value, no deep copy needed.</li>
+        <li><strong>&quot;Hello&quot;:</strong> ❌ Incorrect — String is a primitive type, no deep copy needed.</li>
+        <li><strong>{`{ theme: { mode: true } }`}:</strong> ✅ Correct — Nested object requires deep copy to avoid shared references.</li>
+        <li><strong>boolean:</strong> ❌ Incorrect — Primitive type, no deep copy needed.</li>
+        <li><strong>function:</strong> ✅ Correct — Functions are reference types and may need deep copying in certain contexts.</li>
+      </ul>
+    )
+  }
+];
+  
+
+
 
 export const primitiveVsReferenceChapter = {
   id: "primitive-vs-reference",
@@ -44,22 +200,13 @@ Out of these, \`null\` and \`undefined\` are special values that represent the a
 - \`object\`, \`array\`, \`function\`
 <img width=700 src="${jsMemImg}"/>
 
-### **Quiz Break #1**
-<a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Data Types Quiz</a>
-
-⚠️ **Note:** When you click 'Run Tests' in this workshop, \`console.log\` will show as **alerts** due to a custom-built interpreter.
-
-It’s not a full JS environment, some behaviors may be different. Use this code space only for the provided exercises, not for experimenting with random JS code!
-
 ### **🛠️ Run Code Snippet One:**
+⚠️ **Note:** When you click 'Run Tests' in this workshop, \`console.log\` will show as **alerts** due to a custom-built interpreter.
+It’s not a full JS environment, some behaviors may be different. Use this code space only for the provided exercises, not for experimenting with random JS code!
 
 **Discussion:**
 
 *Why does \`planet2\` still say "Mars" after \`planet1\` changes?*
-
-### **Quiz Break #2**
-<a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Reference Types Quiz</a>
-
 
 ---
 ## **Checkpoint 2: Copying Across the Universe (Stack vs. Heap)**
@@ -78,10 +225,6 @@ Houston, we have a problem!
 #### Discussion
 
 Why does \`spaceship2.captain\` change to "Sally Ride" too?
-
-### Quiz #3
-
-<a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Deep Copy Quiz</a>
 
 ---
 
@@ -130,10 +273,6 @@ Houston, systems are nominal.
 
 Why does \`alien2.abilities.laser\` remain \`false\` this time?
 
-### Quiz #4
-
-<a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Deep Copy Quiz</a>
-
 ---
 
 ## Checkpoint 4: Fixing "Mystery Math" - Type Conversion
@@ -160,27 +299,23 @@ To fix the issue, we need to convert the strings to numbers before adding them.
 
 Why does \`Number("2")\` fix the issue?
 
-### Quiz #5
-
-<a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Data Conversion Quiz</a>
-
-
 ## Mission Debrief & Wrap-up
 
 Congratulations! You’ve explored JavaScript’s **memory system, copying mechanics, cloning, and type conversion**!
 
 **Final Thought:** Next time you see unexpected behavior in your code, **check whether you're working with a primitive or reference type**! 🚀
 
----
-
-### Final Quiz: Rank Up Your JS Knowledge!
-
-<a href="https://www.menti.com/alc5a2bfvfvr" target="_blank">Deep copy or not to deep copy quiz</a>
-
 ### Thanks for joining the mission!
 
 Remember JavaScript’s universe is vast, keep **exploring**!
-  `,
+
+---
+
+# Please take the quiz below to assess your understanding of these concepts.
+`,
+  quiz: {
+      component: () => <Checkpoint questions={questions}/>
+  },
   exercise: {
     starterCode: `
 /*
