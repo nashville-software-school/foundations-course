@@ -1,10 +1,58 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
+import { glob } from 'glob'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path' 
+import { normalizePath } from 'vite'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 export default defineConfig(({ mode }) => {
   // Load env variables based on mode for server access
   // Using empty string as prefix to load all env vars, including those without VITE_ prefix
   const env = loadEnv(mode, process.cwd(), '');
+  const imagePattern = path.resolve(__dirname, 'src/chapters/**/*.{png,jpg,jpeg,svg,gif,webp,avif}');
+  const imageFiles = glob.sync(normalizePath(imagePattern));
+  const hasImages = imageFiles.length > 0;
+   let courseName = env.VITE_COURSE_NAME || 'Foundations Course';
+  // Custom plugin to replace placeholders in HTML
+  const htmlReplacementPlugin = {
+    name: 'html-replacement',
+    transformIndexHtml(html) {
+      return html
+        .replace(/%COURSE_NAME%/g, courseName)
+        .replace(/%COURSE_URL%/g, baseUrl);
+    }
+  };
+
+  const plugins = [
+    react({
+      jsxImportSource: '@emotion/react',
+      babel: {
+        plugins: ['@emotion/babel-plugin']
+      }
+    }),
+    htmlReplacementPlugin
+  ];
+  console.log("hasImages",hasImages)
+  if (hasImages) {
+    plugins.push(
+      viteStaticCopy({
+        targets: [
+          {
+            // copy all images from each chapter folder
+            src: normalizePath(imagePattern),
+            dest: 'assets',
+            flatten: false
+          }
+        ]
+      })
+    );
+  }
+
 
   console.log('OAuth env variables loaded:', {
     clientId: env.VITE_OAUTH_CLIENT_ID ? 'Present' : 'Missing',
@@ -22,15 +70,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: `/${baseUrl}/`,
-    plugins: [
-      react({
-        jsxImportSource: '@emotion/react',
-        babel: {
-          plugins: ['@emotion/babel-plugin']
-        }
-      })
-      // GitHub OAuth plugin has been removed
-    ],
+    plugins,
     // Make env variables available to client-side code
     define: {
       'process.env.VITE_OAUTH_CLIENT_ID': JSON.stringify(env.VITE_OAUTH_CLIENT_ID),
