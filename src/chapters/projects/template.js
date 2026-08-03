@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const camelCasedId = {
   id: "<< chapter-section >>",
   title: "<< Section Title >>",
@@ -12,7 +14,7 @@ export const camelCasedId = {
     tests: [
       {
         name: "<< Title >>",
-        test: () => true,
+        test: () => new TestResult({passed: true}),
         message: "",
       },
     ],

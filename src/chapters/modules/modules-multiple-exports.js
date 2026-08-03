@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const modulesMultipleExportsChapter = {
   id: 'modules-multiple-exports',
   title: 'Working with Multiple Exports',
@@ -134,26 +136,26 @@ console.log("Doubled:", doubled)`
       {
         name: "Basic Functions",
         test: (files) => {
-          return files['numbers.js'].includes('export function add') &&
-                 files['numbers.js'].includes('export function subtract')
+          return new TestResult({passed: files['numbers.js'].includes('export function add') &&
+                 files['numbers.js'].includes('export function subtract')})
         },
         message: "Create and export the add and subtract functions."
       },
       {
         name: "Math Object",
         test: (files) => {
-          return files['numbers.js'].includes('export const math') &&
+          return new TestResult({passed: files['numbers.js'].includes('export const math') &&
                  files['numbers.js'].includes('double:') &&
-                 files['numbers.js'].includes('half:')
+                 files['numbers.js'].includes('half:')})
         },
         message: "Create and export the math object with double and half functions."
       },
       {
         name: "Main Usage",
         test: (files) => {
-          return files['main.js'].includes('import { add, math }') &&
+          return new TestResult({passed: files['main.js'].includes('import { add, math }') &&
                  files['main.js'].includes('add(5, 3)') &&
-                 files['main.js'].includes('math.double')
+                 files['main.js'].includes('math.double')})
         },
         message: "Import and use the number tools correctly."
       }

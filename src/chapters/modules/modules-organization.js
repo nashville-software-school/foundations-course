@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const modulesOrganizationChapter = {
   id: 'modules-organization',
   title: 'Module Organization',
@@ -123,32 +125,32 @@ console.log(showResult(result))`
       {
         name: "Math Functions",
         test: (files) => {
-          return files['math/add.js'].includes('export function add') &&
-                 files['math/multiply.js'].includes('export function multiply')
+          return new TestResult({passed: files['math/add.js'].includes('export function add') &&
+                 files['math/multiply.js'].includes('export function multiply')})
         },
         message: "Create and export both math functions."
       },
       {
         name: "Math Index",
         test: (files) => {
-          return files['math/index.js'].includes('export { add }') &&
-                 files['math/index.js'].includes('export { multiply }')
+          return new TestResult({passed: files['math/index.js'].includes('export { add }') &&
+                 files['math/index.js'].includes('export { multiply }')})
         },
         message: "Export both functions in the math index file."
       },
       {
         name: "Display Function",
         test: (files) => {
-          return files['display/message.js'].includes('export function showResult')
+          return new TestResult({passed: files['display/message.js'].includes('export function showResult')})
         },
         message: "Create and export the display function."
       },
       {
         name: "Main Usage",
         test: (files) => {
-          return files['main.js'].includes('import { add, multiply }') &&
+          return new TestResult({passed: files['main.js'].includes('import { add, multiply }') &&
                  files['main.js'].includes('import { showResult }') &&
-                 files['main.js'].includes('console.log')
+                 files['main.js'].includes('console.log')})
         },
         message: "Import and use the functions correctly."
       }

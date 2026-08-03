@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const modulesExportImportChapter = {
   id: 'modules-export-import',
   title: 'Basic Export/Import Syntax',
@@ -117,39 +119,43 @@ const lovedMessage = addHeart("Thank you!")
       {
         name: "Decorator Exports",
         test: (files) => {
-          return files['decorators.js'].includes('export function addStar') &&
+          return new TestResult({passed: files['decorators.js'].includes('export function addStar') &&
                  files['decorators.js'].includes('export function addHeart') &&
-                 files['decorators.js'].includes('return') &&
-                 files['decorators.js'].includes('export function addHeart')
+                 files['decorators.js'].includes('return')})
         },
         message: "Make sure to export both decorator functions."
       },
       {
         name: "String Returns",
         test: (files) => {
-          return files['decorators.js'].includes('return "⭐ ') &&
-                 files['decorators.js'].includes('return "❤️ ')
+          return new TestResult({passed: files['decorators.js'].includes('return "⭐ ') &&
+                 files['decorators.js'].includes('return "❤️ ')})
         },
         message: "Make sure to return the modified string from each function."
       },
       {
         name: "Main Imports",
         test: (files) => {
-          return files['main.js'].includes('import {') &&
+          return new TestResult({passed: files['main.js'].includes('import {') &&
                  files['main.js'].includes('decorator.js') &&
                  files['main.js'].includes('addStar') &&
-                 files['main.js'].includes('addHeart')
+                 files['main.js'].includes('addHeart')})
         },
         message: "Import both decorator functions in main.js"
       },
       {
         name: "Using Decorators",
         test: (files) => {
-          const start = files['main.js'].indexOf('const star')
-          const codeToTest1 = files['decorators.js'].replace(/export/g, '')
-          const codeToTest2 = files['main.js'].slice(start)
-          const {starMessage, lovedMessage} = new Function(codeToTest1 + codeToTest2 + '\n return { starMessage, lovedMessage }')()
-          return starMessage?.includes('⭐') && lovedMessage?.includes('❤️') && starMessage?.length > 2 && lovedMessage?.length > 2
+          try {
+            const start = files['main.js'].indexOf('const star')
+            const codeToTest1 = files['decorators.js'].replace(/export/g, '')
+            const codeToTest2 = files['main.js'].slice(start)
+            const {starMessage, lovedMessage} = new Function(codeToTest1 + codeToTest2 + '\n return { starMessage, lovedMessage }')()
+            const passed = starMessage?.includes('⭐') && lovedMessage?.includes('❤️') && starMessage?.length > 2 && lovedMessage?.length > 2
+            return new TestResult({passed})
+          } catch {
+            return new TestResult({passed: false})
+          }
         },
         message: "Create and print two decorated messages."
       }

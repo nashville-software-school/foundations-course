@@ -107,7 +107,7 @@ console.log(finishedFood)
             const foodArray = new Function(`${code}; return finishedFood;`)()
             return new TestResult({passed:foodArray.length === 8})
           } catch {
-            return TestResult({passed:false})
+            return new TestResult({passed:false})
           }
         },
         message: "Make sure you're adding the correct number of food items to the finishedFood array"

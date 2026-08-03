@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const arrayMethodsChapter = {
   id: 'array-methods',
   title: 'Array Methods',
@@ -34,7 +36,7 @@ fruits.push("Grape")`,
       {
         name: "Array Push",
         test: (code) => {
-          return code.includes('push') && code.includes('Grape')
+          return new TestResult({passed: code.includes('push') && code.includes('Grape')})
         },
         message: "Make sure to use push() to add 'Grape' to the array"
       }

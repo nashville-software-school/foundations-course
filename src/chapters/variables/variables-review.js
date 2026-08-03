@@ -128,7 +128,7 @@ console.log(output)
           try {
             const func = new Function(code + '\n return output')
             const result = func()
-            if (result === undefined) return false
+            if (result === undefined) return new TestResult({passed: false})
 
             const expectedOutput = `There are 124 total photos
 There are 72 photos of women
@@ -150,7 +150,7 @@ Photos will be stored in a Photo Album colored plum`
           try {
             const func = new Function(code + '; return photoStorage')
             const result = func()
-            if (result === undefined) return false
+            if (result === undefined) return new TestResult({passed: false})
             return  new TestResult({passed:result === "Photo Album" &&
                    code.includes('if') &&
                    code.includes('else') &&
@@ -168,7 +168,7 @@ Photos will be stored in a Photo Album colored plum`
           try {
             const func = new Function(code + '\n return albumColor;')
             const result = func()
-            if (result === undefined) return false
+            if (result === undefined) return new TestResult({passed: false})
             return  new TestResult({passed:result === "plum"})
           } catch {
             return  new TestResult({passed:false})
