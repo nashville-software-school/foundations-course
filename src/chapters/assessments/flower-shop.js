@@ -69,7 +69,7 @@ If your code is successful, please review it with a member of the coaching team 
 If you cannot make the code work, make sure you do the three projects in this book of the course.
 
 If you have already done all three projects, but still can't figure out how to make the test pass, sit with a member of the coaching team to help strengthen your knowledge and understanding of the concepts and get your code on the right track.`,
-    exercise: {
+    exercises: [{
         starterCode: `
 const flowers = [
     {
@@ -393,21 +393,21 @@ const flowersAsHTML = () => {
 
     for (const flower of flowers) {
         // Start the article
-        flowersHTMLString += "<article>\n"
+        flowersHTMLString += "<article>\\n"
 
         // Add the flower type as h1
-        flowersHTMLString += "    <h1>" + flower.type + "</h1>\n\n"
+        flowersHTMLString += "    <h1>" + flower.type + "</h1>\\n\\n"
 
         // Add the colors section
-        flowersHTMLString += "    <h2>Colors</h2>\n"
+        flowersHTMLString += "    <h2>Colors</h2>\\n"
         for (const color of flower.colors) {
-            flowersHTMLString += "    <section>" + color + "</section>\n"
+            flowersHTMLString += "    <section>" + color + "</section>\\n"
         }
 
         // Add the USDA zones section
-        flowersHTMLString += "\n    <h2>USDA Zones</h2>\n"
+        flowersHTMLString += "\\n    <h2>USDA Zones</h2>\\n"
         for (const zone of flower.usdaZones) {
-            flowersHTMLString += "    <div>" + zone + "</div>\n"
+            flowersHTMLString += "    <div>" + zone + "</div>\\n"
         }
 
         // Close the article
@@ -415,7 +415,7 @@ const flowersAsHTML = () => {
 
         // Add a newline between articles (except for the last one)
         if (flower !== flowers[flowers.length - 1]) {
-            flowersHTMLString += "\n"
+            flowersHTMLString += "\\n"
         }
     }
 
@@ -557,5 +557,5 @@ const flowersAsHTML = () => {
                 message: "The test code expected that 9 <article> elements should be in the HTML representation. There were unexpected number of articles in the string. The test code expected that 41 <section> elements should be in the HTML representation. There were unexpected number of sections in the string. The test code expected that 51 <div> elements should be in the HTML representation. There were unexpected number of divs in the string."
             },
         ],
-    },
+    }]
 };

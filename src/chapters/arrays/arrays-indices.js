@@ -70,7 +70,7 @@ I am cleaning the following glasses:
 - Wine glass
 - Whiskey glass
 \`\`\``,
-  exercise: {
+  exercises: [{
     starterCode: `// Here are all the dirty dishes
 const dirtyDishes = [
     "Soup bowl",
@@ -91,9 +91,18 @@ console.log("I am cleaning the following glasses:")
 console.log(\`- \${firstGlass}\`)
 console.log(\`- \${secondGlass}\`)
 console.log(\`- \${thirdGlass}\`)`,
-    solution: `const firstGlass = dirtyDishes[1]  // Water glass
-const secondGlass = dirtyDishes[3] // Wine glass
-const thirdGlass = dirtyDishes[5]  // Whiskey glass`,
+    solution: `const dirtyDishes = [
+    "Soup bowl",
+    "Water glass",
+    "Salad plate",
+    "Wine glass",
+    "Dinner plate",
+    "Whiskey glass"
+]
+
+const firstGlass = dirtyDishes[1]
+const secondGlass = dirtyDishes[3]
+const thirdGlass = dirtyDishes[5]`,
     tests: [
       {
         name: "First Glass",
@@ -153,5 +162,5 @@ const thirdGlass = dirtyDishes[5]  // Whiskey glass`,
         message: "Make sure to use square bracket notation array[index] to access index 5 and get the Whiskey glass."
       }
     ]
-  }
+  }]
 }
