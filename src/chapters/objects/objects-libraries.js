@@ -44,7 +44,7 @@ The starter code contains a book object that has properties for the book's ISBN,
 Your task is to access the author's last name and the librarian's last name using dot notation. The variables \`bookAuthor\` and \`checkedInBy\` are already declared for you, but they are not assigned any values yet.
 
 `,
-    exercise: {
+    exercises: [{
         starterCode: `const book = {
     isbn: "0192837465",
     title: "Dreamland Chronicles",
@@ -154,5 +154,5 @@ console.log(\`Checked In By: \${checkedInBy}\`)
                 message: "Make sure you're using dot notation (book.checkedIn.librarian.lastName) to access the librarian's last name property."
             }
         ]
-    }
+    }]
 }

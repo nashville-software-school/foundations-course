@@ -23,7 +23,7 @@ Add the note’s text wrapped in an \`<article>\` tag
 Then loop through each topic using another \`for...of\` loop
 Add each topic wrapped in a \`<section>\` tag
 `,
-    exercise: {
+    exercises: [{
       starterCode: `const notes = [
   {
     id: 1,
@@ -160,5 +160,5 @@ console.log(allHTML);
             message: "You should use template literals with ${} to format each string"
           }
       ],
-    },
+    }],
   };

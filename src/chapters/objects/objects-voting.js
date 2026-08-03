@@ -39,7 +39,7 @@ Use string interpolation to return the following string from the function. Remem
 }
 \`\`\`
 `,
-  exercise: {
+  exercises: [{
     starterCode: `const votingLocation = {
   name: "Commonwealth Community Center",
   address: {
@@ -127,5 +127,5 @@ console.log(output)
         message: "Make sure your output string exactly matches the required format."
       }
     ]
-  }
+  }]
 }

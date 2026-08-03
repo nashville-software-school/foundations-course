@@ -66,7 +66,7 @@ console.log(greeting)  // "Hello, John!"
 ## Exercise: Name Formatter
 
 Create modules with simple functions that work with names.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'names.js': `// Create two functions:
 // 1. makeUpperCase(name) - Makes name all caps
@@ -125,5 +125,5 @@ console.log(titled)  // "Mr. BOB SMITH"`
         message: "Import and use the functions to format the name."
       }
     ]
-  }
+  }]
 }

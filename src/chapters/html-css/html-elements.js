@@ -130,7 +130,7 @@ In this exercise, you'll create a simple profile page using semantic HTML elemen
 
 
 `,
-  exercise: {
+  exercises: [{
     starterCode: {
       'index.html': `<!DOCTYPE html>
 <html>
@@ -309,5 +309,5 @@ footer {
         message: "Make sure your profile page includes a header with navigation links (Home, Projects, Education), a main section with an article containing your name and two sections (career history and why you want to be a software developer), and a footer with your name, the current year, and your email address."
       }
     ]
-  }
+  }]
 }

@@ -122,7 +122,7 @@ Your job is to iterate the \`coffees\` array and increment the correct value eac
 \`I need xx orders of the medium coffee with cream in them\`
 \`I need xx orders of the toasty and dark coffees with cream and sugar in them\`
 `,
-  exercise: {
+  exercises: [{
     starterCode: `const coffees = [
     "light colombian roast", "ethiopian toasty bean",
     "hawaiian dark roast", "guatemalan blend medium roast",
@@ -220,5 +220,5 @@ console.log(output)
         message: "Make sure you're using String.includes() to check for each roast type"
       }
     ]
-  }
+  }]
 }

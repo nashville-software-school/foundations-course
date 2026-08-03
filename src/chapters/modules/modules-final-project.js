@@ -59,7 +59,7 @@ Your files should be organized like this:
 ## Exercise: Emoji Sticker Maker
 
 Build the sticker maker by completing each module.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'emojis.js': `// Create and export:
 // 1. List of emojis (animals, foods, faces)
@@ -185,5 +185,5 @@ console.log("Your sticker:", sticker)`
         message: "Create main program that makes a sticker."
       }
     ]
-  }
+  }]
 }

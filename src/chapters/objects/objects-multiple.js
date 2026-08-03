@@ -92,7 +92,7 @@ Both flower objects should have the following keys.
 * \`thorny\` will be be a boolean value of true or false.
 
 You can decide on the values for each of the properties.`,
-  exercise: {
+  exercises: [{
     starterCode: `// Create the properties for a tulip object here.
 const tulip = {
 
@@ -166,5 +166,5 @@ const rose = {
 Color should be a string. stemLength should be a number. growingSeason should be a string. thorny should be a boolean.`
       }
     ]
-  }
+  }]
 }

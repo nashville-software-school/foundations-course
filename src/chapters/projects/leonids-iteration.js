@@ -126,7 +126,7 @@ Wooden Train
 Stuffed Rabbit
 Painted Kite
   `,
-  exercise: {
+  exercises: [{
     starterCode: ``,
     solution: `// Define the toyInventory array with three toy objects
 const toyInventory = [
@@ -229,5 +229,5 @@ for (const toy of toyInventory) {
           message: "Your code should log all three toy names in the correct order"
         }
     ],
-  },
+  }],
 };

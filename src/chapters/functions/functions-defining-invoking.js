@@ -75,7 +75,7 @@ Complete this exercise by:
 2. Making it display "Touchdown!"
 3. Invoking the function twice
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// 1. Define your function here
 
 
@@ -144,5 +144,5 @@ celebrateScore()
         message: "Make sure your function is properly defined and called twice, outputting 'Touchdown!' each time."
       }
     ]
-  }
+  }]
 }

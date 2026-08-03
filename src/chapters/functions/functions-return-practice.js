@@ -114,7 +114,7 @@ export const functionsReturnPracticeChapter = {
   2. Store a result in a variable
   3. Log the variable to display your result
   `,
-    exercise: {
+    exercises: [{
       starterCode: `// Create your arrow function here
   // Example: calculateGameScore(500, 2.5) should return "High Score!"
   // because 500 × 2.5 = 1250, which is >= 1000
@@ -274,5 +274,5 @@ export const functionsReturnPracticeChapter = {
           message: "Make sure you log the result of your function to the console."
         }
       ]
-    }
+    }]
   }

@@ -87,7 +87,7 @@ console.log(makeMessage(result))
 ## Exercise: Simple Calculator
 
 Create a simple calculator with organized files.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'math/add.js': `// Create and export:
 // add(a, b) - Adds two numbers`,
@@ -153,5 +153,5 @@ console.log(showResult(result))`
         message: "Import and use the functions correctly."
       }
     ]
-  }
+  }]
 }

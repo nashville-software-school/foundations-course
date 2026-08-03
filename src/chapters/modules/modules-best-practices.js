@@ -114,7 +114,7 @@ import {
 ## Exercise: Fix Bad Code
 
 Take some messy code and make it better using these rules.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'stuff.js': `// This file needs to be split up!
 
@@ -173,5 +173,5 @@ export function calculate(number) {
         message: "Keep helper functions private (don't export them)."
       }
     ]
-  }
+  }]
 }

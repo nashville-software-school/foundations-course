@@ -97,7 +97,7 @@ export function getB() {
 ## Exercise: Greeting Card Maker
 
 Create a simple greeting card system where files work together.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'decorations.js': `// Create two functions:
 // 1. addEmoji(text, emoji) - Adds emoji before and after text
@@ -163,5 +163,5 @@ export function createCard(name) {
         message: "Create card function that uses message function."
       }
     ]
-  }
+  }]
 }

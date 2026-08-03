@@ -62,7 +62,7 @@ Our net monthly income is 6378.
 \`\`\`
 
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// Monthly income
 const myIncome = 5478
 const spouseIncome = 4028
@@ -116,5 +116,5 @@ console.log(statement)
         message: "Make sure to calculate total income and expenses correctly"
       }
     ]
-  }
+  }]
 }

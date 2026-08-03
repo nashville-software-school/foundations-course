@@ -86,7 +86,7 @@ console.log(blueMessage)   // "🔵 Go"
 Create simple functions that decorate text with emojis. Split the code into two files:
 1. A module with text decorator functions
 2. A main file that uses these decorators`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'decorators.js': `// Create and export two functions:
 // 1. addStar(text) - Adds ⭐ before the text
@@ -154,5 +154,5 @@ const lovedMessage = addHeart("Thank you!")
         message: "Create and print two decorated messages."
       }
     ]
-  }
+  }]
 }

@@ -91,7 +91,7 @@ console.log(messages.success)  // "✅ Success"
 ## Exercise: Number Tools
 
 Create a module with different number tools and use them in different ways.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'numbers.js': `// Create and export:
 // 1. add(a, b) - Adds two numbers
@@ -158,5 +158,5 @@ console.log("Doubled:", doubled)`
         message: "Import and use the number tools correctly."
       }
     ]
-  }
+  }]
 }

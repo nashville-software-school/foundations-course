@@ -102,7 +102,7 @@ addPoints(10)
 Let's create a simple score tracking system using modules. We'll split the code into two files:
 1. A module for handling the score
 2. A main file that uses the score module`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'score.js': `// Create two simple functions:
 // 1. addPoints(points) - Adds points to score
@@ -158,5 +158,5 @@ console.log(getScore())`
         message: "Add 10 points and then show the score."
       }
     ]
-  }
+  }]
 }

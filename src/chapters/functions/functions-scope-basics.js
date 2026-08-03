@@ -103,7 +103,7 @@ The code below has some scope problems. Fix them by moving variables to the righ
 2. Use the right variable type so the score can be updated
 3. Make sure both functions can access and modify the score variable
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// This code has scope problems!
 const displayScore = () => {
     console.log("Score: " + score)
@@ -250,5 +250,5 @@ displayScore()`,
         message: "Don't declare 'score' inside the functions - they should both use the global score variable."
       }
     ]
-  }
+  }]
 }

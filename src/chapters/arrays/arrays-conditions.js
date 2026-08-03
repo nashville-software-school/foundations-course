@@ -57,7 +57,7 @@ There is some beginning code in the code editor. You need to complete it. You ne
 * If the current ingredient is "egg", then add "biscuit" to the finished foods array
 * If the current ingredient is "beef patty", then add "burger" to the finished foods array
 * If the current ingredient is "potato", then add "fries" to the finished foods array`,
-  exercise: {
+  exercises: [{
     starterCode: `const rawIngredients = [ "beef patty", "egg", "potato", "egg", "potato", "beef patty", "beef patty", "potato" ]
 const finishedFood = []
 
@@ -136,5 +136,5 @@ console.log(finishedFood)
 * Make sure to declare the loop variable with var,let or const keywords`
       }
     ]
-  }
+  }]
 }

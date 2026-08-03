@@ -80,7 +80,7 @@ export function getItems() {
 ## Exercise: Favorite Things
 
 Create modules that store and work with lists of favorite things.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'movies.js': `// Create and export:
 // 1. A list of movies
@@ -146,5 +146,5 @@ console.log("Number of songs:", getSongCount())`
         message: "Import and use the functions to work with the lists."
       }
     ]
-  }
+  }]
 }

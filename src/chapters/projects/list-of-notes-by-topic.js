@@ -32,7 +32,7 @@ You are given an array of \`notes\`. Each note has a \`topics\` property, which 
    - Print a heading: \`*** Notes with the <topic> topic ***\`
    - Print the \`filteredNotes\` array
 `,
-    exercise: {
+    exercises: [{
       starterCode: `const notes = [
   {
     id: 1,
@@ -171,5 +171,5 @@ console.log(filteredNotes);
             message: "You must log a header with the topic name using string interpolation"
           }
       ],
-    },
+    }],
   };

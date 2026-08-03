@@ -93,7 +93,7 @@ createGreeting("Jordan", "calm")    // 👋 Welcome, Jordan
 
 Complete the exercise by calling the \`calculateTotal\` function with different arguments to calculate prices with tax. Run your code to see the results in the console.
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// This function adds 10% tax to a price
 function calculateTotal(price) {
     const total = price + (price * 0.1)
@@ -130,5 +130,5 @@ calculateTotal(25.50)`,
         message: "Make sure you've called calculateTotal with all three prices: 50, 99.99, and 25.50"
       }
     ]
-  }
+  }]
 }

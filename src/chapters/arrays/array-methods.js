@@ -23,7 +23,7 @@ const fruits = ["Apple", "Banana"]
 
 Try it in the editor!
 `,
-  exercise: {
+  exercises: [{
     starterCode: `const fruits = ["Apple", "Banana"]
 
 // Add "Grape" to the end of the array
@@ -39,5 +39,5 @@ fruits.push("Grape")`,
         message: "Make sure to use push() to add 'Grape' to the array"
       }
     ]
-  }
+  }],
 }

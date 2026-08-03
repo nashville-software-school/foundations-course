@@ -69,7 +69,7 @@ const [leftValue, rightValue] = stringVariable.split(":")
 ### Logical Operators
 
 You will need to use the logical OR \`||\` operator in some of your \`if\` conditions.`,
-    exercise: {
+    exercises: [{
         starterCode: `// Sample monthly expenses
 const monthlyExpenses = [
     "Kroger Groceries:251", "Uber:39", "Netflix Movie Service:12",
@@ -230,5 +230,5 @@ console.log(\`Average Expense: \${averageExpense.toFixed(2)}\`)
                 message: "Make sure you're categorizing each expense correctly"
             }
         ]
-    }
+    }]
 }

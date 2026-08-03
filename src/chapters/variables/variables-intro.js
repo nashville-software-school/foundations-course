@@ -142,7 +142,7 @@ Create variables for each month's electric bill and calculate the yearly total. 
 
 You can use the \`let\` keyword to declare the variables, and then use the \`const\` keyword to declare a variable for the total. You will need to use the \`console.log()\` function to print out the total.
 `,
-    exercise: {
+    exercises: [{
         starterCode: `// January's electric bill declared with \`let\`
 let januaryBill = 145
 
@@ -253,5 +253,5 @@ console.log(yearlyTotal)`,
                 message: "You should console.log(yearlyTotal) to print the total to the console"
               },
         ]
-    }
+    }]
 }

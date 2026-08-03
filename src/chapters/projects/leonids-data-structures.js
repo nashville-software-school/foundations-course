@@ -103,7 +103,7 @@ The function should:
 - Return the **toy object** that matches the given \`id\`  
 - If no toy is found, return \`null\`
   `,
-  exercise: {
+  exercises: [{
     starterCode: `
     const inventory = [
   { id: 101, name: "Hand-Carved Wooden Train", maker: "Leonid" },
@@ -235,5 +235,5 @@ function findToyById(toys, id) {
         message: "Should not return a different toy with a wrong id"
       }
     ],
-  },
+  }],
 };

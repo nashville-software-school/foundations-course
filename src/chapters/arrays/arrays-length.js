@@ -37,7 +37,7 @@ Put that code into the code editor and run it to see the output.
 ## Exercise: Grocery Shopper
 
 In this exercise, you will write code to calculate your average monthly grocery expenses. So far, you have collected five months' worth of expenses.`,
-  exercise: {
+  exercises: [{
     starterCode: `const monthlyExpenses = [ 201, 189, 132, 238, 195 ]
 let totalExpense = 0
 
@@ -112,5 +112,5 @@ console.log(\`My total expenses are \${totalExpense} and my average monthly expe
         message: "Make sure your output matches the required format"
       }
     ]
-  }
+  }]
 }

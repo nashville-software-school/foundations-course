@@ -105,7 +105,7 @@ console.log(message)  // "Count is: 1"
 Let's organize some animal sound code. Split this into two simple modules:
 1. One for animal sounds
 2. One for creating messages`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'sounds.js': `// Create two functions:
 // 1. getDogSound() - Returns "Woof!"
@@ -163,5 +163,5 @@ console.log(catMessage)`
         message: "Import and use both modules to create animal messages."
       }
     ]
-  }
+  }]
 }

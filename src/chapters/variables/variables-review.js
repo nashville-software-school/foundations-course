@@ -64,7 +64,7 @@ Photos will be stored in a xxx colored xxx
 \`\`\`
 
 Try it in the editor!`,
-  exercise: {
+  exercises: [{
     starterCode: `// Initialize variables for photo counts
 let photoStorage = "Envelopes"
 const femalePhotos = 72  // More women for our test case
@@ -177,5 +177,5 @@ Photos will be stored in a Photo Album colored plum`
         message: "Determine album color based on comparing femalePhotos and malePhotos"
       }
     ]
-  }
+  }]
 }

@@ -117,7 +117,7 @@ You've had a veeeery long week at work. Friday night comes around and you're exh
 But sometimes you just don't wanna. You decide that if you get up before 9, then you will go to yoga. Otherwise, you'll skip it and watch your favorite shows on Netflix all day.
 
 Try it in the editor!`,
-  exercise: {
+  exercises: [{
     starterCode: `// Set this to false since you slept in
 const iWokeUpEarly =
 
@@ -170,5 +170,5 @@ if (iWokeUpEarly === true) {
         message: "When iWokeUpEarly is false, output the Netflix binge message"
       }
     ]
-  }
+  }]
 }

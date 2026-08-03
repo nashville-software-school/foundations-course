@@ -43,7 +43,7 @@ In the exercise in this chapter, you will learn how to access specific items in 
 
 Take the 5 values assigned to the 5 variables and store them in the provided blank array instead.
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// Current setup
 const yellowFruit = "Banana"
 const orangeFruit = "Orange"
@@ -86,5 +86,5 @@ console.log(fruits)`,
         message: "Make sure you've included all fruits in the array in the correct order"
       }
     ]
-  }
+  }]
 }

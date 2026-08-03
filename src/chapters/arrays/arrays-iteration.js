@@ -95,7 +95,7 @@ While you learn JavaScript, there are many topics that you will cover. Take the 
 * Objects
 * Modules
 * Events`,
-  exercise: {
+  exercises: [{
     starterCode: `const topics = [  ]
 
 for () {
@@ -172,5 +172,5 @@ for (const topic of topics) {
         message: "Make sure to use console.log() to output each topic in the array"
       }
     ]
-  }
+  }]
 }
