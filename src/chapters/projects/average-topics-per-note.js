@@ -26,7 +26,7 @@ Then log the **average as a number**, rounded to one decimal place (e.g., \`2.0\
 *** Average Topics Per Note *** 2.0
 
 `,
-    exercise: {
+    exercises: [{
       starterCode: `const notes = [
   {
     id: 1,
@@ -173,5 +173,5 @@ console.log(average);`,
           message: "You should use .toFixed(1) to round the average to one decimal place"
         }
       ],
-    },
+    }]
   };

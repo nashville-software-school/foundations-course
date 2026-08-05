@@ -69,7 +69,7 @@ You must use **\`notes.push()\` three times**, once for each new object.
   date: "2021-02-25"
 }
 `,
-    exercise: {
+    exercises: [{
       starterCode: `const notes = [{
   id: 1,
   text: "Discussed pricing strategy with Leonid.",
@@ -164,5 +164,5 @@ notes.push({
           message: "You should use notes.push() exactly three times"
         }
       ],
-    },
+    }],
   };

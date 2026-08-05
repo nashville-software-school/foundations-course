@@ -83,7 +83,7 @@ sayTimeOfDay("night")    // Displays: Good night!
 
 The function below always says the same thing. Modify it to use a parameter so it can work with different activities.
 `,
-  exercise: {
+  exercises: [{
     starterCode: `/*
   Currently this function can only talk about running.
   Change it to work with any activity.
@@ -185,5 +185,5 @@ function describeActivity() {
         message: "Make sure your output format is correct: 'I love [activity]!'"
       }
     ]
-  }
+  }]
 }

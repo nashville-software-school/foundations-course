@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const modulesBestPracticesChapter = {
   id: 'modules-best-practices',
   title: 'Module Best Practices',
@@ -114,7 +116,7 @@ import {
 ## Exercise: Fix Bad Code
 
 Take some messy code and make it better using these rules.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'stuff.js': `// This file needs to be split up!
 
@@ -152,26 +154,26 @@ export function calculate(number) {
       {
         name: "Math Module",
         test: (files) => {
-          return files['math.js'].includes('export function calculate') &&
-                 !files['math.js'].includes('export function addOne')
+          return new TestResult({passed: files['math.js'].includes('export function calculate') &&
+                 !files['math.js'].includes('export function addOne')})
         },
         message: "Create a math module with proper exports."
       },
       {
         name: "Text Module",
         test: (files) => {
-          return files['text.js'].includes('export function makeUpperCase')
+          return new TestResult({passed: files['text.js'].includes('export function makeUpperCase')})
         },
         message: "Create a text module with clear function names."
       },
       {
         name: "No Helpers Exported",
         test: (files) => {
-          return !files['math.js'].includes('export function help') &&
-                 files['math.js'].includes('function addOne')
+          return new TestResult({passed: !files['math.js'].includes('export function help') &&
+                 files['math.js'].includes('function addOne')})
         },
         message: "Keep helper functions private (don't export them)."
       }
     ]
-  }
+  }]
 }

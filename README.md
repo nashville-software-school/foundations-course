@@ -190,7 +190,7 @@ jobs:
         run: |
           echo "VITE_OAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}" > .env
           echo "VITE_OAUTH_CLIENT_SECRET=${{ secrets.OAUTH_CLIENT_SECRET }}" >> .env
-          echo "VITE_PROXY_DOMAIN=https://authproxy.nss.team" >> .env
+          echo "VITE_PROXY_DOMAIN=https://7jwmq7y9ol.execute-api.us-east-2.amazonaws.com" >> .env
 
       # Install dependencies, build, deploy
 ```

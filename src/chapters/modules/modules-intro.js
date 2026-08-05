@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const modulesIntroChapter = {
   id: 'modules-intro',
   title: 'Introduction to Modules',
@@ -102,7 +104,7 @@ addPoints(10)
 Let's create a simple score tracking system using modules. We'll split the code into two files:
 1. A module for handling the score
 2. A main file that uses the score module`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'score.js': `// Create two simple functions:
 // 1. addPoints(points) - Adds points to score
@@ -135,28 +137,28 @@ console.log(getScore())`
       {
         name: "Score Functions",
         test: (files) => {
-          return files['score.js'].includes('export function addPoints') &&
-                 files['score.js'].includes('export function getScore')
+          return new TestResult({passed: files['score.js'].includes('export function addPoints') &&
+                 files['score.js'].includes('export function getScore')})
         },
         message: "Make sure to export both functions from score.js using the 'export' keyword."
       },
       {
         name: "Game Imports",
         test: (files) => {
-          return files['game.js'].includes('import {') &&
+          return new TestResult({passed: files['game.js'].includes('import {') &&
                  files['game.js'].includes('addPoints') &&
-                 files['game.js'].includes('getScore')
+                 files['game.js'].includes('getScore')})
         },
         message: "Make sure to import both functions from score.js."
       },
       {
         name: "Using Functions",
         test: (files) => {
-          return files['game.js'].includes('addPoints(10)') &&
-                 files['game.js'].includes('getScore()')
+          return new TestResult({passed: files['game.js'].includes('addPoints(10)') &&
+                 files['game.js'].includes('getScore()')})
         },
         message: "Add 10 points and then show the score."
       }
     ]
-  }
+  }]
 }

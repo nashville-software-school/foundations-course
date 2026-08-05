@@ -77,7 +77,7 @@ Here are some common patterns for function names:
 
 Look at these poorly named functions and rename them to better describe what they do. The comments tell you what each function is supposed to do.
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// This function checks if a number is greater than 100
 function number(num) {
     return num > 100
@@ -215,5 +215,5 @@ function calculateDiscountedPrice(price) {
         message: "Make sure you've only changed the function names, not the functionality of the functions."
       }
     ]
-  }
+  }]
 }

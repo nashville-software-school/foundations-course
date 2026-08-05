@@ -151,7 +151,7 @@ export const functionsReviewChapter = {
      - Get a joke on the given topic using \`tellJoke\`
      - Return both as a combined message: "[greeting] [joke]"
   `,
-    exercise: {
+    exercises: [{
         starterCode: `// 1. Create a greeting function
 const createGreeting = (name, time) => {
   // If time is "morning" OR the name starts with "A", return "Good morning, [name]!"
@@ -445,5 +445,5 @@ console.log(interaction);
                 message: "Your greetPeople function should use a loop to iterate through the array"
             }
         ]
-    }
+    }]
 }

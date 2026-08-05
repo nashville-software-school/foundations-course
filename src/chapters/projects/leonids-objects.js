@@ -44,7 +44,7 @@ You must create three separate toy objects using these variable names:
 2. \`stuffedRabbit\`  
 3. \`kite\`
   `,
-  exercise: {
+  exercises: [{
     starterCode: ``,
     solution: `// Define the woodenTrain object
 const woodenTrain = {
@@ -155,5 +155,5 @@ const kite = {
         message: "Each toy should have at least one property set to null"
       }
     ],
-  },
+  }],
 };

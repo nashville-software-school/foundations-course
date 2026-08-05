@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const modulesFunctionsChapter = {
   id: 'modules-functions',
   title: 'Modules and Functions',
@@ -66,7 +68,7 @@ console.log(greeting)  // "Hello, John!"
 ## Exercise: Name Formatter
 
 Create modules with simple functions that work with names.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'names.js': `// Create two functions:
 // 1. makeUpperCase(name) - Makes name all caps
@@ -103,27 +105,27 @@ console.log(titled)  // "Mr. BOB SMITH"`
       {
         name: "Name Functions",
         test: (files) => {
-          return files['names.js'].includes('export function makeUpperCase') &&
-                 files['names.js'].includes('export function makeLowerCase')
+          return new TestResult({passed: files['names.js'].includes('export function makeUpperCase') &&
+                 files['names.js'].includes('export function makeLowerCase')})
         },
         message: "Create and export both name functions."
       },
       {
         name: "Format Function",
         test: (files) => {
-          return files['format.js'].includes('export function addTitle')
+          return new TestResult({passed: files['format.js'].includes('export function addTitle')})
         },
         message: "Create and export the title function."
       },
       {
         name: "Main Usage",
         test: (files) => {
-          return files['main.js'].includes('import { makeUpperCase }') &&
+          return new TestResult({passed: files['main.js'].includes('import { makeUpperCase }') &&
                  files['main.js'].includes('import { addTitle }') &&
-                 files['main.js'].includes('console.log')
+                 files['main.js'].includes('console.log')})
         },
         message: "Import and use the functions to format the name."
       }
     ]
-  }
+  }]
 }

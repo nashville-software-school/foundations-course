@@ -95,7 +95,7 @@ In this exercise, you’ll define an array that contains
 - **Do not** assign each toy object to a separate variable — define them directly in the array
 - You may add more properties if you like, but at least one object must include a \`null\` value for one of its properties
   `,
-  exercise: {
+  exercises: [{
     starterCode: ``,
     solution: `const toyInventory = [
   {
@@ -188,5 +188,5 @@ In this exercise, you’ll define an array that contains
       }
       
     ],
-  },
+  }],
 };

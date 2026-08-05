@@ -86,7 +86,7 @@ Practice your boolean logic in the editor.
 
 You will need more than one \`else if\` condition to write this code. You will also need to use the \`>=\` and \`<\` operators to check the temperature. You will also need to use the \`&&\` operator to check for multiple conditions in a single \`if\` statement.`
 ,
-  exercise: {
+  exercises: [{
     starterCode: `let torsoClothing = ""
 let legClothing = ""
 let footWear = ""
@@ -174,5 +174,5 @@ console.log(\`This is what I'm wearing today:
         message: "Make sure to use if/else if statements with proper comparison operators (>=, <)"
       }
     ]
-  }
+  }]
 }

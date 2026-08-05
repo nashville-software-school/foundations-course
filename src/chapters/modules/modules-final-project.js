@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const modulesFinalProjectChapter = {
   id: 'modules-final-project',
   title: 'Final Project: Emoji Sticker Maker',
@@ -59,7 +61,7 @@ Your files should be organized like this:
 ## Exercise: Emoji Sticker Maker
 
 Build the sticker maker by completing each module.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'emojis.js': `// Create and export:
 // 1. List of emojis (animals, foods, faces)
@@ -145,45 +147,45 @@ console.log("Your sticker:", sticker)`
       {
         name: "Emoji Data",
         test: (files) => {
-          return files['emojis.js'].includes('export const emojis') &&
+          return new TestResult({passed: files['emojis.js'].includes('export const emojis') &&
                  files['emojis.js'].includes('export function getRandomEmoji') &&
-                 files['emojis.js'].includes('export function getEmojisByType')
+                 files['emojis.js'].includes('export function getEmojisByType')})
         },
         message: "Create emoji data and functions to work with it."
       },
       {
         name: "Border Functions",
         test: (files) => {
-          return files['borders.js'].includes('export function addStarBorder') &&
-                 files['borders.js'].includes('export function addHeartBorder')
+          return new TestResult({passed: files['borders.js'].includes('export function addStarBorder') &&
+                 files['borders.js'].includes('export function addHeartBorder')})
         },
         message: "Create functions for adding borders."
       },
       {
         name: "Effect Functions",
         test: (files) => {
-          return files['effects.js'].includes('export function makeBigger') &&
-                 files['effects.js'].includes('export function addSparkle')
+          return new TestResult({passed: files['effects.js'].includes('export function makeBigger') &&
+                 files['effects.js'].includes('export function addSparkle')})
         },
         message: "Create functions for adding effects."
       },
       {
         name: "Sticker Creation",
         test: (files) => {
-          return files['sticker.js'].includes('import {') &&
-                 files['sticker.js'].includes('export function makeSticker')
+          return new TestResult({passed: files['sticker.js'].includes('import {') &&
+                 files['sticker.js'].includes('export function makeSticker')})
         },
         message: "Create sticker function that uses borders and effects."
       },
       {
         name: "Main Program",
         test: (files) => {
-          return files['main.js'].includes('import { getRandomEmoji }') &&
+          return new TestResult({passed: files['main.js'].includes('import { getRandomEmoji }') &&
                  files['main.js'].includes('import { makeSticker }') &&
-                 files['main.js'].includes('console.log')
+                 files['main.js'].includes('console.log')})
         },
         message: "Create main program that makes a sticker."
       }
     ]
-  }
+  }]
 }

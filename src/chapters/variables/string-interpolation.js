@@ -52,7 +52,7 @@ Now you can practice making variables that reference strings which describe elec
 
 Try it in the editor!
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// Create variables for your electronics
 const computer = ""
 const phone = ""
@@ -109,5 +109,5 @@ const allElectronics = \`I have the following electronic devices. My \${televisi
         message: "Make sure to use string interpolation with backticks and ${} syntax"
       }
     ]
-  }
+  }]
 }

@@ -72,7 +72,7 @@ Instructions:
 - Toy dimensions should are specified as numbers with width & height 
     name, category, ageRecommendation, isBatteryOperated, features, dimensions
 - Your solution should pass the provided test cases.`,
-  exercise: {
+  exercises: [{
     starterCode: `function createToy(name, category, ageRecommendation, isBatteryOperated, features, dimensions) {
     return {
         name,
@@ -198,5 +198,5 @@ const myToy = createToy(
         message: "What data type should represent the toy’s dimensions? What data type should dimensions height and width be?",
       },
     ],
-  },
+  }],
 };

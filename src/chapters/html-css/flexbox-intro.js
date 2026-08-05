@@ -92,7 +92,7 @@ In this exercise, you'll create a simple navigation bar using flexbox. Your task
 
 Use the editor to write your HTML and CSS code, then click the "Run" button to see the result.
 `,
-  exercise: {
+  exercises: [{
     starterCode: {
       'index.html': `<!DOCTYPE html>
 <html>
@@ -220,5 +220,5 @@ body {
         message: "Make sure your CSS uses 'display: flex' to create a flex container for the navbar."
       }
     ]
-  }
+  }]
 };

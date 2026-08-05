@@ -162,7 +162,7 @@ export const functionsConditionsChapter = {
   - Day of week (weekends cost $2 more)
   - Base ticket price is $10
   `,
-    exercise: {
+    exercises: [{
       starterCode: `const calculateTicketPrice = (age, isWeekend) => {
       // 1. Start with the base ticket price of $10
 
@@ -195,7 +195,10 @@ export const functionsConditionsChapter = {
       }
 
       return price
-  }`,
+  }
+
+const adultWeekdayResult = calculateTicketPrice(25, false)
+console.log(adultWeekdayResult)`,
       tests: [
         {
           name: "Regular Adult on Weekday",
@@ -306,5 +309,5 @@ export const functionsConditionsChapter = {
           message: "Make sure you invoke your function, store the result in a variable, and pass that variable to console.log()"
         }
       ]
-    }
+    }]
   }

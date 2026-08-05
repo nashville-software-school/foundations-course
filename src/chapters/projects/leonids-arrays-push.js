@@ -90,7 +90,7 @@ Use these **exact toy names and prices**:
 | Stuffed Rabbit  | 25             |
 | Painted Kite    | 20             |
   `,
-  exercise: {
+  exercises: [{
     starterCode: ``,
     solution: `
     const toyInventory = [];
@@ -237,5 +237,5 @@ toyInventoryCollection.push({ name: "Painted Kite", priceInDollars: 20 });`,
           message: "The pushed objects must match the exact name and price values"
         }
     ],
-  },
+  }],
 };

@@ -118,7 +118,7 @@ That would generate the following HTML string.
 The Luminous Association of Personality Disorders (LAPD) has a yearly conference in Las Vegas where professional psychologists and cognitive scientists gather to discuss the latest research into aberrant mental disorders that affect people around the world. The software developer that maintain the entire list of known personality disorders have sent you the list so that you can display them on the LAPD conference website. The format for the data is somewhat bizarre.
 
 They sent them all in one large string, with each disorder separated by the following characters: \`|$|\`.`,
-  exercise: {
+  exercises: [{
     starterCode: `// The string containing all personality disorders
 const disorders = "Depression|$|Bipolar|$|Manic|$|Anxiety|$|Anorexia|$|Posttraumtic Stress|$|Seasonal Affective|$|Bulimia"
 
@@ -202,5 +202,5 @@ console.log(output)
         message: "Make sure you're adding the opening and closing div tags for the output"
       },
     ]
-  }
+  }]
 }

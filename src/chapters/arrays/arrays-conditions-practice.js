@@ -50,7 +50,7 @@ There is an array already in the code editor of your tracked hours of sleep. You
 I was grumpy on 87 days.
 I was happy on 62 days.
 \`\`\``,
-  exercise: {
+  exercises: [{
     starterCode: `// Don't add or remove anything from this array
 const hours = [ 6, 9, 7, 8, 6, 6, 8, 5, 9, 8, 7, 6, 7, 7, 8, 6, 9 ]
 const grumpyHours = []
@@ -109,5 +109,5 @@ I was happy on \${happyHours.length} days.\`)`,
         message: "Make sure the grumpyHours array only contains hours less than 7 and the happyHours array only contains hours greater than or equal to 7"
       }
     ]
-  }
+  }]
 }

@@ -62,7 +62,7 @@ const toyBrand = gypsy.favoriteToy.brand
 ## Practice: Sales Associate Email
 
 You work for a car dealership, and you want to get the email address of each sales associate. In the starter code provided, return the email address of the sales associate.`,
-  exercise: {
+  exercises: [{
     starterCode: `const salesAssociate = {
     firstName: "Rachel",
     lastName: "Martinez",
@@ -125,5 +125,5 @@ console.log(associateEmail)`,
       
     ]
 
-  }
+  }]
 }

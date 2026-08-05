@@ -111,7 +111,7 @@ Create a score keeping system with parameters and scope. You'll need to:
 4. Return an appropriate message about the result
 5. Test your function with multiple calls
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// The global high score is already defined
 let highScore = 0
 
@@ -279,5 +279,5 @@ console.log(checkHighScore("Charlie", 80))`,
         message: "Your function should update the high score when beaten but leave it unchanged otherwise."
       }
     ]
-  }
+  }]
 }

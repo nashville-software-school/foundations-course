@@ -101,7 +101,7 @@ Remember that string interpolation requires the backtick character and \`\${vari
 \`\`\`html
 Our combined monthly income is xxx. Our net monthly income is xxx.
 \`\`\``,
-    exercise: {
+    exercises: [{
         starterCode: `// Your monthly income
 const myIncome = 4388
 
@@ -196,5 +196,5 @@ console.log(output)
 * Make sure you use string interpolation`
             }
         ]
-    }
+    }]
 }
