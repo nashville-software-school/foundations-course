@@ -69,7 +69,7 @@ In this exercise, you'll create a card layout using flexbox container properties
 
 Use the editor to write your HTML and CSS code, then click the "Run" button to see the result.
 `,
-  exercise: {
+  exercises: [{
     starterCode: {
       'index.html': `<!DOCTYPE html>
 <html>
@@ -250,5 +250,5 @@ h1 {
         message: "Make sure your CSS uses 'display: flex' and 'flex-wrap: wrap' for the card container to create a responsive card layout."
       }
     ]
-  }
+  }]
 };

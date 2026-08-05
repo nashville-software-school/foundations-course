@@ -99,7 +99,7 @@ console.log(checkAge(25))    // Displays: Valid age
 
 Create an arrow function called \`makeGreeting\` that takes a name and returns a greeting message. Don't use \`console.log\` - use \`return\` instead!
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// Create an arrow function that returns "Hello, NAME!"
 // For example: makeGreeting("John") should return "Hello, John!"
 
@@ -209,5 +209,5 @@ console.log(greeting)
         message: "Make sure you console.log the variable containing the greeting."
       }
     ]
-  }
+  }]
 }

@@ -54,7 +54,7 @@ welcomeUser("Miguel")
 
 Create a basic function named \`greetPet\` that will display a message saying "Good dog!" when run. It will will look very similar to the \`sayHello\` example function above.
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// Write your function here
 
 
@@ -96,5 +96,5 @@ greetPet()
       }
     ]
 
-  }
+  }]
 }

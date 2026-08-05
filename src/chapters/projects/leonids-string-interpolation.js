@@ -82,7 +82,7 @@ Leonid wants his catalog to look clean and professional. You’ve been asked to:
 { name: "Painted Kite", priceInDollars: 20, color: "Blue" }
 \`\`\`
   `,
-  exercise: {
+  exercises: [{
     starterCode: ``,
     solution: `const toyCatalog = [
   { name: "Wooden Train", priceInDollars: 30, color: "Red" },
@@ -91,7 +91,7 @@ Leonid wants his catalog to look clean and professional. You’ve been asked to:
 ];
 const displayCatalog = [];
 for (const toy of toyCatalog) {
-  const line = \`Toy: \${toy.name} | Price: \$\${toy.priceInDollars} | Color: \${toy.color}\`;
+  const line = \`Toy: \${toy.name} | Price: $\${toy.priceInDollars} | Color: \${toy.color}\`;
   displayCatalog.push(line);
 }`,
     tests: [
@@ -156,5 +156,5 @@ for (const toy of toyCatalog) {
         message: "You should use string interpolation and dot notation to access and format each toy's info"
       }
     ],
-  },
+  }],
 };

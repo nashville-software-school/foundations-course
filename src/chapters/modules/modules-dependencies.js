@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const modulesDependenciesChapter = {
   id: 'modules-dependencies',
   title: 'Module Dependencies',
@@ -97,7 +99,7 @@ export function getB() {
 ## Exercise: Greeting Card Maker
 
 Create a simple greeting card system where files work together.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'decorations.js': `// Create two functions:
 // 1. addEmoji(text, emoji) - Adds emoji before and after text
@@ -139,29 +141,29 @@ export function createCard(name) {
       {
         name: "Decoration Functions",
         test: (files) => {
-          return files['decorations.js'].includes('export function addEmoji') &&
-                 files['decorations.js'].includes('export function makeUpperCase')
+          return new TestResult({passed: files['decorations.js'].includes('export function addEmoji') &&
+                 files['decorations.js'].includes('export function makeUpperCase')})
         },
         message: "Create and export both decoration functions."
       },
       {
         name: "Message Function",
         test: (files) => {
-          return files['message.js'].includes('import { addEmoji, makeUpperCase }') &&
-                 files['message.js'].includes('export function makeMessage')
+          return new TestResult({passed: files['message.js'].includes('import { addEmoji, makeUpperCase }') &&
+                 files['message.js'].includes('export function makeMessage')})
         },
         message: "Import decorations and create message function."
       },
       {
         name: "Card Creation",
         test: (files) => {
-          return files['card.js'].includes('import { makeMessage }') &&
+          return new TestResult({passed: files['card.js'].includes('import { makeMessage }') &&
                  files['card.js'].includes('export function createCard') &&
                  files['card.js'].includes('greeting:') &&
-                 files['card.js'].includes('from:')
+                 files['card.js'].includes('from:')})
         },
         message: "Create card function that uses message function."
       }
     ]
-  }
+  }]
 }

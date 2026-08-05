@@ -86,7 +86,7 @@ Each note object should include the following properties:
   topics: ["pricing", "marketing"]
 }
 `,
-  exercise: {
+  exercises: [{
     starterCode: ``,
     solution: `const notes = [];
 notes.push({
@@ -174,5 +174,5 @@ notes.push({
         message: "Each note must include at least one topic"
       }
     ],
-  },
+  }],
 };

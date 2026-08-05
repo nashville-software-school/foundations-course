@@ -113,7 +113,7 @@ Then:
 2. Calculate the final total with tax
 3. Use console.log to display both the subtotal and the final total
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// Create calculateSubtotal here
 
 
@@ -348,5 +348,5 @@ console.log("Total with tax: $" + finalTotal.toFixed(2))`,
         message: "Make sure to log the final total with tax to the console."
       }
     ]
-  }
+  }]
 }

@@ -73,7 +73,7 @@ After the \`student = \`, your job is to create an object that represents a new 
 * An age property with a value of 31
 
 So you need the curly braces, and the properties. Leave the rest of the code unchanged.`,
-  exercise: {
+  exercises: [{
     starterCode: `/* Create your student object here */
 const student = `,
     solution: `/* Create your student object here */
@@ -141,5 +141,5 @@ const student = {
         message: "The age property does not exist on the student object, or it is not a number."
       }
     ]
-  }
+  }]
 }

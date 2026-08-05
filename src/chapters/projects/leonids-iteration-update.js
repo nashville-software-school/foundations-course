@@ -73,16 +73,21 @@ Leonid has decided to increase prices by 5%. Your task is to:
    Toy: Wooden Train | Price: $31.50 | Color: Red
 4. Push each formatted string into \`displayCatalog\`
    `,
-  exercise: {
+  exercises: [{
     starterCode: `const toyCatalog = [
   { name: "Wooden Train", priceInDollars: 30, color: "Red" },
   { name: "Stuffed Rabbit", priceInDollars: 25, color: "Gray" },
   { name: "Painted Kite", priceInDollars: 20, color: "Blue" }
 ];`,
-    solution: `let displayCatalog = [];
-  for (const toy of toyCatalog) {
+    solution: `const toyCatalog = [
+  { name: "Wooden Train", priceInDollars: 30, color: "Red" },
+  { name: "Stuffed Rabbit", priceInDollars: 25, color: "Gray" },
+  { name: "Painted Kite", priceInDollars: 20, color: "Blue" }
+];
+let displayCatalog = [];
+for (const toy of toyCatalog) {
   const increasedPrice = (toy.priceInDollars * 1.05).toFixed(2);
-  const line = \`Toy: \${toy.name} | Price: \$\${increasedPrice} | Color: \${toy.color}\`;
+  const line = \`Toy: \${toy.name} | Price: $\${increasedPrice} | Color: \${toy.color}\`;
   displayCatalog.push(line);
 }`,
     tests: [
@@ -144,5 +149,5 @@ Leonid has decided to increase prices by 5%. Your task is to:
         message: "displayCatalog should include correctly formatted strings with increased prices"
       }
     ],
-  },
+  }],
 };

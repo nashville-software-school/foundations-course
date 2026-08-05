@@ -36,7 +36,7 @@ console.log(flute)
 ## Practice: Goldfish Tanks
 
 In the sample code provided, there is an object that represents a goldfish. Your job is to add a new property named \`location\` whose value is "Large Tank" so that you can keep track of where your goldfish is currently located amongst all the different tanks you have in your house.`,
-  exercise: {
+  exercises: [{
     starterCode: `const goldfish = {
     name: "Angela",
     type: "Fantail",
@@ -79,5 +79,5 @@ goldfish.location = "Large Tank"`,
         message: "Make sure you set the location to 'Large Tank'"
       }
     ]
-  }
+  }]
 }

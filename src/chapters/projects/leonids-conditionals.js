@@ -43,7 +43,7 @@ for the phone weight format the number rouded to decimal place!
 
 This is a very basic implementation of tools that you use on the Web when you search for, or filter, products on a company's product page.
   `,
-  exercise: {
+  exercises: [{
     starterCode: `// Define the phones array
 const phones = [
   {
@@ -163,5 +163,5 @@ for (const phone of phones) {
         message: "It should log the correct phone details using a multiline template string"
       }
     ],
-  },
+  }],
 };

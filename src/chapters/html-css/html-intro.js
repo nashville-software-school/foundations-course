@@ -161,7 +161,7 @@ Create a page with the following elements, in the following order:
 </ul>
 
 `,
-  exercise: {
+  exercises: [{
     starterCode: {
       'index.html': `<!DOCTYPE html>
 <html>
@@ -282,5 +282,5 @@ Create a page with the following elements, in the following order:
         message: "You are missing all required items"
       }
     ]
-  }
+  }]
 };

@@ -68,7 +68,7 @@ Copy the code above and put it in the code editor and run it. You will see the n
 ## Exercise: The Hairy Potter
 
 Your task is to iterate the array containing the chunks of clay and after your code is done, the \`toFireInKiln\` array should contain the string value "coffee mug" for every chunk of clay in the \`clay\` array.`,
-  exercise: {
+  exercises: [{
     starterCode: `const clay = [ "Chunk of clay", "Chunk of clay", "Chunk of clay", "Chunk of clay" ]
 const toFireInKiln = []
 
@@ -117,5 +117,5 @@ console.log(toFireInKiln)`,
         message: "Make sure to use the push() method to add mugs to the toFireInKiln array"
       }
     ]
-  }
+  }]
 }

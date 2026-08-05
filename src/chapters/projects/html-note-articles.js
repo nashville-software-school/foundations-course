@@ -19,7 +19,7 @@ You’ve listed topics and filtered notes. Now Leonid wants to wrap each note’
 \`<article>Note text here</article>\`
 
 `,
-    exercise: {
+    exercises: [{
       starterCode: `const notes = [
   {
     id: 1,
@@ -134,5 +134,5 @@ for (const note of notes) {
           message: "Use a template literal to wrap note.text in <article> tags"
         }
       ],
-    },
+    }],
   };

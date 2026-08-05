@@ -167,7 +167,7 @@ You'll be working with user data that needs cleaning and formatting. Use various
 
 In the editor, you will see several strings defined, with a comment indicating what you need to do with each string. Your task is to write the code that performs the required transformations. Refer to the examples above for guidance.
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// Remove spaces from the beginning and end of the email
 const email = "   hello@email.com   "
 
@@ -282,5 +282,5 @@ const fileStart = filename.slice(0, 4)`,
         message: "Extract the first 4 characters of the filename"
       }
     ]
-  }
+  }]
 }

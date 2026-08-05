@@ -170,7 +170,7 @@ export const functionsCallingFunctionsChapter = {
   2. Another function to determine bonus points
   3. A main function that uses both to calculate final score
   `,
-    exercise: {
+    exercises: [{
         starterCode: `// 1. Calculate base points (time * 100 + targets * 50)
 const calculateBasePoints = (time, targets) => {
 
@@ -310,5 +310,5 @@ console.log(finalScoreNoBonus)
                 message: "Your calculateFinalScore function needs to call both helper functions"
             }
         ]
-    }
+    }]
 }

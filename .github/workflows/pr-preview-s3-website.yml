@@ -45,6 +45,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Run tests
+        run: npm test -- --run
+
       - name: Build Vite
         run: npm run build
 

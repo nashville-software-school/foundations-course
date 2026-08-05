@@ -147,7 +147,7 @@ In this exercise, you'll create a simple layout using Flexbox. The HTML contains
 
 Use the editor to write your CSS code, then click the "Run" button to see the result.
 `,
-  exercise: {
+  exercises: [{
     starterCode: {
       'index.html': `<!DOCTYPE html>
 <html>
@@ -488,5 +488,5 @@ footer {
         message: "Make sure your CSS uses flexbox properties to create the layout. At minimum, use 'display: flex' and at least one other flexbox property like justify-content, align-items, flex-direction, or the flex shorthand."
       }
     ]
-  }
+  }]
 };

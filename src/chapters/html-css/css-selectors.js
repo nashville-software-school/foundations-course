@@ -69,7 +69,7 @@ Here's a review of popular CSS rules. Be as creative as you want with your style
 - \`background-size\`: Specifies the size of the background image
 
 `,
-  exercise: {
+  exercises: [{
     starterCode: {
       'index.html': `<!DOCTYPE html>
 <html>
@@ -335,5 +335,5 @@ p {
           message: "Make sure your CSS includes the three basic types of selectors: element selectors, class selectors, and ID selectors."
         }
       ]
-  }
+  }]
 };

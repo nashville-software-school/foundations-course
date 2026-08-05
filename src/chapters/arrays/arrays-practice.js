@@ -23,7 +23,7 @@ Use those variables to display this output using a multi-line template string:
 I average xxx miles each week.
 I have driven a total of xxx miles.
 \`\`\``,
-  exercise: {
+  exercises: [{
     starterCode: `// You fill in some sample weekly miles traveled in this array
 const weeklyMiles = [  ]
 
@@ -117,5 +117,5 @@ I have driven a total of \${totalMiles} miles.\`)`,
         message: "Make sure to use a multi-line template string to output the average and total miles"
       }
     ]
-  }
+  }]
 }

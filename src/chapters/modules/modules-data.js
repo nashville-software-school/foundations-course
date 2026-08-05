@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const modulesDataChapter = {
   id: 'modules-data',
   title: 'Modules and Data',
@@ -80,7 +82,7 @@ export function getItems() {
 ## Exercise: Favorite Things
 
 Create modules that store and work with lists of favorite things.`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'movies.js': `// Create and export:
 // 1. A list of movies
@@ -123,28 +125,28 @@ console.log("Number of songs:", getSongCount())`
       {
         name: "Movie Functions",
         test: (files) => {
-          return files['movies.js'].includes('export function addMovie') &&
-                 files['movies.js'].includes('export function getMovies')
+          return new TestResult({passed: files['movies.js'].includes('export function addMovie') &&
+                 files['movies.js'].includes('export function getMovies')})
         },
         message: "Create and export both movie functions."
       },
       {
         name: "Songs Data",
         test: (files) => {
-          return files['songs.js'].includes('export const songs') &&
-                 files['songs.js'].includes('export function getSongCount')
+          return new TestResult({passed: files['songs.js'].includes('export const songs') &&
+                 files['songs.js'].includes('export function getSongCount')})
         },
         message: "Export the songs list and count function."
       },
       {
         name: "Main Usage",
         test: (files) => {
-          return files['main.js'].includes('import { addMovie, getMovies }') &&
+          return new TestResult({passed: files['main.js'].includes('import { addMovie, getMovies }') &&
                  files['main.js'].includes('import { getSongCount }') &&
-                 files['main.js'].includes('addMovie(')
+                 files['main.js'].includes('addMovie(')})
         },
         message: "Import and use the functions to work with the lists."
       }
     ]
-  }
+  }]
 }

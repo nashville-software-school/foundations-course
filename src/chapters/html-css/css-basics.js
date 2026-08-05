@@ -88,7 +88,7 @@ After you implement each style, click the "Run" button to see the changes applie
 
 Use the editor to write your CSS code, then click the "Run" button to see the result.
 `,
-  exercise: {
+  exercises: [{
     starterCode: {
       'index.html': `<!DOCTYPE html>
 <html>
@@ -285,5 +285,5 @@ li:last-child {
         message: "Make sure your CSS includes the required styles for body, article, p, and img elements."
       }
     ]
-  }
+  }]
 };

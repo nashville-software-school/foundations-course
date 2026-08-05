@@ -111,7 +111,7 @@ In this exercise, you'll convert traditional functions to arrow functions. You'l
 
 See if you can use the concise syntax for at least one of the functions.
 `,
-  exercise: {
+  exercises: [{
     starterCode: `// Convert these traditional functions to arrow functions
 
 function add(x, y) {
@@ -257,7 +257,7 @@ console.log(random, greeting, sum)`,
         message: "Make sure you've converted all three functions to arrow syntax."
       }
     ]
-  },
+  }],
   nextChapterId: "functions-return-intro",
   previousChapterId: "functions-multiple-parameters"
 }

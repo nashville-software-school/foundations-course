@@ -29,7 +29,7 @@ When your code runs, it should print lines like:
 
 "Discussed pricing strategy with Leonid." "I have found that slowing down and thinking about the problem..." "Need to have all my code backed up to Github by the end of the week."
 `,
-    exercise: {
+    exercises: [{
       starterCode: `const notes = [
   {
     id: 1,
@@ -115,5 +115,5 @@ When your code runs, it should print lines like:
           message: "Do not log the full object — only note.text"
         }
       ],
-    },
+    }],
   };

@@ -160,7 +160,7 @@ export const functionsLoopsChapter = {
   3. Apply a 10% discount if the total is over $100
   4. Return the final total
   `,
-    exercise: {
+    exercises: [{
         starterCode: `const calculateCartTotal = (prices) => {
       // 1. Create a variable to store the total, starting at 0
 
@@ -196,10 +196,11 @@ export const functionsLoopsChapter = {
 
   // Invoke the function and display results
   const smallCartTotal = calculateCartTotal([20, 30, 40]);
-  console.log(smallCartTotal);  // Displays: 90
+  console.log(smallCartTotal);
 
   const largeCartTotal = calculateCartTotal([50, 60, 70]);
-  console.log(largeCartTotal);  // Displays: 162`,
+  console.log(largeCartTotal)
+`,
         tests: [
             {
                 name: "Small Cart Calculation",
@@ -284,5 +285,5 @@ export const functionsLoopsChapter = {
                 message: "Make sure you're using a for..of loop to process all prices in the array"
             }
         ]
-    }
+    }]
 }

@@ -21,7 +21,7 @@ Your goal is to:
 1. Print the header line exactly as \`*** All Note Topics ***\`
 2. List topics each on it's own line. The order of topics should follow the order of the notes and the order of topics within each note.
 `,
-    exercise: {
+    exercises: [{
       starterCode: `const notes = [
   {
     id: 1,
@@ -182,5 +182,5 @@ for (const note of notes) {
           message: "You should use a for...of loop inside another for...of loop"
         }
       ],
-    },
+    }],
   };

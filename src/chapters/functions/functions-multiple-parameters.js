@@ -114,7 +114,7 @@ Create a function named \`displayGameScore\` that displays a player's game score
 
 The function should display a message like: "Mario scored 100 points!"
 `,
-  exercise: {
+  exercises: [{
     starterCode: `/*
   Create your function here with two parameters.
   Remember to use both parameters in the message.
@@ -277,5 +277,5 @@ displayGameScore("Jamal", 75)
       }
 
     ]
-  }
+  }]
 }

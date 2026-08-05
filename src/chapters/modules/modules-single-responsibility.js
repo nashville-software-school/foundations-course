@@ -1,3 +1,5 @@
+import { TestResult } from "@nss-workshops/nss-core"
+
 export const modulesSingleResponsibilityChapter = {
   id: 'modules-single-responsibility',
   title: 'Single Responsibility',
@@ -105,7 +107,7 @@ console.log(message)  // "Count is: 1"
 Let's organize some animal sound code. Split this into two simple modules:
 1. One for animal sounds
 2. One for creating messages`,
-  exercise: {
+  exercises: [{
     starterCode: {
       'sounds.js': `// Create two functions:
 // 1. getDogSound() - Returns "Woof!"
@@ -141,27 +143,27 @@ console.log(catMessage)`
       {
         name: "Sound Functions",
         test: (files) => {
-          return files['sounds.js'].includes('export function getDogSound') &&
-                 files['sounds.js'].includes('export function getCatSound')
+          return new TestResult({passed: files['sounds.js'].includes('export function getDogSound') &&
+                 files['sounds.js'].includes('export function getCatSound')})
         },
         message: "Create and export both sound functions."
       },
       {
         name: "Message Function",
         test: (files) => {
-          return files['messages.js'].includes('export function makeAnimalMessage')
+          return new TestResult({passed: files['messages.js'].includes('export function makeAnimalMessage')})
         },
         message: "Create and export the message function."
       },
       {
         name: "Main Integration",
         test: (files) => {
-          return files['main.js'].includes('import { getDogSound, getCatSound }') &&
+          return new TestResult({passed: files['main.js'].includes('import { getDogSound, getCatSound }') &&
                  files['main.js'].includes('import { makeAnimalMessage }') &&
-                 files['main.js'].includes('console.log')
+                 files['main.js'].includes('console.log')})
         },
         message: "Import and use both modules to create animal messages."
       }
     ]
-  }
+  }]
 }
